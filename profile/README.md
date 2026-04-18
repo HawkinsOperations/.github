@@ -1,32 +1,29 @@
 # HawkinsOps
 
-Detection engineering, SOC automation, and proof-driven security operations.
+Detection engineering and SOC automation with the evidence attached.
 
-Built by [Raylee Hawkins](https://github.com/raylee-hawkins) — from zero experience to a live 10-agent Wazuh deployment in 7 months.
+HawkinsOps is the GitHub home for Raylee Hawkins' detection, triage, and security automation work. The repositories here trace back to a single self-hosted operational pipeline: a live Wazuh deployment, a file-backed triage engine, CI-gated detection content, and script-verified proof artifacts. Claims are scoped to what was built, operated, and verified.
 
----
+## Core repositories
 
-**[Live portfolio](https://hawkinsops.com)** | **[Flagship repo](https://github.com/HawkinsOps/HawkinsOperations)** | **[LinkedIn](https://linkedin.com/in/raylee-hawkins)**
+- **[HawkinsOperations](https://github.com/HawkinsOps/HawkinsOperations)** - Live operational repository. Detection content (Sigma, Wazuh XML, Splunk SPL), IR playbooks, the AutoSOC pipeline, CI verification, and the `PROOF_PACK/` with script-generated counts and supporting evidence.
+- **[SignalFoundry](https://github.com/HawkinsOps/SignalFoundry)** - Reviewer-facing narrative repo. Architecture docs, methodology, detection principles, case studies, and representative samples for understanding the system without digging through the full operational repository.
+- **[wazuh-mcp-server](https://github.com/HawkinsOps/wazuh-mcp-server)** - Focused technical artifact. A read-only Model Context Protocol server in TypeScript for exposing Wazuh agent status, alerts, rules, and manager health to MCP clients. No write operations are exposed.
 
----
+## Proof over posture
 
-### What this is
+Counts are script-generated, not self-reported. Detection content passes validators and CI before it lands. Case studies are derived from real operational work and tied back to evidence. In `HawkinsOperations`, `PROOF_PACK/VERIFIED_COUNTS.md` is the source of truth, and drift between markdown, JSON, and site data fails CI.
 
-A live detection and triage pipeline on self-hosted infrastructure. The AutoSOC engine ingests Wazuh alerts from a 10-agent deployment, performs policy-driven triage, redacts sensitive fields, and assembles escalation packs as reproducible proof artifacts.
+AI tools are used to accelerate drafting, review, and analysis. They are not used to bypass validation, make escalation decisions, or create claims that cannot be traced back to a script or artifact.
 
-### By the numbers
+## Scope honesty
 
-- **103** Sigma rules | **28** Wazuh rule blocks | **79** Splunk searches | **10** IR playbooks
-- **123** MITRE ATT&CK technique/sub-technique IDs across 69 families
-- **8,574** escalation packs from 324,074 total cases (~88% auto-close rate)
-- **7** CI workflows verifying content integrity, drift detection, and deployment
+This is a single-operator, self-hosted lab environment run with production discipline. It is not an enterprise SOC and is not presented as one. The Wazuh deployment is single-node with 10 agents, and the pipeline is intentionally simple enough to remain inspectable and reviewable. Direct experience here covers detection authoring, Wazuh deployment and tuning, pipeline engineering, and verification discipline.
 
-Every count is script-generated and reproducible. If a number is in the repo, a script verified it.
+## Start here
 
-### Key work
-
-- **Wazuh telemetry remediation** — diagnosed three independent failures, restored process creation visibility from zero to 2,120+ indexed events
-- **Detection tuning sprint** — 23 targeted exclusions across 328K alerts, zero MITRE technique coverage removed
-- **Race condition fix** — TOCTOU bug at 505K queue depth, 4-site patch, zero data loss
-- **Pipeline recovery** — six-day outage, ~1.1M alert backlog reconciliation
-- **15-server MCP stack** — Windows native, including custom Wazuh MCP server in TypeScript
+- **Recruiter / hiring manager** -> [START_HERE.md](https://github.com/HawkinsOps/HawkinsOperations/blob/main/START_HERE.md)
+- **Technical reviewer** -> [SignalFoundry](https://github.com/HawkinsOps/SignalFoundry) then [`PROOF_PACK/VERIFIED_COUNTS.md`](https://github.com/HawkinsOps/HawkinsOperations/blob/main/PROOF_PACK/VERIFIED_COUNTS.md)
+- **Detection engineer** -> [`content/detection-rules/INDEX.md`](https://github.com/HawkinsOps/HawkinsOperations/blob/main/content/detection-rules/INDEX.md)
+- **MCP / tooling reviewer** -> [wazuh-mcp-server](https://github.com/HawkinsOps/wazuh-mcp-server)
+- **Portfolio site** -> [hawkinsops.com](https://hawkinsops.com)
