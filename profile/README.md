@@ -6,13 +6,17 @@ HawkinsOps is the GitHub home for Raylee Hawkins' detection, triage, and securit
 
 ## Core repositories
 
-- **[HawkinsOperations](https://github.com/HawkinsOps/HawkinsOperations)** - Live operational repository. Detection content (Sigma, Wazuh XML, Splunk SPL), IR playbooks, the AutoSOC pipeline, CI verification, and the `PROOF_PACK/` with script-generated counts and supporting evidence.
-- **[SignalFoundry](https://github.com/HawkinsOps/SignalFoundry)** - Reviewer-facing narrative repo. Architecture docs, methodology, detection principles, case studies, and representative samples for understanding the system without digging through the full operational repository.
-- **[wazuh-mcp-server](https://github.com/HawkinsOps/wazuh-mcp-server)** - Focused technical artifact. A read-only Model Context Protocol server in TypeScript for exposing Wazuh agent status, alerts, rules, and manager health to MCP clients. No write operations are exposed.
+- **[HawkinsOperations](https://github.com/HawkinsOps/HawkinsOperations)**: Live operational repository. Detection content (Sigma, Wazuh XML, Splunk SPL), IR playbooks, the AutoSOC pipeline, CI verification, and the `PROOF_PACK/` with script-generated counts and supporting evidence.
+- **[SignalFoundry](https://github.com/HawkinsOps/SignalFoundry)**: Reviewer-facing narrative repo. Architecture docs, methodology, detection principles, case studies, and representative samples for understanding the system without digging through the full operational repository.
+- **[wazuh-mcp-server](https://github.com/HawkinsOps/wazuh-mcp-server)**: Focused technical artifact. A read-only Model Context Protocol server in TypeScript for exposing Wazuh agent status, alerts, rules, and manager health to MCP clients. No write operations are exposed.
+
+## Related public project
+
+- **[rayleeops](https://github.com/raylee-hawkins/rayleeops)**: Personal-account project and source for **[rayleeops.com](https://rayleeops.com/)**, including **The Ledger**, a public operating journal for solo AI-assisted technical work. It serves as the review and reflection layer around the work published through HawkinsOps.
 
 ## Proof over posture
 
-Counts are script-generated, not self-reported. Detection content passes validators and CI before it lands. Case studies are derived from real operational work and tied back to evidence. In `HawkinsOperations`, `PROOF_PACK/VERIFIED_COUNTS.md` is the source of truth, and drift between markdown, JSON, and site data fails CI.
+Counts are script-generated, not self-reported. Detection content passes validators and CI before it lands. Case studies are derived from real operational work and tied back to evidence. In [HawkinsOperations](https://github.com/HawkinsOps/HawkinsOperations), [`PROOF_PACK/VERIFIED_COUNTS.md`](https://github.com/HawkinsOps/HawkinsOperations/blob/main/PROOF_PACK/VERIFIED_COUNTS.md) is the source of truth, and drift between markdown, JSON, and site data fails CI.
 
 AI tools are used to accelerate drafting, review, and analysis. They are not used to bypass validation, make escalation decisions, or create claims that cannot be traced back to a script or artifact.
 
@@ -22,8 +26,9 @@ This is a single-operator, self-hosted lab environment run with production disci
 
 ## Start here
 
-- **Recruiter / hiring manager** -> [START_HERE.md](https://github.com/HawkinsOps/HawkinsOperations/blob/main/START_HERE.md)
+- **Recruiter / hiring manager** -> [`START_HERE.md`](https://github.com/HawkinsOps/HawkinsOperations/blob/main/START_HERE.md)
 - **Technical reviewer** -> [SignalFoundry](https://github.com/HawkinsOps/SignalFoundry) then [`PROOF_PACK/VERIFIED_COUNTS.md`](https://github.com/HawkinsOps/HawkinsOperations/blob/main/PROOF_PACK/VERIFIED_COUNTS.md)
 - **Detection engineer** -> [`content/detection-rules/INDEX.md`](https://github.com/HawkinsOps/HawkinsOperations/blob/main/content/detection-rules/INDEX.md)
 - **MCP / tooling reviewer** -> [wazuh-mcp-server](https://github.com/HawkinsOps/wazuh-mcp-server)
+- **Public review journal** -> [rayleeops.com](https://rayleeops.com/)
 - **Portfolio site** -> [hawkinsops.com](https://hawkinsops.com)
