@@ -1,34 +1,24 @@
 # HawkinsOps
 
-Detection engineering and SOC automation with the evidence attached.
+> [!WARNING]
+> **Transition Status (April 20, 2026):** HawkinsOps is in intentional redesign. Legacy repositories are retained for historical reference and donor extraction only.
+> Do not treat this org as the current operational source of truth while V2 architecture and controls are being built.
 
-HawkinsOps is the GitHub home for Raylee Hawkins' detection, triage, and security automation work. The repositories here trace back to a single self-hosted operational pipeline: a live Wazuh deployment, a file-backed triage engine, CI-gated detection content, and script-verified proof artifacts. Claims are scoped to what was built, operated, and verified.
+Detection engineering, SOC automation, and proof-driven security operations.
 
-## Core repositories
+## Current status
 
-- **[HawkinsOperations](https://github.com/HawkinsOps/HawkinsOperations)**: Live operational repository. Detection content (Sigma, Wazuh XML, Splunk SPL), IR playbooks, the AutoSOC pipeline, CI verification, and the `PROOF_PACK/` with script-generated counts and supporting evidence.
-- **[SignalFoundry](https://github.com/HawkinsOps/SignalFoundry)**: Reviewer-facing narrative repo. Architecture docs, methodology, detection principles, case studies, and representative samples for understanding the system without digging through the full operational repository.
-- **[wazuh-mcp-server](https://github.com/HawkinsOps/wazuh-mcp-server)**: Focused technical artifact. A read-only Model Context Protocol server in TypeScript for exposing Wazuh agent status, alerts, rules, and manager health to MCP clients. No write operations are exposed.
+- Legacy foundation has been frozen and archived.
+- Active V2 redesign is in progress with explicit truth boundaries, validation gates, and promotion controls.
+- Public claims during transition are limited to verifiable historical artifacts.
 
-## Related public project
+## Repository locations
 
-- **[rayleeops](https://github.com/raylee-hawkins/rayleeops)**: Personal-account project and source for **[rayleeops.com](https://rayleeops.com/)**, including **The Ledger**, a public operating journal for solo AI-assisted technical work. It serves as the review and reflection layer around the work published through HawkinsOps.
+- **[HawkinsOperations](https://github.com/raylee-hawkins/HawkinsOperations)**: Legacy repository (archived/read-only). Historical record and component donor source.
+- **[SignalFoundry](https://github.com/raylee-hawkins/SignalFoundry)**: Narrative and reviewer-facing materials.
+- **[wazuh-mcp-server](https://github.com/raylee-hawkins/wazuh-mcp-server)**: Focused technical artifact for Wazuh MCP integration.
+- **[rayleeops](https://github.com/raylee-hawkins/rayleeops)**: Personal account project and source for [rayleeops.com](https://rayleeops.com/).
 
-## Proof over posture
+## Transition rule
 
-Counts are script-generated, not self-reported. Detection content passes validators and CI before it lands. Case studies are derived from real operational work and tied back to evidence. In [HawkinsOperations](https://github.com/HawkinsOps/HawkinsOperations), [`PROOF_PACK/VERIFIED_COUNTS.md`](https://github.com/HawkinsOps/HawkinsOperations/blob/main/PROOF_PACK/VERIFIED_COUNTS.md) is the source of truth, and drift between markdown, JSON, and site data fails CI.
-
-AI tools are used to accelerate drafting, review, and analysis. They are not used to bypass validation, make escalation decisions, or create claims that cannot be traced back to a script or artifact.
-
-## Scope honesty
-
-This is a single-operator, self-hosted lab environment run with production discipline. It is not an enterprise SOC and is not presented as one. The Wazuh deployment is single-node with 10 agents, and the pipeline is intentionally simple enough to remain inspectable and reviewable. Direct experience here covers detection authoring, Wazuh deployment and tuning, pipeline engineering, and verification discipline.
-
-## Start here
-
-- **Recruiter / hiring manager** -> [`START_HERE.md`](https://github.com/HawkinsOps/HawkinsOperations/blob/main/START_HERE.md)
-- **Technical reviewer** -> [SignalFoundry](https://github.com/HawkinsOps/SignalFoundry) then [`PROOF_PACK/VERIFIED_COUNTS.md`](https://github.com/HawkinsOps/HawkinsOperations/blob/main/PROOF_PACK/VERIFIED_COUNTS.md)
-- **Detection engineer** -> [`content/detection-rules/INDEX.md`](https://github.com/HawkinsOps/HawkinsOperations/blob/main/content/detection-rules/INDEX.md)
-- **MCP / tooling reviewer** -> [wazuh-mcp-server](https://github.com/HawkinsOps/wazuh-mcp-server)
-- **Public review journal** -> [rayleeops.com](https://rayleeops.com/)
-- **Portfolio site** -> [hawkinsops.com](https://hawkinsops.com)
+Until V2 is published, legacy artifacts may be cited for history, but they are not authoritative for current operational design.
