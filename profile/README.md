@@ -1,24 +1,42 @@
-# HawkinsOps
+# HawkinsOperations V2
 
-> [!WARNING]
-> **Transition Status (April 20, 2026):** HawkinsOps is in intentional redesign. Legacy repositories are retained for historical reference and donor extraction only.
-> Do not treat this org as the current operational source of truth while V2 architecture and controls are being built.
+HawkinsOperations V2 is a security engineering system focused on detection quality, validation rigor, and proof-backed operations.
 
-Detection engineering, SOC automation, and proof-driven security operations.
+## What It Is
 
-## Current status
+A structured engineering model for building, validating, and proving detection outcomes with clear governance boundaries.
 
-- Legacy foundation has been frozen and archived.
-- Active V2 redesign is in progress with explicit truth boundaries, validation gates, and promotion controls.
-- Public claims during transition are limited to verifiable historical artifacts.
+## What It Is For
 
-## Repository locations
+- Build reliable detection content
+- Validate behavior with repeatable testing
+- Operate with explicit control contracts
+- Publish public-safe evidence for credibility
 
-- **[HawkinsOperations](https://github.com/raylee-hawkins/HawkinsOperations)**: Legacy repository (archived/read-only). Historical record and component donor source.
-- **[SignalFoundry](https://github.com/raylee-hawkins/SignalFoundry)**: Narrative and reviewer-facing materials.
-- **[wazuh-mcp-server](https://github.com/raylee-hawkins/wazuh-mcp-server)**: Focused technical artifact for Wazuh MCP integration.
-- **[rayleeops](https://github.com/raylee-hawkins/rayleeops)**: Personal account project and source for [rayleeops.com](https://rayleeops.com/).
+## Governing Principles
 
-## Transition rule
+- One active architecture/implementation ownership model per workstream
+- Evidence over narrative: claims should map to verifiable artifacts
+- Clear boundary separation between internal control data and public-safe outputs
+- Reproducibility and traceability across detection, validation, and release
 
-Until V2 is published, legacy artifacts may be cited for history, but they are not authoritative for current operational design.
+## Repository Surfaces
+
+- `hawkinsoperations-detections`: detection source engineering
+- `hawkinsoperations-validation`: testing and validation harnesses
+- `hawkinsoperations-platform`: integration and control contracts
+- `hawkinsoperations-proof`: evidence bundles and indexes
+- `hawkinsoperations-website`: external narrative and entrypoint
+
+## Proof Model
+
+HawkinsOperations V2 produces evidence at multiple layers:
+
+- Detection intent and change rationale
+- Validation results and regression status
+- Platform control checks and release linkage
+- Public-safe proof packets for external review
+
+## Notes
+
+Operational host-specific artifacts (workstation state, ACL transitions, local cutover logs) are intentionally kept out of org-facing surfaces.
