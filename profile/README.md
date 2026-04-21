@@ -1,6 +1,6 @@
-# HawkinsOperations V2
+# HawkinsOperations
 
-HawkinsOperations V2 is a security engineering system focused on detection quality, validation rigor, and proof-backed operations.
+HawkinsOperations is a security engineering system focused on detection quality, validation rigor, and proof-backed operations.
 
 ## What It Is
 
@@ -28,9 +28,11 @@ A structured engineering model for building, validating, and proving detection o
 - `hawkinsoperations-proof`: evidence bundles and indexes
 - `hawkinsoperations-website`: external narrative and entrypoint
 
+Current status: repositories are being developed privately first, then promoted publicly in phases with sanitized, public-safe evidence.
+
 ## Proof Model
 
-HawkinsOperations V2 produces evidence at multiple layers:
+HawkinsOperations produces evidence at multiple layers:
 
 - Detection intent and change rationale
 - Validation results and regression status
@@ -39,4 +41,4 @@ HawkinsOperations V2 produces evidence at multiple layers:
 
 ## Notes
 
-Operational host-specific artifacts (workstation state, ACL transitions, local cutover logs) are intentionally kept out of org-facing surfaces.
+Operational host-specific artifacts (workstation state, local access control changes, cutover logs) are intentionally excluded from org-facing surfaces.
