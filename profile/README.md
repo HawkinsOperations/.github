@@ -16,6 +16,10 @@ This organization is where the next generation is being built.
 
 ---
 
+**Opening commit:** [`OPENING.md`](./OPENING.md) — the dated architectural decision record, 2026-04-23. Paired with the [V1 retirement notice](https://github.com/raylee-hawkins/HawkinsOperations/blob/main/docs/V1_RETIREMENT.md) in the legacy repo.
+
+---
+
 ## Evaluating this work
 
 Go to [hawkinsops.com](https://hawkinsops.com) for the live metrics, the
