@@ -5,10 +5,11 @@ than a pile of scripts.**
 
 This organization is the forward-looking home for the HawkinsOps system as it
 migrates from a single public repository into a multi-repository architecture.
-The live operational system and the current public proof surface remain at
-[hawkinsops.com](https://hawkinsops.com) and
-[raylee-hawkins/HawkinsOperations](https://github.com/raylee-hawkins/HawkinsOperations).
-This organization is where the next generation is being built.
+Live closed-claims proof remains at [hawkinsops.com](https://hawkinsops.com).
+Public contested review remains at [rayleeops.com](https://rayleeops.com) /
+The Ledger. The legacy V1 repository remains available at
+[raylee-hawkins/HawkinsOperations](https://github.com/raylee-hawkins/HawkinsOperations)
+for reference. This organization is where the next generation is being built.
 
 [![Current system](https://img.shields.io/badge/Current_system-hawkinsops.com-00D4FF)](https://hawkinsops.com)
 [![Legacy repo](https://img.shields.io/badge/Legacy_repo-raylee--hawkins%2FHawkinsOperations-181717?logo=github)](https://github.com/raylee-hawkins/HawkinsOperations)
@@ -22,10 +23,11 @@ This organization is where the next generation is being built.
 
 ## Evaluating this work
 
-Go to [hawkinsops.com](https://hawkinsops.com) for the live metrics, the
-case studies, and the proof pack. The operational evidence lives there and
-in the legacy repository. This organization is architecture-in-progress and
-is not yet the right surface for evaluating current capability.
+Go to [hawkinsops.com](https://hawkinsops.com) for the live metrics, case
+studies, and proof pack. Go to [rayleeops.com](https://rayleeops.com) /
+The Ledger for public contested review. Use the legacy repository for V1
+reference. This organization is architecture-in-progress and is not yet the
+primary live proof surface.
 
 ---
 
