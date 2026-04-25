@@ -1,132 +1,52 @@
 # HawkinsOperations
 
-**Detection engineering and SOC automation, built as a managed system rather
-than a pile of scripts.**
+HawkinsOperations is a governed AI-assisted detection engineering system that separates source, runtime, signal, evidence, and public-claim truth before making public claims.
 
-This organization is the forward-looking home for the HawkinsOps system as it
-migrates from a single public repository into a multi-repository architecture.
-Live closed-claims proof remains at [hawkinsops.com](https://hawkinsops.com).
-Public contested review remains at [rayleeops.com](https://rayleeops.com) /
-The Ledger. The legacy V1 repository remains available at
-[raylee-hawkins/HawkinsOperations](https://github.com/raylee-hawkins/HawkinsOperations)
-for reference. This organization is where the next generation is being built.
+## What It Is
 
-[![Current system](https://img.shields.io/badge/Current_system-hawkinsops.com-00D4FF)](https://hawkinsops.com)
-[![Legacy repo](https://img.shields.io/badge/Legacy_repo-raylee--hawkins%2FHawkinsOperations-181717?logo=github)](https://github.com/raylee-hawkins/HawkinsOperations)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-raylee--hawkins-0A66C2)](https://linkedin.com/in/raylee-hawkins)
+HawkinsOperations is a successor architecture for detection engineering, SIEM thinking, validation, evidence discipline, and public claim control. The system is designed to make detection work reviewable without treating presentation as proof.
 
----
+AI assistance is used as controlled labor for drafting, review, analysis, and implementation support. AI output is not authority, cannot promote artifacts, and cannot make public claims safe by itself.
 
-**Opening commit:** [`OPENING.md`](./OPENING.md) — the dated architectural decision record, 2026-04-23. Paired with the [V1 retirement notice](https://github.com/raylee-hawkins/HawkinsOperations/blob/main/docs/V1_RETIREMENT.md) in the legacy repo.
+## Truth Boundaries
 
----
+- Source truth means a file or artifact exists in a repository.
+- Runtime truth requires current runtime evidence.
+- Signal truth requires observed telemetry, alert, log, or output context.
+- Evidence truth requires preserved and linked supporting material.
+- Public proof requires reviewed wording, evidence linkage, stale review, and approval.
 
-## Evaluating this work
+Repository content does not prove runtime activity. Website or README presentation does not create proof.
 
-Go to [hawkinsops.com](https://hawkinsops.com) for the live metrics, case
-studies, and proof pack. Go to [rayleeops.com](https://rayleeops.com) /
-The Ledger for public contested review. Use the legacy repository for V1
-reference. This organization is architecture-in-progress and is not yet the
-primary live proof surface.
+## Repository Map
 
----
+- `.github` owns public organization framing and sanitized governance summaries.
+- `hawkinsoperations-detections` owns detection source content only.
+- `hawkinsoperations-validation` owns tests, schemas, and validation checks only.
+- `hawkinsoperations-platform` owns platform and stack truth tracking only.
+- `hawkinsoperations-proof` owns proof contracts, evidence indexes, and public-safe records only.
+- `hawkinsoperations-website` owns public rendering only.
 
-## The thesis
+No repository may claim another repository's truth surface.
 
-The dominant industry frames for AI in security operations are either
-hand-waving about reliability or treating large language models as opaque
-copilots attached to a human analyst. Both frames fail at scale. Hand-waving
-produces brittle pipelines that silently drift. Copilot framing underuses
-the model while still inheriting its unreliability.
+## Current Public Status
 
-HawkinsOperations starts from a different premise. Large language models
-are unreliable labor. Unreliable labor, treated as labor, is a problem the
-manufacturing world solved decades ago through management systems: intake
-controls, standard work, verification gates, escalation paths, evidence
-capture, regression harnesses, and post-incident review. The IATF 16949
-and ISO 9001 frameworks that govern Tier 1 automotive production floors
-are, at their core, systems for extracting reliable output from unreliable
-inputs. Applied to an AI triage workforce running against a live SOC
-pipeline, the same discipline produces a system that auto-closes what
-should be closed, escalates what should not, and leaves an audit trail
-for every decision. The domain changed. The discipline did not.
+This organization is a public-safe candidate surface for a governed detection engineering system. It should be read as source and architecture material unless a specific claim is linked to reviewed evidence and marked public-safe.
 
-This thesis is what separates the work in this organization from the
-default pattern of grafting a language model onto a SIEM and hoping for
-the best.
+Not currently claimed here:
 
----
+- production-ready status
+- fully rebuilt status
+- runtime-active detections without runtime evidence
+- autonomous AI security operations
+- V2 ownership of legacy metrics
+- public proof based only on GitHub or website presentation
 
-## Why the split
+## Start Here
 
-The original build grew into a single public repository that mixed
-detection content, validation harnesses, platform code, proof artifacts,
-and the portfolio website. That worked while the system was small. It
-stopped working once the proof surface had to serve recruiters, the
-detection source had to be read by engineers, the validation had to be
-run by automation, and the platform code had to evolve without breaking
-published claims. The fix is the same fix any mature engineering
-organization applies: separate surfaces by audience and by change
-velocity.
-
-This organization separates the system into five repositories, each
-with a single responsibility, a single primary audience, and a rate of
-change that matches its contents.
-
-| Repository | Responsibility | Primary audience | Change velocity |
-|---|---|---|---|
-| `hawkinsoperations-detections` | Sigma, Wazuh XML, Splunk SPL rule sources | Engineers | High |
-| `hawkinsoperations-validation` | Regression harnesses, rule-firing tests, FP/TP tracking | Automation | High |
-| `hawkinsoperations-platform` | Pipeline control, AutoSOC orchestration, MCP servers | Engineers | Medium |
-| `hawkinsoperations-proof` | Verified counts, case studies, evidence bundles | Reviewers | Low |
-| `hawkinsoperations-website` | Source for the successor public site | Visitors | Medium |
-
-The taxonomy is not arbitrary. Detections change weekly. Proof changes
-quarterly. Mixing them inside one repository meant that every proof
-update triggered noisy diffs against detection content, and every
-detection tune polluted the commit history a reviewer would read to
-audit proof. The split makes each surface legible on its own terms.
-
----
-
-## Current system metrics
-
-While the new architecture comes online, evaluation should happen against
-the live system documented at [hawkinsops.com](https://hawkinsops.com).
-Canonical figures as of the most recent truth-lock:
-
-| Metric | Value |
-|---|---|
-| Verified cases triaged | **324,074** |
-| Auto-close rate | **88%** |
-| Detection coverage | **210** rules across Sigma, Wazuh XML, Splunk SPL |
-| Escalation packs produced | **8,574** |
-| Agent fleet | **10** Wazuh agents, 8/8 host coverage |
-| Infrastructure | **15**-server Proxmox homelab, V100 local inference |
-
-Canonical values live at hawkinsops.com. Any figure in this organization
-that disagrees with the site is stale; the site wins.
-
----
-
-## Background
-
-Raylee Hawkins. Self-taught detection engineer. Built the current system
-in eight months from a manufacturing supervision background running
-IATF 16949, ISO 9001, and TISAX quality frameworks on Tier 1 automotive
-production floors at Fehrer Automotive and Unipres Alabama, supervising
-thirty-plus operators on twelve-hour shifts.
-
-The manufacturing background is the core of the thesis, not an aside.
-The management systems that govern an unreliable AI workforce are the
-same systems that govern an unreliable human workforce. The framework
-transferred. The output is this system.
-
----
-
-## Contact
-
-- Current system: [hawkinsops.com](https://hawkinsops.com)
-- Email: raylee@hawkinsops.com
-- LinkedIn: [linkedin.com/in/raylee-hawkins](https://linkedin.com/in/raylee-hawkins)
-- Location: Gadsden, AL, relocating to Huntsville, AL
+- Governance model: `governance/GOVERNANCE_SUMMARY.md`
+- Repository authority map: `architecture/REPO_AUTHORITY_MAP.md`
+- Detection source: `hawkinsoperations-detections`
+- Validation work: `hawkinsoperations-validation`
+- Proof structure: `hawkinsoperations-proof`
+- Public rendering: `hawkinsoperations-website`
