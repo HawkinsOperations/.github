@@ -2,6 +2,22 @@
 
 HawkinsOperations is a governed AI-assisted detection engineering system that separates source, runtime, signal, evidence, and public-claim truth before making public claims.
 
+## Public identity
+
+**Raylee Hawkins**
+Detection Engineer | SOC Automation | Detection-as-Code | Security Automation
+
+Official links:
+
+- LinkedIn: <https://www.linkedin.com/in/raylee-hawkins>
+- Portfolio: <https://hawkinsops.com>
+- GitHub: <https://github.com/raylee-hawkins>
+- HawkinsOperations: <https://github.com/HawkinsOperations>
+- RayleeOps / The Ledger: <https://rayleeops.com>
+- Successor governance: <https://hawkinsoperations.com>
+
+HawkinsOperations is the successor governance architecture for detection engineering, validation, evidence discipline, and public claim control.
+
 ## What It Is
 
 HawkinsOperations is a successor architecture for detection engineering, SIEM thinking, validation, evidence discipline, and public claim control. The system is designed to make detection work reviewable without treating presentation as proof.
