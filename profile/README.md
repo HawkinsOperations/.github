@@ -60,8 +60,10 @@ Not currently claimed here:
 
 ## Start Here
 
-- Governance model: `governance/GOVERNANCE_SUMMARY.md`
-- Repository authority map: `architecture/REPO_AUTHORITY_MAP.md`
+- Reviewer start: [START_HERE.md](./START_HERE.md)
+- Governance model: [GOVERNANCE_SUMMARY.md](../governance/GOVERNANCE_SUMMARY.md)
+- Repository authority map: [REPO_AUTHORITY_MAP.md](../architecture/REPO_AUTHORITY_MAP.md)
+- Control status matrix: [CONTROL_STATUS_MATRIX.md](../governance/CONTROL_STATUS_MATRIX.md)
 - Detection source: `hawkinsoperations-detections`
 - Validation work: `hawkinsoperations-validation`
 - Proof structure: `hawkinsoperations-proof`
