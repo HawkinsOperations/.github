@@ -10,6 +10,10 @@ This map defines what each HawkinsOperations organization repository may own. It
 
 No repository may claim another repository's authority. Repository source is not runtime truth. Website presentation is not proof.
 
+Reviewer entry point: [START_HERE.md](../profile/START_HERE.md). Current control summary: [CONTROL_STATUS_MATRIX.md](../governance/CONTROL_STATUS_MATRIX.md).
+
+HOD-001 baseline validation/proof does not promote HO-DET-001.
+
 ## Authority Summary
 
 | Repository | Owns | Must Not Own | Public Readiness Status | Blocked Claims |
