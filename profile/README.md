@@ -49,9 +49,9 @@ No repository may claim another repository's truth surface.
 
 This organization is a public-safe candidate surface for a governed detection engineering system. It should be read as source and architecture material unless a specific claim is linked to reviewed evidence and marked public-safe.
 
-Not currently claimed here:
+Blocked wording / not currently claimed here:
 
-- production-ready status
+- Blocked wording: production-ready status
 - fully rebuilt status
 - runtime-active detections without runtime evidence
 - autonomous AI security operations
@@ -61,6 +61,7 @@ Not currently claimed here:
 ## Start Here
 
 - Reviewer start: [START_HERE.md](./START_HERE.md)
+- Organization system map: [11_ORG_SYSTEM_MAP.md](../wiki/11_ORG_SYSTEM_MAP.md)
 - Governance model: [GOVERNANCE_SUMMARY.md](../governance/GOVERNANCE_SUMMARY.md)
 - Repository authority map: [REPO_AUTHORITY_MAP.md](../architecture/REPO_AUTHORITY_MAP.md)
 - Control status matrix: [CONTROL_STATUS_MATRIX.md](../governance/CONTROL_STATUS_MATRIX.md)
