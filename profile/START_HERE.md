@@ -6,7 +6,11 @@ HawkinsOperations separates source, validation, runtime, signal, evidence, and p
 
 Website content is rendering only. Repository source proves source existence only.
 
-HO-DET-001 current ceiling: SOURCE_EXISTS.
+HO-DET-001 current public repo proof level: TEST_VALIDATED_SYNTHETIC_SCOPE.
+
+HO-DET-001 has merged source, Splunk source, and synthetic validation artifacts. The public proof record supports synthetic validation against controlled positive and negative process-creation fixtures.
+
+A private controlled lab runtime match has been captured locally, but it is not public-safe proof and must not be represented as production, fleet-wide, Cribl-routed, Wazuh-routed, or public-safe status.
 
 HOD-001 baseline artifacts do not validate HO-DET-001. They may inform review, but they do not promote the successor detection ID.
 
@@ -28,13 +32,23 @@ Public claims require reviewed wording, evidence linkage, stale review, and appr
 Allowed current wording:
 
 - "HO-DET-001 source exists."
-- "HO-DET-001 is waiting on static review and validation planning."
+- "HO-DET-001 Splunk source exists."
+- "HO-DET-001 passed synthetic validation against controlled positive and negative process-creation fixtures."
+- "HO-DET-001 current public repo proof level is TEST_VALIDATED_SYNTHETIC_SCOPE."
+- "A private controlled lab runtime match has been captured locally, but public-safe promotion remains blocked pending review."
 - "HOD-001 baseline artifacts are separate reference material."
 
 Blocked current wording:
 
-- "HO-DET-001 is validated."
-- "HO-DET-001 is runtime-active."
-- "HO-DET-001 has observed signal."
-- "HO-DET-001 is evidence-linked."
+- "HO-DET-001 is production-ready."
+- "HO-DET-001 is fleet-wide."
+- "HO-DET-001 is enterprise deployed."
+- "HO-DET-001 is Cribl-routed."
+- "HO-DET-001 is Wazuh-routed."
 - "HO-DET-001 is public-safe."
+- "HO-DET-001 public proof is complete."
+- "Live Splunk fired as public proof."
+- "HO-DET-001 is runtime-active" unless explicitly scoped to private controlled lab evidence.
+- "HO-DET-001 has signal-observed status" unless explicitly scoped to private controlled lab signal observed.
+- "HO-DET-001 is evidence-linked public proof."
+- Any wording that exposes raw command lines, encoded payloads, LAN IPs, local artifact paths, raw CSV names, or screenshots as public evidence.
