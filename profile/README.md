@@ -16,7 +16,7 @@ Official links:
 - RayleeOps / The Ledger: <https://rayleeops.com>
 - Successor governance: <https://hawkinsoperations.com>
 
-HawkinsOperations is the successor governance architecture for detection engineering, validation, evidence discipline, and public claim control.
+HawkinsOperations is the governed successor system for detection engineering, validation, evidence discipline, and public claim control.
 
 ## What It Is
 
@@ -40,27 +40,34 @@ Repository content does not prove runtime activity. Website or README presentati
 - `hawkinsoperations-detections` owns detection source content only.
 - `hawkinsoperations-validation` owns tests, schemas, and validation checks only.
 - `hawkinsoperations-platform` owns platform and stack truth tracking only.
-- `hawkinsoperations-proof` owns proof contracts, evidence indexes, and public-safe records only.
+- `hawkinsoperations-proof` owns proof contracts, evidence indexes, and approved external claim records only.
 - `hawkinsoperations-website` owns public rendering only.
 
 No repository may claim another repository's truth surface.
 
 ## Current Public Status
 
-This organization is a public-safe candidate surface for a governed detection engineering system. It should be read as source and architecture material unless a specific claim is linked to reviewed evidence and marked public-safe.
+This organization is an external-use candidate surface for a governed detection engineering system. It should be read as source and architecture material unless a specific claim is linked to reviewed evidence and approved wording.
 
-Not currently claimed here:
+Current HO-DET-001 public repo claim ceiling: TEST_VALIDATED_SYNTHETIC_SCOPE.
 
-- production-ready status
+Validation enforcement exists for the exact checked HO-DET-001 synthetic validation scope through `HawkinsOperations/hawkinsoperations-validation#10`, merge commit `8b48500d2ebbaacd93ac88e77a31dccf1d3b4e25`.
+
+The proof-loop CI is a real control only for the checked synthetic validation scope. It does not prove runtime-active, signal-observed, evidence-linked public proof, public-safe, production-ready, fleet-wide, Cribl-routed, Wazuh-routed, AWS-live, HO-GPU-01 runtime-active, autonomous SOC, or AI-approved disposition.
+
+Blocked wording / not currently claimed here:
+
+- Blocked wording: production-ready status
 - fully rebuilt status
 - runtime-active detections without runtime evidence
 - autonomous AI security operations
-- V2 ownership of legacy metrics
+- current-system ownership of legacy metrics
 - public proof based only on GitHub or website presentation
 
 ## Start Here
 
 - Reviewer start: [START_HERE.md](./START_HERE.md)
+- Organization system map: [11_ORG_SYSTEM_MAP.md](../wiki/11_ORG_SYSTEM_MAP.md)
 - Governance model: [GOVERNANCE_SUMMARY.md](../governance/GOVERNANCE_SUMMARY.md)
 - Repository authority map: [REPO_AUTHORITY_MAP.md](../architecture/REPO_AUTHORITY_MAP.md)
 - Control status matrix: [CONTROL_STATUS_MATRIX.md](../governance/CONTROL_STATUS_MATRIX.md)
