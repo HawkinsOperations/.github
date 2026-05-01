@@ -27,7 +27,7 @@ Public claims require reviewed wording, evidence linkage, stale review, and appr
 - [Governance summary](../governance/GOVERNANCE_SUMMARY.md)
 - [Repository authority map](../architecture/REPO_AUTHORITY_MAP.md)
 - [Control status matrix](../governance/CONTROL_STATUS_MATRIX.md)
-- [HO-DET-001 closed-loop walkthrough](https://github.com/HawkinsOperations/hawkinsoperations-validation/blob/main/docs/HO-DET-001_CLOSED_LOOP.md)
+- [HO-DET-001 public proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md)
 - [HO-DET-001 proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md)
 - [hawkinsoperations.com](https://hawkinsoperations.com)
 - [rayleeops.com](https://rayleeops.com)

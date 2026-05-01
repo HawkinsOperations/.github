@@ -72,7 +72,7 @@ flowchart TD
     signal --> evidence
     evidence --> publicProof
 
-    legacy -. "must be reclassified before V2 use" .-> idea
+    legacy -. "must be reclassified before HawkinsOperations use" .-> idea
     testValidated --> runtimeGate{"runtime evidence required<br/>before runtime claims"}
     runtimeGate --> runtime
     runtime --> signalGate{"observed telemetry/output required<br/>before signal claims"}
@@ -188,7 +188,7 @@ flowchart TD
 - Source files do not prove runtime.
 - Runtime does not automatically create public proof.
 - Evidence-linked does not automatically mean public-safe.
-- Legacy reference does not become V2 truth by copy-paste.
+- Legacy reference does not become HawkinsOperations truth by copy-paste.
 - AI may draft, inspect, compare, and implement scoped tasks.
 - AI may not own truth, approve public claims, promote artifacts, or declare runtime active.
 - Real control only means something blocks, fails, or forces correction.

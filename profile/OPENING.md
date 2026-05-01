@@ -48,7 +48,7 @@ This document does not claim:
 - production-ready status
 - fully rebuilt status
 - runtime-active detections
-- V2 ownership of V1 metrics
+- Current-system ownership of legacy metrics
 - local LLMs governing triage
 - GitHub or website presentation as proof
 - CI-enforced governance unless a blocking control exists
