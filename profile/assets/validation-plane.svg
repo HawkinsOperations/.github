@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" role="img" aria-labelledby="title desc">
+  <title id="title">Validation plane</title>
+  <desc id="desc">Geometric validation gate icon.</desc>
+  <rect width="120" height="120" rx="14" fill="#080b10"/>
+  <rect x="26" y="30" width="68" height="60" rx="8" fill="#0f1721" stroke="#c8d0da" stroke-width="3"/>
+  <path d="M40 60 L54 74 L82 44" fill="none" stroke="#8fd8ff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

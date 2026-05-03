@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="190" viewBox="0 0 900 190" role="img" aria-labelledby="title desc">
+  <title id="title">Reviewer route</title>
+  <desc id="desc">A five-step reviewer route from website to source logic.</desc>
+  <rect width="900" height="190" rx="16" fill="#080b10"/>
+  <rect x="18" y="18" width="864" height="154" rx="12" fill="#0d131b" stroke="#314050"/>
+  <g fill="#0f1721" stroke="#6f7d8d" stroke-width="1.2">
+    <rect x="48" y="60" width="128" height="58" rx="8"/>
+    <rect x="212" y="60" width="128" height="58" rx="8"/>
+    <rect x="376" y="60" width="128" height="58" rx="8"/>
+    <rect x="540" y="60" width="128" height="58" rx="8"/>
+    <rect x="704" y="60" width="128" height="58" rx="8"/>
+  </g>
+  <g fill="#d8dee8" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700">
+    <text x="112" y="94" text-anchor="middle">Website</text>
+    <text x="276" y="94" text-anchor="middle">Proof</text>
+    <text x="440" y="94" text-anchor="middle">Validation</text>
+    <text x="604" y="94" text-anchor="middle">Detections</text>
+    <text x="768" y="94" text-anchor="middle">Authority Map</text>
+  </g>
+  <g stroke="#8fd8ff" stroke-width="1.6" stroke-linecap="round" fill="none">
+    <path d="M176 89 H212"/>
+    <path d="M340 89 H376"/>
+    <path d="M504 89 H540"/>
+    <path d="M668 89 H704"/>
+    <path d="M203 82 L212 89 L203 96"/>
+    <path d="M367 82 L376 89 L367 96"/>
+    <path d="M531 82 L540 89 L531 96"/>
+    <path d="M695 82 L704 89 L695 96"/>
+  </g>
+  <text x="48" y="40" fill="#8fd8ff" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">3-MINUTE REVIEWER ROUTE</text>
+  <text x="48" y="144" fill="#aeb9c6" font-family="Segoe UI, Arial, sans-serif" font-size="14">Start public, verify through records, then inspect source and authority boundaries.</text>
+</svg>

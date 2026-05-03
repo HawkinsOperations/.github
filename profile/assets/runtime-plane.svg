@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" role="img" aria-labelledby="title desc">
+  <title id="title">Runtime plane</title>
+  <desc id="desc">Geometric runtime rails icon.</desc>
+  <rect width="120" height="120" rx="14" fill="#080b10"/>
+  <path d="M30 36 H90 M30 60 H90 M30 84 H90" stroke="#c8d0da" stroke-width="3" stroke-linecap="round"/>
+  <rect x="39" y="27" width="16" height="18" rx="3" fill="#8fd8ff"/>
+  <rect x="65" y="51" width="16" height="18" rx="3" fill="#8fd8ff"/>
+  <rect x="48" y="75" width="16" height="18" rx="3" fill="#8fd8ff"/>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" role="img" aria-labelledby="title desc">
+  <title id="title">Signal plane</title>
+  <desc id="desc">Geometric signal node icon.</desc>
+  <rect width="120" height="120" rx="14" fill="#080b10"/>
+  <circle cx="60" cy="60" r="8" fill="#8fd8ff"/>
+  <circle cx="34" cy="40" r="5" fill="#c8d0da"/>
+  <circle cx="86" cy="40" r="5" fill="#c8d0da"/>
+  <circle cx="38" cy="82" r="5" fill="#c8d0da"/>
+  <circle cx="84" cy="82" r="5" fill="#c8d0da"/>
+  <path d="M39 44 L53 55 M81 44 L67 55 M43 78 L53 66 M79 78 L67 66" stroke="#7d8997" stroke-width="3" stroke-linecap="round"/>
+</svg>

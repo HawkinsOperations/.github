@@ -1,77 +1,81 @@
-# HawkinsOperations
+![HawkinsOperations Detection Engineering SOC](./assets/hawkinsoperations-banner.svg)
 
-HawkinsOperations is a governed AI-assisted detection engineering system that separates source, runtime, signal, evidence, and public-claim truth before making public claims.
+# HawkinsOperations Detection Engineering SOC
 
-## Public identity
+Governed detection engineering and AI-assisted SOC production.
 
-**Raylee Hawkins**
-Detection Engineer | SOC Automation | Detection-as-Code | Security Automation
+HawkinsOperations speeds up security production without letting the system lie.
 
-Official links:
+Public surfaces route reviewers to proof records and validation artifacts. Rendering is not proof.
 
-- LinkedIn: <https://www.linkedin.com/in/raylee-hawkins>
-- Portfolio: <https://hawkinsops.com>
-- GitHub: <https://github.com/raylee-hawkins>
-- HawkinsOperations: <https://github.com/HawkinsOperations>
-- RayleeOps / The Ledger: <https://rayleeops.com>
-- Successor governance: <https://hawkinsoperations.com>
+| Surface | Current role |
+|---|---|
+| Current public ceiling | `TEST_VALIDATED_SYNTHETIC_SCOPE` |
+| Website | Reviewer routing / public rendering only |
+| Proof repo | Proof records and bounded case studies |
+| Validation repo | Synthetic validation outputs |
+| AI role | Support-only labor, not disposition authority |
+| Authority | Deterministic checks, CI, proof records, human promotion gates |
 
-HawkinsOperations is the governed successor system for detection engineering, validation, evidence discipline, and public claim control.
+![Reviewer route](./assets/reviewer-route.svg)
 
-## What It Is
+## 3-minute reviewer route
 
-HawkinsOperations is a successor architecture for detection engineering, SIEM thinking, validation, evidence discipline, and public claim control. The system is designed to make detection work reviewable without treating presentation as proof.
+1. Start with [hawkinsoperations.com](https://hawkinsoperations.com/) - public reviewer surface.
+2. Review [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof) - proof records and case studies.
+3. Review [hawkinsoperations-validation](https://github.com/HawkinsOperations/hawkinsoperations-validation) - synthetic validation outputs.
+4. Review [hawkinsoperations-detections](https://github.com/HawkinsOperations/hawkinsoperations-detections) - source logic.
+5. Use [START_HERE.md](./profile/START_HERE.md) / [repo authority map](./architecture/REPO_AUTHORITY_MAP.md) for deeper routing.
 
-AI assistance is used as controlled labor for drafting, review, analysis, and implementation support. AI output is not authority, cannot promote artifacts, and cannot make public claims safe by itself.
+## System surfaces
 
-## Truth Boundaries
+| Plane | Repo / Surface | Owns | Does not prove by itself |
+|---|---|---|---|
+| <img src="./assets/source-plane.svg" width="28" alt=""> Source | [hawkinsoperations-detections](https://github.com/HawkinsOperations/hawkinsoperations-detections) | Detection source truth | Runtime firing, signal observation |
+| <img src="./assets/validation-plane.svg" width="28" alt=""> Validation | [hawkinsoperations-validation](https://github.com/HawkinsOperations/hawkinsoperations-validation) | Synthetic validation truth | Production/live signal |
+| <img src="./assets/runtime-plane.svg" width="28" alt=""> Runtime | [hawkinsoperations-platform](https://github.com/HawkinsOperations/hawkinsoperations-platform) | Runtime/orchestration contracts | Public proof without evidence records |
+| <img src="./assets/signal-plane.svg" width="28" alt=""> Signal | Runtime and telemetry records | Observed signal context when records support it | Public proof or promotion by itself |
+| <img src="./assets/evidence-plane.svg" width="28" alt=""> Evidence | [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof) | Proof records and case studies | Raw private runtime state |
+| <img src="./assets/public-proof-plane.svg" width="28" alt=""> Public Proof | [hawkinsoperations-website](https://github.com/HawkinsOperations/hawkinsoperations-website) | Public rendering and reviewer route | Proof authority |
+| <img src="./assets/claim-firewall.svg" width="28" alt=""> Governance | `.github` | Governance and reviewer routing | Detection/runtime/evidence truth |
 
-- Source truth means a file or artifact exists in a repository.
-- Runtime truth requires current runtime evidence.
-- Signal truth requires observed telemetry, alert, log, or output context.
-- Evidence truth requires preserved and linked supporting material.
-- Public proof requires reviewed wording, evidence linkage, stale review, and approval.
+## Flagship proof boundary
 
-Repository content does not prove runtime activity. Website or README presentation does not create proof.
+![Proof ceiling badge](./assets/proof-ceiling-badge.svg)
 
-## Repository Map
+HO-DET-001 is the current flagship proof path.
+Its public ceiling is synthetic validation scope where records support it.
+Source and validation artifacts are separated from runtime, signal, evidence, and public proof.
+Stronger claims require separate evidence-backed promotion.
 
-- `.github` owns public organization framing and sanitized governance summaries.
-- `hawkinsoperations-detections` owns detection source content only.
-- `hawkinsoperations-validation` owns tests, schemas, and validation checks only.
-- `hawkinsoperations-platform` owns platform and stack truth tracking only.
-- `hawkinsoperations-proof` owns proof contracts, evidence indexes, and approved external claim records only.
-- `hawkinsoperations-website` owns public rendering only.
+## Supported vs blocked claims
 
-No repository may claim another repository's truth surface.
+| Supported | Blocked / not claimed |
+|---|---|
+| bounded public reviewer surface | production-ready |
+| separated truth surfaces | fleet-wide |
+| synthetic validation public ceiling where records support it | runtime-active |
+| proof-bound claim promotion model | signal-observed |
+| AI support-only boundary | public-safe runtime proof |
+|  | autonomous SOC |
+|  | AI-approved disposition |
+|  | Cribl-routed |
+|  | Wazuh-routed |
+|  | AWS-live |
+|  | enterprise deployed |
 
-## Current Public Status
+## Claim firewall
 
-This organization is an external-use candidate surface for a governed detection engineering system. It should be read as source and architecture material unless a specific claim is linked to reviewed evidence and approved wording.
+![Claim firewall](./assets/claim-firewall.svg)
 
-Current HO-DET-001 public repo claim ceiling: TEST_VALIDATED_SYNTHETIC_SCOPE.
+GitHub rendering is not proof.
+Website rendering is not proof.
+Proof records, validation artifacts, deterministic checks, CI, and explicit promotion gates own authority.
 
-Validation enforcement exists for the exact checked HO-DET-001 synthetic validation scope through `HawkinsOperations/hawkinsoperations-validation#10`, merge commit `8b48500d2ebbaacd93ac88e77a31dccf1d3b4e25`.
+Current public ceiling remains `TEST_VALIDATED_SYNTHETIC_SCOPE` unless explicitly promoted by proof records.
 
-The proof-loop CI is a real control only for the checked synthetic validation scope. It does not prove runtime-active, signal-observed, evidence-linked public proof, public-safe, production-ready, fleet-wide, Cribl-routed, Wazuh-routed, AWS-live, HO-GPU-01 runtime-active, autonomous SOC, or AI-approved disposition.
+## Legacy boundary
 
-Blocked wording / not currently claimed here:
+HawkinsOps / hawkinsops.com is legacy/reference unless explicitly promoted by current HawkinsOperations proof records. Current claims live under HawkinsOperations proof boundaries.
 
-- Blocked wording: production-ready status
-- fully rebuilt status
-- runtime-active detections without runtime evidence
-- autonomous AI security operations
-- current-system ownership of legacy metrics
-- public proof based only on GitHub or website presentation
-
-## Start Here
-
-- Reviewer start: [START_HERE.md](./START_HERE.md)
-- Organization system map: [11_ORG_SYSTEM_MAP.md](../wiki/11_ORG_SYSTEM_MAP.md)
-- Governance model: [GOVERNANCE_SUMMARY.md](../governance/GOVERNANCE_SUMMARY.md)
-- Repository authority map: [REPO_AUTHORITY_MAP.md](../architecture/REPO_AUTHORITY_MAP.md)
-- Control status matrix: [CONTROL_STATUS_MATRIX.md](../governance/CONTROL_STATUS_MATRIX.md)
-- Detection source: `hawkinsoperations-detections`
-- Validation work: `hawkinsoperations-validation`
-- Proof structure: `hawkinsoperations-proof`
-- Public rendering: `hawkinsoperations-website`
+Build loud. Verify hard. Claim tight. Ship receipts.

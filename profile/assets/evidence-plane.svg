@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" role="img" aria-labelledby="title desc">
+  <title id="title">Evidence plane</title>
+  <desc id="desc">Geometric proof card and ledger icon.</desc>
+  <rect width="120" height="120" rx="14" fill="#080b10"/>
+  <rect x="30" y="24" width="60" height="72" rx="7" fill="#0f1721" stroke="#c8d0da" stroke-width="3"/>
+  <path d="M42 45 H78 M42 60 H74 M42 75 H68" stroke="#7d8997" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="78" cy="78" r="7" fill="none" stroke="#8fd8ff" stroke-width="3"/>
+</svg>

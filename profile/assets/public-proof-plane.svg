@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" role="img" aria-labelledby="title desc">
+  <title id="title">Public proof plane</title>
+  <desc id="desc">Geometric public proof plane icon.</desc>
+  <rect width="120" height="120" rx="14" fill="#080b10"/>
+  <rect x="24" y="28" width="72" height="64" rx="8" fill="#0f1721" stroke="#c8d0da" stroke-width="3"/>
+  <path d="M36 48 H84 M36 62 H84 M36 76 H62" stroke="#7d8997" stroke-width="3" stroke-linecap="round"/>
+  <path d="M70 76 L78 84 L92 68" fill="none" stroke="#8fd8ff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

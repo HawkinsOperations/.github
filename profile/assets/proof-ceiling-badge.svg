@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="620" height="120" viewBox="0 0 620 120" role="img" aria-labelledby="title desc">
+  <title id="title">Proof ceiling badge</title>
+  <desc id="desc">Badge stating the current public proof ceiling.</desc>
+  <rect width="620" height="120" rx="14" fill="#080b10"/>
+  <rect x="14" y="14" width="592" height="92" rx="12" fill="#0d131b" stroke="#314050"/>
+  <path d="M38 68 H582" stroke="#243140"/>
+  <text x="38" y="45" fill="#8fd8ff" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">CURRENT PUBLIC CEILING</text>
+  <text x="38" y="84" fill="#d8dee8" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="700">TEST_VALIDATED_SYNTHETIC_SCOPE</text>
+  <circle cx="558" cy="42" r="10" fill="none" stroke="#8fd8ff"/>
+  <path d="M548 42 H568 M558 32 V52" stroke="#8fd8ff" stroke-width="1.2"/>
+</svg>
