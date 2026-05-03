@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="220" viewBox="0 0 960 220" role="img" aria-labelledby="title desc">
+  <title id="title">HawkinsOperations truth surface flow</title>
+  <desc id="desc">A compact flow showing source, validation, runtime contract, evidence, and public rendering as separate truth surfaces.</desc>
+  <rect width="960" height="220" rx="14" fill="#080b10"/>
+  <rect x="18" y="18" width="924" height="184" rx="12" fill="#0d131b" stroke="#2b3542"/>
+  <g fill="#111a25" stroke="#6f7d8d" stroke-width="1.2">
+    <rect x="46" y="68" width="144" height="78" rx="8"/>
+    <rect x="230" y="68" width="144" height="78" rx="8"/>
+    <rect x="414" y="68" width="144" height="78" rx="8"/>
+    <rect x="598" y="68" width="144" height="78" rx="8"/>
+    <rect x="782" y="68" width="132" height="78" rx="8"/>
+  </g>
+  <g stroke="#8fd8ff" stroke-width="1.6" stroke-linecap="round" fill="none">
+    <path d="M190 107 H230"/>
+    <path d="M374 107 H414"/>
+    <path d="M558 107 H598"/>
+    <path d="M742 107 H782"/>
+    <path d="M221 100 L230 107 L221 114"/>
+    <path d="M405 100 L414 107 L405 114"/>
+    <path d="M589 100 L598 107 L589 114"/>
+    <path d="M773 100 L782 107 L773 114"/>
+  </g>
+  <g font-family="Segoe UI, Arial, sans-serif" text-anchor="middle">
+    <g fill="#d8dee8" font-size="17" font-weight="700">
+      <text x="118" y="98">Source</text>
+      <text x="302" y="98">Validation</text>
+      <text x="486" y="94">Runtime</text>
+      <text x="486" y="116">Contract</text>
+      <text x="670" y="98">Evidence</text>
+      <text x="848" y="94">Public</text>
+      <text x="848" y="116">Rendering</text>
+    </g>
+    <g fill="#93a4b5" font-size="12">
+      <text x="118" y="132">detections</text>
+      <text x="302" y="132">validation + CI</text>
+      <text x="486" y="132">platform guardrail</text>
+      <text x="670" y="132">proof records</text>
+      <text x="848" y="132">website + GitHub</text>
+    </g>
+  </g>
+  <text x="480" y="40" text-anchor="middle" fill="#8fd8ff" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">TRUTH SURFACES STAY SEPARATE UNTIL PROMOTION GATES PASS</text>
+  <text x="480" y="178" text-anchor="middle" fill="#aeb9c6" font-family="Segoe UI, Arial, sans-serif" font-size="13">Rendering routes reviewers. It does not promote runtime, signal, evidence, or public-safe claims.</text>
+</svg>

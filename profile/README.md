@@ -2,84 +2,75 @@
 
 # HawkinsOperations Detection Engineering SOC
 
-Governed detection engineering and AI-assisted SOC production.
+Governed detection engineering, SOC automation, and AI-assisted security operations with proof-bound claims.
 
-HawkinsOperations speeds up security production without letting the system lie.
+**Current public proof ceiling:** `TEST_VALIDATED_SYNTHETIC_SCOPE`
 
-Public surfaces route reviewers to proof records and validation artifacts. Rendering is not proof.
+## What This Is
 
-| Surface | Current role |
+HawkinsOperations separates source, validation, runtime, signal, evidence, and public proof so security work can move faster without letting claims drift.
+
+## Current Flagship Proof Boundary
+
+**HO-DET-001** is the current flagship reviewer path. The public ceiling remains `TEST_VALIDATED_SYNTHETIC_SCOPE` unless a separate runtime and Splunk evidence lane proves a new ceiling through promotion gates.
+
+| Boundary Item | Current State |
 |---|---|
-| Current public ceiling | `TEST_VALIDATED_SYNTHETIC_SCOPE` |
-| Website | Reviewer routing / public rendering only |
-| Proof repo | Proof records and bounded case studies |
-| Validation repo | Synthetic validation outputs |
-| Platform repo | Runtime-contract guardrails, not runtime proof |
-| AI role | Support-only labor, not disposition authority |
-| Authority | Deterministic checks, CI, proof records, human promotion gates |
+| HO-DET-001 source | Source exists |
+| Splunk source | Source exists |
+| Controlled synthetic validation | Passed within recorded synthetic scope |
+| Platform runtime contract guardrail | Exists as non-promotional contract enforcement |
+| Runtime, signal, and public-safe status | Blocked until evidence promotion |
 
-![Reviewer route](./assets/reviewer-route.svg)
+## Reviewer Route
 
-## 3-minute reviewer route
+<p>
+  <a href="https://hawkinsoperations.com/"><strong>hawkinsoperations.com</strong></a>
+  &nbsp;|&nbsp;
+  <a href="https://github.com/HawkinsOperations/hawkinsoperations-proof"><strong>proof repo</strong></a>
+  &nbsp;|&nbsp;
+  <a href="https://github.com/HawkinsOperations/hawkinsoperations-validation"><strong>validation repo</strong></a>
+  &nbsp;|&nbsp;
+  <a href="https://github.com/HawkinsOperations/hawkinsoperations-detections"><strong>detections repo</strong></a>
+</p>
 
-1. Start with [hawkinsoperations.com](https://hawkinsoperations.com/) - public reviewer surface.
-2. Review [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof) - proof records and case studies.
-3. Review [hawkinsoperations-validation](https://github.com/HawkinsOperations/hawkinsoperations-validation) - synthetic validation outputs.
-4. Review [hawkinsoperations-platform](https://github.com/HawkinsOperations/hawkinsoperations-platform) - HO-DET-001 runtime-contract guardrail.
-5. Review [hawkinsoperations-detections](https://github.com/HawkinsOperations/hawkinsoperations-detections) - source logic.
-6. Use [START_HERE.md](./START_HERE.md) / [repo authority map](../architecture/REPO_AUTHORITY_MAP.md) for deeper routing.
+## System Map
 
-## System surfaces
+![Truth surface flow](./assets/truth-surface-flow.svg)
 
-| Plane | Repo / Surface | Owns | Does not prove by itself |
-|---|---|---|---|
-| <img src="./assets/source-plane.svg" width="28" alt=""> Source | [hawkinsoperations-detections](https://github.com/HawkinsOperations/hawkinsoperations-detections) | Detection source truth | Runtime firing, signal observation |
-| <img src="./assets/validation-plane.svg" width="28" alt=""> Validation | [hawkinsoperations-validation](https://github.com/HawkinsOperations/hawkinsoperations-validation) | Synthetic validation truth | Production/live signal |
-| <img src="./assets/runtime-plane.svg" width="28" alt=""> Runtime | [hawkinsoperations-platform](https://github.com/HawkinsOperations/hawkinsoperations-platform) | Runtime/orchestration contracts | Public proof without evidence records |
-| <img src="./assets/signal-plane.svg" width="28" alt=""> Signal | Runtime and telemetry records | Observed signal context when records support it | Public proof or promotion by itself |
-| <img src="./assets/evidence-plane.svg" width="28" alt=""> Evidence | [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof) | Proof records and case studies | Raw private runtime state |
-| <img src="./assets/public-proof-plane.svg" width="28" alt=""> Public Proof | [hawkinsoperations-website](https://github.com/HawkinsOperations/hawkinsoperations-website) | Public rendering and reviewer route | Proof authority |
-| <img src="./assets/claim-firewall.svg" width="28" alt=""> Governance | `.github` | Governance and reviewer routing | Detection/runtime/evidence truth |
+`Source` → `Validation` → `Runtime Contract` → `Evidence` → `Public Rendering`
 
-## Flagship proof boundary
+| Surface | Owns | Boundary |
+|---|---|---|
+| `hawkinsoperations-detections` | Detections source truth | Source exists does not prove runtime firing |
+| `hawkinsoperations-validation` | Behavior and CI truth | Synthetic pass does not prove live signal |
+| `hawkinsoperations-platform` | Runtime contract guardrails | Contract enforcement is not public proof |
+| `hawkinsoperations-proof` | Evidence records and proof boundaries | Evidence requires review before public-safe use |
+| `hawkinsoperations-website` | Public rendering and reviewer route | Website rendering is not proof |
+| `.github` | Reviewer routing and governance front door | GitHub rendering is not proof |
 
-![Proof ceiling badge](./assets/proof-ceiling-badge.svg)
+## Supported Vs Blocked
 
-HO-DET-001 is the current flagship proof path.
-Its public ceiling is synthetic validation scope where records support it.
-Source and validation artifacts are separated from runtime, signal, evidence, and public proof.
-Platform runtime contract enforcement exists for HO-DET-001 and preserves the public ceiling at `TEST_VALIDATED_SYNTHETIC_SCOPE`.
-This is a non-promotional guardrail. It does not prove runtime-active status, signal-observed public proof, public-safe runtime proof, live Splunk fired, Cribl-routed status, Wazuh-routed public proof, production-ready status, fleet-wide coverage, AWS-live status, autonomous SOC operation, AI-approved disposition, or analyst-approved disposition.
-Stronger claims require separate evidence-backed promotion.
-
-## Supported vs blocked claims
-
-| Supported | Blocked / not claimed |
+| Supported | Blocked / Not Claimed |
 |---|---|
-| bounded public reviewer surface | production-ready |
-| separated truth surfaces | fleet-wide |
-| synthetic validation public ceiling where records support it | runtime-active |
-| proof-bound claim promotion model | signal-observed |
-| AI support-only boundary | public-safe runtime proof |
+| Source exists | runtime-active |
+| Synthetic validation passed | signal-observed |
+| Proof-bound reviewer surface | public-safe |
+| CI/check-enforced validation scope | production-ready |
+| Support-only AI boundary | fleet-wide |
 |  | autonomous SOC |
+|  | Cribl/Wazuh/AWS-live |
 |  | AI-approved disposition |
-|  | Cribl-routed |
-|  | Wazuh-routed |
-|  | AWS-live |
-|  | enterprise deployed |
+|  | live Splunk fired as public proof |
 
-## Claim firewall
+## Next Gate
 
-![Claim firewall](./assets/claim-firewall.svg)
+Next gate: controlled runtime evidence packet → sanitized case packet → deterministic verifier → proof record update.
 
-GitHub rendering is not proof.
-Website rendering is not proof.
-Proof records, validation artifacts, deterministic checks, CI, and explicit promotion gates own authority.
+This gate is not already complete. It must land through the separate runtime/Splunk lane before the public ceiling can change.
 
-Current public ceiling remains `TEST_VALIDATED_SYNTHETIC_SCOPE` unless explicitly promoted by proof records.
+## Doctrine
 
-## Legacy boundary
+**AI is labor. Governance is authority.**
 
-HawkinsOps / hawkinsops.com is legacy/reference unless explicitly promoted by current HawkinsOperations proof records. Current claims live under HawkinsOperations proof boundaries.
-
-Build loud. Verify hard. Claim tight. Ship receipts.
+**Build loud. Verify hard. Claim tight. Ship receipts.**
