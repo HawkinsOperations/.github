@@ -14,7 +14,7 @@ HawkinsOperations separates source, validation, runtime, signal, evidence, and p
 
 ## Current Flagship Proof Boundary
 
-**HO-DET-001** is the current flagship reviewer path. The public ceiling remains `TEST_VALIDATED_SYNTHETIC_SCOPE` unless a separate runtime and Splunk evidence lane proves a new ceiling through promotion gates.
+**HO-DET-001** is the current flagship reviewer path. The public ceiling remains `TEST_VALIDATED_SYNTHETIC_SCOPE`. The proof record now includes verifier-backed private/internal controlled lab runtime match evidence, but public-safe runtime proof remains blocked.
 
 | Boundary Item | Current State |
 |---|---|
@@ -22,7 +22,9 @@ HawkinsOperations separates source, validation, runtime, signal, evidence, and p
 | Splunk source | Source exists |
 | Controlled synthetic validation | Passed within recorded synthetic scope |
 | Platform runtime contract guardrail | Exists as non-promotional contract enforcement |
-| Runtime, signal, and public-safe status | Blocked until evidence promotion |
+| Private/internal runtime status | `CONTROLLED_LAB_RUNTIME_MATCH_VERIFIED` |
+| Public-safe status | `NOT_PUBLIC_SAFE` |
+| Runtime-active, public signal, and public-safe proof | Blocked unless separately reviewed and approved |
 
 ## Reviewer Route
 
@@ -51,6 +53,8 @@ HawkinsOperations separates source, validation, runtime, signal, evidence, and p
 | `hawkinsoperations-website` | Public rendering and reviewer route | Website rendering is not proof |
 | `.github` | Reviewer routing and governance front door | GitHub rendering is not proof |
 
+Website/GitHub rendering is not proof. Public surfaces route to proof records.
+
 ## Real Controls
 
 Docs, README files, issue cards, architecture maps, and diagrams are not real controls by themselves.
@@ -66,6 +70,7 @@ A control becomes real only when it blocks, fails, or forces correction through 
 | Proof-bound reviewer surface | public-safe |
 | CI/check-enforced validation scope | production-ready |
 | Support-only AI boundary | fleet-wide |
+| Verifier-backed private controlled lab runtime match evidence | public-safe runtime proof |
 |  | Cribl-routed |
 |  | Wazuh-routed |
 |  | AWS-live |
@@ -76,9 +81,9 @@ A control becomes real only when it blocks, fails, or forces correction through 
 
 ## Next Gate
 
-Next gate: controlled runtime evidence packet → sanitized case packet → deterministic verifier → proof record update.
+Recent gate completed: controlled runtime evidence packet -> deterministic verifier -> proof record update.
 
-This gate is not already complete. It must land through the separate runtime/Splunk lane before the public ceiling can change.
+Validation PR [#22](https://github.com/HawkinsOperations/hawkinsoperations-validation/pull/22) and proof PR [#14](https://github.com/HawkinsOperations/hawkinsoperations-proof/pull/14) support the private/internal status `CONTROLLED_LAB_RUNTIME_MATCH_VERIFIED`. The public ceiling remains `TEST_VALIDATED_SYNTHETIC_SCOPE`, and public-safe status remains `NOT_PUBLIC_SAFE`.
 
 ## Legacy Boundary
 
