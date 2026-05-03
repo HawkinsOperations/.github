@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">HO-DET-001 CONTROL BOUNDARY</title>
+  <desc id="desc">Reviewer proof bento for HO-DET-001 showing current ceiling, real controls, and blocked claims.</desc>
+  <rect width="1200" height="630" fill="#0b1117"/>
+  <rect x="24" y="24" width="1152" height="582" rx="18" fill="#0f161e" stroke="#8bdfff" stroke-opacity="0.22"/>
+  <text x="72" y="78" fill="#e8f3f8" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="34" font-weight="700" letter-spacing="0">HO-DET-001 CONTROL BOUNDARY</text>
+  <line x1="72" y1="106" x2="1128" y2="106" stroke="#8bdfff" stroke-opacity="0.24"/>
+
+  <g transform="translate(72 134)">
+    <rect width="504" height="180" rx="10" fill="#121b24" stroke="#8bdfff" stroke-opacity="0.2"/>
+    <text x="28" y="42" fill="#8bdfff" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="18" font-weight="700" letter-spacing="0">Flagship</text>
+    <text x="28" y="86" fill="#f3f8fb" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="30" font-weight="700" letter-spacing="0">HO-DET-001</text>
+    <text x="28" y="124" fill="#c8d5dd" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="22" font-weight="500" letter-spacing="0">Suspicious PowerShell EncodedCommand</text>
+    <text x="28" y="156" fill="#c8d5dd" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="22" font-weight="500" letter-spacing="0">Sysmon Event ID 1</text>
+  </g>
+
+  <g transform="translate(624 134)">
+    <rect width="504" height="180" rx="10" fill="#121b24" stroke="#8bdfff" stroke-opacity="0.2"/>
+    <text x="28" y="42" fill="#8bdfff" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="18" font-weight="700" letter-spacing="0">Current Public Ceiling</text>
+    <text x="28" y="92" fill="#f3f8fb" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="28" font-weight="700" letter-spacing="0">TEST_VALIDATED_SYNTHETIC_SCOPE</text>
+    <text x="28" y="138" fill="#c8d5dd" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="22" font-weight="500" letter-spacing="0">Public-safe status: NOT_PUBLIC_SAFE</text>
+  </g>
+
+  <g transform="translate(72 342)">
+    <rect width="504" height="180" rx="10" fill="#121b24" stroke="#8bdfff" stroke-opacity="0.2"/>
+    <text x="28" y="42" fill="#8bdfff" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="18" font-weight="700" letter-spacing="0">Real Controls</text>
+    <text x="28" y="82" fill="#f3f8fb" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="23" font-weight="600" letter-spacing="0">Validation enforcement - PR #10</text>
+    <text x="28" y="118" fill="#f3f8fb" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="23" font-weight="600" letter-spacing="0">Platform runtime contract - PR #5</text>
+    <text x="28" y="154" fill="#f3f8fb" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="23" font-weight="600" letter-spacing="0">Proof integrity gate - PR #13</text>
+  </g>
+
+  <g transform="translate(624 342)">
+    <rect width="504" height="180" rx="10" fill="#121b24" stroke="#8bdfff" stroke-opacity="0.2"/>
+    <text x="28" y="42" fill="#8bdfff" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="18" font-weight="700" letter-spacing="0">Blocked Claims</text>
+    <text x="28" y="72" fill="#f3f8fb" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="17" font-weight="600" letter-spacing="0">runtime-active</text>
+    <text x="286" y="72" fill="#f3f8fb" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="17" font-weight="600" letter-spacing="0">signal-observed</text>
+    <text x="28" y="96" fill="#f3f8fb" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="17" font-weight="600" letter-spacing="0">public-safe runtime proof</text>
+    <text x="286" y="96" fill="#f3f8fb" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="17" font-weight="600" letter-spacing="0">production-ready</text>
+    <text x="28" y="120" fill="#f3f8fb" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="17" font-weight="600" letter-spacing="0">fleet-wide</text>
+    <text x="286" y="120" fill="#f3f8fb" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="17" font-weight="600" letter-spacing="0">Cribl-routed</text>
+    <text x="28" y="144" fill="#f3f8fb" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="17" font-weight="600" letter-spacing="0">Wazuh-routed</text>
+    <text x="286" y="144" fill="#f3f8fb" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="17" font-weight="600" letter-spacing="0">AWS-live</text>
+    <text x="28" y="168" fill="#f3f8fb" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="17" font-weight="600" letter-spacing="0">autonomous SOC</text>
+    <text x="286" y="168" fill="#f3f8fb" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="17" font-weight="600" letter-spacing="0">AI-approved disposition</text>
+  </g>
+
+  <text x="72" y="568" fill="#9fb2bd" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="18" font-weight="500" letter-spacing="0">Website and GitHub rendering are not proof. Controls are scoped to the checked synthetic validation boundary.</text>
+</svg>
