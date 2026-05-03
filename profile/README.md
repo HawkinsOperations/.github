@@ -27,7 +27,7 @@ Public surfaces route reviewers to proof records and validation artifacts. Rende
 3. Review [hawkinsoperations-validation](https://github.com/HawkinsOperations/hawkinsoperations-validation) - synthetic validation outputs.
 4. Review [hawkinsoperations-platform](https://github.com/HawkinsOperations/hawkinsoperations-platform) - HO-DET-001 runtime-contract guardrail.
 5. Review [hawkinsoperations-detections](https://github.com/HawkinsOperations/hawkinsoperations-detections) - source logic.
-6. Use [START_HERE.md](./profile/START_HERE.md) / [repo authority map](./architecture/REPO_AUTHORITY_MAP.md) for deeper routing.
+6. Use [START_HERE.md](./START_HERE.md) / [repo authority map](../architecture/REPO_AUTHORITY_MAP.md) for deeper routing.
 
 ## System surfaces
 
