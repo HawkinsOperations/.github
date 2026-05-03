@@ -6,6 +6,8 @@ Governed detection engineering, SOC automation, and AI-assisted security operati
 
 **Current public proof ceiling:** `TEST_VALIDATED_SYNTHETIC_SCOPE`
 
+HawkinsOperations speeds up security production without letting the system lie.
+
 ## What This Is
 
 HawkinsOperations separates source, validation, runtime, signal, evidence, and public proof so security work can move faster without letting claims drift.
@@ -49,6 +51,12 @@ HawkinsOperations separates source, validation, runtime, signal, evidence, and p
 | `hawkinsoperations-website` | Public rendering and reviewer route | Website rendering is not proof |
 | `.github` | Reviewer routing and governance front door | GitHub rendering is not proof |
 
+## Real Controls
+
+Docs, README files, issue cards, architecture maps, and diagrams are not real controls by themselves.
+
+A control becomes real only when it blocks, fails, or forces correction through CI, branch protection, required checks, deterministic verifiers, typed claim gates, or another blocking mechanism.
+
 ## Supported Vs Blocked
 
 | Supported | Blocked / Not Claimed |
@@ -58,9 +66,12 @@ HawkinsOperations separates source, validation, runtime, signal, evidence, and p
 | Proof-bound reviewer surface | public-safe |
 | CI/check-enforced validation scope | production-ready |
 | Support-only AI boundary | fleet-wide |
+|  | Cribl-routed |
+|  | Wazuh-routed |
+|  | AWS-live |
 |  | autonomous SOC |
-|  | Cribl/Wazuh/AWS-live |
 |  | AI-approved disposition |
+|  | analyst-approved disposition |
 |  | live Splunk fired as public proof |
 
 ## Next Gate
@@ -68,6 +79,12 @@ HawkinsOperations separates source, validation, runtime, signal, evidence, and p
 Next gate: controlled runtime evidence packet → sanitized case packet → deterministic verifier → proof record update.
 
 This gate is not already complete. It must land through the separate runtime/Splunk lane before the public ceiling can change.
+
+## Legacy Boundary
+
+HawkinsOps / hawkinsops.com is legacy/reference unless explicitly promoted by current HawkinsOperations proof records.
+
+Current claims live under HawkinsOperations proof boundaries.
 
 ## Doctrine
 
