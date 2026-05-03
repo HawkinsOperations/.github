@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360" role="img" aria-labelledby="title desc">
   <title id="title">HawkinsOperations Detection Engineering SOC</title>
-  <desc id="desc">A dark editorial banner showing the proof route from source through public proof, bounded by TEST_VALIDATED_SYNTHETIC_SCOPE.</desc>
+  <desc id="desc">A dark command-center banner showing the proof-bound route from source through public rendering, bounded by TEST_VALIDATED_SYNTHETIC_SCOPE.</desc>
   <rect width="1280" height="360" fill="#080b10"/>
   <rect x="28" y="28" width="1224" height="304" rx="18" fill="#0c1118" stroke="#2b3542"/>
   <path d="M68 92 H1212" stroke="#253241" stroke-width="1"/>
   <path d="M68 268 H1212" stroke="#253241" stroke-width="1"/>
   <text x="68" y="86" fill="#d8dee8" font-family="Segoe UI, Arial, sans-serif" font-size="34" font-weight="700">HawkinsOperations Detection Engineering SOC</text>
-  <text x="68" y="124" fill="#8fd8ff" font-family="Segoe UI, Arial, sans-serif" font-size="18">Governed detection engineering and AI-assisted SOC production</text>
+  <text x="68" y="124" fill="#8fd8ff" font-family="Segoe UI, Arial, sans-serif" font-size="18">Governed detection engineering, SOC automation, and AI-assisted security operations</text>
   <text x="68" y="298" fill="#aeb9c6" font-family="Segoe UI, Arial, sans-serif" font-size="16">Website rendering is not proof</text>
   <g transform="translate(68 168)">
     <g fill="#0f1721" stroke="#6f7d8d" stroke-width="1.2">
@@ -35,7 +35,7 @@
       <text x="416" y="36">Runtime</text>
       <text x="615" y="36">Signal</text>
       <text x="805" y="36">Evidence</text>
-      <text x="976" y="36">Public Proof</text>
+      <text x="968" y="36">Public Rendering</text>
     </g>
   </g>
   <g transform="translate(842 72)">
