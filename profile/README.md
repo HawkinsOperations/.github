@@ -14,6 +14,7 @@ Public surfaces route reviewers to proof records and validation artifacts. Rende
 | Website | Reviewer routing / public rendering only |
 | Proof repo | Proof records and bounded case studies |
 | Validation repo | Synthetic validation outputs |
+| Platform repo | Runtime-contract guardrails, not runtime proof |
 | AI role | Support-only labor, not disposition authority |
 | Authority | Deterministic checks, CI, proof records, human promotion gates |
 
@@ -24,8 +25,9 @@ Public surfaces route reviewers to proof records and validation artifacts. Rende
 1. Start with [hawkinsoperations.com](https://hawkinsoperations.com/) - public reviewer surface.
 2. Review [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof) - proof records and case studies.
 3. Review [hawkinsoperations-validation](https://github.com/HawkinsOperations/hawkinsoperations-validation) - synthetic validation outputs.
-4. Review [hawkinsoperations-detections](https://github.com/HawkinsOperations/hawkinsoperations-detections) - source logic.
-5. Use [START_HERE.md](./profile/START_HERE.md) / [repo authority map](./architecture/REPO_AUTHORITY_MAP.md) for deeper routing.
+4. Review [hawkinsoperations-platform](https://github.com/HawkinsOperations/hawkinsoperations-platform) - HO-DET-001 runtime-contract guardrail.
+5. Review [hawkinsoperations-detections](https://github.com/HawkinsOperations/hawkinsoperations-detections) - source logic.
+6. Use [START_HERE.md](./profile/START_HERE.md) / [repo authority map](./architecture/REPO_AUTHORITY_MAP.md) for deeper routing.
 
 ## System surfaces
 
@@ -46,6 +48,8 @@ Public surfaces route reviewers to proof records and validation artifacts. Rende
 HO-DET-001 is the current flagship proof path.
 Its public ceiling is synthetic validation scope where records support it.
 Source and validation artifacts are separated from runtime, signal, evidence, and public proof.
+Platform runtime contract enforcement exists for HO-DET-001 and preserves the public ceiling at `TEST_VALIDATED_SYNTHETIC_SCOPE`.
+This is a non-promotional guardrail. It does not prove runtime-active status, signal-observed public proof, public-safe runtime proof, live Splunk fired, Cribl-routed status, Wazuh-routed public proof, production-ready status, fleet-wide coverage, AWS-live status, autonomous SOC operation, AI-approved disposition, or analyst-approved disposition.
 Stronger claims require separate evidence-backed promotion.
 
 ## Supported vs blocked claims
