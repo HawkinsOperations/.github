@@ -14,6 +14,10 @@ HO-DET-001 validation enforcement exists through `HawkinsOperations/hawkinsopera
 
 Proof-loop CI is a real control only for the checked synthetic validation scope. It does not prove runtime-active, signal-observed, evidence-linked public proof, public-safe, production-ready, fleet-wide, Cribl-routed, Wazuh-routed, AWS-live, HO-GPU-01 runtime-active, autonomous SOC, or AI-approved disposition.
 
+Platform runtime contract enforcement exists for HO-DET-001 through `HawkinsOperations/hawkinsoperations-platform#5`, merge commit `b3d0ffbd66c1bd5f60f7e9ff99712cdc3e0595bd`. The verifier preserves `TEST_VALIDATED_SYNTHETIC_SCOPE`, `NOT_PUBLIC_SAFE`, `BLOCKED`, `runtime_active=false`, `signal_observed=false`, and `ai_decided_disposition=false`.
+
+This platform contract is a non-promotional guardrail. It does not prove runtime-active status, signal-observed public proof, public-safe runtime proof, live Splunk fired, Splunk-proven Runtime Signal 001, Cribl-routed status, Wazuh-routed public proof, production-ready status, fleet-wide coverage, AWS-live status, autonomous SOC operation, AI-approved disposition, or analyst-approved disposition.
+
 Warning: A private controlled lab runtime match has been captured locally, but it is not public-safe proof and must not be represented as production, fleet-wide, Cribl-routed, Wazuh-routed, or public-safe status.
 
 HOD-001 baseline artifacts do not validate HO-DET-001. They may inform review, but they do not promote the successor detection ID.
@@ -29,6 +33,7 @@ Public claims require reviewed wording, evidence linkage, stale review, and appr
 - [Control status matrix](../governance/CONTROL_STATUS_MATRIX.md)
 - [HO-DET-001 public proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md)
 - [HO-DET-001 proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md)
+- [HO-DET-001 platform runtime contract](https://github.com/HawkinsOperations/hawkinsoperations-platform/blob/main/contracts/examples/ho-det-001-runtime-contract.sample.json)
 - [hawkinsoperations.com](https://hawkinsoperations.com)
 - [rayleeops.com](https://rayleeops.com)
 - [hawkinsops.com](https://hawkinsops.com)
@@ -41,6 +46,7 @@ Allowed current wording:
 - "HO-DET-001 Splunk source exists."
 - "HO-DET-001 passed synthetic validation against controlled positive and negative process-creation fixtures."
 - "HO-DET-001 validation enforcement exists for the exact checked synthetic validation scope."
+- "HO-DET-001 platform runtime contract enforcement exists as a non-promotional guardrail."
 - "HO-DET-001 current public repo proof level is TEST_VALIDATED_SYNTHETIC_SCOPE."
 - "A private controlled lab runtime match has been captured locally, but public-safe promotion remains blocked pending review."
 - "HOD-001 baseline artifacts are separate reference material."
