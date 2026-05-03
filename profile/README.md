@@ -16,12 +16,15 @@ HawkinsOperations separates source, validation, runtime, signal, evidence, and p
 
 **HO-DET-001** is the current flagship reviewer path. The public ceiling remains `TEST_VALIDATED_SYNTHETIC_SCOPE` unless a separate runtime and Splunk evidence lane proves a new ceiling through promotion gates.
 
+![HawkinsOperations Reviewer Proof Bento - HO-DET-001 flagship, current ceiling TEST_VALIDATED_SYNTHETIC_SCOPE, three real controls for validation enforcement, platform runtime contract enforcement, and proof integrity, with blocked runtime signal public-safe production fleet Cribl Wazuh AWS autonomous SOC and AI disposition claims](./assets/reviewer-proof-bento.svg)
+
 | Boundary Item | Current State |
 |---|---|
 | HO-DET-001 source | Source exists |
 | Splunk source | Source exists |
 | Controlled synthetic validation | Passed within recorded synthetic scope |
 | Platform runtime contract guardrail | Exists as non-promotional contract enforcement |
+| Proof integrity gate | Exists as a CI/verifier-backed proof-record guardrail; it does not prove runtime, signal, public-safe, production, fleet, Cribl, Wazuh, AWS, autonomous SOC, or AI disposition claims |
 | Runtime, signal, and public-safe status | Blocked until evidence promotion |
 
 ## Reviewer Route
@@ -47,7 +50,7 @@ HawkinsOperations separates source, validation, runtime, signal, evidence, and p
 | `hawkinsoperations-detections` | Detections source truth | Source exists does not prove runtime firing |
 | `hawkinsoperations-validation` | Behavior and CI truth | Synthetic pass does not prove live signal |
 | `hawkinsoperations-platform` | Runtime contract guardrails | Contract enforcement is not public proof |
-| `hawkinsoperations-proof` | Evidence records and proof boundaries | Evidence requires review before public-safe use |
+| `hawkinsoperations-proof` | Evidence records and proof boundaries | Evidence requires review before approved public use |
 | `hawkinsoperations-website` | Public rendering and reviewer route | Website rendering is not proof |
 | `.github` | Reviewer routing and governance front door | GitHub rendering is not proof |
 
