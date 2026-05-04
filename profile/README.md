@@ -16,7 +16,7 @@ HawkinsOperations separates source, validation, runtime, signal, evidence, and p
 
 **HO-DET-001** is the current flagship reviewer path. The public ceiling remains `TEST_VALIDATED_SYNTHETIC_SCOPE`. The proof record now includes verifier-backed private/internal controlled lab runtime match evidence, but public-safe runtime proof remains blocked.
 
-![HawkinsOperations Reviewer Proof Bento - HO-DET-001 flagship, current ceiling TEST_VALIDATED_SYNTHETIC_SCOPE, three real controls for validation enforcement, platform runtime contract enforcement, and proof integrity, with blocked runtime signal public-safe production fleet Cribl Wazuh AWS autonomous SOC and AI disposition claims](./assets/reviewer-proof-bento.svg)
+![HawkinsOperations Reviewer Proof Bento - HO-DET-001 flagship, current ceiling TEST_VALIDATED_SYNTHETIC_SCOPE, three real controls for validation enforcement, platform runtime contract enforcement, and proof integrity, with blocked runtime signal public-safe production fleet Cribl Wazuh AWS autonomous SOC AI-approved and analyst-approved disposition claims](./assets/reviewer-proof-bento.svg)
 
 | Boundary Item | Current State |
 |---|---|
@@ -24,7 +24,7 @@ HawkinsOperations separates source, validation, runtime, signal, evidence, and p
 | Splunk source | Source exists |
 | Controlled synthetic validation | Passed within recorded synthetic scope |
 | Platform runtime contract guardrail | Exists as non-promotional contract enforcement |
-| Proof integrity gate | Exists as a CI/verifier-backed proof-record guardrail; it does not prove runtime, signal, public-safe, production, fleet, Cribl, Wazuh, AWS, autonomous SOC, or AI disposition claims |
+| Proof integrity gate | Exists as a CI/verifier-backed proof-record guardrail; it does not prove runtime, signal, public-safe, production, fleet, Cribl, Wazuh, AWS, autonomous SOC, AI-approved disposition, or analyst-approved disposition claims |
 | Private/internal runtime status | `CONTROLLED_LAB_RUNTIME_MATCH_VERIFIED` |
 | Public-safe status | `NOT_PUBLIC_SAFE` |
 | Runtime-active, public signal, and public-safe proof | Blocked unless separately reviewed and approved |
