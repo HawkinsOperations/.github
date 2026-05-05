@@ -12,4 +12,3 @@ Reviewer routes:
 - [Control status matrix](governance/CONTROL_STATUS_MATRIX.md)
 - [Start here](profile/START_HERE.md)
 - [Repository authority map](architecture/REPO_AUTHORITY_MAP.md)
-
