@@ -4,7 +4,7 @@
 
 Governed detection engineering, SOC automation, and AI-assisted security operations with proof-bound claims. HawkinsOperations speeds up security production without letting the system lie.
 
-![HawkinsOperations Reviewer Proof Bento - HO-DET-001 flagship, current ceiling TEST_VALIDATED_SYNTHETIC_SCOPE, three real controls for validation enforcement, platform runtime contract enforcement, and proof integrity, with blocked runtime signal public-safe production fleet Cribl Wazuh AWS autonomous SOC AI-approved and analyst-approved disposition claims](./assets/reviewer-proof-bento.svg)
+![HawkinsOperations Reviewer Proof Bento - HO-DET-001 flagship, current ceiling TEST_VALIDATED_SYNTHETIC_SCOPE, owner-repo verifier controls for validation enforcement, platform runtime contract enforcement, and proof integrity, with blocked runtime signal public-safe production fleet Cribl Wazuh AWS autonomous SOC AI-approved and analyst-approved disposition claims](./assets/reviewer-proof-bento.svg)
 
 **Current public proof ceiling:** `TEST_VALIDATED_SYNTHETIC_SCOPE`<br>
 **Public-safe status:** `NOT_PUBLIC_SAFE`
@@ -33,7 +33,7 @@ Website/GitHub rendering is not proof. Public surfaces route to proof records.
 | Splunk source | Source exists |
 | Controlled synthetic validation | Passed within recorded synthetic scope |
 | Platform runtime contract guardrail | Exists as non-promotional contract enforcement |
-| Proof integrity gate | Exists as a CI/verifier-backed proof-record guardrail; it does not prove runtime, signal, public-safe, production, fleet, Cribl, Wazuh, AWS, autonomous SOC, AI-approved disposition, or analyst-approved disposition claims |
+| Proof integrity gate | Exists as a CI/verifier-backed proof-record guardrail in its owner repo; it is real only where required by branch protection or rulesets and does not prove runtime, signal, public-safe, production, fleet, Cribl, Wazuh, AWS, autonomous SOC, AI-approved disposition, or analyst-approved disposition claims |
 | Private/internal runtime status | `CONTROLLED_LAB_RUNTIME_MATCH_VERIFIED` |
 | Public-safe status | `NOT_PUBLIC_SAFE` |
 | Runtime-active, public signal, and public-safe proof | Blocked unless separately reviewed and approved |
@@ -45,7 +45,7 @@ Website/GitHub rendering is not proof. Public surfaces route to proof records.
 | Source exists | runtime-active |
 | Synthetic validation passed | signal-observed |
 | Proof-bound reviewer surface | public-safe |
-| CI/check-enforced validation scope | production-ready |
+| Required-check-enforced validation scope where branch protection/rulesets require it | production-ready |
 | Support-only AI boundary | fleet-wide |
 | Verifier-backed private/internal controlled lab runtime match evidence | public-safe runtime proof |
 |  | live Splunk fired |

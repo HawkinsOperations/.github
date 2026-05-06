@@ -14,9 +14,9 @@ HO-DET-001 public-safe status: NOT_PUBLIC_SAFE.
 
 HO-DET-001 has merged source, Splunk source, and synthetic validation artifacts. The public proof record supports synthetic validation against controlled positive and negative process-creation fixtures.
 
-HO-DET-001 validation enforcement exists through `HawkinsOperations/hawkinsoperations-validation#10`, merge commit `8b48500d2ebbaacd93ac88e77a31dccf1d3b4e25`, only for the exact checked synthetic validation scope.
+HO-DET-001 validation enforcement exists through `HawkinsOperations/hawkinsoperations-validation#10`, merge commit `8b48500d2ebbaacd93ac88e77a31dccf1d3b4e25`, only for the exact checked synthetic validation scope and only where the workflow is required by branch protection or a ruleset.
 
-Proof-loop CI is a real control only for the checked synthetic validation scope. It does not prove runtime-active, signal-observed, evidence-linked public proof, public-safe, production-ready, fleet-wide, Cribl-routed, Wazuh-routed, AWS-live, HO-GPU-01 runtime-active, autonomous SOC, or AI-approved disposition.
+Proof-loop CI is a real control only where branch protection or a ruleset requires it, and only for the checked synthetic validation scope. It does not prove runtime-active, signal-observed, evidence-linked public proof, public-safe, production-ready, fleet-wide, Cribl-routed, Wazuh-routed, AWS-live, HO-GPU-01 runtime-active, autonomous SOC, or AI-approved disposition.
 
 Platform runtime contract enforcement exists for HO-DET-001 through `HawkinsOperations/hawkinsoperations-platform#5`, merge commit `b3d0ffbd66c1bd5f60f7e9ff99712cdc3e0595bd`. The verifier preserves `TEST_VALIDATED_SYNTHETIC_SCOPE`, `NOT_PUBLIC_SAFE`, `BLOCKED`, `runtime_active=false`, `signal_observed=false`, and `ai_decided_disposition=false`.
 
@@ -35,14 +35,13 @@ Public claims require reviewed wording, evidence linkage, stale review, and appr
 - [Governance summary](../governance/GOVERNANCE_SUMMARY.md)
 - [Repository authority map](../architecture/REPO_AUTHORITY_MAP.md)
 - [Control status matrix](../governance/CONTROL_STATUS_MATRIX.md)
-- [HO-DET-001 public proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md)
 - [HO-DET-001 proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md)
 - [HO-DET-001 runtime packet verifier PR #22](https://github.com/HawkinsOperations/hawkinsoperations-validation/pull/22)
 - [HO-DET-001 verified runtime match proof PR #14](https://github.com/HawkinsOperations/hawkinsoperations-proof/pull/14)
 - [HO-DET-001 platform runtime contract](https://github.com/HawkinsOperations/hawkinsoperations-platform/blob/main/contracts/examples/ho-det-001-runtime-contract.sample.json)
-- [hawkinsoperations.com](https://hawkinsoperations.com)
-- [rayleeops.com](https://rayleeops.com)
-- [hawkinsops.com](https://hawkinsops.com)
+- [hawkinsoperations.com](https://hawkinsoperations.com) - current public rendering route, not proof
+- [rayleeops.com](https://rayleeops.com) - public operating journal / external context, not HawkinsOperations proof
+- [hawkinsops.com](https://hawkinsops.com) - legacy/reference route, not current proof authority
 
 ## Review Boundary
 
