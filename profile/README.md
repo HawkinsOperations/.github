@@ -11,6 +11,8 @@ Governed detection engineering, SOC automation, and AI-assisted security operati
 
 Website/GitHub rendering is not proof. Public surfaces route to proof records.
 
+PR review authority is routed through [PR_REVIEW_AUTHORITY.md](../governance/PR_REVIEW_AUTHORITY.md). It governs merge review expectations; it does not prove runtime, signal, evidence, public-safe status, or production readiness, and remains reviewer routing unless backed by rulesets or blocking CI.
+
 ## Reviewer Route
 
 <p>
