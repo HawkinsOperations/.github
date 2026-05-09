@@ -9,7 +9,7 @@ PR review authority is a governance control. It is a real blocking control only 
 
 Green CI/status checks are not merge authority.
 
-Codex review is AI labor, not human governance.
+Codex review is AI labor, not human review authority.
 
 Visible human GitHub review activity is required before merge when a PR affects governance, proof, validation, detection logic, CI enforcement, website/public wording, inventory, or claim-bearing artifacts.
 
@@ -42,7 +42,7 @@ Before recommending merge, Codex must produce a merge-readiness packet with:
 - claim-boundary impact
 - proof-boundary impact
 - public surface impact
-- whether visible human governance review exists
+- whether visible human review activity exists
 - paste-ready Raylee review comment
 - final state: MERGE_READY, NEEDS_HUMAN_REVIEW, NEEDS_CHANGES, or BLOCKED
 

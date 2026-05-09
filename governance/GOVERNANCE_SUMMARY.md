@@ -6,13 +6,13 @@ Control type: soft enforcement
 
 ## Purpose
 
-HawkinsOperations uses governance to keep detection engineering, validation, evidence, and public claims separated until each claim is reviewed for its proper scope.
+HawkinsOperations uses claim-control rules to keep detection engineering, validation, evidence, and public claims separated until each claim is reviewed for its proper scope.
 
 The goal is not to make every artifact public proof. The goal is to make the system understandable, traceable, and honest about what each artifact can and cannot prove.
 
 ## Authority Model
 
-Governance is authority. AI is labor.
+AI generates work. Evidence and human review authorize claims.
 
 AI-assisted work may draft, review, summarize, and implement scoped tasks, but AI output cannot self-authorize promotion, approve public claims, or convert source files into runtime truth.
 

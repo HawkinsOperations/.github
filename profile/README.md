@@ -1,9 +1,11 @@
+![HawkinsOperations Detection Engineering SOC](./assets/hawkinsoperations-banner.svg)
+
 # HawkinsOperations
-## Governed Agent Promotion System
+## Claim-Control System for AI-Assisted Detection Engineering
 
 **Agents generate work. The system promotes claims.**
 
-HawkinsOperations is a governed detection engineering and SOC automation system where AI agents can generate work, but only evidence-backed governance can promote claims.
+HawkinsOperations is a claim-control system for AI-assisted detection engineering and SOC automation where AI can generate work, but evidence and human review authorize claims.
 
 It demonstrates detection-as-code, validation fixtures, runtime contracts, proof records, public claim boundaries, and AI-assisted security operations without letting speed outrun evidence.
 
@@ -29,7 +31,7 @@ HawkinsOperations treats AI output as work product, not authority. Work must pas
 
 ## Agent Launch Controls
 
-These are the governed workflow expectations for agent-assisted work. They are reviewer-routing controls unless a repo also backs them with branch protection, rulesets, blocking CI, deterministic verifiers, typed gates, or another enforceable mechanism.
+These are the claim-control workflow expectations for agent-assisted work. They are reviewer-routing controls unless a repo also backs them with branch protection, rulesets, blocking CI, deterministic verifiers, typed gates, or another enforceable mechanism.
 
 | Control | Purpose |
 |---|---|
@@ -38,13 +40,13 @@ These are the governed workflow expectations for agent-assisted work. They are r
 | Control-folder routing | Governance docs are discoverable |
 | Path restrictions | Agents stay inside approved surfaces |
 | Stop conditions | Work halts on dirty state, scope conflict, private leakage, or claim risk |
-| Governed logging | Meaningful sessions append operator-visible records |
+| Controlled logging | Meaningful sessions append operator-visible records |
 
 ## Promotion Ladder
 
 | Level | Surface | Role | Boundary |
 |---|---|---|---|
-| 1 | `.github` | Governance / reviewer routing | Routes expectations; not proof |
+| 1 | `.github` | Claim-control / reviewer routing | Routes expectations; not proof |
 | 2 | `detections` | Source logic | Source exists; source is not runtime |
 | 3 | `validation` | Tests / fixtures / verifiers | Synthetic pass is not live signal |
 | 4 | `platform` | Runtime contracts / integration guardrails | Contract pass is not public proof |
@@ -59,7 +61,7 @@ Work can move upward only when lower-surface rules are satisfied, claim ceilings
 
 | Repo | Owns | Does not prove alone |
 |---|---|---|
-| `.github` | Org profile, reviewer routing, governance front door | Runtime, signal, evidence, production |
+| `.github` | Org profile, reviewer routing, claim-control front door | Runtime, signal, evidence, production |
 | `hawkinsoperations-detections` | Detection source truth | Live firing or deployment |
 | `hawkinsoperations-validation` | Validation behavior truth | Production runtime or public signal |
 | `hawkinsoperations-platform` | Runtime contracts and integration guardrails | Public-safe runtime proof |
@@ -127,7 +129,7 @@ A control becomes real only when it blocks, fails, or forces correction through 
 
 Green CI/status checks are not merge authority.
 
-Codex review is AI labor, not human governance.
+Codex review is AI labor, not human review authority.
 
 ## Legacy Boundary
 
@@ -137,6 +139,6 @@ Current claims live under HawkinsOperations proof boundaries.
 
 ## Doctrine
 
-**AI is labor. Governance is authority.**
+**AI generates work. Evidence and human review authorize claims.**
 
 **Build loud. Verify hard. Claim tight. Ship receipts.**
