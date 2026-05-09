@@ -1,50 +1,178 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360" role="img" aria-labelledby="title desc">
-  <title id="title">HawkinsOperations Detection Engineering SOC</title>
-  <desc id="desc">A dark command-center banner showing the proof-bound route from source through public rendering, bounded by TEST_VALIDATED_SYNTHETIC_SCOPE.</desc>
-  <rect width="1280" height="360" fill="#080b10"/>
-  <rect x="28" y="28" width="1224" height="304" rx="18" fill="#0c1118" stroke="#2b3542"/>
-  <path d="M68 92 H1212" stroke="#253241" stroke-width="1"/>
-  <path d="M68 268 H1212" stroke="#253241" stroke-width="1"/>
-  <text x="68" y="86" fill="#d8dee8" font-family="Segoe UI, Arial, sans-serif" font-size="34" font-weight="700">HawkinsOperations Detection Engineering SOC</text>
-  <text x="68" y="124" fill="#8fd8ff" font-family="Segoe UI, Arial, sans-serif" font-size="18">Evidence-gated detection engineering, SOC automation, and AI-assisted security operations</text>
-  <text x="68" y="298" fill="#aeb9c6" font-family="Segoe UI, Arial, sans-serif" font-size="16">Website rendering is not proof</text>
-  <g transform="translate(68 168)">
-    <g fill="#0f1721" stroke="#6f7d8d" stroke-width="1.2">
-      <rect x="0" y="0" width="142" height="58" rx="8"/>
-      <rect x="190" y="0" width="142" height="58" rx="8"/>
-      <rect x="380" y="0" width="142" height="58" rx="8"/>
-      <rect x="570" y="0" width="142" height="58" rx="8"/>
-      <rect x="760" y="0" width="142" height="58" rx="8"/>
-      <rect x="950" y="0" width="142" height="58" rx="8"/>
-    </g>
-    <g stroke="#8fd8ff" stroke-width="1.5" stroke-linecap="round">
-      <path d="M142 29 H190"/>
-      <path d="M332 29 H380"/>
-      <path d="M522 29 H570"/>
-      <path d="M712 29 H760"/>
-      <path d="M902 29 H950"/>
-      <path d="M181 22 L190 29 L181 36"/>
-      <path d="M371 22 L380 29 L371 36"/>
-      <path d="M561 22 L570 29 L561 36"/>
-      <path d="M751 22 L760 29 L751 36"/>
-      <path d="M941 22 L950 29 L941 36"/>
-    </g>
-    <g fill="#d8dee8" font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="600">
-      <text x="37" y="36">Source</text>
-      <text x="220" y="36">Validation</text>
-      <text x="416" y="36">Runtime</text>
-      <text x="615" y="36">Signal</text>
-      <text x="805" y="36">Evidence</text>
-      <text x="968" y="36">Public Rendering</text>
-    </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" role="img" aria-label="HawkinsOperations Detection Engineering SOC">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#04070D"/>
+      <stop offset="60%" stop-color="#070C18"/>
+      <stop offset="100%" stop-color="#0B1428"/>
+    </linearGradient>
+    <linearGradient id="silver" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="55%" stop-color="#E2E7EE"/>
+      <stop offset="100%" stop-color="#A2ABB8"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#3FC9FF" stop-opacity="0.32"/>
+      <stop offset="60%" stop-color="#1E7BFF" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#000814" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="nebulaR" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1E7BFF" stop-opacity="0.20"/>
+      <stop offset="100%" stop-color="#000814" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="nebulaL" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#3FC9FF" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#000814" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2.5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="360" fill="url(#bg)"/>
+
+  <!-- Atmospheric depth -->
+  <ellipse cx="980" cy="60" rx="340" ry="130" fill="url(#nebulaR)"/>
+  <ellipse cx="160" cy="320" rx="240" ry="90" fill="url(#nebulaL)"/>
+
+  <!-- Starfield -->
+  <g fill="#FFFFFF">
+    <circle cx="60" cy="50" r="0.7" opacity="0.55"/>
+    <circle cx="220" cy="40" r="0.9" opacity="0.75"/>
+    <circle cx="320" cy="80" r="0.5" opacity="0.40"/>
+    <circle cx="440" cy="35" r="0.6" opacity="0.50"/>
+    <circle cx="560" cy="28" r="0.7" opacity="0.55"/>
+    <circle cx="680" cy="48" r="0.5" opacity="0.40"/>
+    <circle cx="780" cy="60" r="0.6" opacity="0.50"/>
+    <circle cx="900" cy="32" r="0.9" opacity="0.70"/>
+    <circle cx="1020" cy="62" r="0.6" opacity="0.50"/>
+    <circle cx="1100" cy="42" r="0.7" opacity="0.55"/>
+    <circle cx="40" cy="220" r="0.6" opacity="0.50"/>
+    <circle cx="100" cy="290" r="0.8" opacity="0.65"/>
+    <circle cx="640" cy="320" r="0.5" opacity="0.45"/>
+    <circle cx="860" cy="298" r="0.6" opacity="0.50"/>
+    <circle cx="1100" cy="244" r="0.7" opacity="0.60"/>
+    <circle cx="1160" cy="310" r="0.6" opacity="0.50"/>
   </g>
-  <g transform="translate(842 72)">
-    <rect x="0" y="0" width="370" height="46" rx="23" fill="#111a25" stroke="#8fd8ff"/>
-    <text x="185" y="30" text-anchor="middle" fill="#d8f1ff" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700">TEST_VALIDATED_SYNTHETIC_SCOPE</text>
+
+  <!-- Circuit traces (left) -->
+  <g stroke="#1E7BFF" stroke-width="1" fill="none" opacity="0.30">
+    <path d="M 0 100 L 50 100 L 65 115 L 110 115"/>
+    <path d="M 0 178 L 35 178 L 50 193 L 95 193"/>
+    <path d="M 0 256 L 60 256"/>
   </g>
-  <g stroke="#5f7184" stroke-width="1" fill="none" opacity="0.8">
-    <path d="M1024 286 h120 v-30 h66"/>
-    <path d="M1032 300 h86"/>
-    <circle cx="1210" cy="256" r="4" fill="#8fd8ff" stroke="none"/>
+  <g fill="#3FC9FF" opacity="0.55">
+    <circle cx="110" cy="115" r="1.8"/>
+    <circle cx="95" cy="193" r="1.8"/>
+    <circle cx="60" cy="256" r="1.8"/>
+  </g>
+
+  <!-- Circuit traces (right) -->
+  <g stroke="#1E7BFF" stroke-width="1" fill="none" opacity="0.30">
+    <path d="M 1200 110 L 1150 110 L 1135 125 L 1090 125"/>
+    <path d="M 1200 200 L 1160 200 L 1145 215 L 1100 215"/>
+    <path d="M 1200 280 L 1140 280"/>
+  </g>
+  <g fill="#3FC9FF" opacity="0.55">
+    <circle cx="1090" cy="125" r="1.8"/>
+    <circle cx="1100" cy="215" r="1.8"/>
+    <circle cx="1140" cy="280" r="1.8"/>
+  </g>
+
+  <!-- Monogram -->
+  <g transform="translate(190 180)">
+    <!-- Halo -->
+    <circle cx="0" cy="0" r="138" fill="url(#halo)"/>
+
+    <!-- Outer dotted orbital arc -->
+    <g fill="none" stroke="#A2ABB8" stroke-opacity="0.32" stroke-width="0.8" stroke-dasharray="1 4">
+      <ellipse cx="0" cy="0" rx="120" ry="44" transform="rotate(-22)"/>
+    </g>
+
+    <!-- Main orbital ring -->
+    <circle cx="0" cy="0" r="100" fill="none" stroke="#E2E7EE" stroke-opacity="0.55" stroke-width="1.2"/>
+
+    <!-- Orbit nodes -->
+    <circle cx="-100" cy="0" r="2.5" fill="#FFFFFF" opacity="0.80"/>
+    <circle cx="100" cy="0" r="3.5" fill="#3FC9FF" filter="url(#glow)"/>
+    <circle cx="0" cy="-100" r="2" fill="#FFFFFF" opacity="0.70"/>
+    <circle cx="0" cy="100" r="2.5" fill="#3FC9FF" filter="url(#glow)"/>
+
+    <!-- White H letter -->
+    <g fill="url(#silver)">
+      <rect x="-46" y="-50" width="14" height="100" rx="1.5"/>
+      <rect x="-12" y="-50" width="14" height="100" rx="1.5"/>
+      <rect x="-46" y="-7" width="48" height="14"/>
+    </g>
+
+    <!-- Hawk silhouette overlapping right of H -->
+    <path d="M -4 -4 Q 6 -24 28 -24 Q 50 -22 60 -4 L 80 -6 L 64 8 Q 58 22 36 24 Q 14 24 -4 18 Z" fill="#0B1428"/>
+
+    <!-- Hawk eye -->
+    <circle cx="40" cy="-10" r="1.8" fill="#3FC9FF" filter="url(#glow)"/>
+  </g>
+
+  <!-- Vertical separator -->
+  <line x1="372" y1="80" x2="372" y2="280" stroke="#1E7BFF" stroke-opacity="0.30" stroke-width="1"/>
+
+  <!-- Wordmark + content -->
+  <g font-family="Segoe UI, Inter, system-ui, sans-serif">
+    <!-- Wordmark -->
+    <text x="412" y="118" font-size="46" font-weight="700" letter-spacing="2.5" fill="url(#silver)">
+      <tspan>HAWKINS</tspan><tspan fill="#3FC9FF">OPERATIONS</tspan>
+    </text>
+
+    <!-- Subtitle accent line + label -->
+    <line x1="412" y1="138" x2="488" y2="138" stroke="#3FC9FF" stroke-width="1.5" opacity="0.85"/>
+    <text x="498" y="142" font-size="13" letter-spacing="6" fill="#9DB1CC" font-weight="600">
+      DETECTION ENGINEERING SOC
+    </text>
+
+    <!-- Doctrine -->
+    <text x="412" y="180" font-size="15" fill="#D6DEEC" font-weight="500">
+      AI generates work. Evidence and human review authorize claims.
+    </text>
+
+    <!-- Status pills -->
+    <g font-size="10.5" font-weight="600" letter-spacing="1">
+      <rect x="412" y="206" width="232" height="26" rx="13" fill="#0A172E" stroke="#3FC9FF" stroke-opacity="0.75" stroke-width="1"/>
+      <text x="528" y="223" text-anchor="middle" fill="#3FC9FF">TEST_VALIDATED_SYNTHETIC_SCOPE</text>
+
+      <rect x="654" y="206" width="138" height="26" rx="13" fill="#0A172E" stroke="#A2ABB8" stroke-opacity="0.55"/>
+      <text x="723" y="223" text-anchor="middle" fill="#C9D4E3">NOT_PUBLIC_SAFE</text>
+
+      <rect x="802" y="206" width="100" height="26" rx="13" fill="#0A172E" stroke="#3FC9FF" stroke-opacity="0.75"/>
+      <text x="852" y="223" text-anchor="middle" fill="#3FC9FF">HO-DET-001</text>
+
+      <rect x="912" y="206" width="160" height="26" rx="13" fill="#0A172E" stroke="#A2ABB8" stroke-opacity="0.55"/>
+      <text x="992" y="223" text-anchor="middle" fill="#C9D4E3">RENDERING_NOT_PROOF</text>
+    </g>
+
+    <!-- Flow trail -->
+    <g font-size="10.5" font-weight="500" letter-spacing="2.5" fill="#7A8AA0">
+      <text x="412" y="270">SOURCE</text>
+      <line x1="468" y1="266" x2="496" y2="266" stroke="#1E7BFF" stroke-opacity="0.55"/>
+      <text x="500" y="270">VALIDATION</text>
+      <line x1="588" y1="266" x2="616" y2="266" stroke="#1E7BFF" stroke-opacity="0.55"/>
+      <text x="620" y="270">RUNTIME</text>
+      <line x1="690" y1="266" x2="718" y2="266" stroke="#1E7BFF" stroke-opacity="0.55"/>
+      <text x="722" y="270" fill="#3FC9FF">PROOF</text>
+      <line x1="772" y1="266" x2="800" y2="266" stroke="#3FC9FF" stroke-opacity="0.70"/>
+      <text x="804" y="270">PUBLIC RENDERING</text>
+    </g>
+
+    <!-- Footnote -->
+    <text x="412" y="298" font-size="11" fill="#5C6B82" letter-spacing="0.4">
+      Website/GitHub rendering is not proof.
+    </text>
+  </g>
+
+  <!-- Corner brackets -->
+  <g stroke="#3FC9FF" stroke-width="1.2" fill="none" opacity="0.65">
+    <polyline points="20,38 20,20 38,20"/>
+    <polyline points="1162,20 1180,20 1180,38"/>
+    <polyline points="20,322 20,340 38,340"/>
+    <polyline points="1162,340 1180,340 1180,322"/>
   </g>
 </svg>

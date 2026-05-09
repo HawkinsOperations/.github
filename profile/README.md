@@ -4,142 +4,239 @@
 
 # HawkinsOperations
 
-### Claim-Control System for AI-Assisted Detection Engineering
+**Controlled AI-assisted detection engineering and SOC automation**
 
-**AI generates work. Evidence and human review authorize claims.**
+_AI generates work. Evidence and human review authorize claims._
 
-<kbd>CLAIM_CONTROL_SYSTEM</kbd>
-<kbd>TEST_VALIDATED_SYNTHETIC_SCOPE</kbd>
-<kbd>PUBLIC_SAFE_BLOCKED</kbd>
-<kbd>RENDERING_NOT_PROOF</kbd>
-<kbd>HUMAN_REVIEW_REQUIRED</kbd>
+`TEST_VALIDATED_SYNTHETIC_SCOPE` &nbsp;&middot;&nbsp; `NOT_PUBLIC_SAFE` &nbsp;&middot;&nbsp; `HO-DET-001` &nbsp;&middot;&nbsp; `RENDERING_NOT_PROOF` &nbsp;&middot;&nbsp; `HUMAN_REVIEW_REQUIRED`
 
 </div>
+
+---
+
+## If You Are Reviewing This Org, Start Here
+
+A 90-second reviewer path. Each row is a single click and what it answers.
+
+| # | Click | What it answers |
+|:---:|---|---|
+| 01 | [`START_HERE.md`](./START_HERE.md) | What this org is and how to read it |
+| 02 | [Control Status Matrix](../governance/CONTROL_STATUS_MATRIX.md) | Which review gates are enforced today |
+| 03 | [Cross-Repo Promotion Map](../governance/CROSS_REPO_PROMOTION_MAP.md) | How work moves between truth surfaces |
+| 04 | [HO-DET-001 Proof Record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md) | The flagship review path and its current ceiling |
+| 05 | [hawkinsoperations.com](https://hawkinsoperations.com/) | Public rendering only - not proof |
+
+---
 
 ## Reviewer Routes
 
 <table>
-  <tr>
-    <td width="33%" valign="top">
-      <strong>Executive route</strong><br>
-      Start with the claim boundary, repo map, and public proof ceiling.<br><br>
-      <a href="./START_HERE.md">Start Here</a><br>
-      <a href="../governance/CONTROL_STATUS_MATRIX.md">Control Status Matrix</a>
-    </td>
-    <td width="33%" valign="top">
-      <strong>Technical route</strong><br>
-      Check source, validation scope, platform guardrails, and promotion triggers.<br><br>
-      <a href="https://github.com/HawkinsOperations/hawkinsoperations-detections">Detections</a><br>
-      <a href="https://github.com/HawkinsOperations/hawkinsoperations-validation">Validation</a><br>
-      <a href="https://github.com/HawkinsOperations/hawkinsoperations-platform">Platform</a>
-    </td>
-    <td width="33%" valign="top">
-      <strong>Proof route</strong><br>
-      Verify evidence records before trusting public wording or rendered pages.<br><br>
-      <a href="https://github.com/HawkinsOperations/hawkinsoperations-proof">Proof repo</a><br>
-      <a href="../governance/CROSS_REPO_PROMOTION_MAP.md">Cross-Repo Promotion Map</a>
-    </td>
-  </tr>
+<tr>
+<td width="33%" valign="top">
+
+### Executive Route
+**For:** security leads and nontechnical reviewers scanning for credibility.
+
+Read the doctrine, the public boundary table, and the architecture diagram. That is enough to decide whether to route this to a technical reviewer.
+
+_Time: ~3 minutes._
+
+</td>
+<td width="33%" valign="top">
+
+### Technical Route
+**For:** detection engineers, platform engineers, SOC automation leads.
+
+Open [`hawkinsoperations-detections`](https://github.com/HawkinsOperations/hawkinsoperations-detections) for source, [`hawkinsoperations-validation`](https://github.com/HawkinsOperations/hawkinsoperations-validation) for tests and fixtures, [`hawkinsoperations-platform`](https://github.com/HawkinsOperations/hawkinsoperations-platform) for runtime contracts.
+
+_Time: ~15 minutes._
+
+</td>
+<td width="34%" valign="top">
+
+### Proof Route
+**For:** reviewers who want to verify, not browse.
+
+Open [`hawkinsoperations-proof`](https://github.com/HawkinsOperations/hawkinsoperations-proof) and read the [HO-DET-001 record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md). Confirm the claim ceiling, the evidence chain, and the review gate before treating anything here as more than rendering.
+
+_Time: ~10 minutes._
+
+</td>
+</tr>
 </table>
 
-## Current Boundary
+---
 
-| Boundary | Current state |
+## Architecture: How a Claim Earns Its Way to the Public Surface
+
+```mermaid
+flowchart LR
+    AI[AI Support Output]
+    A[Detection Source]
+    B[Validation]
+    C[Runtime Contract]
+    D[Signal Evidence]
+    E{Proof Record}
+    F[Public Rendering]
+    V[Deterministic Verification]
+    R[Human Review Gate]
+
+    AI -. feeds .-> A
+    AI -. feeds .-> B
+    AI -. feeds .-> C
+    A --> B --> C --> D
+    D --> E
+    V --> E
+    R --> E
+    E --> F
+```
+
+AI support output feeds source, validation, and runtime work - it does not authorize promotion. Deterministic verification and human review are required gates before a proof record can support public wording. Public rendering is downstream of proof and cannot create it. Public ceiling remains `TEST_VALIDATED_SYNTHETIC_SCOPE`.
+
+---
+
+## Repo Relationship Map
+
+```mermaid
+flowchart LR
+    GH[.github]
+    D[detections]
+    V[validation]
+    P[platform]
+    PR[proof]
+    W[website]
+
+    GH -. reviewer routing .-> D
+    GH -. reviewer routing .-> PR
+    D --> V --> P --> PR --> W
+```
+
+Six repos exist because six truth surfaces need to stay separable. `.github` is orthogonal - it routes reviewers; it does not sit in the claim chain. The other five repos form the linear path a claim must walk before it can appear on a public surface.
+
+---
+
+## Six-Surface Truth Flow
+
+| Surface | Owns | Does not own |
+|---|---|---|
+| **Source** | Detection logic, hypotheses, rule definitions | Test pass, runtime fit, public wording approval |
+| **Validation** | Tests, fixtures, deterministic checks against source | Runtime behavior, signal observation |
+| **Runtime** | Contracts, integration boundaries, interface guarantees | Proof of live observation, public-safe status |
+| **Signal** | Runtime evidence candidates, only when captured and scoped | Source correctness, claim ceiling decisions |
+| **Evidence** | Proof records, claim ceilings, review attestations | Source authorship, public presentation |
+| **Public Rendering** | Website and GitHub presentation | Proof of any kind |
+
+Public rendering cannot create proof. It can only present wording that is supported by proof records and review.
+
+---
+
+## Current Public Boundary
+
+| Item | State |
 |---|---|
-| Flagship proof path | `HO-DET-001` |
-| Public ceiling | `TEST_VALIDATED_SYNTHETIC_SCOPE` |
+| Flagship review path | `HO-DET-001` |
+| Public proof ceiling | `TEST_VALIDATED_SYNTHETIC_SCOPE` |
 | Public-safe status | `NOT_PUBLIC_SAFE` |
-| Website/GitHub status | Rendering and reviewer routing only |
+| Website / GitHub status | Rendering and reviewer routing only |
 | Runtime-active public claim | `BLOCKED` |
-| Public signal-observed claim | `BLOCKED` |
-| Production, fleet, enterprise-deployed claim | `BLOCKED` |
-| Cribl-routed, Wazuh-routed, AWS-live claim | `BLOCKED` |
-| Autonomous SOC / AI-approved / AI-decided claim | `BLOCKED` |
+| Signal-observed public claim | `BLOCKED` |
+| Production / fleet / autonomous claim | `BLOCKED` |
 
-Website/GitHub rendering is not proof. Public surfaces route reviewers to proof records, validation artifacts, and claim boundaries.
+Website/GitHub rendering is not proof.
 
-## Fast Reviewer Path
-
-1. Read [Start Here](./START_HERE.md) for the current proof ceiling and blocked wording.
-2. Check [Control Status Matrix](../governance/CONTROL_STATUS_MATRIX.md) for what is routing, soft enforcement, or real control.
-3. Use the [Cross-Repo Promotion Map](../governance/CROSS_REPO_PROMOTION_MAP.md) to decide whether downstream PRs are required.
-4. Review `HO-DET-001` in the [proof repo](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md).
-5. Treat [hawkinsoperations.com](https://hawkinsoperations.com/) as public rendering only, not proof.
+---
 
 ## Repo Map
 
 <table>
-  <tr>
-    <td width="50%" valign="top">
-      <strong>.github</strong><br>
-      Owns org profile, reviewer routing, and claim-control expectations.<br>
-      Does not prove runtime, signal, evidence, production, or public-safe status.
-    </td>
-    <td width="50%" valign="top">
-      <strong>hawkinsoperations-detections</strong><br>
-      Owns detection source truth.<br>
-      Does not prove live firing, deployment, runtime, or public proof.
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <strong>hawkinsoperations-validation</strong><br>
-      Owns tests, fixtures, verifiers, and behavior truth.<br>
-      Synthetic validation is not live signal.
-    </td>
-    <td width="50%" valign="top">
-      <strong>hawkinsoperations-platform</strong><br>
-      Owns runtime contracts and integration guardrails.<br>
-      Contract presence is not public runtime proof.
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <strong>hawkinsoperations-proof</strong><br>
-      Owns evidence records and claim ceilings.<br>
-      Claims cannot exceed the recorded proof boundary.
-    </td>
-    <td width="50%" valign="top">
-      <strong>hawkinsoperations-website</strong><br>
-      Owns public rendering after proof permits wording.<br>
-      Website presentation does not create proof.
-    </td>
-  </tr>
+<tr>
+<td width="33%" valign="top">
+
+#### `.github`
+Org profile, reviewer routing, claim-tight wording, control labels.
+
+**Owns:** front-door presentation and reviewer entry points.
+**Does not prove:** source correctness, runtime fit, or any public claim.
+
+</td>
+<td width="33%" valign="top">
+
+#### [`hawkinsoperations-detections`](https://github.com/HawkinsOperations/hawkinsoperations-detections)
+Detection logic and hypotheses as source.
+
+**Owns:** rule definitions, source-level structure, detection authorship.
+**Does not prove:** that source passes tests, runs in any environment, or has been observed.
+
+</td>
+<td width="34%" valign="top">
+
+#### [`hawkinsoperations-validation`](https://github.com/HawkinsOperations/hawkinsoperations-validation)
+Tests, fixtures, and deterministic checks.
+
+**Owns:** validation artifacts and pass/fail outcomes against source.
+**Does not prove:** runtime fit or signal observation.
+
+</td>
+</tr>
+<tr>
+<td valign="top">
+
+#### [`hawkinsoperations-platform`](https://github.com/HawkinsOperations/hawkinsoperations-platform)
+Runtime contracts and integration boundaries.
+
+**Owns:** interface guarantees and runtime-side definitions.
+**Does not prove:** that contracts have produced public-safe observations.
+
+</td>
+<td valign="top">
+
+#### [`hawkinsoperations-proof`](https://github.com/HawkinsOperations/hawkinsoperations-proof)
+Proof records, claim ceilings, review attestations.
+
+**Owns:** proof records, claim ceilings, and evidence-backed wording.
+**Does not prove:** anything beyond the recorded claim ceiling and linked evidence.
+
+</td>
+<td valign="top">
+
+#### [`hawkinsoperations-website`](https://hawkinsoperations.com/)
+Public rendering and reviewer routing.
+
+**Owns:** how authorized claims are presented to the public.
+**Does not prove:** anything. Rendering is not proof.
+
+</td>
+</tr>
 </table>
 
-## HO-DET-001 Flagship Path
+---
 
-| Item | Current public boundary |
-|---|---|
-| Detection ID | `HO-DET-001` |
-| Source | Exists |
-| Splunk source | Exists |
-| Validation | Synthetic validation passed within controlled scope |
-| Platform guardrail | Runtime contract exists as a non-promotional guardrail |
-| Public ceiling | `TEST_VALIDATED_SYNTHETIC_SCOPE` |
-| Public-safe status | `NOT_PUBLIC_SAFE` |
-| Public runtime/signal proof | `BLOCKED` |
+## Current Scaling Track
 
-Private/internal controlled lab runtime match status is tracked separately from public-safe proof. It does not promote public runtime-active, signal-observed, production, fleet-wide, enterprise-deployed, Cribl-routed, Wazuh-routed, AWS-live, autonomous SOC, AI-approved, AI-decided, analyst-approved, or production AutoSOC status.
+Active work, not completed proof.
 
-## Cross-Repo Promotion
+- **Front door polish** - org profile and reviewer entry points
+- **Cross-repo propagation block** - preventing claim drift between truth surfaces
+- **Proof records index** - discoverable map of authorized records
+- **Validation CI visibility** - surfacing pass/fail status without overstating it
+- **Next detection candidate** - selected only after validation and proof lanes are clean
 
-HawkinsOperations uses gate-based cross-repo propagation, not PR-number alignment.
+---
 
-A changed truth surface only requires downstream PRs when it affects another repo's owned surface. A documented no-op is valid when no downstream repo is affected.
+## Real Control
 
-Use the [Cross-Repo Promotion Map](../governance/CROSS_REPO_PROMOTION_MAP.md) before treating source, validation, platform, proof, or website changes as promoted.
+Repo separation creates review boundaries. Real control comes from required review, deterministic verification, CI checks, proof records, and bounded public wording. The split is necessary; it is not sufficient. Treat the boundary as the artifact, not the architecture diagram.
 
-## Real Controls Rule
+---
 
-Docs, READMEs, diagrams, issue cards, and websites are not real controls by themselves.
-
-A control becomes real only when it blocks, fails, or forces correction through required review, branch protection, rulesets, blocking CI, deterministic verifiers, typed claim gates, or another enforceable mechanism.
-
-Green CI/status checks are not merge authority. Codex review is AI labor, not human review authority.
+<div align="center">
 
 ## Doctrine
 
-**AI is labor. Governance is authority.**
+**AI generates work. Evidence and human review authorize claims.**
 
 **Build loud. Verify hard. Claim tight. Ship receipts.**
+
+_Website/GitHub rendering is not proof._
+
+</div>

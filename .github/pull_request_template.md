@@ -21,6 +21,41 @@ Classify the truth surface affected by this PR:
 - [ ] Reviewer routing / governance documentation
 - [ ] Other:
 
+## Cross-Repo Propagation
+
+Cross-repo work aligns by detection ID, artifact ID, proof gate, evidence reference, and downstream truth impact, not by PR number.
+
+- Phase ID:
+- Detection / Artifact ID:
+- Truth surface changed:
+  - [ ] Source
+  - [ ] Validation
+  - [ ] Runtime
+  - [ ] Signal
+  - [ ] Evidence
+  - [ ] Public Rendering
+  - [ ] Reviewer Routing / Claim Control
+- Current proof gate:
+- Downstream repos affected:
+  - [ ] .github
+  - [ ] hawkinsoperations-detections
+  - [ ] hawkinsoperations-validation
+  - [ ] hawkinsoperations-platform
+  - [ ] hawkinsoperations-proof
+  - [ ] hawkinsoperations-website
+  - [ ] None
+- Downstream action:
+  - [ ] Required
+  - [ ] Blocked
+  - [ ] Valid no-op
+- Valid no-op statement:
+- Claim ceiling after this PR:
+- Public wording impact:
+- Evidence/proof reference:
+- Reviewer note:
+
+This PR template section is soft enforcement only. It does not prove or promote runtime-active, signal-observed, public-safe, production, fleet-wide, enterprise-deployed, Cribl-routed, Wazuh-routed, AWS-live, autonomous SOC, AI-approved, AI-decided, analyst-approved, live Splunk firing, public-safe runtime proof, or production AutoSOC status.
+
 ## Claim Boundary
 
 State what this PR can safely claim and what it does not prove.
