@@ -1,90 +1,133 @@
-![HawkinsOperations Detection Engineering SOC](./assets/hawkinsoperations-banner.svg)
+# HawkinsOperations
+## Governed Agent Promotion System
 
-# HawkinsOperations Detection Engineering SOC
+**Agents generate work. The system promotes claims.**
 
-Governed detection engineering, SOC automation, and AI-assisted security operations with proof-bound claims. HawkinsOperations speeds up security production without letting the system lie.
+HawkinsOperations is a governed detection engineering and SOC automation system where AI agents can generate work, but only evidence-backed governance can promote claims.
 
-![HawkinsOperations Reviewer Proof Bento - HO-DET-001 flagship, current ceiling TEST_VALIDATED_SYNTHETIC_SCOPE, owner-repo verifier controls for validation enforcement, platform runtime contract enforcement, and proof integrity, with blocked runtime signal public-safe production fleet Cribl Wazuh AWS autonomous SOC AI-approved and analyst-approved disposition claims](./assets/reviewer-proof-bento.svg)
+It demonstrates detection-as-code, validation fixtures, runtime contracts, proof records, public claim boundaries, and AI-assisted security operations without letting speed outrun evidence.
 
-**Current public proof ceiling:** `TEST_VALIDATED_SYNTHETIC_SCOPE`<br>
-**Public-safe status:** `NOT_PUBLIC_SAFE`
+## Current Public Boundary
 
-Website/GitHub rendering is not proof. Public surfaces route to proof records.
+| Boundary | Current state |
+|---|---|
+| Flagship reviewer path | `HO-DET-001` |
+| Public proof ceiling | `TEST_VALIDATED_SYNTHETIC_SCOPE` |
+| Public-safe status | `NOT_PUBLIC_SAFE` |
+| Website/GitHub status | Rendering and reviewer routing only |
+| Runtime-active public claim | `BLOCKED` |
+| Public signal-observed claim | `BLOCKED` |
+| Production / fleet / autonomous SOC claim | `BLOCKED` |
 
-PR review authority is routed through [PR_REVIEW_AUTHORITY.md](../governance/PR_REVIEW_AUTHORITY.md). It governs merge review expectations; it does not prove runtime, signal, evidence, public-safe status, or production readiness, and remains reviewer routing unless backed by rulesets or blocking CI.
+Website/GitHub rendering is not proof. Public surfaces route reviewers to proof records, validation artifacts, and claim boundaries.
+
+## Why This Matters
+
+Most AI-assisted work fails at the authority boundary: models generate output, people mistake output for proof, and public claims outrun evidence.
+
+HawkinsOperations treats AI output as work product, not authority. Work must pass scoped validation, preserve claim ceilings, avoid private leakage, and route through human review before it becomes a public claim.
+
+## Agent Launch Controls
+
+These are the governed workflow expectations for agent-assisted work. They are reviewer-routing controls unless a repo also backs them with branch protection, rulesets, blocking CI, deterministic verifiers, typed gates, or another enforceable mechanism.
+
+| Control | Purpose |
+|---|---|
+| Fixed working directory | Agents start from known paths |
+| `AGENTS.md` launch contract | Repo-specific rules load before work |
+| Control-folder routing | Governance docs are discoverable |
+| Path restrictions | Agents stay inside approved surfaces |
+| Stop conditions | Work halts on dirty state, scope conflict, private leakage, or claim risk |
+| Governed logging | Meaningful sessions append operator-visible records |
+
+## Promotion Ladder
+
+| Level | Surface | Role | Boundary |
+|---|---|---|---|
+| 1 | `.github` | Governance / reviewer routing | Routes expectations; not proof |
+| 2 | `detections` | Source logic | Source exists; source is not runtime |
+| 3 | `validation` | Tests / fixtures / verifiers | Synthetic pass is not live signal |
+| 4 | `platform` | Runtime contracts / integration guardrails | Contract pass is not public proof |
+| 5 | `proof` | Evidence records / claim ceilings | Claims require evidence and review |
+| 6 | `website` | Public rendering | Rendering is not proof |
+
+Higher surfaces can only inherit bounded truth from lower surfaces.
+
+Work can move upward only when lower-surface rules are satisfied, claim ceilings are preserved, private leakage is absent, and explicit review approves promotion.
+
+## Repo Map
+
+| Repo | Owns | Does not prove alone |
+|---|---|---|
+| `.github` | Org profile, reviewer routing, governance front door | Runtime, signal, evidence, production |
+| `hawkinsoperations-detections` | Detection source truth | Live firing or deployment |
+| `hawkinsoperations-validation` | Validation behavior truth | Production runtime or public signal |
+| `hawkinsoperations-platform` | Runtime contracts and integration guardrails | Public-safe runtime proof |
+| `hawkinsoperations-proof` | Evidence records and claim ceilings | Claims beyond the recorded ceiling |
+| `hawkinsoperations-website` | Public rendering and reviewer route | Source, runtime, signal, or evidence truth |
+
+## Current Flagship: HO-DET-001
+
+`HO-DET-001` is the current flagship reviewer path. Source exists, Splunk source exists, and controlled synthetic validation passed within the recorded scope.
+
+Private/internal controlled lab runtime match status is tracked separately from public-safe proof. The public ceiling remains `TEST_VALIDATED_SYNTHETIC_SCOPE`, public-safe status remains `NOT_PUBLIC_SAFE`, and public runtime/signal proof remains blocked.
+
+| Item | Current state |
+|---|---|
+| Source | Exists |
+| Splunk source | Exists |
+| Synthetic validation | Passed within controlled scope |
+| Platform contract guardrail | Exists as non-promotional guardrail |
+| Private/internal runtime status | `CONTROLLED_LAB_RUNTIME_MATCH_VERIFIED` |
+| Public ceiling | `TEST_VALIDATED_SYNTHETIC_SCOPE` |
+| Public-safe status | `NOT_PUBLIC_SAFE` |
+| Public runtime/signal proof | `BLOCKED` |
+
+## Current Claim Boundary
+
+The left column lists what the current public ceiling supports. The right column lists claims this README explicitly does not make.
+
+| Supported within current public ceiling | Explicitly not claimed |
+|---|---|
+| Source exists | runtime-active public proof |
+| Splunk source exists | signal-observed public proof |
+| Synthetic validation passed within controlled scope | public-safe status |
+| Platform contract guardrail exists as non-promotional guardrail | evidence-linked public proof |
+| Private/internal runtime match status is scoped private/internal | public-safe runtime proof |
+| Reviewer routing preserves `TEST_VALIDATED_SYNTHETIC_SCOPE` | production-ready claim, fleet-wide claim, enterprise deployed claim |
+| AI is support labor, not authority | Cribl-routed claim, Wazuh-routed claim, AWS-live claim |
+| Human review is required for promotion | autonomous SOC claim, AI-approved disposition, AI-decided disposition, analyst-approved disposition, production AutoSOC claim |
+
+## What This Prevents
+
+- AI-generated output promoted as authority
+- source treated as runtime proof
+- synthetic validation treated as live signal
+- platform contracts treated as public proof
+- dashboards treated as evidence
+- private evidence leaking into public claims
+- green checks mistaken for merge authority
 
 ## Reviewer Route
 
-<p>
-  <a href="https://hawkinsoperations.com/"><strong>hawkinsoperations.com</strong></a>
-  &nbsp;|&nbsp;
-  <a href="https://github.com/HawkinsOperations/hawkinsoperations-proof"><strong>proof repo</strong></a>
-  &nbsp;|&nbsp;
-  <a href="https://github.com/HawkinsOperations/hawkinsoperations-validation"><strong>validation repo</strong></a>
-  &nbsp;|&nbsp;
-  <a href="https://github.com/HawkinsOperations/hawkinsoperations-detections"><strong>detections repo</strong></a>
-</p>
+- [Start Here](./START_HERE.md)
+- [Control Status Matrix](../governance/CONTROL_STATUS_MATRIX.md)
+- [PR Review Authority](../governance/PR_REVIEW_AUTHORITY.md)
+- [Proof repo](https://github.com/HawkinsOperations/hawkinsoperations-proof)
+- [Validation repo](https://github.com/HawkinsOperations/hawkinsoperations-validation)
+- [Detections repo](https://github.com/HawkinsOperations/hawkinsoperations-detections)
+- [Platform repo](https://github.com/HawkinsOperations/hawkinsoperations-platform)
+- [Website](https://hawkinsoperations.com/)
 
-## Current Flagship Boundary
+## Real Controls Rule
 
-**HO-DET-001** is the current flagship reviewer path. The public ceiling remains `TEST_VALIDATED_SYNTHETIC_SCOPE`; private/internal controlled lab runtime match evidence exists in the proof record, but public-safe runtime proof remains blocked.
+Docs, READMEs, diagrams, issue cards, and websites are not real controls by themselves.
 
-| Boundary Item | Current State |
-|---|---|
-| HO-DET-001 source | Source exists |
-| Splunk source | Source exists |
-| Controlled synthetic validation | Passed within recorded synthetic scope |
-| Platform runtime contract guardrail | Exists as non-promotional contract enforcement |
-| Proof integrity gate | Exists as a CI/verifier-backed proof-record guardrail in its owner repo; it is real only where required by branch protection or rulesets and does not prove runtime, signal, public-safe, production, fleet, Cribl, Wazuh, AWS, autonomous SOC, AI-approved disposition, or analyst-approved disposition claims |
-| Private/internal runtime status | `CONTROLLED_LAB_RUNTIME_MATCH_VERIFIED` |
-| Public-safe status | `NOT_PUBLIC_SAFE` |
-| Runtime-active, public signal, and public-safe proof | Blocked unless separately reviewed and approved |
+A control becomes real only when it blocks, fails, or forces correction through required review, branch protection, rulesets, blocking CI, deterministic verifiers, typed claim gates, or another enforceable mechanism.
 
-## Supported Vs Blocked
+Green CI/status checks are not merge authority.
 
-| Supported | Blocked / Not Claimed |
-|---|---|
-| Source exists | runtime-active |
-| Synthetic validation passed | signal-observed |
-| Proof-bound reviewer surface | public-safe |
-| Required-check-enforced validation scope where branch protection/rulesets require it | production-ready |
-| Support-only AI boundary | fleet-wide |
-| Verifier-backed private/internal controlled lab runtime match evidence | public-safe runtime proof |
-|  | live Splunk fired |
-|  | Splunk-proven Runtime Signal 001 |
-|  | Cribl-routed |
-|  | Wazuh-routed |
-|  | AWS-live |
-|  | autonomous SOC |
-|  | AI-approved disposition |
-|  | analyst-approved disposition |
-
-## System Map
-
-![Truth surface flow](./assets/truth-surface-flow.svg)
-
-`Source` → `Validation` → `Runtime Contract` → `Evidence` → `Public Rendering`
-
-| Surface | Owns | Boundary |
-|---|---|---|
-| `hawkinsoperations-detections` | Detections source truth | Source exists does not prove runtime firing |
-| `hawkinsoperations-validation` | Behavior and CI truth | Synthetic pass does not prove live signal |
-| `hawkinsoperations-platform` | Runtime contract guardrails | Contract enforcement is not public proof |
-| `hawkinsoperations-proof` | Evidence records and proof boundaries | Evidence requires review before approved public use |
-| `hawkinsoperations-website` | Public rendering and reviewer route | Website rendering is not proof |
-| `.github` | Reviewer routing and governance front door | GitHub rendering is not proof |
-
-## Real Controls
-
-Docs, README files, issue cards, architecture maps, and diagrams are not real controls by themselves.
-
-A control becomes real only when it blocks, fails, or forces correction through CI, branch protection, required checks, deterministic verifiers, typed claim gates, or another blocking mechanism.
-
-## Next Gate
-
-Recent gate completed: controlled runtime evidence packet -> deterministic verifier -> proof record update.
-
-Validation PR [#22](https://github.com/HawkinsOperations/hawkinsoperations-validation/pull/22) and proof PR [#14](https://github.com/HawkinsOperations/hawkinsoperations-proof/pull/14) support the private/internal status `CONTROLLED_LAB_RUNTIME_MATCH_VERIFIED`. The public ceiling remains `TEST_VALIDATED_SYNTHETIC_SCOPE`, and public-safe status remains `NOT_PUBLIC_SAFE`.
+Codex review is AI labor, not human governance.
 
 ## Legacy Boundary
 
