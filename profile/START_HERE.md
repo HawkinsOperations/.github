@@ -32,6 +32,7 @@ Public claims require reviewed wording, evidence linkage, stale review, and appr
 
 - [Organization profile](./README.md)
 - [Organization system map](../wiki/11_ORG_SYSTEM_MAP.md)
+- [Cross-repo promotion map](../governance/CROSS_REPO_PROMOTION_MAP.md)
 - [Governance summary](../governance/GOVERNANCE_SUMMARY.md)
 - [PR review authority](../governance/PR_REVIEW_AUTHORITY.md) - merge governance routing; not runtime, signal, evidence, public-safe, or production proof unless backed by rulesets or blocking CI
 - [Repository authority map](../architecture/REPO_AUTHORITY_MAP.md)
