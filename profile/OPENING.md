@@ -13,7 +13,7 @@
 
 ## Purpose
 
-This document records the decision to establish HawkinsOperations as the successor organization for governed AI-assisted detection engineering.
+This document records the decision to establish HawkinsOperations as the successor organization for governed detection engineering.
 
 This record explains the architectural intent. It is not operational proof and does not promote any runtime, signal, evidence, or public-proof claim.
 

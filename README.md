@@ -4,7 +4,7 @@ This repository owns the HawkinsOperations GitHub organization profile and revie
 
 The public organization overview is controlled by [profile/README.md](profile/README.md). This repo is a front door, not a proof source: GitHub rendering is not proof.
 
-Current proof records live in [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof), and the current public ceiling remains `TEST_VALIDATED_SYNTHETIC_SCOPE`.
+Current proof records live in [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof), and the current public ceiling remains `CONTROLLED_TEST_VALIDATED`.
 
 Reviewer routes:
 

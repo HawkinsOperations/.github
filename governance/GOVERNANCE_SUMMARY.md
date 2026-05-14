@@ -14,7 +14,7 @@ The goal is not to make every artifact public proof. The goal is to make the sys
 
 AI generates work. Evidence and human review authorize claims.
 
-AI-assisted work may draft, review, summarize, and implement scoped tasks, but AI output cannot self-authorize promotion, approve public claims, or convert source files into runtime truth.
+AI labor may draft, review, summarize, and implement scoped tasks, but AI output cannot self-authorize promotion, approve public claims, or convert source files into runtime truth.
 
 Promotion authority remains human-owned. Public-facing claims require reviewed wording, evidence linkage, stale review, and approval.
 

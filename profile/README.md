@@ -4,11 +4,11 @@
 
 # HawkinsOperations
 
-**Controlled AI-assisted detection engineering and SOC automation**
+**Governed detection engineering and SOC automation**
 
 _AI generates work. Evidence and human review authorize claims._
 
-`TEST_VALIDATED_SYNTHETIC_SCOPE` &nbsp;&middot;&nbsp; `NOT_PUBLIC_SAFE` &nbsp;&middot;&nbsp; `HO-DET-001` &nbsp;&middot;&nbsp; `RENDERING_NOT_PROOF` &nbsp;&middot;&nbsp; `HUMAN_REVIEW_REQUIRED`
+`CONTROLLED_TEST_VALIDATED` &nbsp;&middot;&nbsp; `NOT_PUBLIC_SAFE` &nbsp;&middot;&nbsp; `HO-DET-001` &nbsp;&middot;&nbsp; `RENDERING_NOT_PROOF` &nbsp;&middot;&nbsp; `HUMAN_REVIEW_REQUIRED`
 
 </div>
 
@@ -91,7 +91,7 @@ flowchart LR
     E --> F
 ```
 
-AI support output feeds source, validation, and runtime work - it does not authorize promotion. Deterministic verification and human review are required gates before a proof record can support public wording. Public rendering is downstream of proof and cannot create it. Public ceiling remains `TEST_VALIDATED_SYNTHETIC_SCOPE`.
+AI support output feeds source, validation, and runtime work - it does not authorize promotion. Deterministic verification and human review are required gates before a proof record can support public wording. Public rendering is downstream of proof and cannot create it. Public ceiling remains `CONTROLLED_TEST_VALIDATED`.
 
 ---
 
@@ -135,7 +135,7 @@ Public rendering cannot create proof. It can only present wording that is suppor
 | Item | State |
 |---|---|
 | Flagship review path | `HO-DET-001` |
-| Public proof ceiling | `TEST_VALIDATED_SYNTHETIC_SCOPE` |
+| Public proof ceiling | `CONTROLLED_TEST_VALIDATED` |
 | Public-safe status | `NOT_PUBLIC_SAFE` |
 | Website / GitHub status | Rendering and reviewer routing only |
 | Runtime-active public claim | `BLOCKED` |

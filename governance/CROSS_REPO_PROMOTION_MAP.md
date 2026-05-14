@@ -16,7 +16,7 @@ HawkinsOperations uses gate-based propagation, not PR-number alignment.
 
 PR numbers do not need to match across repositories. Cross-repo work is required only when a changed truth surface affects another repository's owned surface.
 
-Website/GitHub rendering is not proof. Public proof ceiling remains `TEST_VALIDATED_SYNTHETIC_SCOPE` for `HO-DET-001` unless proof records say otherwise.
+Website/GitHub rendering is not proof. Public proof ceiling remains `CONTROLLED_TEST_VALIDATED` for `HO-DET-001` unless proof records say otherwise.
 
 ## 3. Truth Surface Map
 
@@ -75,9 +75,9 @@ Current public boundary:
 |---|---|
 | Detection source | Source exists |
 | Splunk source | Source exists |
-| Validation | Synthetic validation passed within controlled scope |
+| Validation | Controlled-test validation passed within controlled scope |
 | Platform | Runtime contract exists as a non-promotional guardrail |
-| Proof | Public ceiling remains `TEST_VALIDATED_SYNTHETIC_SCOPE` |
+| Proof | Public ceiling remains `CONTROLLED_TEST_VALIDATED` |
 | Public-safe status | `NOT_PUBLIC_SAFE` |
 | Website/GitHub | Rendering and reviewer routing only |
 
@@ -89,7 +89,7 @@ Promotion example:
 4. Website updates only if proof allows different public wording.
 5. `.github` updates only if reviewer routing or org-level claim-control expectations change.
 
-The public proof ceiling remains `TEST_VALIDATED_SYNTHETIC_SCOPE` unless the proof repo records a reviewed ceiling change.
+The public proof ceiling remains `CONTROLLED_TEST_VALIDATED` unless the proof repo records a reviewed ceiling change.
 
 ## 8. Blocked Claim Boundary
 

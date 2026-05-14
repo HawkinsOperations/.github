@@ -98,19 +98,19 @@ flowchart TD
     l8["8 PUBLIC_SAFE"]
 
     l0 --> l1 --> l2 --> l3 --> l4 --> l5 --> l6 --> l7 --> l8
-    current["HO-DET-001 current public repo proof level:<br/>TEST_VALIDATED_SYNTHETIC_SCOPE"]
-    current -. "inside recorded synthetic validation scope" .-> l4
+    current["HO-DET-001 current public repo proof level:<br/>CONTROLLED_TEST_VALIDATED"]
+    current -. "inside recorded controlled-test validation scope" .-> l4
     blocked["Public runtime-active, public signal-observed,<br/>public evidence-linked, and public-safe claims remain blocked"]
     l4 -. "private controlled lab runtime match exists locally,<br/>but public promotion requires review" .-> blocked
 ```
 
-HO-DET-001 current public repo proof level: TEST_VALIDATED_SYNTHETIC_SCOPE.
+HO-DET-001 current public repo proof level: CONTROLLED_TEST_VALIDATED.
 
-HO-DET-001 validation enforcement exists through `HawkinsOperations/hawkinsoperations-validation#10`, merge commit `8b48500d2ebbaacd93ac88e77a31dccf1d3b4e25`, only for the exact checked synthetic validation scope.
+HO-DET-001 validation enforcement exists through `HawkinsOperations/hawkinsoperations-validation#10`, merge commit `8b48500d2ebbaacd93ac88e77a31dccf1d3b4e25`, only for the exact checked controlled-test validation scope.
 
-Proof-loop CI is a real control only for that exact checked synthetic validation scope. It does not prove runtime-active, signal-observed, evidence-linked public proof, public-safe, production-ready, fleet-wide, Cribl-routed, Wazuh-routed, AWS-live, HO-GPU-01 runtime-active, autonomous SOC, or AI-approved disposition.
+Proof-loop CI is a real control only for that exact checked controlled-test validation scope. It does not prove runtime-active, signal-observed, evidence-linked public proof, public-safe, production-ready, fleet-wide, Cribl-routed, Wazuh-routed, AWS-live, HO-GPU-01 runtime-active, autonomous SOC, or AI-approved disposition.
 
-HO-DET-001 platform runtime contract enforcement exists through `HawkinsOperations/hawkinsoperations-platform#5`, merge commit `b3d0ffbd66c1bd5f60f7e9ff99712cdc3e0595bd`. It is a non-promotional guardrail that preserves `TEST_VALIDATED_SYNTHETIC_SCOPE`, `NOT_PUBLIC_SAFE`, and `BLOCKED`; it does not prove runtime-active status, signal-observed public proof, public-safe runtime proof, live Splunk fired, Splunk-proven Runtime Signal 001, Cribl-routed status, Wazuh-routed public proof, production-ready status, fleet-wide coverage, AWS-live status, autonomous SOC operation, AI-approved disposition, or analyst-approved disposition.
+HO-DET-001 platform runtime contract enforcement exists through `HawkinsOperations/hawkinsoperations-platform#5`, merge commit `b3d0ffbd66c1bd5f60f7e9ff99712cdc3e0595bd`. It is a non-promotional guardrail that preserves `CONTROLLED_TEST_VALIDATED`, `NOT_PUBLIC_SAFE`, and `BLOCKED`; it does not prove runtime-active status, signal-observed public proof, public-safe runtime proof, live Splunk fired, Splunk-proven Runtime Signal 001, Cribl-routed status, Wazuh-routed public proof, production-ready status, fleet-wide coverage, AWS-live status, autonomous SOC operation, AI-approved disposition, or analyst-approved disposition.
 
 Private controlled lab runtime match exists locally, but public runtime-active, public signal-observed, public evidence-linked, and public-safe claims remain blocked pending reviewed wording, privacy review, stale review, evidence linkage review, and Raylee approval.
 
@@ -207,8 +207,8 @@ The `Claim blocked` column is blocked wording from `governance/CONTROL_STATUS_MA
 | Website | Rendering only | Website content is rendering only. | Blocked wording: website presentation proves source, runtime, signal, or evidence truth. |
 | HO-DET-001 source | SATISFIED | HO-DET-001 source exists. | Blocked wording: HO-DET-001 is production-ready, fleet-wide, public-safe, or deployed. |
 | HO-DET-001 Splunk source | SATISFIED | HO-DET-001 Splunk source exists. | Blocked wording: Live Splunk fired as public proof. |
-| HO-DET-001 synthetic validation | SATISFIED | HO-DET-001 passed synthetic validation against controlled positive and negative process-creation fixtures. | Blocked wording: HO-DET-001 is production-ready, fleet-wide, public-safe, or catches attacks in production. |
-| HO-DET-001 validation enforcement | SATISFIED | HO-DET-001 validation enforcement exists for the exact checked synthetic validation scope. | Blocked wording: validation enforcement proves runtime-active, signal-observed, evidence-linked public proof, public-safe, production, fleet, Cribl, Wazuh, AWS-live, HO-GPU-01 runtime-active, autonomous SOC, or AI-approved disposition. |
+| HO-DET-001 controlled-test validation | SATISFIED | HO-DET-001 passed controlled-test validation against controlled positive and negative process-creation fixtures. | Blocked wording: HO-DET-001 is production-ready, fleet-wide, public-safe, or catches attacks in production. |
+| HO-DET-001 validation enforcement | SATISFIED | HO-DET-001 validation enforcement exists for the exact checked controlled-test validation scope. | Blocked wording: validation enforcement proves runtime-active, signal-observed, evidence-linked public proof, public-safe, production, fleet, Cribl, Wazuh, AWS-live, HO-GPU-01 runtime-active, autonomous SOC, or AI-approved disposition. |
 | HO-DET-001 platform runtime contract enforcement | SATISFIED | HO-DET-001 platform runtime contract enforcement exists as a non-promotional guardrail. | Blocked wording: platform contract enforcement proves runtime-active, signal-observed public proof, public-safe runtime proof, live Splunk fired, Splunk-proven Runtime Signal 001, Cribl-routed, Wazuh-routed public proof, AWS-live, production-ready, fleet-wide, autonomous SOC, AI-approved disposition, or analyst-approved disposition. |
 | HO-DET-001 private controlled lab runtime match | SATISFIED_PRIVATE_LAB_SCOPE | A private controlled lab runtime match has been captured locally, but public-safe promotion remains blocked pending review. | Blocked wording: Live Splunk fired as public proof; raw command lines; encoded payloads; LAN IPs; local artifact paths; raw CSV names; screenshots as public evidence. |
 | HO-DET-001 public runtime-active | BLOCKED | Runtime-active status remains blocked on public surfaces. | Blocked wording: HO-DET-001 is active in production. |
