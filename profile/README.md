@@ -47,7 +47,7 @@ _Time: ~3 minutes._
 ### Technical Route
 **For:** detection engineers, platform engineers, SOC automation leads.
 
-Open [`hawkinsoperations-detections`](https://github.com/HawkinsOperations/hawkinsoperations-detections) for source, [`hawkinsoperations-validation`](https://github.com/HawkinsOperations/hawkinsoperations-validation) for tests and fixtures, [`hawkinsoperations-platform`](https://github.com/HawkinsOperations/hawkinsoperations-platform) for runtime contracts.
+Open [`hawkinsoperations-detections`](https://github.com/HawkinsOperations/hawkinsoperations-detections) for source, [`hawkinsoperations-validation`](https://github.com/HawkinsOperations/hawkinsoperations-validation) for tests and fixtures, and [`hawkinsoperations-proof`](https://github.com/HawkinsOperations/hawkinsoperations-proof) for the current claim ceiling. Runtime contracts remain an internal platform route unless explicitly published.
 
 _Time: ~15 minutes._
 
@@ -181,11 +181,11 @@ Tests, fixtures, and deterministic checks.
 <tr>
 <td valign="top">
 
-#### [`hawkinsoperations-platform`](https://github.com/HawkinsOperations/hawkinsoperations-platform)
+#### `hawkinsoperations-platform` (internal / not public)
 Runtime contracts and integration boundaries.
 
 **Owns:** interface guarantees and runtime-side definitions.
-**Does not prove:** that contracts have produced public-safe observations.
+**Does not prove:** that contracts have produced public-safe observations. This route is not a public proof surface.
 
 </td>
 <td valign="top">
