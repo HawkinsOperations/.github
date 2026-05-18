@@ -12,7 +12,7 @@ HawkinsOperations is a governed SOC automation framework that separates generate
 
 `CONTROLLED_TEST_VALIDATED` | `NOT_PUBLIC_SAFE` | `HO-DET-001` | `RENDERING_NOT_PROOF` | `HUMAN_REVIEW_REQUIRED`
 
-[hawkinsoperations.com](https://hawkinsoperations.com/) | [HO-DET-001 proof route](https://hawkinsoperations.com/proof/ho-det-001/) | [Proof Pack 001 release](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) | [proof repo](https://github.com/HawkinsOperations/hawkinsoperations-proof) | [validation repo](https://github.com/HawkinsOperations/hawkinsoperations-validation) | [detections repo](https://github.com/HawkinsOperations/hawkinsoperations-detections)
+[hawkinsoperations.com](https://hawkinsoperations.com/) | [HO-DET-001 proof route](https://hawkinsoperations.com/proof/ho-det-001/) | [Proof Pack 001 release](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) | [Proof Pack 001 Discussion](https://github.com/orgs/HawkinsOperations/discussions/32) | [proof repo](https://github.com/HawkinsOperations/hawkinsoperations-proof) | [validation repo](https://github.com/HawkinsOperations/hawkinsoperations-validation) | [detections repo](https://github.com/HawkinsOperations/hawkinsoperations-detections)
 
 </div>
 
@@ -210,7 +210,7 @@ Official release and discussion links are not asserted here unless they are publ
 | Item | Link state |
 |---|---|
 | Proof Pack 001 release | [HawkinsOperations Proof Pack 001](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) |
-| Reviewer discussion | Placeholder: not published in this profile. |
+| Proof Pack 001 Discussion | [HawkinsOperations Proof Pack 001 Released](https://github.com/orgs/HawkinsOperations/discussions/32) |
 | Proof repository | [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof) |
 | Public proof ledger | [hawkinsoperations.com/proof](https://hawkinsoperations.com/proof/) |
 
