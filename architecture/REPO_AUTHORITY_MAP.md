@@ -1,6 +1,6 @@
 # Repository Authority Map
 
-Status: PUBLIC_SAFE_CANDIDATE
+Public-safe status: NOT_PUBLIC_SAFE
 Trust class: SOURCE_EXISTS after creation
 Control type: soft enforcement
 
@@ -18,7 +18,7 @@ HOD-001 baseline validation/proof does not promote HO-DET-001.
 
 | Repository | Owns | Must Not Own | Public Readiness Status | Blocked Claims |
 | --- | --- | --- | --- | --- |
-| `.github` | Public organization framing and sanitized governance summaries. | Runtime status, detection validation, evidence approval, private operations detail. | Public-safe candidate after review. | Organization profile proves runtime, proof, or production readiness. |
+| `.github` | Public organization framing and sanitized governance summaries. | Runtime status, detection validation, evidence approval, private operations detail. | NOT_PUBLIC_SAFE until reviewed and approved. | Organization profile proves runtime, proof, or production readiness. |
 | `hawkinsoperations-detections` | Detection source files and detection-authoring structure. | Runtime-active status, signal observation, public proof, platform state. | Source-oriented until validated and linked. | A detection file exists, therefore it is deployed or active. |
 | `hawkinsoperations-validation` | Tests, schemas, validation checks, and validation workflow source. | Production status, runtime deployment, signal truth, evidence approval. | Validation-oriented until recorded results are linked. | A validator exists, therefore detections are proven in runtime. |
 | `hawkinsoperations-platform` | Platform architecture, stack truth tracking, and environment boundary documentation. | Detection proof, public proof, sensitive runtime exports, private host details. | Architecture-oriented until runtime evidence is reviewed. | Platform docs prove current deployment state. |

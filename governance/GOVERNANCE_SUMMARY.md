@@ -1,6 +1,6 @@
 # Governance Summary
 
-Status: PUBLIC_SAFE_CANDIDATE
+Public-safe status: NOT_PUBLIC_SAFE
 Trust class: SOURCE_EXISTS after creation
 Control type: soft enforcement
 
