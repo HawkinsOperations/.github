@@ -81,7 +81,7 @@ AI labor enters the system. Source, validation, deterministic verification, evid
 
 **HO-DET-001 reviewer release package**
 
-The official, bounded reviewer route for the HO-DET-001 detection: source, validation, case packet, proof record, and the public boundary — assembled as one auditable ZIP and one GitHub Release.
+The official, bounded reviewer route for the HO-DET-001 detection: source, validation, case packet, proof record, and the public boundary — packaged as one bounded reviewer ZIP and one GitHub Release.
 
 - Release: [hawkinsoperations-proof-pack-001](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001)
 - Discussion: [HawkinsOperations Proof Pack 001 Released](https://github.com/orgs/HawkinsOperations/discussions/32)

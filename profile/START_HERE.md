@@ -62,7 +62,6 @@ Allowed current wording:
 - "HO-DET-001 platform runtime contract enforcement exists as a non-promotional guardrail."
 - "HO-DET-001 current public repo proof level is CONTROLLED_TEST_VALIDATED."
 - "HO-DET-001 private/internal runtime material is non-public boundary context."
-- "HO-DET-001 private/internal runtime material is non-public boundary context."
 - "HO-DET-001 public-safe status is NOT_PUBLIC_SAFE."
 - "HOD-001 baseline artifacts are separate reference material."
 
