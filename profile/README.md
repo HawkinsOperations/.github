@@ -12,7 +12,7 @@ HawkinsOperations is a governed SOC automation framework that separates generate
 
 `CONTROLLED_TEST_VALIDATED` | `NOT_PUBLIC_SAFE` | `HO-DET-001` | `RENDERING_NOT_PROOF` | `HUMAN_REVIEW_REQUIRED`
 
-[hawkinsoperations.com](https://hawkinsoperations.com/) | [HO-DET-001 proof route](https://hawkinsoperations.com/proof/ho-det-001/) | [proof repo](https://github.com/HawkinsOperations/hawkinsoperations-proof) | [validation repo](https://github.com/HawkinsOperations/hawkinsoperations-validation) | [detections repo](https://github.com/HawkinsOperations/hawkinsoperations-detections)
+[hawkinsoperations.com](https://hawkinsoperations.com/) | [HO-DET-001 proof route](https://hawkinsoperations.com/proof/ho-det-001/) | [Proof Pack 001 release](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) | [proof repo](https://github.com/HawkinsOperations/hawkinsoperations-proof) | [validation repo](https://github.com/HawkinsOperations/hawkinsoperations-validation) | [detections repo](https://github.com/HawkinsOperations/hawkinsoperations-detections)
 
 </div>
 
@@ -71,17 +71,20 @@ Public proof ceiling remains `CONTROLLED_TEST_VALIDATED`. Public-safe status rem
 
 ## Proof Pack 001
 
-Proof Pack 001 is the planned reviewer package for HO-DET-001. It is release-prepared only until an official GitHub tag, release, and assets exist in `hawkinsoperations-proof`.
+Proof Pack 001 is the official reviewer release package for HO-DET-001. It routes reviewers to the bounded GitHub Release and approved ZIP asset in `hawkinsoperations-proof`.
 
 | Item | Current public status |
 |---|---|
 | Package purpose | Reviewer package for tracing HO-DET-001 source, validation, case packet, proof record, and public boundary. |
-| Official release | Not claimed in this profile. |
-| Release assets | Not claimed in this profile. |
+| Official release | [hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) |
+| Release asset | `HAWKINSOPERATIONS_PROOF_PACK_001.zip` |
+| ZIP SHA256 | `44d8a643aa2b113c9e99be0462e699d39af707a67190823cc05bb381907dc452` |
 | Public ceiling | `CONTROLLED_TEST_VALIDATED` |
-| Public-safe status | `NOT_PUBLIC_SAFE` |
+| Reviewer package status | `PUBLIC_SAFE_REVIEWER_RELEASE_CANDIDATE` |
+| Raw/private runtime evidence public-safe status | `NOT_PUBLIC_SAFE` |
+| Public-safe runtime proof | `BLOCKED` |
 
-Do not treat planned packaging language as official release proof.
+The release is a reviewer route and bounded ZIP package. Website/GitHub rendering is not proof, and the release does not promote runtime-active public proof, signal-observed public proof, public-safe runtime proof, production readiness, SOCaaS, autonomous SOC, AI-approved disposition, or analyst-approved disposition.
 
 ---
 
@@ -206,7 +209,7 @@ Official release and discussion links are not asserted here unless they are publ
 
 | Item | Link state |
 |---|---|
-| Proof Pack 001 release | Placeholder: not published in this profile. |
+| Proof Pack 001 release | [HawkinsOperations Proof Pack 001](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) |
 | Reviewer discussion | Placeholder: not published in this profile. |
 | Proof repository | [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof) |
 | Public proof ledger | [hawkinsoperations.com/proof](https://hawkinsoperations.com/proof/) |
