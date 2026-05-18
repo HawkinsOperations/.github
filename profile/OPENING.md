@@ -1,7 +1,7 @@
 # Opening Decision Record
 
 - Status: LEGACY_DECISION_RECORD
-- Public-safe status: PUBLIC_SAFE_CANDIDATE
+- Public-safe status: NOT_PUBLIC_SAFE
 - Current authority: No
 - Current front door: profile/README.md
 - Governance summary: ../governance/GOVERNANCE_SUMMARY.md
