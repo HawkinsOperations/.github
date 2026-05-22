@@ -119,9 +119,12 @@ Pick the route that matches your review job. The route changes how you inspect t
 | Detection engineer | 10 min | Detection source, validation scope, HO-DET-001 path. | [detections repo](https://github.com/HawkinsOperations/hawkinsoperations-detections) |
 | SOC automation lead | 10 min | Case packet flow, deterministic checks, CI boundaries, runtime-contract separation. | [validation repo](https://github.com/HawkinsOperations/hawkinsoperations-validation) |
 | AI governance reviewer | 10 min | Where AI supports labor and where human review authorizes claims. | [proof repo](https://github.com/HawkinsOperations/hawkinsoperations-proof) |
+| Cyber Kill Chain reviewer | 10 min | Attack-lifecycle coverage map across source, validation, proof, platform contracts, and blocked claims. | [Cyber Kill Chain coverage map](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/docs/mappings/CYBER_KILL_CHAIN_COVERAGE.md) |
 | Public rendering reviewer | 2 min | Public presentation and reviewer navigation only; rendering does not create proof. | [HO-DET-001 proof route](https://hawkinsoperations.com/proof/ho-det-001/) |
 
 ---
+
+Org-level reviewer entry point: Cyber Kill Chain coverage lives in `hawkinsoperations-proof` as a public-safe reviewer map. It is not proof authority.
 
 ## Six truth surfaces
 
