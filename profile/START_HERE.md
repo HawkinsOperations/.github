@@ -32,6 +32,65 @@ HOD-001 baseline artifacts do not validate HO-DET-001. They may inform review, b
 
 Public claims require reviewed wording, evidence linkage, stale review, and approval.
 
+## Reviewer Control Panel
+
+### 30-second reviewer path
+
+1. Start with the [organization profile](./README.md) for the system summary.
+2. Use the [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) to see which repo owns each truth surface.
+3. Use the [Control Status Matrix](../governance/CONTROL_STATUS_MATRIX.md) to separate report-only routing from controls that block, fail, or force correction.
+4. Inspect [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof) for proof records and claim ceilings.
+5. Follow source and validation links only inside their stated scope.
+
+### What to click first
+
+| Question | Click |
+|---|---|
+| What is HawkinsOperations? | [Organization profile](./README.md) |
+| Which repo owns which truth? | [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) |
+| What is proven and what is blocked? | [Control Status Matrix](../governance/CONTROL_STATUS_MATRIX.md) |
+| Where are proof records? | [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof) |
+| Where are validators and case packets? | [hawkinsoperations-validation](https://github.com/HawkinsOperations/hawkinsoperations-validation) |
+| Where is detection source? | [hawkinsoperations-detections](https://github.com/HawkinsOperations/hawkinsoperations-detections) |
+| Where is public rendering? | [hawkinsoperations-website](https://github.com/HawkinsOperations/hawkinsoperations-website) |
+
+### What each repo owns
+
+| Repo | Owns | Does not own |
+|---|---|---|
+| `.github` | Reviewer routing and governance shell. | Proof, runtime state, signal state, or public-safe approval. |
+| `hawkinsoperations-detections` | Detection source truth. | Validation, runtime, signal, or public proof. |
+| `hawkinsoperations-validation` | Validation truth, fixtures, case packets, and deterministic checks. | Runtime deployment or public-safe proof. |
+| `hawkinsoperations-platform` | Contracts, orchestration boundaries, and control logic. | Public proof or production readiness. |
+| `hawkinsoperations-proof` | Proof records, evidence boundaries, and claim ceilings. | Raw private evidence publication or claim expansion by presentation. |
+| `hawkinsoperations-website` | Public rendering and reviewer navigation. | Proof authority. |
+
+### What is proven vs blocked
+
+| Status | Current reviewer-safe wording |
+|---|---|
+| Proven within current public ceiling | HO-DET-001 source exists and controlled-test validation is recorded for the stated fixture scope. |
+| Route-safe | GitHub and website surfaces route reviewers to source, validation, and proof records. |
+| Blocked | Runtime-active, signal-observed, public-safe runtime proof, production-ready, autonomous SOC, AI-approved disposition, analyst-approved disposition, Cribl-routed, Wazuh-routed, AWS-live, fleet-wide, and live Splunk firing claims. |
+
+### What not to infer
+
+Do not infer runtime operation, signal observation, production readiness, fleet scope, public-safe approval, analyst disposition, AI disposition, or public proof from GitHub rendering, website rendering, issue status, private Control Board membership, branch names, diagrams, or docs alone.
+
+The private Control Board exists for internal governance and navigation. It is not proof and is not public.
+
+```mermaid
+flowchart LR
+    A[Detection Source] --> B[Validation]
+    B --> C[Platform / Contracts]
+    C --> D[Proof Records]
+    D --> E[Website / Org Rendering]
+    F[Blocked Claims] -. boundary .-> D
+    G[Private Control Board] -. governance navigation only .-> D
+    H[Human Review] -. approval gate .-> D
+    E -. rendering is not proof .-> F
+```
+
 ## Reviewer Links
 
 - [Organization profile](./README.md)

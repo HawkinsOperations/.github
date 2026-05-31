@@ -9,6 +9,9 @@ Current proof records live in [hawkinsoperations-proof](https://github.com/Hawki
 Reviewer routes:
 
 - [Organization profile](profile/README.md)
-- [Control status matrix](governance/CONTROL_STATUS_MATRIX.md)
 - [Start here](profile/START_HERE.md)
 - [Repository authority map](architecture/REPO_AUTHORITY_MAP.md)
+- [Control status matrix](governance/CONTROL_STATUS_MATRIX.md)
+- [Proof records](https://github.com/HawkinsOperations/hawkinsoperations-proof)
+
+The private Control Board supports governance and navigation. It is not public proof and is not a public-ready surface.

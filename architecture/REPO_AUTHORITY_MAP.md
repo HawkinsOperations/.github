@@ -16,6 +16,17 @@ HOD-001 baseline validation/proof does not promote HO-DET-001.
 
 ## Authority Summary
 
+| Repository | Authority plane | Owns | Boundary |
+| --- | --- | --- | --- |
+| `.github` | Reviewer routing / governance shell | Organization profile, reviewer routes, governance summaries, and control-panel navigation. | Not proof; does not prove source, runtime, signal, evidence, public-safe status, or production readiness. |
+| `hawkinsoperations-detections` | Source truth | Detection source logic and source ownership trail. | Source does not prove validation, runtime, signal, or public proof. |
+| `hawkinsoperations-validation` | Validation truth | Fixtures, validators, case packets, deterministic checks, and workflow source. | Validation does not prove runtime deployment, public signal, or public-safe status. |
+| `hawkinsoperations-platform` | Contracts / orchestration / control logic | Runtime contracts, interface boundaries, and non-promotional guardrails. | Contracts do not prove public proof, production readiness, or current runtime state. |
+| `hawkinsoperations-proof` | Proof records / evidence truth | Proof records, claim ceilings, evidence boundary records, and cited case packets. | Proof records do not publish raw private evidence or raise ceilings by presentation. |
+| `hawkinsoperations-website` | Public rendering only | Public reviewer navigation and rendered wording. | Rendering is not proof and cannot approve a claim. |
+
+## Public Readiness Summary
+
 | Repository | Owns | Must Not Own | Public Readiness Status | Blocked Claims |
 | --- | --- | --- | --- | --- |
 | `.github` | Public organization framing and sanitized governance summaries. | Runtime status, detection validation, evidence approval, private operations detail. | NOT_PUBLIC_SAFE until reviewed and approved. | Organization profile proves runtime, proof, or production readiness. |

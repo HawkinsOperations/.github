@@ -5,6 +5,8 @@ Control type: reviewer routing and claim-boundary summary
 
 This matrix states what each control or artifact can safely say today. Governance documents are soft routing unless they block, fail, or force correction through a check, workflow, hook, or required review.
 
+A control is REAL_CONTROL only when it blocks, fails, or forces correction through CI, branch protection, required checks, deterministic verifier behavior, or equivalent hard gate.
+
 | Control / Artifact | Owner repo | Current status | Trust class | Real control? | Evidence path / link | Allowed wording | Blocked wording | Next gate |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Organization profile | `.github` | soft routing only | SOURCE_EXISTS | No, soft routing only | `profile/README.md` | "The profile routes reviewers to truth boundaries." | "The profile proves runtime, validation, or public proof." | Keep links current and reviewed. |

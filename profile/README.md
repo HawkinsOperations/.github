@@ -16,6 +16,25 @@
 
 ---
 
+## HawkinsOperations Control Panel
+
+GitHub/org rendering is routing, not proof. Proof records live in [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof), and the current public ceiling remains `CONTROLLED_TEST_VALIDATED` unless a specific proof record says otherwise. Runtime, signal, public-safe, production, autonomous SOC, AI-approved disposition, and analyst-approved disposition claims remain blocked unless explicitly proven and approved.
+
+| Reviewer need | Route |
+|---|---|
+| Start the review | [Start Here](START_HERE.md) |
+| See repo authority boundaries | [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) |
+| Check control status wording | [Control Status Matrix](../governance/CONTROL_STATUS_MATRIX.md) |
+| Inspect proof records | [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof) |
+| Inspect validators and case packets | [hawkinsoperations-validation](https://github.com/HawkinsOperations/hawkinsoperations-validation) |
+| Inspect detection source | [hawkinsoperations-detections](https://github.com/HawkinsOperations/hawkinsoperations-detections) |
+| Inspect platform contracts | [hawkinsoperations-platform](https://github.com/HawkinsOperations/hawkinsoperations-platform) |
+| Inspect public rendering | [hawkinsoperations-website](https://github.com/HawkinsOperations/hawkinsoperations-website) |
+
+The private Control Board supports internal governance and navigation. It is not proof, not public evidence, and not a public-safe approval surface.
+
+---
+
 ## The enterprise AI failure mode
 
 AI can accelerate security work. It cannot authorize the truth.
