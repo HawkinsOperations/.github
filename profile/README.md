@@ -27,7 +27,7 @@ GitHub/org rendering is routing, not proof. Proof records live in [hawkinsoperat
 | Truth surfaces | [Six truth surfaces](#six-truth-surfaces) | Source, validation, runtime, signal, evidence, and public rendering stay separate. |
 | Front-door/status proof ceiling | `SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY` | Applies to command-center and ledger-status routing; HO-DET-001 proof records keep their own proof ceiling. |
 | Current ledger status | [Lifetime Case Ledger public summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/lifetime-case-ledger-v1-public-summary.json) | 4 ledger events, 4 total cases, 0 public-safe cases, 0 closed cases; ledger status remains `NOT_PUBLIC_SAFE`. |
-| Project operating cockpit | [currently visible private org control board route](https://github.com/orgs/HawkinsOperations/projects/2) | Canonical private HawkinsOperations Control Board; project number pending Project #1 reclaim closeout; project metadata is not proof, approval, runtime, signal, or public-safe status. |
+| Project operating cockpit | [private org Control Board route](https://github.com/orgs/HawkinsOperations/projects/2) | Canonical private HawkinsOperations Control Board; Project #1 is not an active reviewer route; project metadata is not proof, approval, runtime, signal, public-safe status, or merge authority. |
 | Reviewer/demo path | [Start Here](START_HERE.md) and [Reproducible Reviewer Path](../architecture/REPRODUCIBLE_REVIEWER_PATH.md) | Demo routing does not raise the claim ceiling. |
 
 | Reviewer need | Route |
@@ -35,6 +35,7 @@ GitHub/org rendering is routing, not proof. Proof records live in [hawkinsoperat
 | Start the review | [Start Here](START_HERE.md) |
 | See repo authority boundaries | [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) |
 | Check control status wording | [Control Status Matrix](../governance/CONTROL_STATUS_MATRIX.md) |
+| Inspect standing controls | [Standing control registers](../governance/ISSUE_FACTORY_CONTROL_RECEIPTS.md) |
 | Inspect proof records | [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof) |
 | Inspect validators and case packets | [hawkinsoperations-validation](https://github.com/HawkinsOperations/hawkinsoperations-validation) |
 | Inspect detection source | [hawkinsoperations-detections](https://github.com/HawkinsOperations/hawkinsoperations-detections) |
@@ -43,7 +44,7 @@ GitHub/org rendering is routing, not proof. Proof records live in [hawkinsoperat
 
 The private Control Board supports internal governance and navigation. It is not proof, not public evidence, and not a public-safe approval surface.
 
-The private org control board is the operating cockpit for current work visibility. The `/projects/2` URL is the currently visible route only, not final canonical project-number truth. It is useful for navigation, queue review, and sprint context only; it does not mutate proof state, authorize merge, approve public wording, or promote public-safe status.
+The private org Control Board is the private Project #2 operating cockpit for current work visibility. Project #1 is not an active reviewer route and was not resolvable through the live ProjectV2 API during the current cleanup pass. The board is useful for navigation, queue review, and sprint context only; it does not mutate proof state, authorize merge, approve public wording, or promote public-safe status.
 
 ---
 
