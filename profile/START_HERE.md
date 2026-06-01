@@ -2,13 +2,21 @@
 
 Start here if reviewing HawkinsOperations.
 
-HawkinsOperations is a governed detection-engineering system that lets AI accelerate security work while evidence and human review authorize claims.
+HawkinsOperations is a governed AI Security Operations control plane. AI can draft security work; deterministic validation, proof records, and human review authorize claims.
+
+The system separates detection source, validation, platform contracts, proof records, governance routing, and public rendering so public claims cannot outrun evidence.
+
+- AI drafts security work.
+- Validation, proof records, and human review authorize claims.
+- Website/GitHub rendering is not proof.
 
 The enterprise AI failure mode is that AI-generated output becomes a public claim, analyst conclusion, operational action, security disposition, or executive truth before evidence and human review authorize it. HawkinsOperations is built to prevent that promotion path.
 
+Current public proof is intentionally bounded. Runtime-active, signal-observed, production, SOCaaS, autonomous SOC, AI-approved disposition, analyst-approved disposition, and public-safe runtime claims remain blocked unless separately proven. Blocked claims are a claim firewall, not failed features.
+
 HawkinsOperations separates source, validation, runtime, signal, evidence, and public-claim truth. Each truth surface has a different owner and promotion gate.
 
-Website content is rendering only. Repository source proves source existence only.
+Website content and GitHub rendering are routing only. Repository source proves source existence only.
 
 HO-DET-001 current public repo proof level: CONTROLLED_TEST_VALIDATED.
 

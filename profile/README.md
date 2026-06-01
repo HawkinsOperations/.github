@@ -6,19 +6,31 @@
 
 # HawkinsOperations
 
-**HawkinsOperations is a governed detection-engineering system and GitHub-native command center that lets AI accelerate security work while evidence and human review authorize claims.**
+**HawkinsOperations is a governed AI Security Operations control plane. AI can draft security work; deterministic validation, proof records, and human review authorize claims.**
 
 `CONTROLLED_TEST_VALIDATED` · `HO-DET-001` · `NOT_PUBLIC_SAFE` · `RENDERING_NOT_PROOF` · `HUMAN_REVIEW_REQUIRED`
 
-[Proof Pack 001 release](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) · [Proof Pack 001 Discussion](https://github.com/orgs/HawkinsOperations/discussions/32) · [hawkinsoperations.com](https://hawkinsoperations.com/) · [HO-DET-001 proof route](https://hawkinsoperations.com/proof/ho-det-001/) · [proof repo](https://github.com/HawkinsOperations/hawkinsoperations-proof) · [validation repo](https://github.com/HawkinsOperations/hawkinsoperations-validation) · [detections repo](https://github.com/HawkinsOperations/hawkinsoperations-detections)
+[Start Here](START_HERE.md) · [proof repo](https://github.com/HawkinsOperations/hawkinsoperations-proof) · [validation repo](https://github.com/HawkinsOperations/hawkinsoperations-validation) · [detections repo](https://github.com/HawkinsOperations/hawkinsoperations-detections) · [website](https://hawkinsoperations.com/) · [HO-DET-001 proof route](https://hawkinsoperations.com/proof/ho-det-001/)
 
 </div>
 
 ---
 
+## 10-second read
+
+- AI drafts security work.
+- Deterministic validation, proof records, and human review authorize claims.
+- Website/GitHub rendering is not proof.
+
+The system separates detection source, validation, platform contracts, proof records, governance routing, and public rendering so public claims cannot outrun evidence.
+
+**Current proof snapshot:** HO-DET-001 has source and controlled-test validation within the current public ceiling, Proof Pack 001 is a bounded reviewer route, the proof-owned ledger records 4 cases and 0 public-safe runtime cases, and the reviewer metrics route records 49 detection activity / controlled validation fires, 106 validation cases, 8 proof records, and 31 blocked claims.
+
+**Claim firewall:** runtime-active, signal-observed, production, SOCaaS, autonomous SOC, AI-approved disposition, analyst-approved disposition, and public-safe runtime claims remain blocked unless separately proven. Blocked claims are intentional controls, not failed features.
+
 ## HawkinsOperations Control Panel
 
-GitHub/org rendering is routing, not proof. Proof records live in [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof), and the current public ceiling remains `CONTROLLED_TEST_VALIDATED` unless a specific proof record says otherwise. Runtime, signal, public-safe, production, autonomous SOC, AI-approved disposition, and analyst-approved disposition claims remain blocked unless explicitly proven and approved.
+`.github` is the org command center for reviewer routing, truth boundaries, and claim controls. It does not create proof authority. Proof records live in [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof), and the current public ceiling remains `CONTROLLED_TEST_VALIDATED` unless a specific proof record says otherwise. Runtime, signal, public-safe, production, SOCaaS, autonomous SOC, AI-approved disposition, and analyst-approved disposition claims remain blocked unless explicitly proven and approved.
 
 | Command center view | Current route | Boundary |
 |---|---|---|
