@@ -29,12 +29,14 @@ flowchart LR
     plat["hawkinsoperations-platform<br/>platform architecture<br/>stack truth tracking<br/>runtime boundary docs"]
     proof["hawkinsoperations-proof<br/>proof records<br/>claim maps<br/>evidence indexes<br/>approved external claim records"]
     web["hawkinsoperations-website<br/>public rendering only"]
+    project["Private org control board<br/>operating cockpit<br/>work coordination only"]
 
     org --> det
     org --> val
     org --> plat
     org --> proof
     org --> web
+    org --> project
 
     det --> val
     val --> proof
@@ -42,6 +44,7 @@ flowchart LR
     proof --> web
 
     web -. "Warning: website does not prove runtime" .-> proof
+    project -. "Warning: board state is not proof or approval" .-> proof
     det -. "Warning: source does not prove deployment" .-> plat
     val -. "Warning: validation does not prove runtime" .-> plat
     proof -. "Warning: raw private evidence is not published" .-> web
@@ -176,11 +179,15 @@ flowchart TD
     source["Detection source"]
     validation["Validation artifacts"]
     proof["Proof record"]
+    project["Private org control board operating cockpit"]
+    ledger["Lifetime Case Ledger public summary"]
     website["Website rendering"]
     boundaries["Claim boundaries"]
     warning["Warning: website is last-mile rendering, not proof"]
 
-    profile --> start --> map --> authority --> source --> validation --> proof --> website --> boundaries
+    profile --> start --> map --> authority --> source --> validation --> proof --> ledger --> website --> boundaries
+    start --> project
+    project -. "coordination only" .-> boundaries
     website -.-> warning
 ```
 
@@ -194,6 +201,24 @@ flowchart TD
 - AI may draft, inspect, compare, and implement scoped tasks.
 - AI may not own truth, approve public claims, promote artifacts, or declare runtime active.
 - Real control only means something blocks, fails, or forces correction.
+- The canonical private HawkinsOperations Control Board may coordinate current work, but board state does not prove source, validation, runtime, signal, evidence, public proof, or public-safe status. Project number remains pending Project #1 reclaim closeout.
+
+## Current Ledger Status
+
+The proof-owned Lifetime Case Ledger public summary is a bounded count route, not runtime truth, signal truth, or public proof.
+
+| Field | Current source-controlled value |
+| --- | --- |
+| Summary route | `hawkinsoperations-proof/proof/records/lifetime-case-ledger-v1-public-summary.json` |
+| Total ledger events | 4 |
+| Total cases | 4 |
+| Public-safe count | 0 |
+| Closed-case count | 0 |
+| Appended detections | `HO-DET-001`, `HO-DET-011`, `HO-DET-012` |
+| Public-safe boundary | `NOT_PUBLIC_SAFE` |
+| Proof ceiling | `SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY` |
+
+The ledger summary does not prove live runtime activity, signal observation, production deployment, SOCaaS availability, public-safe runtime proof, public proof, autonomous SOC authority, AI-approved final disposition, analyst-approved final disposition, or case closure authority.
 
 ## Current Org State Summary
 
@@ -205,6 +230,8 @@ The `Claim blocked` column is blocked wording from `governance/CONTROL_STATUS_MA
 | Governance summary | Soft enforcement | Governance summary describes expected gates. | Blocked wording: governance text alone is a real control. |
 | Repo authority map | Soft enforcement | The map defines repository ownership boundaries. | Blocked wording: the map proves a repo complied. |
 | Website | Rendering only | Website content is rendering only. | Blocked wording: website presentation proves source, runtime, signal, or evidence truth. |
+| Project operating cockpit | COORDINATION_ONLY | The canonical private HawkinsOperations Control Board routes current work visibility and review context; `/projects/2` is only the currently visible project route while project number is pending Project #1 reclaim closeout. | Blocked wording: project board state proves source, runtime, signal, evidence, public proof, public-safe status, merge authority, or approval. |
+| Lifetime Case Ledger public summary | BOUNDED_COUNT_ROUTE | The proof-owned summary records 4 ledger events, 4 cases, 0 public-safe cases, and 0 closed cases. | Blocked wording: ledger counts prove runtime, signal, public proof, public-safe status, case closure, or disposition authority. |
 | HO-DET-001 source | SATISFIED | HO-DET-001 source exists. | Blocked wording: HO-DET-001 is production-ready, fleet-wide, public-safe, or deployed. |
 | HO-DET-001 Splunk source | SATISFIED | HO-DET-001 Splunk source exists. | Blocked wording: Live Splunk fired as public proof. |
 | HO-DET-001 controlled-test validation | SATISFIED | HO-DET-001 passed controlled-test validation against controlled positive and negative process-creation fixtures. | Blocked wording: HO-DET-001 is production-ready, fleet-wide, public-safe, or catches attacks in production. |
@@ -223,4 +250,6 @@ The `Claim blocked` column is blocked wording from `governance/CONTROL_STATUS_MA
 - [Governance summary](../governance/GOVERNANCE_SUMMARY.md)
 - [Control status matrix](../governance/CONTROL_STATUS_MATRIX.md)
 - [Repository authority map](../architecture/REPO_AUTHORITY_MAP.md)
+- [Project operating cockpit](https://github.com/orgs/HawkinsOperations/projects/2)
+- [Lifetime Case Ledger public summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/lifetime-case-ledger-v1-public-summary.json)
 - [HO-DET-001 proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md)

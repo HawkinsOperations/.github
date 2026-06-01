@@ -6,7 +6,7 @@
 
 # HawkinsOperations
 
-**HawkinsOperations is a governed detection-engineering system that lets AI accelerate security work while evidence and human review authorize claims.**
+**HawkinsOperations is a governed detection-engineering system and GitHub-native command center that lets AI accelerate security work while evidence and human review authorize claims.**
 
 `CONTROLLED_TEST_VALIDATED` · `HO-DET-001` · `NOT_PUBLIC_SAFE` · `RENDERING_NOT_PROOF` · `HUMAN_REVIEW_REQUIRED`
 
@@ -20,6 +20,16 @@
 
 GitHub/org rendering is routing, not proof. Proof records live in [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof), and the current public ceiling remains `CONTROLLED_TEST_VALIDATED` unless a specific proof record says otherwise. Runtime, signal, public-safe, production, autonomous SOC, AI-approved disposition, and analyst-approved disposition claims remain blocked unless explicitly proven and approved.
 
+| Command center view | Current route | Boundary |
+|---|---|---|
+| Six-repo architecture | [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) | Repos own separate truth surfaces; no repo may claim another repo's authority. |
+| Proof chain | Detection source -> validation -> case packet -> proof record -> public rendering | Public rendering routes reviewers; it does not create proof. |
+| Truth surfaces | [Six truth surfaces](#six-truth-surfaces) | Source, validation, runtime, signal, evidence, and public rendering stay separate. |
+| Front-door/status proof ceiling | `SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY` | Applies to command-center and ledger-status routing; HO-DET-001 proof records keep their own proof ceiling. |
+| Current ledger status | [Lifetime Case Ledger public summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/lifetime-case-ledger-v1-public-summary.json) | 4 ledger events, 4 total cases, 0 public-safe cases, 0 closed cases; ledger status remains `NOT_PUBLIC_SAFE`. |
+| Project operating cockpit | [currently visible private org control board route](https://github.com/orgs/HawkinsOperations/projects/2) | Canonical private HawkinsOperations Control Board; project number pending Project #1 reclaim closeout; project metadata is not proof, approval, runtime, signal, or public-safe status. |
+| Reviewer/demo path | [Start Here](START_HERE.md) and [Reproducible Reviewer Path](../architecture/REPRODUCIBLE_REVIEWER_PATH.md) | Demo routing does not raise the claim ceiling. |
+
 | Reviewer need | Route |
 |---|---|
 | Start the review | [Start Here](START_HERE.md) |
@@ -32,6 +42,8 @@ GitHub/org rendering is routing, not proof. Proof records live in [hawkinsoperat
 | Inspect public rendering | [hawkinsoperations-website](https://github.com/HawkinsOperations/hawkinsoperations-website) |
 
 The private Control Board supports internal governance and navigation. It is not proof, not public evidence, and not a public-safe approval surface.
+
+The private org control board is the operating cockpit for current work visibility. The `/projects/2` URL is the currently visible route only, not final canonical project-number truth. It is useful for navigation, queue review, and sprint context only; it does not mutate proof state, authorize merge, approve public wording, or promote public-safe status.
 
 ---
 
@@ -130,6 +142,24 @@ The official, bounded reviewer route for the HO-DET-001 detection: source, valid
 
 ---
 
+## Current ledger status
+
+The proof-owned Lifetime Case Ledger public summary is a bounded count and boundary route. It currently records:
+
+| Ledger field | Current source-controlled value |
+|---|---|
+| Total ledger events | 4 |
+| Total cases | 4 |
+| Public-safe count | 0 |
+| Closed-case count | 0 |
+| Appended detections | `HO-DET-001`, `HO-DET-011`, `HO-DET-012` |
+| Ledger public-safe status | `NOT_PUBLIC_SAFE` |
+| Ledger proof ceiling | `SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY` |
+
+This ledger route does not prove runtime activity, signal observation, production deployment, SOCaaS availability, public-safe runtime proof, public proof, autonomous SOC authority, AI-approved final disposition, analyst-approved final disposition, or case closure authority.
+
+---
+
 ## Reviewer routes
 
 Pick the route that matches your review job. The route changes how you inspect the system; it does not change the proof state.
@@ -140,6 +170,7 @@ Pick the route that matches your review job. The route changes how you inspect t
 | Detection engineer | 10 min | Detection source, validation scope, HO-DET-001 path. | [detections repo](https://github.com/HawkinsOperations/hawkinsoperations-detections) |
 | SOC automation lead | 10 min | Case packet flow, deterministic checks, CI boundaries, runtime-contract separation. | [validation repo](https://github.com/HawkinsOperations/hawkinsoperations-validation) |
 | AI governance reviewer | 10 min | Where AI supports labor and where human review authorizes claims. | [proof repo](https://github.com/HawkinsOperations/hawkinsoperations-proof) |
+| Demo reviewer | 8 min | Command-center route, project cockpit, Proof Pack 001, and reproducible reviewer path. | [Start Here](START_HERE.md) |
 | Cyber Kill Chain reviewer | 10 min | Attack-lifecycle coverage map across source, validation, proof, platform contracts, and blocked claims. | [Cyber Kill Chain coverage map](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/docs/mappings/CYBER_KILL_CHAIN_COVERAGE.md) |
 | Public rendering reviewer | 2 min | Public presentation and reviewer navigation only; rendering does not create proof. | [HO-DET-001 proof route](https://hawkinsoperations.com/proof/ho-det-001/) |
 

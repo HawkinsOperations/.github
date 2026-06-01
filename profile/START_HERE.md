@@ -34,6 +34,17 @@ Public claims require reviewed wording, evidence linkage, stale review, and appr
 
 ## Reviewer Control Panel
 
+### 90-second command-center path
+
+1. Open the [organization profile](./README.md) to see the six-repo command center.
+2. Open the [currently visible private org control board route](https://github.com/orgs/HawkinsOperations/projects/2) for the operating cockpit. Treat it as work coordination only, not proof, approval, runtime state, signal state, or public-safe status. Project number is pending Project #1 reclaim closeout.
+3. Open the [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) to confirm which repo owns each truth surface.
+4. Open the [Control Status Matrix](../governance/CONTROL_STATUS_MATRIX.md) to confirm the current claim ceiling and blocked claims.
+5. Open the [Proof Pack 001 Release](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) and [HO-DET-001 proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md) for proof-owned claim boundaries.
+6. Open the [Reproducible Reviewer Path](../architecture/REPRODUCIBLE_REVIEWER_PATH.md) only if you want clone-runnable inspection steps.
+
+Current ledger snapshot: the proof-owned Lifetime Case Ledger public summary records 4 ledger events, 4 total cases, 0 public-safe cases, and 0 closed cases. Ledger status remains `NOT_PUBLIC_SAFE`; front-door/status proof ceiling remains `SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY`.
+
 ### 30-second reviewer path
 
 1. Start with the [organization profile](./README.md) for the system summary.
@@ -53,6 +64,8 @@ Public claims require reviewed wording, evidence linkage, stale review, and appr
 | Where are validators and case packets? | [hawkinsoperations-validation](https://github.com/HawkinsOperations/hawkinsoperations-validation) |
 | Where is detection source? | [hawkinsoperations-detections](https://github.com/HawkinsOperations/hawkinsoperations-detections) |
 | Where is public rendering? | [hawkinsoperations-website](https://github.com/HawkinsOperations/hawkinsoperations-website) |
+| Where is the operating cockpit? | [currently visible private org control board route](https://github.com/orgs/HawkinsOperations/projects/2) |
+| Where is the ledger summary? | [Lifetime Case Ledger public summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/lifetime-case-ledger-v1-public-summary.json) |
 
 ### What each repo owns
 
@@ -71,6 +84,7 @@ Public claims require reviewed wording, evidence linkage, stale review, and appr
 |---|---|
 | Proven within current public ceiling | HO-DET-001 source exists and controlled-test validation is recorded for the stated fixture scope. |
 | Route-safe | GitHub and website surfaces route reviewers to source, validation, and proof records. |
+| Ledger route-safe | The proof-owned Lifetime Case Ledger public summary routes bounded counts only: 4 events, 4 cases, 0 public-safe cases, 0 closed cases. |
 | Blocked | Runtime-active, signal-observed, public-safe runtime proof, production-ready, autonomous SOC, AI-approved disposition, analyst-approved disposition, Cribl-routed, Wazuh-routed, AWS-live, fleet-wide, and live Splunk firing claims. |
 
 ### What not to infer
@@ -102,6 +116,8 @@ flowchart LR
 - [Control status matrix](../governance/CONTROL_STATUS_MATRIX.md)
 - [Proof Pack 001 official GitHub Release](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) - bounded reviewer ZIP route for HO-DET-001; ZIP SHA256 `44d8a643aa2b113c9e99be0462e699d39af707a67190823cc05bb381907dc452`; public-safe runtime proof remains BLOCKED
 - [Proof Pack 001 Discussion](https://github.com/orgs/HawkinsOperations/discussions/32) - official announcement route; rendering is not proof
+- [Currently visible private org control board route](https://github.com/orgs/HawkinsOperations/projects/2) - operating cockpit for current work visibility; project number pending Project #1 reclaim closeout; not proof authority and not project metadata approval
+- [Lifetime Case Ledger public summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/lifetime-case-ledger-v1-public-summary.json) - bounded proof-owned count summary; ledger status remains `NOT_PUBLIC_SAFE`
 - [HO-DET-001 proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md)
 - [HO-DET-001 runtime packet verifier PR #22](https://github.com/HawkinsOperations/hawkinsoperations-validation/pull/22)
 - [HO-DET-001 verified runtime match proof PR #14](https://github.com/HawkinsOperations/hawkinsoperations-proof/pull/14)
