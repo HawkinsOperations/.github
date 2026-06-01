@@ -13,9 +13,9 @@ The public organization overview is controlled by [profile/README.md](profile/RE
 | Six-repo architecture | [architecture/REPO_AUTHORITY_MAP.md](architecture/REPO_AUTHORITY_MAP.md) | Repo ownership map; source does not prove runtime. |
 | Proof chain | [architecture/REPRODUCIBLE_REVIEWER_PATH.md](architecture/REPRODUCIBLE_REVIEWER_PATH.md) | Clone-runnable inspection path; no private runtime access. |
 | Truth/control status | [governance/CONTROL_STATUS_MATRIX.md](governance/CONTROL_STATUS_MATRIX.md) | Current wording and blockers; soft unless enforced. |
-| Issue-factory control receipts | [governance/ISSUE_FACTORY_CONTROL_RECEIPTS.md](governance/ISSUE_FACTORY_CONTROL_RECEIPTS.md) | Row-backed issue closeout, blocked-claims, enforcement, Project #2, and repo-hygiene receipts; governance classification only. |
+| Standing control registers | [governance/ISSUE_FACTORY_CONTROL_RECEIPTS.md](governance/ISSUE_FACTORY_CONTROL_RECEIPTS.md) | Maintained blocked-claims register for #10, enforcement/control-class ledger for #8, and receipt-backed issue closeout; governance classification only. |
 | Visual system map | [wiki/11_ORG_SYSTEM_MAP.md](wiki/11_ORG_SYSTEM_MAP.md) | Docs-as-code map; routing is not proof. |
-| Project cockpit | [currently visible private org control board route](https://github.com/orgs/HawkinsOperations/projects/2) | Operating control only; project metadata is not proof. Project number pending Project #1 reclaim closeout. |
+| Project cockpit | [private org Control Board route](https://github.com/orgs/HawkinsOperations/projects/2) | Operating control only; project metadata is not proof. Project #1 is not an active reviewer route. |
 | Proof records | [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof) | Proof records own claim ceilings. |
 
 ## Current Boundary
@@ -28,4 +28,4 @@ The front-door/status proof ceiling for the command-center and ledger-status rou
 
 The proof-owned Lifetime Case Ledger public summary currently records a bounded count route only: 4 ledger events, 4 total cases, 0 public-safe cases, and 0 closed cases. Its ledger status remains `NOT_PUBLIC_SAFE`, and its proof ceiling remains `SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY`.
 
-The canonical private HawkinsOperations Control Board is a private org control board. The `/projects/2` URL is the currently visible project route only, not final canonical project-number truth. Project number remains pending Project #1 reclaim closeout.
+The canonical private HawkinsOperations Control Board is the private org Project #2 route. Project #1 is not an active reviewer route and was not resolvable through the live ProjectV2 API during the current cleanup pass. Project metadata remains coordination-only and does not create proof, approval, runtime truth, signal truth, public-safe status, or merge authority.

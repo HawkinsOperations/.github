@@ -14,7 +14,7 @@ Reviewer entry point: [START_HERE.md](../profile/START_HERE.md). Current control
 
 HOD-001 baseline validation/proof does not promote HO-DET-001.
 
-The canonical private HawkinsOperations Control Board is the operating cockpit for current work visibility. The `/projects/2` URL is the currently visible project route only while project number is pending Project #1 reclaim closeout. It is not a seventh repo, not proof authority, not merge authority, and not public-safe approval.
+The canonical private HawkinsOperations Control Board is the private org Project #2 operating cockpit for current work visibility. Project #1 is not an active reviewer route and was not resolvable through the live ProjectV2 API during the current cleanup pass. The board is not a seventh repo, not proof authority, not merge authority, and not public-safe approval.
 
 ## Authority Summary
 
@@ -33,7 +33,7 @@ The canonical private HawkinsOperations Control Board is the operating cockpit f
 | --- | --- | --- | --- |
 | Organization front door | [profile/README.md](../profile/README.md) | High-level reviewer orientation and demo routing. | Proof, runtime, signal, or public-safe approval. |
 | Reviewer start path | [profile/START_HERE.md](../profile/START_HERE.md) | First-click review sequence and claim-boundary reminders. | Stronger claim status than proof records allow. |
-| Operating cockpit | [currently visible private org control board route](https://github.com/orgs/HawkinsOperations/projects/2) | Current work visibility and queue coordination for the canonical private HawkinsOperations Control Board; project number pending Project #1 reclaim closeout. | Source truth, validation truth, runtime truth, signal truth, proof, public-safe status, merge approval, or project metadata authority. |
+| Operating cockpit | [private org Control Board route](https://github.com/orgs/HawkinsOperations/projects/2) | Current work visibility and queue coordination for the canonical private HawkinsOperations Control Board; Project #1 is not an active reviewer route. | Source truth, validation truth, runtime truth, signal truth, proof, public-safe status, merge approval, or project metadata authority. |
 | Proof ledger route | [Lifetime Case Ledger public summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/lifetime-case-ledger-v1-public-summary.json) | Bounded count summary: 4 events, 4 cases, 0 public-safe cases, 0 closed cases. | Runtime activity, signal observation, public proof, public-safe runtime proof, case closure, or disposition authority. |
 | Clone-runnable proof chain | [REPRODUCIBLE_REVIEWER_PATH.md](REPRODUCIBLE_REVIEWER_PATH.md) | Source-controlled inspection steps across all six repos. | Private runtime access, evidence export, public-safe promotion, or GitHub settings changes. |
 
