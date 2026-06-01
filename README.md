@@ -13,6 +13,7 @@ The public organization overview is controlled by [profile/README.md](profile/RE
 | Six-repo architecture | [architecture/REPO_AUTHORITY_MAP.md](architecture/REPO_AUTHORITY_MAP.md) | Repo ownership map; source does not prove runtime. |
 | Proof chain | [architecture/REPRODUCIBLE_REVIEWER_PATH.md](architecture/REPRODUCIBLE_REVIEWER_PATH.md) | Clone-runnable inspection path; no private runtime access. |
 | Truth/control status | [governance/CONTROL_STATUS_MATRIX.md](governance/CONTROL_STATUS_MATRIX.md) | Current wording and blockers; soft unless enforced. |
+| Issue-factory control receipts | [governance/ISSUE_FACTORY_CONTROL_RECEIPTS.md](governance/ISSUE_FACTORY_CONTROL_RECEIPTS.md) | Row-backed issue closeout, blocked-claims, enforcement, Project #2, and repo-hygiene receipts; governance classification only. |
 | Visual system map | [wiki/11_ORG_SYSTEM_MAP.md](wiki/11_ORG_SYSTEM_MAP.md) | Docs-as-code map; routing is not proof. |
 | Project cockpit | [currently visible private org control board route](https://github.com/orgs/HawkinsOperations/projects/2) | Operating control only; project metadata is not proof. Project number pending Project #1 reclaim closeout. |
 | Proof records | [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof) | Proof records own claim ceilings. |
