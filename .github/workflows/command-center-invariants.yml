@@ -1,0 +1,38 @@
+name: command-center-invariants
+
+on:
+  pull_request:
+    paths:
+      - "README.md"
+      - "profile/**"
+      - "architecture/**"
+      - "governance/**"
+      - "wiki/**"
+      - ".github/pull_request_template.md"
+      - ".github/workflows/command-center-invariants.yml"
+      - "scripts/verify-command-center-invariants.py"
+  push:
+    branches:
+      - main
+    paths:
+      - "README.md"
+      - "profile/**"
+      - "architecture/**"
+      - "governance/**"
+      - "wiki/**"
+      - ".github/pull_request_template.md"
+      - ".github/workflows/command-center-invariants.yml"
+      - "scripts/verify-command-center-invariants.py"
+
+permissions:
+  contents: read
+
+jobs:
+  command-center-invariants:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify command-center invariants
+        run: python scripts/verify-command-center-invariants.py

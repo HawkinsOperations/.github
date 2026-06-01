@@ -66,6 +66,10 @@ List checks run, checks not run, and any required status checks.
 
 Green CI/status checks are not merge authority.
 
+For command-center, reviewer-route, governance, or proof-boundary changes, run:
+
+`python scripts/verify-command-center-invariants.py`
+
 ## Security / Privacy
 
 State whether private-term, public-safety, secret, hostname, LAN IP, raw-log, screenshot, CSV export, or local evidence-path risk was reviewed.
@@ -96,6 +100,7 @@ This PR must not promote runtime-active, signal-observed, evidence-linked public
 - [ ] No unrelated dirty state included
 - [ ] Claim boundary included
 - [ ] Testing/validation listed
+- [ ] Command-center invariant check run or explicitly not applicable
 - [ ] Private-term/public-safety review completed or explicitly not run
 - [ ] No runtime/signal/public-safe overclaim added
 - [ ] Required session log appended if this was meaningful work

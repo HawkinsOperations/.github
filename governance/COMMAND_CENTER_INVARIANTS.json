@@ -1,0 +1,34 @@
+{
+  "schema": "hawkinsoperations-command-center-invariants-v1",
+  "scope": "HawkinsOperations/.github reviewer routing and governance shell",
+  "required_route_files": [
+    "README.md",
+    "profile/README.md",
+    "profile/START_HERE.md",
+    "architecture/REPO_AUTHORITY_MAP.md",
+    "architecture/REPRODUCIBLE_REVIEWER_PATH.md",
+    "governance/CONTROL_STATUS_MATRIX.md",
+    "governance/ISSUE_FACTORY_CONTROL_RECEIPTS.md",
+    "governance/GOVERNANCE_SUMMARY.md",
+    "governance/PR_REVIEW_AUTHORITY.md",
+    "governance/CROSS_REPO_PROMOTION_MAP.md",
+    "wiki/11_ORG_SYSTEM_MAP.md",
+    ".github/pull_request_template.md"
+  ],
+  "invariants": {
+    "github_repo_role": ".github is reviewer routing and governance shell only",
+    "project_2_role": "Project #2 is the canonical private HawkinsOperations Control Board operating cockpit",
+    "project_1_boundary": "Project #1 is not an active reviewer route",
+    "project_metadata_boundary": "Project metadata is coordination only, not proof, approval, merge authority, runtime truth, signal truth, or public-safe status",
+    "rendering_boundary": "Website and GitHub rendering are not proof",
+    "proof_authority_repo": "hawkinsoperations-proof owns proof records and claim ceilings",
+    "command_center_proof_ceiling": "SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY",
+    "ledger_public_safe_status": "NOT_PUBLIC_SAFE",
+    "reviewer_metrics_pipeline": "Reviewer metrics pipeline keeps Lifetime Governed Cases separate from detection activity, validation cases, proof records, blocked claims, and Project Board reconciliation status",
+    "reviewer_metrics_counts": "Lifetime Governed Cases 4; Detection Activity / controlled validation fire count 49; Validation Case Count 106; Proof Record Count 8; Blocked Claim Count 31",
+    "ho_det_001_public_ceiling": "CONTROLLED_TEST_VALIDATED",
+    "runtime_signal_public_promotions": "runtime-active, signal-observed, evidence-linked public proof, public-safe, production-ready, fleet-wide, AWS-live, Cribl-routed, Wazuh-routed, autonomous SOC, AI-approved, AI-decided, analyst-approved, and live Splunk claims remain blocked unless separately proven and approved",
+    "standing_controls": ".github#8 and .github#10 remain standing controls",
+    "standing_control_replacement": "Closing or replacing .github#8 or .github#10 requires explicit Raylee approval that names the replacement standing-control role"
+  }
+}

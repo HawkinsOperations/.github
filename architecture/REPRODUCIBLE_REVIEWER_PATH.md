@@ -149,7 +149,7 @@ npm run build
 Expected Phase 1 gap:
 
 - ID-DET-002, ID-DET-003, and ID-DET-004 public website routes are pending.
-- HO-DET-012 appears in current website telemetry data, but proof and website parity remain required before any public proof or public-safe wording can be claimed.
+- HO-DET-012 appears in current website source data, but proof and website parity remain required before any public proof or public-safe wording can be claimed.
 
 ## Private-Only Commands Excluded
 
@@ -166,30 +166,23 @@ The public clone path excludes:
 
 Private evidence can inform future review only after privacy review, stale review, evidence linkage review, wording review, and Raylee approval.
 
-## Future Intended Top-Level Verifier
+## Command-Center Invariant Verifier
 
-Future Phase 2 or later work may add a top-level verifier under separate approval:
+The `.github` command-center route has a local invariant verifier for reviewer-route and claim-boundary checks:
 
 ```powershell
-python -B .github\scripts\verify_hawkinsoperations_promotion_chain.py --repo-root <org-root>
+cd .github
+python scripts\verify-command-center-invariants.py
 ```
 
-Expected future output fields:
+Expected output fields:
 
 ```text
-ORG_PROMOTION_CHAIN
-SOURCE_CONTRACT
-VALIDATION_CONTRACT
-PLATFORM_VISIBILITY_CONTRACT
-PROOF_STATUS_INDEX
-PUBLIC_CLAIM_PARITY
-PUBLIC_SAFE_STATUS=NOT_PUBLIC_SAFE
-RUNTIME_ACTIVE_PUBLIC_PROOF=BLOCKED
-SIGNAL_OBSERVED_PUBLIC_PROOF=BLOCKED
-HUMAN_REVIEW_REQUIRED=true
+COMMAND_CENTER_INVARIANTS=PASS
+checked_files=<count>
 ```
 
-That verifier does not exist in Phase 1 and must not be claimed as a current control.
+This verifier proves only that checked command-center route files and invariant wording passed. It does not prove runtime truth, signal truth, public-safe status, Project-board approval, merge authority, or public proof.
 
 ## Current Gap Summary
 

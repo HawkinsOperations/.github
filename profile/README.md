@@ -28,7 +28,8 @@ GitHub/org rendering is routing, not proof. Proof records live in [hawkinsoperat
 | Front-door/status proof ceiling | `SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY` | Applies to command-center and ledger-status routing; HO-DET-001 proof records keep their own proof ceiling. |
 | Current ledger status | [Lifetime Case Ledger public summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/lifetime-case-ledger-v1-public-summary.json) | 4 ledger events, 4 total cases, 0 public-safe cases, 0 closed cases; ledger status remains `NOT_PUBLIC_SAFE`. |
 | Project operating cockpit | [private org Control Board route](https://github.com/orgs/HawkinsOperations/projects/2) | Canonical private HawkinsOperations Control Board; Project #1 is not an active reviewer route; project metadata is not proof, approval, runtime, signal, public-safe status, or merge authority. |
-| Reviewer/demo path | [Start Here](START_HERE.md) and [Reproducible Reviewer Path](../architecture/REPRODUCIBLE_REVIEWER_PATH.md) | Demo routing does not raise the claim ceiling. |
+| Reviewer/demo path | [Start Here 30-second path](START_HERE.md#30-second-reviewer-path) and [Reproducible Reviewer Path](../architecture/REPRODUCIBLE_REVIEWER_PATH.md) | Demo routing does not raise the claim ceiling. |
+| Command-center invariant check | [`python scripts/verify-command-center-invariants.py`](../scripts/verify-command-center-invariants.py) | Verifier control for route and claim-boundary invariants; it does not create runtime, signal, public-safe, or proof authority. |
 
 | Reviewer need | Route |
 |---|---|
@@ -45,6 +46,16 @@ GitHub/org rendering is routing, not proof. Proof records live in [hawkinsoperat
 The private Control Board supports internal governance and navigation. It is not proof, not public evidence, and not a public-safe approval surface.
 
 The private org Control Board is the private Project #2 operating cockpit for current work visibility. Project #1 is not an active reviewer route and was not resolvable through the live ProjectV2 API during the current cleanup pass. The board is useful for navigation, queue review, and sprint context only; it does not mutate proof state, authorize merge, approve public wording, or promote public-safe status.
+
+---
+
+## Fast reviewer paths
+
+| Time | Route | Boundary |
+|---:|---|---|
+| 30 sec | Open [Start Here](START_HERE.md), then [Control Status Matrix](../governance/CONTROL_STATUS_MATRIX.md). | Confirms the command center, current ceiling, and blocked claims. |
+| 3 min | Follow [Start Here](START_HERE.md) through Project #2, repo authority, standing controls, and the HO-DET-001 proof record. | Project metadata remains coordination-only. Proof stays in `hawkinsoperations-proof`. |
+| 10 min | Run the [Reproducible Reviewer Path](../architecture/REPRODUCIBLE_REVIEWER_PATH.md) and the command-center invariant verifier. | Clone-runnable inspection and invariant checks only; no private runtime access or proof promotion. |
 
 ---
 
@@ -130,7 +141,7 @@ The official, bounded reviewer route for the HO-DET-001 detection: source, valid
 | Field | Value |
 |---|---|
 | Public proof ceiling | `CONTROLLED_TEST_VALIDATED` |
-| Reviewer package status | `PUBLIC_SAFE_REVIEWER_RELEASE_CANDIDATE` |
+| Reviewer package status | `BOUNDED_REVIEWER_RELEASE_CANDIDATE` |
 | Raw/private runtime evidence | `NOT_PUBLIC_SAFE` |
 | Public-safe runtime proof | `BLOCKED` |
 | Rendering of this page | `RENDERING_NOT_PROOF` |
@@ -167,7 +178,7 @@ Pick the route that matches your review job. The route changes how you inspect t
 
 | Route | Time | What you inspect | Start here |
 |---|---:|---|---|
-| Hiring manager | 3 min | What the system is, what is proven, what stays blocked. | [hawkinsoperations.com](https://hawkinsoperations.com/) |
+| Hiring manager | 3 min | What the system is, what is proven, what stays blocked. | [Start Here](START_HERE.md) |
 | Detection engineer | 10 min | Detection source, validation scope, HO-DET-001 path. | [detections repo](https://github.com/HawkinsOperations/hawkinsoperations-detections) |
 | SOC automation lead | 10 min | Case packet flow, deterministic checks, CI boundaries, runtime-contract separation. | [validation repo](https://github.com/HawkinsOperations/hawkinsoperations-validation) |
 | AI governance reviewer | 10 min | Where AI supports labor and where human review authorizes claims. | [proof repo](https://github.com/HawkinsOperations/hawkinsoperations-proof) |
@@ -177,7 +188,7 @@ Pick the route that matches your review job. The route changes how you inspect t
 
 ---
 
-Org-level reviewer entry point: Cyber Kill Chain coverage lives in `hawkinsoperations-proof` as a public-safe reviewer map. It is not proof authority.
+Org-level reviewer entry point: Cyber Kill Chain coverage lives in `hawkinsoperations-proof` as a public route-safe reviewer map. It is not public-safe approval, runtime proof, or proof authority.
 
 ## Six truth surfaces
 

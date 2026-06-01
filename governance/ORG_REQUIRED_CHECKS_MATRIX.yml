@@ -27,12 +27,17 @@ repos:
     truth_surface: "Organization control-plane routing and reviewer entry point."
     required_checks_observed: []
     important_non_required_checks:
-      - "No repo-local workflow directory observed in Phase 1 inspection."
-    workflow_file: null
-    job_check_context: null
-    trigger_path_filter_risk: "No repo-local workflow trigger observed; contract text is soft routing until a future check or review requirement exists."
-    report_only_versus_fail_closed_status: "soft-routing-only"
-    next_hardening_gate: "Create an approved org promotion-chain verifier and make it required only after separate approval."
+      - "command-center-invariants workflow exists as a repo-local verifier route, but it is not proven required by branch protection or ruleset in this file."
+    workflow_file:
+      - ".github/workflows/command-center-invariants.yml"
+    job_check_context:
+      - workflow_name: "command-center-invariants"
+        job_id: "command-center-invariants"
+        job_display_name: null
+        verifier_command: "python scripts/verify-command-center-invariants.py"
+    trigger_path_filter_risk: "Path-filtered to command-center route, governance, architecture, wiki, PR-template, workflow, manifest, and verifier changes. It does not run for unrelated assets."
+    report_only_versus_fail_closed_status: "workflow-control only unless the check is required by branch protection or ruleset and fails closed on violation."
+    next_hardening_gate: "Make command-center-invariants required only after separate GitHub settings/ruleset approval."
   - repo_name: "hawkinsoperations-detections"
     truth_surface: "Detection source truth."
     required_checks_observed:
