@@ -1,40 +1,106 @@
 # HawkinsOperations .github
 
-This repository is the HawkinsOperations GitHub organization command center. It owns the organization profile, reviewer routes, governance summaries, and visual maps that explain how the six-repo system works.
+The HawkinsOperations organization command center and reviewer-routing surface.
 
-The public organization overview is controlled by [profile/README.md](profile/README.md). This repo is a front door, not a proof source: GitHub rendering is not proof.
+`.github` is route/governance truth only. It is not proof authority.
+The .github is routing/governance only.
+
+## What This Repo Owns
+
+- Organization profile and reviewer routing.
+- Governance summaries, control surfaces, and command-center maps.
+- Reviewer-facing wording that explains where authority lives.
+- The command-center invariant verifier for route and claim-boundary checks.
+
+## What This Repo Does Not Own
+
+- Proof records or proof ceilings.
+- Runtime truth or signal truth.
+- Public-safe status or public publication approval.
+- Merge authority or final disposition authority.
+- Website rendering truth.
+
+Evidence and source flow stay separated:
+
+`detection source -> validation behavior -> platform contracts where applicable -> proof records -> public rendering`
 
 ## Fast Reviewer Path
 
 | Time | Start | What to confirm |
 |---:|---|---|
 | 30 sec | [profile/START_HERE.md](profile/START_HERE.md) | What HawkinsOperations is, which repo owns truth, and what remains blocked. |
-| 3 min | [profile/README.md](profile/README.md) -> [Control Status Matrix](governance/CONTROL_STATUS_MATRIX.md) | Command-center route, proof ceiling, ledger count boundary, and standing controls. |
-| 10 min | [Reproducible Reviewer Path](architecture/REPRODUCIBLE_REVIEWER_PATH.md) | Clone-runnable source/validation/proof inspection without private runtime access. |
+| 3 min | [profile/README.md](profile/README.md) -> [Control Status Matrix](governance/CONTROL_STATUS_MATRIX.md) | Command-center route, proof ceiling, and standing controls. |
+| 10 min | [Reproducible Reviewer Path](architecture/REPRODUCIBLE_REVIEWER_PATH.md) | Clone-runnable source, validation, proof, and rendering review without private runtime access. |
+
+## README / Repo Makeover Order
+
+This is the README/governance cleanup order, not evidence-generation order.
+
+| Order | Repo | Truth surface | Boundary |
+|---:|---|---|---|
+| 1 | `.github` | Route / governance truth | Routes reviewers and explains authority boundaries; does not prove claims. |
+| 2 | `hawkinsoperations-proof` | Claim / proof truth | Owns proof records, proof ceilings, evidence-boundary records, and blocked-claim status. |
+| 3 | `hawkinsoperations-platform` | Contract / guardrail truth | Owns schemas, contracts, ledger guardrails, runtime-route guardrails, and non-promotional platform controls. |
+| 4 | `hawkinsoperations-validation` | Behavior truth | Owns controlled validation checks, case packets, replay scope, and recorded validation outputs. |
+| 5 | `hawkinsoperations-detections` | Source truth | Owns detection source, metadata, source reviewability, and source-level eligibility routing. |
+| 6 | `hawkinsoperations-website` | Render truth | Renders public reviewer navigation and bounded wording; rendering is not proof. |
 
 ## Command Center Routes
 
 | Need | Route | Boundary |
 |---|---|---|
-| First reviewer path | [profile/START_HERE.md](profile/START_HERE.md) | Click path for review/demo; does not promote claims. |
+| First reviewer path | [profile/START_HERE.md](profile/START_HERE.md) | Click path for review and demo; does not promote claims. |
 | Org front door | [profile/README.md](profile/README.md) | Reviewer routing only; does not create proof. |
-| Six-repo architecture | [architecture/REPO_AUTHORITY_MAP.md](architecture/REPO_AUTHORITY_MAP.md) | Repo ownership map; source does not prove runtime. |
+| Repository authority map | [architecture/REPO_AUTHORITY_MAP.md](architecture/REPO_AUTHORITY_MAP.md) | Repository ownership map; source does not prove runtime. |
 | Proof chain | [architecture/REPRODUCIBLE_REVIEWER_PATH.md](architecture/REPRODUCIBLE_REVIEWER_PATH.md) | Clone-runnable inspection path; no private runtime access. |
 | Truth/control status | [governance/CONTROL_STATUS_MATRIX.md](governance/CONTROL_STATUS_MATRIX.md) | Current wording and blockers; soft unless enforced. |
-| Standing control registers | [governance/ISSUE_FACTORY_CONTROL_RECEIPTS.md](governance/ISSUE_FACTORY_CONTROL_RECEIPTS.md) | #8 and #10 remain open standing controls unless Raylee approves a replacement standing-control role; governance classification only. |
-| Command-center invariants | [governance/COMMAND_CENTER_INVARIANTS.json](governance/COMMAND_CENTER_INVARIANTS.json) and [scripts/verify-command-center-invariants.py](scripts/verify-command-center-invariants.py) | Verifier control for route and claim-boundary invariants; does not promote proof. |
+| Standing control registers | [governance/ISSUE_FACTORY_CONTROL_RECEIPTS.md](governance/ISSUE_FACTORY_CONTROL_RECEIPTS.md) | Standing controls and issue receipts; governance classification only. |
+| Command-center invariants | [governance/COMMAND_CENTER_INVARIANTS.json](governance/COMMAND_CENTER_INVARIANTS.json) and [scripts/verify-command-center-invariants.py](scripts/verify-command-center-invariants.py) | Route and claim-boundary verifier control; does not promote proof. |
 | Visual system map | [wiki/11_ORG_SYSTEM_MAP.md](wiki/11_ORG_SYSTEM_MAP.md) | Docs-as-code map; routing is not proof. |
-| Project cockpit | [private org Control Board route](https://github.com/orgs/HawkinsOperations/projects/2) | Coordination-only operating cockpit; project metadata is report-only, not proof, approval, runtime, signal, public-safe status, or merge authority. Project #1 is not an active reviewer route. |
+| Project cockpit | [private org Control Board route](https://github.com/orgs/HawkinsOperations/projects/2) | Canonical private HawkinsOperations Control Board; Project #1 is not an active reviewer route when already established in current `.github` files. Project metadata is coordination-only. |
 | Proof records | [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof) | Proof records own claim ceilings. |
 
 ## Current Boundary
 
-Current proof records live in [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof), and the current HO-DET-001 public ceiling remains `CONTROLLED_TEST_VALIDATED`.
+The current public ceiling for HO-DET-001 remains `CONTROLLED_TEST_VALIDATED`.
 
-.github is routing/governance only. It does not own proof authority, runtime truth, signal truth, public-safe status, or website rendering truth.
+The command-center and ledger-status front door remains `SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY`.
 
-The front-door/status proof ceiling for the command-center and ledger-status route remains `SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY`.
+`.github` is route/governance truth only. It does not own proof authority, runtime truth, signal truth, public-safe status, merge authority, or public publication approval.
 
-The proof-owned Lifetime Case Ledger public summary currently records a bounded count route only: 4 ledger events, 4 total cases, 0 public-safe cases, and 0 closed cases. Its ledger status remains `NOT_PUBLIC_SAFE`, and its proof ceiling remains `SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY`.
+The canonical private HawkinsOperations Control Board is Project #2. Project metadata is coordination-only and does not create proof, approval, runtime truth, signal truth, public-safe status, merge authority, public publication approval, or proof promotion. Project #1 is not an active reviewer route when already established in the current `.github` files.
 
-The canonical private HawkinsOperations Control Board is the private org Project #2 route. Project #1 is not an active reviewer route and was not resolvable through the live ProjectV2 API during the current cleanup pass. Project metadata remains coordination-only and does not create proof, approval, runtime truth, signal truth, public-safe status, or merge authority.
+Current boundary labels:
+
+- `CONTROLLED_TEST_VALIDATED`
+- `NOT_PUBLIC_SAFE`
+- `BLOCKED`
+- `SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY`
+- `RENDERING_NOT_PROOF`
+- `HUMAN_REVIEW_REQUIRED`
+
+The flow remains:
+
+`detection source -> validation behavior -> platform contracts where applicable -> proof records -> public rendering`
+
+## Blocked Claims
+
+This surface does not claim runtime-active public proof, signal-observed public proof, public-safe runtime proof, production readiness, SOCaaS deployment, autonomous SOC operation, AI-approved disposition, AI-decided disposition, analyst-approved disposition, fleet-wide coverage, customer deployment, live Splunk public proof, live Wazuh public proof, Cribl-routed public proof, Wazuh-routed public proof, AWS-live proof, cloud-live proof, case closure, or public publication approval.
+
+## Related Repositories
+
+| Repo | Truth surface | Boundary |
+|---|---|---|
+| [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof) | Claim / proof truth | Owns proof records, claim ceilings, and blocked-claim status. |
+| [hawkinsoperations-platform](https://github.com/HawkinsOperations/hawkinsoperations-platform) | Contract / guardrail truth | Owns schemas, contracts, and non-promotional platform controls. |
+| [hawkinsoperations-validation](https://github.com/HawkinsOperations/hawkinsoperations-validation) | Behavior truth | Owns controlled validation and recorded validation outputs. |
+| [hawkinsoperations-detections](https://github.com/HawkinsOperations/hawkinsoperations-detections) | Source truth | Owns detection source and source-level routing. |
+| [hawkinsoperations-website](https://github.com/HawkinsOperations/hawkinsoperations-website) | Render truth | Renders public reviewer navigation and bounded wording. |
+
+## Doctrine
+
+AI is labor. Governance is authority.
+
+Build loud. Verify hard. Claim tight. Ship receipts.
+
+Rendering is not proof.
