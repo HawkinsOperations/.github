@@ -2,8 +2,7 @@
 
 The HawkinsOperations organization command center and reviewer-routing surface.
 
-`.github` is route/governance truth only. It is not proof authority.
-The .github is routing/governance only.
+The .github is routing/governance only and not proof authority.
 
 ## What This Repo Owns
 
