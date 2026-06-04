@@ -16,25 +16,65 @@
 
 ---
 
-## What this shows now
+## What this is
 
-HawkinsOperations is a governed detection engineering loop: source-controlled detection work, deterministic validation, platform contracts, proof records, reviewer releases, bounded runtime-candidate routing, and human-review gates. AI supports drafting, triage reasoning, case-packet support, documentation, and automation planning; it does not decide disposition, approve claims, promote proof, or close cases.
+HawkinsOperations is a governed AI Security Operations and detection engineering system that turns detection work into source-controlled rules, deterministic validation, platform contracts, proof records, reviewer releases, runtime candidate lanes, and human-governed promotion gates.
 
-Green CI is evidence for the checked scope, not approval. Website and GitHub pages route reviewers; proof records and verifiers own the claim ceiling.
+AI accelerates drafting, triage reasoning, case-packet support, documentation, and automation planning. Validation, platform guardrails, proof records, and human review decide what becomes operational truth.
 
-## Current strongest receipts
+## Current operating signal
 
-| Receipt | What is real today | Reviewer value | Boundary |
-|---|---|---|---|
-| [HO-DET-001 proof path](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md) | PowerShell EncodedCommand detection route mapped to ATT&CK T1059.001, with detection source, Splunk source, controlled validation, proof record, and public route. | Shows the full source -> validation -> platform contract -> proof -> rendering chain for one concrete detection. | Public ceiling remains `CONTROLLED_TEST_VALIDATED`; runtime, signal, production, and public-safe claims remain blocked. |
-| [Proof Pack 001](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) | Bounded reviewer release ZIP with SHA256 and verifier route for HO-DET-001. | Gives a reviewer one package to verify without private lab access. | Reviewer release only; not public-safe runtime proof. |
-| [Reviewer metrics summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) | 4 governed cases, 49 controlled validation activity fires, 106 validation cases, 8 proof records, and 31 blocked claims. | Reports progress without inflating proof or turning activity into case truth. | Activity fires are validation activity, not governed cases, runtime signals, or public-safe proof. |
-| [Runtime Route Proof v1](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/maps/RUNTIME-ROUTE-PROOF-V1-REVIEWER-MAP.md) | Private-candidate Wazuh -> Cribl -> Splunk route summary and prerelease. | Shows runtime-route preservation work without publishing raw private evidence. | `NOT_PUBLIC_SAFE`; not public runtime proof, production proof, or broad-ingestion proof. |
-| [Six-repo authority model](../architecture/REPO_AUTHORITY_MAP.md) | Detections own source, validation owns behavior, platform owns contracts, proof owns claim ceilings, website renders, and `.github` routes. | Makes the system reviewable without allowing one repo or page to claim another truth surface. | Rendering is not proof; router surfaces do not authorize claims. |
+| Governed Case / Runtime Collector Pipeline | Current value |
+|---|---:|
+| Lifetime Governed Cases | 6 |
+| Windows Runtime Collector candidates | 1 |
+| Linux Runtime Collector candidates | 1 |
+| Normalized append-ready candidates | 2 |
+| Duplicates | 0 |
+| Public-safe cases | 0 |
+| Closed cases | 0 |
 
-## What remains blocked
+Windows and Linux private candidate lanes produced one reviewed candidate each. The normalizer produced two append-ready candidates with zero duplicates. After explicit approval and verifier gates, both rows were appended as governed Lifetime Ledger cases, moving the strict ledger count from 4 to 6.
 
-Runtime-active public proof, signal-observed public proof, public-safe runtime proof, production SOCaaS, customer deployment, live enterprise deployment, autonomous SOC, AI-decided disposition, AI-approved disposition, analyst-approved disposition, FortiSIEM integration proven, fleet-wide coverage, and production-ready SOC are not claimed here.
+| Validation / Reviewer Activity Pipeline | Current value |
+|---|---:|
+| Controlled validation activity fires | 49 |
+| Validation cases | 106 |
+| Proof records | 8 |
+| Blocked claims | 31 |
+
+These are activity and reviewer-scale metrics. They are not governed cases, runtime signals, or public-safe proof.
+
+## Standout receipts
+
+| Receipt | What exists | Why it matters |
+|---|---|---|
+| [HO-DET-001 proof path](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md) | PowerShell EncodedCommand detection route mapped to ATT&CK T1059.001, with detection source, Splunk source, controlled validation, proof record, and public route. | Shows the full source -> validation -> platform contract -> proof -> rendering chain for one concrete detection. |
+| [Proof Pack 001](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) | Bounded reviewer release ZIP with SHA256 and verifier route for HO-DET-001. | Gives a reviewer one package to verify without private lab access. |
+| [Runtime Route Proof v1](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/maps/RUNTIME-ROUTE-PROOF-V1-REVIEWER-MAP.md) | Private-candidate Wazuh -> Cribl -> Splunk route summary and prerelease. | Preserves a runtime-route proof candidate without publishing raw private evidence or raising public proof status. |
+| [Reviewer metrics summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) | Reviewer Metrics Pipeline v1 closeout snapshot: 49 controlled validation activity fires, 106 validation cases, 8 proof records, and 31 blocked claims. | Reports scale without turning validation activity into governed case truth. |
+| [Six-repo authority model](../architecture/REPO_AUTHORITY_MAP.md) | Detections own source, validation owns behavior, platform owns mechanics, proof owns claim ceilings, website renders, and `.github` routes. | Makes the system reviewable without allowing one repo or page to claim another truth surface. |
+
+## Authority engines
+
+| Engine | What it owns | Why it matters |
+|---|---|---|
+| Detections | Source truth | Detection logic and metadata stay source-controlled and reviewable. |
+| Validation | Behavior truth | Controlled cases, parity checks, case packets, AI-boundary checks, and runner trust split prove behavior inside scope. |
+| Platform | Control mechanics | Contracts, schemas, factory commands, ledgers, append gates, runtime candidate lanes, and verifier guardrails make the operating model executable. |
+| Proof | Claim authority | Proof records, claim ceilings, proof packs, reviewer maps, blocked claims, and releases decide what can be claimed. |
+| Website | Rendering | Public cockpit and reviewer routes; rendering does not create proof authority. |
+| `.github` | Command center | Org front door, reviewer routing, command-center boundaries, and authority explanation. |
+
+**Platform is the mechanical control layer.** It turns detection work into governed, machine-checkable workflow through contracts, factory commands, ledger mechanics, case-packet schemas, runtime candidate gates, reviewer metrics state, and verifier scripts. Platform does not own proof promotion or public-safe runtime truth.
+
+**Validation is the behavior engine.** It turns detection claims into reproducible checks through controlled cases, local case pipeline, registry checks, activity ledger, parity checks, blocked-claim scans, AI authority boundaries, and runner trust separation. Validation does not prove live runtime, signal-observed public proof, or production deployment.
+
+**Proof is the public trust anchor.** It owns proof records, claim ceilings, Proof Pack 001, Runtime Route Proof v1, reviewer maps, release routes, and proof-boundary case studies. Proof records authorize only their stated scope.
+
+## What this does not claim
+
+Runtime-active public proof, signal-observed public proof, public-safe runtime proof, production SOC, production SOCaaS, customer deployment, live enterprise deployment, autonomous SOC, AI-decided disposition, AI-approved disposition, analyst-approved disposition, case closure, FortiSIEM integration proven, fleet-wide coverage, public-safe Runtime Route Proof v1, Wazuh/Cribl/Splunk public proof, broad ingestion proof, website/GitHub rendering as proof, GitHub Project metadata as proof, and green CI as approval are not claimed here.
 
 ## HawkinsOperations Control Panel
 
@@ -46,7 +86,7 @@ Runtime-active public proof, signal-observed public proof, public-safe runtime p
 | Proof chain | Detection source -> validation -> case packet -> proof record -> public rendering | Public rendering routes reviewers; it does not create proof. |
 | Truth surfaces | [Six truth surfaces](#six-truth-surfaces) | Source, validation, runtime, signal, evidence, and public rendering stay separate. |
 | Front-door/status proof ceiling | `SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY` | Applies to command-center and ledger-status routing; HO-DET-001 proof records keep their own proof ceiling. |
-| Current ledger status | [Lifetime Case Ledger public summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/lifetime-case-ledger-v1-public-summary.json) | 4 ledger events, 4 total cases, 0 public-safe cases, 0 closed cases; ledger status remains `NOT_PUBLIC_SAFE`. |
+| Current ledger status | [Platform ledger state manifest](https://github.com/HawkinsOperations/hawkinsoperations-platform/blob/main/contracts/lifetime-case-ledger-v1-state-manifest.json) | 6 ledger events, 6 total cases, 0 public-safe cases, 0 closed cases; ledger status remains `NOT_PUBLIC_SAFE`. |
 | Project operating cockpit | [private org Control Board route](https://github.com/orgs/HawkinsOperations/projects/2) | Canonical private HawkinsOperations Control Board; Project #1 is not an active reviewer route; project metadata is not proof, approval, runtime, signal, public-safe status, or merge authority. |
 | Reviewer/demo path | [Start Here 30-second path](START_HERE.md#30-second-reviewer-path) and [Reproducible Reviewer Path](../architecture/REPRODUCIBLE_REVIEWER_PATH.md) | Demo routing does not raise the claim ceiling. |
 | Command-center invariant check | [`python scripts/verify-command-center-invariants.py`](../scripts/verify-command-center-invariants.py) | Verifier control for route and claim-boundary invariants; it does not create runtime, signal, public-safe, or proof authority. |
@@ -176,17 +216,19 @@ The official, bounded reviewer route for the HO-DET-001 detection: source, valid
 
 ## Current ledger status
 
-The proof-owned Lifetime Case Ledger public summary is a bounded count and boundary route. It currently records:
+The platform-owned Lifetime Case Ledger state manifest is the current strict governed ledger route. It records:
 
 | Ledger field | Current source-controlled value |
 |---|---|
-| Total ledger events | 4 |
-| Total cases | 4 |
+| Total ledger events | 6 |
+| Total cases | 6 |
 | Public-safe count | 0 |
 | Closed-case count | 0 |
 | Appended detections | `HO-DET-001`, `HO-DET-011`, `HO-DET-012` |
 | Ledger public-safe status | `NOT_PUBLIC_SAFE` |
 | Ledger proof ceiling | `SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY` |
+
+Runtime Case Collector v0 has separate Windows and Linux private candidate lanes. Windows and Linux each produced one reviewed candidate, normalized to two append-ready candidates with zero duplicates. After explicit approval and verifier gates, those two rows were appended as governed Lifetime Ledger cases, moving the strict ledger count from 4 to 6.
 
 This ledger route does not prove runtime activity, signal observation, production deployment, SOCaaS availability, public-safe runtime proof, public proof, autonomous SOC authority, AI-approved final disposition, analyst-approved final disposition, or case closure authority.
 

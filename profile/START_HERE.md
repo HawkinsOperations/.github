@@ -2,7 +2,7 @@
 
 Start here if reviewing HawkinsOperations.
 
-HawkinsOperations is a governed AI Security Operations and detection engineering system built around source-controlled detection work, deterministic validation, platform contracts, proof records, reviewer releases, bounded runtime-candidate routing, and human-review gates.
+HawkinsOperations is a governed AI Security Operations and detection engineering system built around source-controlled detection work, deterministic validation, platform contracts, proof records, reviewer releases, Windows/Linux runtime candidate lanes, ledger mechanics, and human-review gates.
 
 The system separates detection source, validation, platform contracts, proof records, governance routing, and public rendering so public claims cannot outrun evidence.
 
@@ -13,14 +13,46 @@ The system separates detection source, validation, platform contracts, proof rec
 - Green CI is evidence for the checked scope, not approval.
 - Website/GitHub rendering is not proof.
 
-Start with the receipts, then check the boundaries:
+Start with the system signal, then inspect the receipts:
+
+| Current operating signal | Value | Boundary |
+|---|---:|---|
+| Lifetime Governed Cases | 6 | Current strict platform ledger count; public-safe count remains 0 and closed-case count remains 0. |
+| Windows Runtime Collector candidates | 1 | Private candidate lane only. |
+| Linux Runtime Collector candidates | 1 | Private candidate lane only. |
+| Normalized append-ready candidates | 2 | Zero duplicates; only the approved appended rows became governed cases. |
+| Controlled validation activity fires | 49 | Validation activity, not governed cases or runtime signals. |
+| Validation cases | 106 | Controlled/reviewer activity scale, not production coverage. |
+| Proof records | 8 | Proof-record routing count, not public-safe approval. |
+| Blocked claims | 31 | Claim-control count, not missing functionality. |
+
+Windows and Linux private candidate lanes each produced one reviewed candidate. The normalizer produced two append-ready candidates with zero duplicates. After explicit approval and verifier gates, both rows were appended as governed Lifetime Ledger cases, moving the strict ledger count from 4 to 6.
+
+## First receipts
 
 | First check | What it shows | Boundary |
 |---|---|---|
 | [HO-DET-001 proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md) | PowerShell EncodedCommand detection route, source, Splunk source, controlled validation, proof record, and public ceiling. | `CONTROLLED_TEST_VALIDATED`; runtime, signal, production, and public-safe claims remain blocked. |
 | [Proof Pack 001 Release](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) | Bounded reviewer ZIP, SHA256, and verifier route for HO-DET-001. | Reviewer release only; not public-safe runtime proof. |
-| [Reviewer metrics summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) | 4 governed cases, 49 controlled validation activity fires, 106 validation cases, 8 proof records, 31 blocked claims. | Activity fires are validation activity, not governed cases, runtime signals, or public-safe proof. |
+| [Reviewer metrics summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) | Reviewer Metrics Pipeline v1 closeout snapshot: 49 controlled validation activity fires, 106 validation cases, 8 proof records, 31 blocked claims. | Activity metrics are not governed cases, runtime signals, or public-safe proof. |
 | [Runtime Route Proof v1 reviewer map](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/maps/RUNTIME-ROUTE-PROOF-V1-REVIEWER-MAP.md) | Private-candidate Wazuh -> Cribl -> Splunk route summary and prerelease. | `NOT_PUBLIC_SAFE`; not public runtime proof, production proof, or broad-ingestion proof. |
+
+## Authority engines
+
+| Engine | What it owns | Why it matters |
+|---|---|---|
+| Detections | Source truth | Detection logic and metadata stay source-controlled and reviewable. |
+| Validation | Behavior truth | Controlled cases, case-packet checks, parity checks, AI-boundary checks, and runner trust split prove behavior inside scope. |
+| Platform | Control mechanics | Contracts, schemas, factory commands, ledgers, append gates, runtime candidate lanes, and verifier guardrails make the operating model executable. |
+| Proof | Claim authority | Proof records, claim ceilings, proof packs, reviewer maps, blocked claims, and releases decide what can be claimed. |
+| Website | Rendering | Public cockpit and reviewer routes, not proof authority. |
+| `.github` | Command center | Org front door, reviewer routing, and authority boundaries. |
+
+Platform is the mechanical control layer: contracts, factory commands, ledger mechanics, case-packet schemas, runtime candidate gates, reviewer metrics state, and verifier scripts. It does not own proof promotion or public-safe runtime truth.
+
+Validation is the behavior engine: controlled cases, local case pipeline, registry checks, activity ledger, parity checks, blocked-claim scans, AI authority boundaries, and runner trust separation. It does not prove live runtime, signal-observed public proof, or production deployment.
+
+Proof is the public trust anchor: proof records, claim ceilings, Proof Pack 001, Runtime Route Proof v1, reviewer maps, release routes, and proof-boundary case studies. Proof records authorize only their stated scope.
 
 The enterprise AI failure mode is that AI-generated output becomes a public claim, analyst conclusion, operational action, security disposition, or executive truth before evidence and human review authorize it. HawkinsOperations is built to prevent that promotion path.
 
@@ -59,7 +91,7 @@ Public claims require reviewed wording, evidence linkage, stale review, and appr
 1. Open the [organization profile](./README.md) for the strongest current receipts.
 2. Open the [HO-DET-001 proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md) and [Proof Pack 001 Release](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) to verify the flagship proof route and bounded reviewer release.
 3. Open the [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) to see which repo owns source, validation, platform, proof, website rendering, and org routing.
-4. Open the [Reviewer metrics summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) to verify bounded metrics without governed-case inflation.
+4. Open the [Platform ledger state manifest](https://github.com/HawkinsOperations/hawkinsoperations-platform/blob/main/contracts/lifetime-case-ledger-v1-state-manifest.json) and [Reviewer metrics summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) to verify the two separate number systems.
 5. Treat every website/GitHub page as routing unless the owning proof record supports the claim.
 
 ### 3-minute command-center path
@@ -73,13 +105,13 @@ Public claims require reviewed wording, evidence linkage, stale review, and appr
 7. If you are reviewing internal operating context, open the [private org Control Board route](https://github.com/orgs/HawkinsOperations/projects/2). Treat it as work coordination only, not proof, approval, runtime state, signal state, public-safe status, or merge authority. Project #1 is not an active reviewer route.
 8. Open the [Reproducible Reviewer Path](../architecture/REPRODUCIBLE_REVIEWER_PATH.md) only if you want clone-runnable inspection steps.
 
-Current ledger snapshot: the proof-owned Lifetime Case Ledger public summary records 4 ledger events, 4 total cases, 0 public-safe cases, and 0 closed cases. Ledger status remains `NOT_PUBLIC_SAFE`; front-door/status proof ceiling remains `SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY`.
+Current governed ledger snapshot: the platform-owned Lifetime Case Ledger state manifest records 6 ledger events, 6 total cases, 0 public-safe cases, and 0 closed cases. Ledger status remains `NOT_PUBLIC_SAFE`; front-door/status proof ceiling remains `SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY`.
 
-Current Reviewer metrics pipeline snapshot: Lifetime Governed Cases: 4; Detection Activity / controlled validation fire count: 49; Validation Case Count: 106; Proof Record Count: 8; Blocked Claim Count: 31; Project Board reconciliation status: `REPO_BACKED_RECONCILIATION_PLAN_NO_PROJECT_MUTATION`.
+Current Reviewer metrics pipeline snapshot: Detection Activity / controlled validation fire count: 49; Validation Case Count: 106; Proof Record Count: 8; Blocked Claim Count: 31; Project Board reconciliation status: `REPO_BACKED_RECONCILIATION_PLAN_NO_PROJECT_MUTATION`.
 
-Reviewer metrics boundary: the Lifetime Governed Cases number stays strict and comes from the governed Lifetime Case Ledger route. Detection Activity / controlled validation fire count, Validation Case Count, Proof Record Count, and Blocked Claim Count are separate reviewer activity metrics and must not be counted as governed cases. Project Board reconciliation is repo-backed routing/status only; Project metadata is not proof authority and no GitHub Project mutation is performed by this pipeline.
+Reviewer metrics boundary: the current Lifetime Governed Cases number stays strict and comes from the platform-owned Lifetime Case Ledger route. Detection Activity / controlled validation fire count, Validation Case Count, Proof Record Count, and Blocked Claim Count are separate reviewer activity metrics and must not be counted as governed cases. Project Board reconciliation is repo-backed routing/status only; Project metadata is not proof authority and no GitHub Project mutation is performed by this pipeline.
 
-Runtime Route Proof v1 private-candidate boundary: the proof repo routes a reviewer map and prerelease for one private controlled Wazuh -> Cribl -> Splunk marker summary. Claim ceiling remains `PRIVATE_RUNTIME_ROUTE_PROOF_V1_CANDIDATE_PRESERVED`; public-safe status remains `NOT_PUBLIC_SAFE`; Lifetime Governed Cases remains 4; `AI_DECIDED_DISPOSITION=false`.
+Runtime Route Proof v1 private-candidate boundary: the proof repo routes a reviewer map and prerelease for one private controlled Wazuh -> Cribl -> Splunk marker summary. Claim ceiling remains `PRIVATE_RUNTIME_ROUTE_PROOF_V1_CANDIDATE_PRESERVED`; public-safe status remains `NOT_PUBLIC_SAFE`; it does not mutate the Lifetime Governed Case ledger; `AI_DECIDED_DISPOSITION=false`.
 
 ### 10-minute reviewer path
 
@@ -102,19 +134,19 @@ Runtime Route Proof v1 private-candidate boundary: the proof repo routes a revie
 | Where is detection source? | [hawkinsoperations-detections](https://github.com/HawkinsOperations/hawkinsoperations-detections) |
 | Where is public rendering? | [hawkinsoperations-website](https://github.com/HawkinsOperations/hawkinsoperations-website) |
 | Where is the operating cockpit? | [private org Control Board route](https://github.com/orgs/HawkinsOperations/projects/2) |
-| Where is the ledger summary? | [Lifetime Case Ledger public summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/lifetime-case-ledger-v1-public-summary.json) |
+| Where is the current governed ledger state? | [Platform ledger state manifest](https://github.com/HawkinsOperations/hawkinsoperations-platform/blob/main/contracts/lifetime-case-ledger-v1-state-manifest.json) |
 | Where is the reviewer metrics summary? | [Reviewer metrics proof summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) |
 
 ### What each repo owns
 
 | Repo | Owns | Does not own |
 |---|---|---|
-| `.github` | Reviewer routing and governance shell. | Proof, runtime state, signal state, or public-safe approval. |
+| `.github` | Command-center routing and governance shell. | Proof, runtime state, signal state, or public-safe approval. |
 | `hawkinsoperations-detections` | Detection source truth. | Validation, runtime, signal, or public proof. |
-| `hawkinsoperations-validation` | Validation truth, fixtures, case packets, and deterministic checks. | Runtime deployment or public-safe proof. |
-| `hawkinsoperations-platform` | Contracts, orchestration boundaries, and control logic. | Public proof or production readiness. |
-| `hawkinsoperations-proof` | Proof records, evidence boundaries, and claim ceilings. | Raw private evidence publication or claim expansion by presentation. |
-| `hawkinsoperations-website` | Public rendering and reviewer navigation. | Proof authority. |
+| `hawkinsoperations-validation` | Behavior truth, fixtures, case packets, parity checks, and deterministic checks. | Runtime deployment or public-safe proof. |
+| `hawkinsoperations-platform` | Control mechanics, contracts, ledgers, append gates, runtime candidate lanes, and guardrail logic. | Public proof or production readiness. |
+| `hawkinsoperations-proof` | Claim authority, proof records, evidence boundaries, and claim ceilings. | Raw private evidence publication or claim expansion by presentation. |
+| `hawkinsoperations-website` | Public rendering and reviewer cockpit. | Proof authority. |
 
 ### What is proven vs blocked
 
@@ -122,7 +154,7 @@ Runtime Route Proof v1 private-candidate boundary: the proof repo routes a revie
 |---|---|
 | Proven within current public ceiling | HO-DET-001 source exists and controlled-test validation is recorded for the stated fixture scope. |
 | Route-safe | GitHub and website surfaces route reviewers to source, validation, and proof records. |
-| Ledger route-safe | The proof-owned Lifetime Case Ledger public summary routes bounded counts only: 4 events, 4 cases, 0 public-safe cases, 0 closed cases. |
+| Ledger route-safe | The platform-owned Lifetime Case Ledger state manifest routes bounded current counts only: 6 events, 6 cases, 0 public-safe cases, 0 closed cases. |
 | Reviewer metrics route-safe | The reviewer metrics pipeline routes separate bounded numbers for Lifetime Governed Cases, Detection Activity / controlled validation fire count, Validation Case Count, Proof Record Count, Blocked Claim Count, and Project Board reconciliation status. |
 | Runtime route private-candidate route-safe | Runtime Route Proof v1 routes one private controlled Wazuh -> Cribl -> Splunk marker summary to proof records and a prerelease; it remains `NOT_PUBLIC_SAFE` and does not promote public-safe runtime proof, production SOC operation, autonomous SOC behavior, broad ingestion, AI-decided disposition, public publication approval, or Lifetime Governed Case mutation. |
 | Blocked | Runtime-active, signal-observed, public-safe runtime proof, production-ready, autonomous SOC, AI-approved disposition, analyst-approved disposition, Cribl-routed, Wazuh-routed, AWS-live, fleet-wide, and live Splunk firing claims. |
@@ -160,7 +192,7 @@ flowchart LR
 - [Runtime Route Proof v1 reviewer map](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/maps/RUNTIME-ROUTE-PROOF-V1-REVIEWER-MAP.md) and [private-candidate prerelease](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/runtime-route-proof-v1-private-candidate-2026-06-01) - private Wazuh -> Cribl -> Splunk route summary only; public-safe runtime proof, production SOC operation, autonomous SOC behavior, broad ingestion, AI-decided disposition, public publication approval, and Lifetime Governed Case mutation remain blocked
 - [Proof Pack 001 Discussion](https://github.com/orgs/HawkinsOperations/discussions/32) - official announcement route; rendering is not proof
 - [Private org Control Board route](https://github.com/orgs/HawkinsOperations/projects/2) - operating cockpit for current work visibility; Project #1 is not an active reviewer route; not proof authority, merge authority, or project metadata approval
-- [Lifetime Case Ledger public summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/lifetime-case-ledger-v1-public-summary.json) - bounded proof-owned count summary; ledger status remains `NOT_PUBLIC_SAFE`
+- [Platform ledger state manifest](https://github.com/HawkinsOperations/hawkinsoperations-platform/blob/main/contracts/lifetime-case-ledger-v1-state-manifest.json) - current bounded governed ledger count summary; ledger status remains `NOT_PUBLIC_SAFE`
 - [Reviewer metrics proof summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) - bounded reviewer metrics route; keeps strict governed cases separate from broader activity counts and Project Board reconciliation status
 - [HO-DET-001 proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md)
 - [HO-DET-001 runtime packet verifier PR #22](https://github.com/HawkinsOperations/hawkinsoperations-validation/pull/22)
