@@ -2,12 +2,14 @@
 
 Start here if reviewing HawkinsOperations.
 
-HawkinsOperations is a governed AI Security Operations control plane. AI can draft security work; deterministic validation, proof records, and human review authorize claims.
+HawkinsOperations is a governed AI Security Operations and detection engineering system. AI can accelerate detection drafting, triage reasoning, case-packet support, documentation, and automation planning; deterministic validation, proof records, and human review authorize claims.
 
 The system separates detection source, validation, platform contracts, proof records, governance routing, and public rendering so public claims cannot outrun evidence.
 
-- AI drafts security work.
-- Validation, proof records, and human review authorize claims.
+- AI is labor; governance is authority.
+- AI can accelerate SOC and detection work, but it does not approve claims or dispositions.
+- Validation, evidence records, proof boundaries, deterministic checks, and human review authorize operational truth.
+- Green CI is evidence for the checked scope, not approval.
 - Website/GitHub rendering is not proof.
 
 The enterprise AI failure mode is that AI-generated output becomes a public claim, analyst conclusion, operational action, security disposition, or executive truth before evidence and human review authorize it. HawkinsOperations is built to prevent that promotion path.
@@ -42,9 +44,17 @@ Public claims require reviewed wording, evidence linkage, stale review, and appr
 
 ## Reviewer Control Panel
 
+### 30-second reviewer path
+
+1. Open the [organization profile](./README.md) for the system summary and strongest current reviewer routes.
+2. Open the [Proof Pack 001 Release](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) and [HO-DET-001 proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md) to verify the public proof ceiling.
+3. Open the [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) to see which repo owns source, validation, platform, proof, website rendering, and org routing.
+4. Open the [Control Status Matrix](../governance/CONTROL_STATUS_MATRIX.md) to confirm blocked claims and current boundaries.
+5. Treat every website/GitHub page as routing unless the owning proof record supports the claim.
+
 ### 3-minute command-center path
 
-1. Open the [organization profile](./README.md) to see the six-repo command center.
+1. Complete the 30-second reviewer path above.
 2. Open the [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) to confirm which repo owns each truth surface.
 3. Open the [Control Status Matrix](../governance/CONTROL_STATUS_MATRIX.md) to confirm the current claim ceiling and blocked claims.
 4. Open the [Proof Pack 001 Release](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) and [HO-DET-001 proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md) for proof-owned claim boundaries.
@@ -60,14 +70,6 @@ Current Reviewer metrics pipeline snapshot: Lifetime Governed Cases: 4; Detectio
 Reviewer metrics boundary: the Lifetime Governed Cases number stays strict and comes from the governed Lifetime Case Ledger route. Detection Activity / controlled validation fire count, Validation Case Count, Proof Record Count, and Blocked Claim Count are separate reviewer activity metrics and must not be counted as governed cases. Project Board reconciliation is repo-backed routing/status only; Project metadata is not proof authority and no GitHub Project mutation is performed by this pipeline.
 
 Runtime Route Proof v1 private-candidate boundary: the proof repo routes a reviewer map and prerelease for one private controlled Wazuh -> Cribl -> Splunk marker summary. Claim ceiling remains `PRIVATE_RUNTIME_ROUTE_PROOF_V1_CANDIDATE_PRESERVED`; public-safe status remains `NOT_PUBLIC_SAFE`; Lifetime Governed Cases remains 4; `AI_DECIDED_DISPOSITION=false`.
-
-### 30-second reviewer path
-
-1. Start with the [organization profile](./README.md) for the system summary.
-2. Use the [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) to see which repo owns each truth surface.
-3. Use the [Control Status Matrix](../governance/CONTROL_STATUS_MATRIX.md) to separate report-only routing from controls that block, fail, or force correction.
-4. Inspect [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof) for proof records and claim ceilings.
-5. Follow source and validation links only inside their stated scope.
 
 ### 10-minute reviewer path
 
