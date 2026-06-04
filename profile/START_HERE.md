@@ -2,15 +2,25 @@
 
 Start here if reviewing HawkinsOperations.
 
-HawkinsOperations is a governed AI Security Operations and detection engineering system. AI can accelerate detection drafting, triage reasoning, case-packet support, documentation, and automation planning; deterministic validation, proof records, and human review authorize claims.
+HawkinsOperations is a governed AI Security Operations and detection engineering system built around source-controlled detection work, deterministic validation, platform contracts, proof records, reviewer releases, bounded runtime-candidate routing, and human-review gates.
 
 The system separates detection source, validation, platform contracts, proof records, governance routing, and public rendering so public claims cannot outrun evidence.
 
 - AI is labor; governance is authority.
-- AI can accelerate SOC and detection work, but it does not approve claims or dispositions.
+- AI can accelerate detection drafting, triage reasoning, case-packet support, documentation, and automation planning.
+- AI does not decide disposition, approve claims, promote proof, or close cases.
 - Validation, evidence records, proof boundaries, deterministic checks, and human review authorize operational truth.
 - Green CI is evidence for the checked scope, not approval.
 - Website/GitHub rendering is not proof.
+
+Start with the receipts, then check the boundaries:
+
+| First check | What it shows | Boundary |
+|---|---|---|
+| [HO-DET-001 proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md) | PowerShell EncodedCommand detection route, source, Splunk source, controlled validation, proof record, and public ceiling. | `CONTROLLED_TEST_VALIDATED`; runtime, signal, production, and public-safe claims remain blocked. |
+| [Proof Pack 001 Release](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) | Bounded reviewer ZIP, SHA256, and verifier route for HO-DET-001. | Reviewer release only; not public-safe runtime proof. |
+| [Reviewer metrics summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) | 4 governed cases, 49 controlled validation activity fires, 106 validation cases, 8 proof records, 31 blocked claims. | Activity fires are validation activity, not governed cases, runtime signals, or public-safe proof. |
+| [Runtime Route Proof v1 reviewer map](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/maps/RUNTIME-ROUTE-PROOF-V1-REVIEWER-MAP.md) | Private-candidate Wazuh -> Cribl -> Splunk route summary and prerelease. | `NOT_PUBLIC_SAFE`; not public runtime proof, production proof, or broad-ingestion proof. |
 
 The enterprise AI failure mode is that AI-generated output becomes a public claim, analyst conclusion, operational action, security disposition, or executive truth before evidence and human review authorize it. HawkinsOperations is built to prevent that promotion path.
 
@@ -46,10 +56,10 @@ Public claims require reviewed wording, evidence linkage, stale review, and appr
 
 ### 30-second reviewer path
 
-1. Open the [organization profile](./README.md) for the system summary and strongest current reviewer routes.
-2. Open the [Proof Pack 001 Release](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) and [HO-DET-001 proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md) to verify the public proof ceiling.
+1. Open the [organization profile](./README.md) for the strongest current receipts.
+2. Open the [HO-DET-001 proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md) and [Proof Pack 001 Release](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) to verify the flagship proof route and bounded reviewer release.
 3. Open the [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) to see which repo owns source, validation, platform, proof, website rendering, and org routing.
-4. Open the [Control Status Matrix](../governance/CONTROL_STATUS_MATRIX.md) to confirm blocked claims and current boundaries.
+4. Open the [Reviewer metrics summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) to verify bounded metrics without governed-case inflation.
 5. Treat every website/GitHub page as routing unless the owning proof record supports the claim.
 
 ### 3-minute command-center path

@@ -16,31 +16,25 @@
 
 ---
 
-## 10-second read
+## What this shows now
 
-- AI is labor; governance is authority.
-- AI can accelerate SOC and detection work, but it does not approve claims or dispositions.
-- Deterministic validation, evidence records, proof boundaries, and human review authorize operational truth.
-- Green CI is evidence for the checked scope, not approval.
-- Website/GitHub rendering is not proof.
+HawkinsOperations is a governed detection engineering loop: source-controlled detection work, deterministic validation, platform contracts, proof records, reviewer releases, bounded runtime-candidate routing, and human-review gates. AI supports drafting, triage reasoning, case-packet support, documentation, and automation planning; it does not decide disposition, approve claims, promote proof, or close cases.
 
-The system separates detection source, validation, platform contracts, proof records, governance routing, and public rendering so public claims cannot outrun evidence.
+Green CI is evidence for the checked scope, not approval. Website and GitHub pages route reviewers; proof records and verifiers own the claim ceiling.
 
-**Current proof snapshot:** HO-DET-001 has source and controlled-test validation within the current public ceiling, Proof Pack 001 is a bounded reviewer route, the proof-owned ledger records 4 cases and 0 public-safe runtime cases, and the reviewer metrics route records 49 detection activity / controlled validation fires, 106 validation cases, 8 proof records, and 31 blocked claims.
+## Current strongest receipts
 
-**Claim firewall:** runtime-active, signal-observed, production, SOCaaS, autonomous SOC, AI-approved disposition, analyst-approved disposition, and public-safe runtime claims remain blocked unless separately proven. Blocked claims are intentional controls, not failed features.
-
-## Current strongest reviewer routes
-
-These are existing receipts and reviewer routes. They do not raise the proof ceiling.
-
-| Route | What to inspect | Current ceiling | Boundary |
+| Receipt | What is real today | Reviewer value | Boundary |
 |---|---|---|---|
-| [Proof Pack 001](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) | Bounded HO-DET-001 release ZIP, SHA256, and verifier path. | `CONTROLLED_TEST_VALIDATED` | Reviewer package only; public-safe runtime proof remains blocked. |
-| [HO-DET-001 proof path](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md) | Detection source, Splunk source, controlled validation, proof record, and public route. | `CONTROLLED_TEST_VALIDATED` | Source and validation do not prove runtime, signal, production, or public-safe status. |
-| [Runtime Route Proof v1](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/maps/RUNTIME-ROUTE-PROOF-V1-REVIEWER-MAP.md) | Private-candidate Wazuh -> Cribl -> Splunk route summary and prerelease. | `PRIVATE_RUNTIME_ROUTE_PROOF_V1_CANDIDATE_PRESERVED` | `NOT_PUBLIC_SAFE`; not public proof, production proof, or broad-ingestion proof. |
-| [Reviewer metrics summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) | 4 governed cases, 49 controlled validation activity fires, 106 validation cases, 8 proof records, 31 blocked claims. | `SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY` | Activity fires are not governed cases, runtime signals, or public-safe proof. |
-| [Six-repo authority model](../architecture/REPO_AUTHORITY_MAP.md) | Source, validation, platform, proof, website, and org-routing ownership. | `RENDERING_NOT_PROOF` / source-boundary routing | `.github` routes reviewers; proof records and checks own their scoped facts. |
+| [HO-DET-001 proof path](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md) | PowerShell EncodedCommand detection route mapped to ATT&CK T1059.001, with detection source, Splunk source, controlled validation, proof record, and public route. | Shows the full source -> validation -> platform contract -> proof -> rendering chain for one concrete detection. | Public ceiling remains `CONTROLLED_TEST_VALIDATED`; runtime, signal, production, and public-safe claims remain blocked. |
+| [Proof Pack 001](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) | Bounded reviewer release ZIP with SHA256 and verifier route for HO-DET-001. | Gives a reviewer one package to verify without private lab access. | Reviewer release only; not public-safe runtime proof. |
+| [Reviewer metrics summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) | 4 governed cases, 49 controlled validation activity fires, 106 validation cases, 8 proof records, and 31 blocked claims. | Reports progress without inflating proof or turning activity into case truth. | Activity fires are validation activity, not governed cases, runtime signals, or public-safe proof. |
+| [Runtime Route Proof v1](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/maps/RUNTIME-ROUTE-PROOF-V1-REVIEWER-MAP.md) | Private-candidate Wazuh -> Cribl -> Splunk route summary and prerelease. | Shows runtime-route preservation work without publishing raw private evidence. | `NOT_PUBLIC_SAFE`; not public runtime proof, production proof, or broad-ingestion proof. |
+| [Six-repo authority model](../architecture/REPO_AUTHORITY_MAP.md) | Detections own source, validation owns behavior, platform owns contracts, proof owns claim ceilings, website renders, and `.github` routes. | Makes the system reviewable without allowing one repo or page to claim another truth surface. | Rendering is not proof; router surfaces do not authorize claims. |
+
+## What remains blocked
+
+Runtime-active public proof, signal-observed public proof, public-safe runtime proof, production SOCaaS, customer deployment, live enterprise deployment, autonomous SOC, AI-decided disposition, AI-approved disposition, analyst-approved disposition, FortiSIEM integration proven, fleet-wide coverage, and production-ready SOC are not claimed here.
 
 ## HawkinsOperations Control Panel
 
