@@ -10,7 +10,7 @@
 
 `CONTROLLED_TEST_VALIDATED` · `HO-DET-001` · `NOT_PUBLIC_SAFE` · `RENDERING_NOT_PROOF` · `HUMAN_REVIEW_REQUIRED`
 
-[Start Here](START_HERE.md) · [proof repo](https://github.com/HawkinsOperations/hawkinsoperations-proof) · [validation repo](https://github.com/HawkinsOperations/hawkinsoperations-validation) · [detections repo](https://github.com/HawkinsOperations/hawkinsoperations-detections) · [website](https://hawkinsoperations.com/) · [HO-DET-001 proof route](https://hawkinsoperations.com/proof/ho-det-001/)
+[Start Here](START_HERE.md) · [Public Control Board](https://github.com/orgs/HawkinsOperations/projects/3) · [proof repo](https://github.com/HawkinsOperations/hawkinsoperations-proof) · [validation repo](https://github.com/HawkinsOperations/hawkinsoperations-validation) · [detections repo](https://github.com/HawkinsOperations/hawkinsoperations-detections) · [website](https://hawkinsoperations.com/) · [HO-DET-001 proof route](https://hawkinsoperations.com/proof/ho-det-001/)
 
 </div>
 
@@ -80,6 +80,8 @@ Runtime-active public proof, signal-observed public proof, public-safe runtime p
 
 `.github` is the org command center for reviewer routing, truth boundaries, and claim controls. It does not create proof authority. Proof records live in [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof), and the current public ceiling remains `CONTROLLED_TEST_VALIDATED` unless a specific proof record says otherwise. Runtime, signal, public-safe, production, SOCaaS, autonomous SOC, AI-approved disposition, and analyst-approved disposition claims remain blocked unless explicitly proven and approved.
 
+Public Control Board: A public-safe project board showing Built, Proven, Blocked, Deferred, and Review Path states. It is a routing/status snapshot only. It does not mirror the private Control Board and does not create proof, runtime truth, signal truth, public-safe approval, or merge authority.
+
 | Command center view | Current route | Boundary |
 |---|---|---|
 | Six-repo architecture | [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) | Repos own separate truth surfaces; no repo may claim another repo's authority. |
@@ -87,6 +89,7 @@ Runtime-active public proof, signal-observed public proof, public-safe runtime p
 | Truth surfaces | [Six truth surfaces](#six-truth-surfaces) | Source, validation, runtime, signal, evidence, and public rendering stay separate. |
 | Front-door/status proof ceiling | `SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY` | Applies to command-center and ledger-status routing; HO-DET-001 proof records keep their own proof ceiling. |
 | Current ledger status | [Platform ledger state manifest](https://github.com/HawkinsOperations/hawkinsoperations-platform/blob/main/contracts/lifetime-case-ledger-v1-state-manifest.json) | 6 ledger events, 6 total cases, 0 public-safe cases, 0 closed cases; ledger status remains `NOT_PUBLIC_SAFE`. |
+| Public Control Board | [HawkinsOperations Public Control Board](https://github.com/orgs/HawkinsOperations/projects/3) | Public-safe Built / Proven / Blocked / Deferred / Review Path snapshot; not private Project, not proof authority, not runtime/signal/public-safe approval. |
 | Project operating cockpit | [private org Control Board route](https://github.com/orgs/HawkinsOperations/projects/2) | Canonical private HawkinsOperations Control Board; Project #1 is not an active reviewer route; project metadata is not proof, approval, runtime, signal, public-safe status, or merge authority. |
 | Reviewer/demo path | [Start Here 30-second path](START_HERE.md#30-second-reviewer-path) and [Reproducible Reviewer Path](../architecture/REPRODUCIBLE_REVIEWER_PATH.md) | Demo routing does not raise the claim ceiling. |
 | Command-center invariant check | [`python scripts/verify-command-center-invariants.py`](../scripts/verify-command-center-invariants.py) | Verifier control for route and claim-boundary invariants; it does not create runtime, signal, public-safe, or proof authority. |
