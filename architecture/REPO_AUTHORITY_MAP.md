@@ -1,12 +1,12 @@
 # Repository Authority Map
 
 Public-safe status: NOT_PUBLIC_SAFE
-Trust class: SOURCE_EXISTS after creation
+Trust class: ROUTING_CLARITY_ONLY
 Control type: soft enforcement
 
 ## Purpose
 
-This map defines what each HawkinsOperations organization repository may own. It prevents source, validation, platform, proof, and website material from claiming another truth surface.
+This map defines what each HawkinsOperations organization repository may own. It prevents product, source, validation, platform, proof, website, and org-routing material from claiming another truth surface.
 
 No repository may claim another repository's authority. Repository source is not runtime truth. Website presentation is not proof.
 
@@ -14,7 +14,21 @@ Reviewer entry point: [START_HERE.md](../profile/START_HERE.md). Current control
 
 HOD-001 baseline validation/proof does not promote HO-DET-001.
 
-The canonical private HawkinsOperations Control Board is the private org Project #2 operating cockpit for current work visibility. Project #1 is not an active reviewer route and was not resolvable through the live ProjectV2 API during the current cleanup pass. The board is not a seventh repo, not proof authority, not merge authority, and not public-safe approval.
+The canonical private HawkinsOperations Control Board is the private org Project #2 operating cockpit for current work visibility. Project #1 is not an active reviewer route and was not resolvable through the live ProjectV2 API during the current cleanup pass. The board is not an eighth repo, not proof authority, not merge authority, and not public-safe approval.
+
+Total HawkinsOperations system repos remain seven:
+
+- `.github` = org routing
+- `hawkinsoperations-detections` = source truth
+- `hawkinsoperations-validation` = behavior truth
+- `hawkinsoperations-platform` = contracts/mechanics
+- `hawkinsoperations-proof` = proof records/claim ceilings
+- `hawkinsoperations-website` = public rendering
+- `aevumguard` = product/front-door repo
+
+No eighth repo may be added without explicit approval.
+
+AevumGuard is the main ProofOps product/front-door repo. Claim Firewall is the first internal Claim Authority capability inside AevumGuard; it does not change proof authority, runtime truth, signal truth, public-safe status, or approval boundaries.
 
 ## Authority Summary
 
@@ -26,16 +40,18 @@ The canonical private HawkinsOperations Control Board is the private org Project
 | `hawkinsoperations-platform` | Contracts / orchestration / control logic | Runtime contracts, interface boundaries, and non-promotional guardrails. | Contracts do not prove public proof, production readiness, or current runtime state. |
 | `hawkinsoperations-proof` | Proof records / evidence truth | Proof records, claim ceilings, evidence boundary records, and cited case packets. | Proof records do not publish raw private evidence or raise ceilings by presentation. |
 | `hawkinsoperations-website` | Public rendering only | Public reviewer navigation and rendered wording. | Rendering is not proof and cannot approve a claim. |
+| `aevumguard` | Product / front door | AevumGuard product surface and Claim Authority capabilities, starting with Claim Firewall. | Product framing does not prove runtime, signal, evidence, public-safe status, production readiness, or approval. |
 
 ## Command Center Operating Surfaces
 
 | Surface | Route | Owns | Does not own |
 | --- | --- | --- | --- |
 | Organization front door | [profile/README.md](../profile/README.md) | High-level reviewer orientation and demo routing. | Proof, runtime, signal, or public-safe approval. |
+| Product front door | [aevumguard](https://github.com/HawkinsOperations/aevumguard) | AevumGuard product experience and Claim Authority capability surface. | Proof authority, runtime truth, signal truth, public-safe approval, or repo expansion approval. |
 | Reviewer start path | [profile/START_HERE.md](../profile/START_HERE.md) | First-click review sequence and claim-boundary reminders. | Stronger claim status than proof records allow. |
 | Operating cockpit | [private org Control Board route](https://github.com/orgs/HawkinsOperations/projects/2) | Current work visibility and queue coordination for the canonical private HawkinsOperations Control Board; Project #1 is not an active reviewer route. | Source truth, validation truth, runtime truth, signal truth, proof, public-safe status, merge approval, or project metadata authority. |
 | Proof ledger route | [Lifetime Case Ledger public summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/lifetime-case-ledger-v1-public-summary.json) | Bounded count summary: 4 events, 4 cases, 0 public-safe cases, 0 closed cases. | Runtime activity, signal observation, public proof, public-safe runtime proof, case closure, or disposition authority. |
-| Clone-runnable proof chain | [REPRODUCIBLE_REVIEWER_PATH.md](REPRODUCIBLE_REVIEWER_PATH.md) | Source-controlled inspection steps across all six repos. | Private runtime access, evidence export, public-safe promotion, or GitHub settings changes. |
+| Clone-runnable proof chain | [REPRODUCIBLE_REVIEWER_PATH.md](REPRODUCIBLE_REVIEWER_PATH.md) | Source-controlled inspection steps across authority repos. | Private runtime access, evidence export, public-safe promotion, GitHub settings changes, or product proof promotion. |
 
 ## Public Readiness Summary
 
@@ -47,6 +63,7 @@ The canonical private HawkinsOperations Control Board is the private org Project
 | `hawkinsoperations-platform` | Platform architecture, stack truth tracking, and environment boundary documentation. | Detection proof, public proof, sensitive runtime exports, private host details. | Architecture-oriented until runtime evidence is reviewed. | Platform docs prove current deployment state. |
 | `hawkinsoperations-proof` | Proof contracts, evidence indexes, public-safe records, and claim linkage structure. | Raw private evidence publication, runtime operation, source ownership for other repos. | Proof-oriented only for reviewed and scoped records. | Evidence-linked material is automatically public-safe. |
 | `hawkinsoperations-website` | Public rendering of approved content. | Source truth, runtime truth, evidence truth, claim approval. | Rendering-oriented after public claim review. | Website presentation proves a claim by itself. |
+| `aevumguard` | Main ProofOps product/front-door surface and Claim Authority capability UX. | Proof authority, runtime status, signal observation, public-safe approval, or repo expansion. | Product-oriented until proof records approve stronger claims. | A product page or capability label proves a claim by itself. |
 
 ## Cross-Repository Rules
 
@@ -56,6 +73,8 @@ The canonical private HawkinsOperations Control Board is the private org Project
 - Signal claims require observed telemetry, alert, log, or output context.
 - Evidence claims require preserved and linked support.
 - Public claims require public claim review and approval.
+- Claim Firewall remains an internal AevumGuard Claim Authority capability and must not be framed as a separate HawkinsOperations product repo.
+- No eighth repo may be added without explicit approval.
 
 ## Blocked Organization-Level Claims
 

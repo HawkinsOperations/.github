@@ -10,7 +10,7 @@
 
 `CONTROLLED_TEST_VALIDATED` · `HO-DET-001` · `NOT_PUBLIC_SAFE` · `RENDERING_NOT_PROOF` · `HUMAN_REVIEW_REQUIRED`
 
-[Start Here](START_HERE.md) · [Public Control Board](https://github.com/orgs/HawkinsOperations/projects/3) · [proof repo](https://github.com/HawkinsOperations/hawkinsoperations-proof) · [validation repo](https://github.com/HawkinsOperations/hawkinsoperations-validation) · [detections repo](https://github.com/HawkinsOperations/hawkinsoperations-detections) · [website](https://hawkinsoperations.com/) · [HO-DET-001 proof route](https://hawkinsoperations.com/proof/ho-det-001/)
+[Start Here](START_HERE.md) · [AevumGuard](https://github.com/HawkinsOperations/aevumguard) · [Public Control Board](https://github.com/orgs/HawkinsOperations/projects/3) · [proof repo](https://github.com/HawkinsOperations/hawkinsoperations-proof) · [validation repo](https://github.com/HawkinsOperations/hawkinsoperations-validation) · [detections repo](https://github.com/HawkinsOperations/hawkinsoperations-detections) · [website](https://hawkinsoperations.com/) · [HO-DET-001 proof route](https://hawkinsoperations.com/proof/ho-det-001/)
 
 </div>
 
@@ -22,17 +22,16 @@ HawkinsOperations is a governed AI Security Operations and detection engineering
 
 AI accelerates drafting, triage reasoning, case-packet support, documentation, and automation planning. Validation, platform guardrails, proof records, and human review decide what becomes operational truth.
 
-## Product 001: Claim Firewall
+## Product: AevumGuard
 
-Claim Firewall blocks unsupported security claims before they ship.
+AevumGuard governs how AI-assisted security work becomes tested, reviewed, blocked, or safe to claim.
 
-- Product page: https://hawkinsoperations.com/claim-firewall/
-- Repo: https://github.com/HawkinsOperations/claim-firewall
-- Release: v0.1.0
-- Announcement: https://github.com/orgs/HawkinsOperations/discussions/51
-- Proof ceiling: TOOL_FUNCTION_ONLY
+- Tagline: ProofOps control for the AI security era.
+- Category: ProofOps
+- Main product/front-door repo: https://github.com/HawkinsOperations/aevumguard
+- Proof ceiling: public routing clarity only; no proof promotion.
 
-Claim Firewall checks configured wording policy only. It does not prove detection behavior, runtime telemetry, signal observation, production deployment, public release approval, service availability, customer rollout, AI approval, analyst approval, or final human authorization.
+Claim Firewall is the first internal Claim Authority capability inside AevumGuard. It blocks unsupported security claims before they ship by checking configured wording policy only. It does not prove detection behavior, runtime telemetry, signal observation, production deployment, public release approval, service availability, customer rollout, AI approval, analyst approval, or final human authorization.
 
 ## Current status sources
 
@@ -53,7 +52,7 @@ Current pipeline and ledger values live in their owning repositories and records
 | [Proof Pack 001](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) | Bounded reviewer release ZIP with SHA256 and verifier route for HO-DET-001. | Gives a reviewer one package to verify without private lab access. |
 | [Runtime Route Proof v1](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/maps/RUNTIME-ROUTE-PROOF-V1-REVIEWER-MAP.md) | Private-candidate Wazuh -> Cribl -> Splunk route summary and prerelease. | Preserves a runtime-route proof candidate without publishing raw private evidence or raising public proof status. |
 | [Reviewer metrics summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) | Reviewer Metrics Pipeline v1 closeout snapshot and source record. | Reports reviewer-scale activity without turning validation activity into governed case truth. |
-| [Six-repo authority model](../architecture/REPO_AUTHORITY_MAP.md) | Detections own source, validation owns behavior, platform owns mechanics, proof owns claim ceilings, website renders, and `.github` routes. | Makes the system reviewable without allowing one repo or page to claim another truth surface. |
+| [Seven-repo authority model](../architecture/REPO_AUTHORITY_MAP.md) | Detections own source, validation owns behavior, platform owns mechanics, proof owns claim ceilings, website renders, `.github` routes, and AevumGuard is the product/front-door repo. | Makes the system reviewable without allowing one repo or page to claim another truth surface. |
 
 ## Authority engines
 
@@ -65,6 +64,7 @@ Current pipeline and ledger values live in their owning repositories and records
 | Proof | Claim authority | Proof records, claim ceilings, proof packs, reviewer maps, blocked claims, and releases decide what can be claimed. |
 | Website | Rendering | Public cockpit and reviewer routes; rendering does not create proof authority. |
 | `.github` | Command center | Org front door, reviewer routing, command-center boundaries, and authority explanation. |
+| AevumGuard | Product front door | Main ProofOps product repo for the governed product experience and Claim Authority capabilities, starting with Claim Firewall. |
 
 **Platform is the mechanical control layer.** It turns detection work into governed, machine-checkable workflow through contracts, factory commands, ledger mechanics, case-packet schemas, runtime candidate gates, reviewer metrics state, and verifier scripts. Platform does not own proof promotion or public-safe runtime truth.
 
@@ -84,7 +84,7 @@ Public Control Board: A public-safe project board showing Built, Proven, Blocked
 
 | Command center view | Current route | Boundary |
 |---|---|---|
-| Six-repo architecture | [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) | Repos own separate truth surfaces; no repo may claim another repo's authority. |
+| Seven-repo architecture | [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) | Repos own separate truth surfaces; no repo may claim another repo's authority. No eighth repo may be added without explicit approval. |
 | Proof chain | Detection source -> validation -> case packet -> proof record -> public rendering | Public rendering routes reviewers; it does not create proof. |
 | Truth surfaces | [Six truth surfaces](#six-truth-surfaces) | Source, validation, runtime, signal, evidence, and public rendering stay separate. |
 | Front-door/status proof ceiling | `SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY` | Applies to command-center and ledger-status routing; HO-DET-001 proof records keep their own proof ceiling. |
@@ -105,6 +105,7 @@ Public Control Board: A public-safe project board showing Built, Proven, Blocked
 | Inspect detection source | [hawkinsoperations-detections](https://github.com/HawkinsOperations/hawkinsoperations-detections) |
 | Inspect platform contracts | [hawkinsoperations-platform](https://github.com/HawkinsOperations/hawkinsoperations-platform) |
 | Inspect public rendering | [hawkinsoperations-website](https://github.com/HawkinsOperations/hawkinsoperations-website) |
+| Inspect product/front-door work | [aevumguard](https://github.com/HawkinsOperations/aevumguard) |
 
 The private Control Board supports internal governance and navigation. It is not proof, not public evidence, and not a public-safe approval surface.
 
@@ -283,7 +284,7 @@ flowchart LR
 
 ## Repository authority map
 
-Six repositories. Three planes. Authority flows through scoped records, not presentation.
+Seven repositories. Three planes. Authority flows through scoped records, not presentation. No eighth repository may be added without explicit approval.
 
 | Plane | Repository | Authority | Boundary |
 |---|---|---|---|
@@ -293,14 +294,15 @@ Six repositories. Three planes. Authority flows through scoped records, not pres
 | Internal / private runtime contract | `hawkinsoperations-platform` | Runtime contracts, interface boundaries, non-promotional guardrails. | Internal/private runtime-contract route; not a public proof route and not public proof. |
 | Authority chain | [`hawkinsoperations-proof`](https://github.com/HawkinsOperations/hawkinsoperations-proof) | Proof records, claim ceilings, evidence boundary records, cited case packets. | Proof records do not publish private evidence or raise ceilings by presentation. |
 | Rendering | [`hawkinsoperations-website`](https://hawkinsoperations.com/) | Public reviewer navigation and rendered wording. | Rendering is not proof and cannot approve a claim. |
+| Product / front door | [`aevumguard`](https://github.com/HawkinsOperations/aevumguard) | Main ProofOps product repo and AevumGuard product surface. Claim Firewall is its first internal Claim Authority capability. | Product framing does not create proof authority, runtime truth, signal truth, public-safe status, or approval. |
 
-Detections → validation → proof feeds the authority chain. `.github` routes reviewers. `hawkinsoperations-platform` remains an internal/private runtime-contract route. The website renders receipts; it does not author them.
+Detections -> validation -> proof feeds the authority chain. `.github` routes reviewers. `hawkinsoperations-platform` remains an internal/private runtime-contract route. `aevumguard` is the product/front-door repo. The website renders receipts; it does not author them.
 
 ---
 
-## Claim firewall
+## AevumGuard Claim Authority
 
-Public wording passes through boundary review before it ships. Blocked terms stay listed because they describe what this surface does not assert.
+Claim Firewall is the first Claim Authority capability inside AevumGuard. Public wording passes through boundary review before it ships. Blocked terms stay listed because they describe what this surface does not assert.
 
 Blocked unless separately promoted and approved:
 
