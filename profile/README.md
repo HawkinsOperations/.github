@@ -22,28 +22,28 @@ HawkinsOperations is a governed AI Security Operations and detection engineering
 
 AI accelerates drafting, triage reasoning, case-packet support, documentation, and automation planning. Validation, platform guardrails, proof records, and human review decide what becomes operational truth.
 
-## Current operating signal
+## Product 001: Claim Firewall
 
-| Governed Case / Runtime Collector Pipeline | Current value |
-|---|---:|
-| Lifetime Governed Cases | 6 |
-| Windows Runtime Collector candidates | 1 |
-| Linux Runtime Collector candidates | 1 |
-| Normalized append-ready candidates | 2 |
-| Duplicates | 0 |
-| Public-safe cases | 0 |
-| Closed cases | 0 |
+Claim Firewall blocks unsupported security claims before they ship.
 
-Windows and Linux private candidate lanes produced one reviewed candidate each. The normalizer produced two append-ready candidates with zero duplicates. After explicit approval and verifier gates, both rows were appended as governed Lifetime Ledger cases, moving the strict ledger count from 4 to 6.
+- Product page: https://hawkinsoperations.com/claim-firewall/
+- Repo: https://github.com/HawkinsOperations/claim-firewall
+- Release: v0.1.0
+- Announcement: https://github.com/orgs/HawkinsOperations/discussions/51
+- Proof ceiling: TOOL_FUNCTION_ONLY
 
-| Validation / Reviewer Activity Pipeline | Current value |
-|---|---:|
-| Controlled validation activity fires | 49 |
-| Validation cases | 106 |
-| Proof records | 8 |
-| Blocked claims | 31 |
+Claim Firewall checks configured wording policy only. It does not prove detection behavior, runtime telemetry, signal observation, production deployment, public release approval, service availability, customer rollout, AI approval, analyst approval, or final human authorization.
 
-These are activity and reviewer-scale metrics. They are not governed cases, runtime signals, or public-safe proof.
+## Current status sources
+
+Current pipeline and ledger values live in their owning repositories and records. This org README links to those sources instead of copying changing counts into a public rendering surface.
+
+| Status area | Authoritative source | Boundary |
+|---|---|---|
+| Platform ledger state | [Platform ledger state manifest](https://github.com/HawkinsOperations/hawkinsoperations-platform/blob/main/contracts/lifetime-case-ledger-v1-state-manifest.json) | Platform owns ledger mechanics and state manifests; this profile does not create ledger truth. |
+| Reviewer metrics pipeline | [Reviewer metrics summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) | Reviewer-scale activity does not become governed case truth, runtime truth, signal truth, or public-safe proof by being rendered here. |
+| Proof records and claim ceilings | [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof) | Proof records authorize only their stated scope; this profile routes reviewers and preserves boundaries. |
+| Control status wording | [Control Status Matrix](../governance/CONTROL_STATUS_MATRIX.md) | Status wording is a routing aid, not proof authority or public-safe approval. |
 
 ## Standout receipts
 
@@ -52,7 +52,7 @@ These are activity and reviewer-scale metrics. They are not governed cases, runt
 | [HO-DET-001 proof path](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md) | PowerShell EncodedCommand detection route mapped to ATT&CK T1059.001, with detection source, Splunk source, controlled validation, proof record, and public route. | Shows the full source -> validation -> platform contract -> proof -> rendering chain for one concrete detection. |
 | [Proof Pack 001](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) | Bounded reviewer release ZIP with SHA256 and verifier route for HO-DET-001. | Gives a reviewer one package to verify without private lab access. |
 | [Runtime Route Proof v1](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/maps/RUNTIME-ROUTE-PROOF-V1-REVIEWER-MAP.md) | Private-candidate Wazuh -> Cribl -> Splunk route summary and prerelease. | Preserves a runtime-route proof candidate without publishing raw private evidence or raising public proof status. |
-| [Reviewer metrics summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) | Reviewer Metrics Pipeline v1 closeout snapshot: 49 controlled validation activity fires, 106 validation cases, 8 proof records, and 31 blocked claims. | Reports scale without turning validation activity into governed case truth. |
+| [Reviewer metrics summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) | Reviewer Metrics Pipeline v1 closeout snapshot and source record. | Reports reviewer-scale activity without turning validation activity into governed case truth. |
 | [Six-repo authority model](../architecture/REPO_AUTHORITY_MAP.md) | Detections own source, validation owns behavior, platform owns mechanics, proof owns claim ceilings, website renders, and `.github` routes. | Makes the system reviewable without allowing one repo or page to claim another truth surface. |
 
 ## Authority engines
@@ -88,7 +88,7 @@ Public Control Board: A public-safe project board showing Built, Proven, Blocked
 | Proof chain | Detection source -> validation -> case packet -> proof record -> public rendering | Public rendering routes reviewers; it does not create proof. |
 | Truth surfaces | [Six truth surfaces](#six-truth-surfaces) | Source, validation, runtime, signal, evidence, and public rendering stay separate. |
 | Front-door/status proof ceiling | `SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY` | Applies to command-center and ledger-status routing; HO-DET-001 proof records keep their own proof ceiling. |
-| Current ledger status | [Platform ledger state manifest](https://github.com/HawkinsOperations/hawkinsoperations-platform/blob/main/contracts/lifetime-case-ledger-v1-state-manifest.json) | 6 ledger events, 6 total cases, 0 public-safe cases, 0 closed cases; ledger status remains `NOT_PUBLIC_SAFE`. |
+| Current ledger status | [Platform ledger state manifest](https://github.com/HawkinsOperations/hawkinsoperations-platform/blob/main/contracts/lifetime-case-ledger-v1-state-manifest.json) | Platform-owned manifest is authoritative for current ledger state; this profile does not copy ledger counts or create public-safe status. |
 | Public Control Board | [HawkinsOperations Public Control Board](https://github.com/orgs/HawkinsOperations/projects/3) | Public-safe Built / Proven / Blocked / Deferred / Review Path snapshot; not private Project, not proof authority, not runtime/signal/public-safe approval. |
 | Project operating cockpit | [private org Control Board route](https://github.com/orgs/HawkinsOperations/projects/2) | Canonical private HawkinsOperations Control Board; Project #1 is not an active reviewer route; project metadata is not proof, approval, runtime, signal, public-safe status, or merge authority. |
 | Reviewer/demo path | [Start Here 30-second path](START_HERE.md#30-second-reviewer-path) and [Reproducible Reviewer Path](../architecture/REPRODUCIBLE_REVIEWER_PATH.md) | Demo routing does not raise the claim ceiling. |
@@ -219,19 +219,17 @@ The official, bounded reviewer route for the HO-DET-001 detection: source, valid
 
 ## Current ledger status
 
-The platform-owned Lifetime Case Ledger state manifest is the current strict governed ledger route. It records:
+The platform-owned [Lifetime Case Ledger state manifest](https://github.com/HawkinsOperations/hawkinsoperations-platform/blob/main/contracts/lifetime-case-ledger-v1-state-manifest.json) is the authoritative source for current strict governed ledger state. This org README does not copy ledger event counts, case totals, public-safe counts, or closure counts into a public rendering surface.
 
 | Ledger field | Current source-controlled value |
 |---|---|
-| Total ledger events | 6 |
-| Total cases | 6 |
-| Public-safe count | 0 |
-| Closed-case count | 0 |
+| Ledger state | See the platform ledger state manifest. |
+| Ledger counts | See the platform ledger state manifest. |
 | Appended detections | `HO-DET-001`, `HO-DET-011`, `HO-DET-012` |
 | Ledger public-safe status | `NOT_PUBLIC_SAFE` |
 | Ledger proof ceiling | `SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY` |
 
-Runtime Case Collector v0 has separate Windows and Linux private candidate lanes. Windows and Linux each produced one reviewed candidate, normalized to two append-ready candidates with zero duplicates. After explicit approval and verifier gates, those two rows were appended as governed Lifetime Ledger cases, moving the strict ledger count from 4 to 6.
+Runtime Case Collector v0 has separate private candidate lanes. Their current candidate and append state is governed by platform-owned manifests, records, and verifier gates, not by copied counts in this profile.
 
 This ledger route does not prove runtime activity, signal observation, production deployment, SOCaaS availability, public-safe runtime proof, public proof, autonomous SOC authority, AI-approved final disposition, analyst-approved final disposition, or case closure authority.
 
