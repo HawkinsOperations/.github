@@ -2,9 +2,9 @@
 
 Start here if reviewing HawkinsOperations.
 
-HawkinsOperations is a governed AI Security Operations and detection engineering system built around source-controlled detection work, deterministic validation, platform contracts, proof records, reviewer releases, Windows/Linux runtime candidate lanes, ledger mechanics, and human-review gates.
+HawkinsOperations is a governed AI Security Operations and detection engineering system built around Hoxline, source-controlled detection work, deterministic validation, platform contracts, proof records, reviewer releases, Windows/Linux runtime candidate lanes, ledger mechanics, and human-review gates.
 
-The system separates detection source, validation, platform contracts, proof records, governance routing, and public rendering so public claims cannot outrun evidence.
+The system separates Hoxline product/front-door work, detection source, validation, platform contracts, proof records, governance routing, and public rendering so public claims cannot outrun evidence.
 
 - AI is labor; governance is authority.
 - AI can accelerate detection drafting, triage reasoning, case-packet support, documentation, and automation planning.
@@ -12,6 +12,10 @@ The system separates detection source, validation, platform contracts, proof rec
 - Validation, evidence records, proof boundaries, deterministic checks, and human review authorize operational truth.
 - Green CI is evidence for the checked scope, not approval.
 - Website/GitHub rendering is not proof.
+- Hoxline is a proof-bound claim control system for AI-assisted security work.
+- Hoxline separates AI output from evidence-bound claim authority.
+- Claim Authority governs what can be claimed. Claim Firewall blocks unsupported claims.
+- Current repository path: HawkinsOperations/aevumguard. Product name: Hoxline by HawkinsOperations. Repository rename is not yet approved.
 
 Start with the system signal, then inspect the receipts:
 
@@ -47,6 +51,7 @@ Windows and Linux private candidate lanes each produced one reviewed candidate. 
 | Proof | Claim authority | Proof records, claim ceilings, proof packs, reviewer maps, blocked claims, and releases decide what can be claimed. |
 | Website | Rendering | Public cockpit and reviewer routes, not proof authority. |
 | `.github` | Command center | Org front door, reviewer routing, and authority boundaries. |
+| Hoxline | Product front door | Main proof-bound claim control system for AI-assisted security work. Current repo path is `aevumguard`; Claim Firewall is its first internal Claim Authority capability. |
 
 Platform is the mechanical control layer: contracts, factory commands, ledger mechanics, case-packet schemas, runtime candidate gates, reviewer metrics state, and verifier scripts. It does not own proof promotion or public-safe runtime truth.
 
@@ -56,7 +61,7 @@ Proof is the public trust anchor: proof records, claim ceilings, Proof Pack 001,
 
 The enterprise AI failure mode is that AI-generated output becomes a public claim, analyst conclusion, operational action, security disposition, or executive truth before evidence and human review authorize it. HawkinsOperations is built to prevent that promotion path.
 
-Current public proof is intentionally bounded. Runtime-active, signal-observed, production, SOCaaS, autonomous SOC, AI-approved disposition, analyst-approved disposition, and public-safe runtime claims remain blocked unless separately proven. Blocked claims are a claim firewall, not failed features.
+Current public proof is intentionally bounded. Runtime-active, signal-observed, production, SOCaaS, autonomous SOC, AI-approved disposition, analyst-approved disposition, and public-safe runtime claims remain blocked unless separately proven. Blocked claims feed Hoxline Claim Authority; they are not failed features.
 
 HawkinsOperations separates source, validation, runtime, signal, evidence, and public-claim truth. Each truth surface has a different owner and promotion gate.
 
@@ -90,7 +95,7 @@ Public claims require reviewed wording, evidence linkage, stale review, and appr
 
 1. Open the [organization profile](./README.md) for the strongest current receipts.
 2. Open the [HO-DET-001 proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md) and [Proof Pack 001 Release](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) to verify the flagship proof route and bounded reviewer release.
-3. Open the [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) to see which repo owns source, validation, platform, proof, website rendering, and org routing.
+3. Open the [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) to see which repo owns source, validation, platform, proof, website rendering, org routing, and the Hoxline product/front door.
 4. Open the [Platform ledger state manifest](https://github.com/HawkinsOperations/hawkinsoperations-platform/blob/main/contracts/lifetime-case-ledger-v1-state-manifest.json) and [Reviewer metrics summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) to verify the two separate number systems.
 5. Treat every website/GitHub page as routing unless the owning proof record supports the claim.
 
@@ -129,6 +134,7 @@ Runtime Route Proof v1 private-candidate boundary: the proof repo routes a revie
 | What is proven and what is blocked? | [Control Status Matrix](../governance/CONTROL_STATUS_MATRIX.md) |
 | Where are the standing control ledgers? | [Standing control registers](../governance/ISSUE_FACTORY_CONTROL_RECEIPTS.md) |
 | Where are proof records? | [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof) |
+| Where is the main product/front-door repo? | [aevumguard](https://github.com/HawkinsOperations/aevumguard) |
 | Where is the Runtime Route Proof v1 private-candidate route? | [Reviewer map](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/maps/RUNTIME-ROUTE-PROOF-V1-REVIEWER-MAP.md) and [prerelease](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/runtime-route-proof-v1-private-candidate-2026-06-01) |
 | Where are validators and case packets? | [hawkinsoperations-validation](https://github.com/HawkinsOperations/hawkinsoperations-validation) |
 | Where is detection source? | [hawkinsoperations-detections](https://github.com/HawkinsOperations/hawkinsoperations-detections) |
@@ -147,6 +153,7 @@ Runtime Route Proof v1 private-candidate boundary: the proof repo routes a revie
 | `hawkinsoperations-platform` | Control mechanics, contracts, ledgers, append gates, runtime candidate lanes, and guardrail logic. | Public proof or production readiness. |
 | `hawkinsoperations-proof` | Claim authority, proof records, evidence boundaries, and claim ceilings. | Raw private evidence publication or claim expansion by presentation. |
 | `hawkinsoperations-website` | Public rendering and reviewer cockpit. | Proof authority. |
+| `aevumguard` | Current compatibility repo path for Hoxline by HawkinsOperations. Claim Firewall is the first internal Claim Authority capability inside Hoxline. | Proof authority, runtime state, signal state, public-safe approval, or an eighth-repo expansion path. |
 
 ### What is proven vs blocked
 
