@@ -10,7 +10,7 @@
 
 `CONTROLLED_TEST_VALIDATED` · `HO-DET-001` · `NOT_PUBLIC_SAFE` · `RENDERING_NOT_PROOF` · `HUMAN_REVIEW_REQUIRED`
 
-[Start Here](START_HERE.md) · [Public Control Board](https://github.com/orgs/HawkinsOperations/projects/3) · [proof repo](https://github.com/HawkinsOperations/hawkinsoperations-proof) · [validation repo](https://github.com/HawkinsOperations/hawkinsoperations-validation) · [detections repo](https://github.com/HawkinsOperations/hawkinsoperations-detections) · [website](https://hawkinsoperations.com/) · [HO-DET-001 proof route](https://hawkinsoperations.com/proof/ho-det-001/)
+[Start Here](START_HERE.md) · [Hoxline](https://github.com/HawkinsOperations/aevumguard) · [Public Control Board](https://github.com/orgs/HawkinsOperations/projects/3) · [proof repo](https://github.com/HawkinsOperations/hawkinsoperations-proof) · [validation repo](https://github.com/HawkinsOperations/hawkinsoperations-validation) · [detections repo](https://github.com/HawkinsOperations/hawkinsoperations-detections) · [website](https://hawkinsoperations.com/) · [HO-DET-001 proof route](https://hawkinsoperations.com/proof/ho-det-001/)
 
 </div>
 
@@ -22,17 +22,19 @@ HawkinsOperations is a governed AI Security Operations and detection engineering
 
 AI accelerates drafting, triage reasoning, case-packet support, documentation, and automation planning. Validation, platform guardrails, proof records, and human review decide what becomes operational truth.
 
-## Product 001: Claim Firewall
+## Product: Hoxline by HawkinsOperations
 
-Claim Firewall blocks unsupported security claims before they ship.
+Hoxline is a proof-bound claim control system for AI-assisted security work.
 
-- Product page: https://hawkinsoperations.com/claim-firewall/
-- Repo: https://github.com/HawkinsOperations/claim-firewall
-- Release: v0.1.0
-- Announcement: https://github.com/orgs/HawkinsOperations/discussions/51
-- Proof ceiling: TOOL_FUNCTION_ONLY
+- Product route: https://hawkinsoperations.com/aevumguard/
+- Current repository path: https://github.com/HawkinsOperations/aevumguard
+- Compatibility note: Product name is Hoxline by HawkinsOperations. Repository rename is not yet approved.
+- Doctrine: AI is not the authority. Evidence is.
+- Proof ceiling: public routing clarity only; no proof promotion.
 
-Claim Firewall checks configured wording policy only. It does not prove detection behavior, runtime telemetry, signal observation, production deployment, public release approval, service availability, customer rollout, AI approval, analyst approval, or final human authorization.
+Hoxline separates AI output from evidence-bound claim authority. Claim Authority governs what can be claimed. Claim Firewall is the first internal Claim Authority capability inside Hoxline and blocks unsupported claims by checking configured wording policy only. ProofCards export the evidence boundary behind an approved claim.
+
+Claim Firewall does not prove detection behavior, runtime telemetry, signal observation, production deployment, public release approval, service availability, customer rollout, AI approval, analyst approval, or final human authorization.
 
 ## Current status sources
 
@@ -53,7 +55,7 @@ Current pipeline and ledger values live in their owning repositories and records
 | [Proof Pack 001](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) | Bounded reviewer release ZIP with SHA256 and verifier route for HO-DET-001. | Gives a reviewer one package to verify without private lab access. |
 | [Runtime Route Proof v1](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/maps/RUNTIME-ROUTE-PROOF-V1-REVIEWER-MAP.md) | Private-candidate Wazuh -> Cribl -> Splunk route summary and prerelease. | Preserves a runtime-route proof candidate without publishing raw private evidence or raising public proof status. |
 | [Reviewer metrics summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) | Reviewer Metrics Pipeline v1 closeout snapshot and source record. | Reports reviewer-scale activity without turning validation activity into governed case truth. |
-| [Six-repo authority model](../architecture/REPO_AUTHORITY_MAP.md) | Detections own source, validation owns behavior, platform owns mechanics, proof owns claim ceilings, website renders, and `.github` routes. | Makes the system reviewable without allowing one repo or page to claim another truth surface. |
+| [Seven-repo authority model](../architecture/REPO_AUTHORITY_MAP.md) | Detections own source, validation owns behavior, platform owns mechanics, proof owns claim ceilings, website renders, `.github` routes, and `aevumguard` is the current Hoxline compatibility repo path. | Makes the system reviewable without allowing one repo or page to claim another truth surface. |
 
 ## Authority engines
 
@@ -84,7 +86,7 @@ Public Control Board: A public-safe project board showing Built, Proven, Blocked
 
 | Command center view | Current route | Boundary |
 |---|---|---|
-| Six-repo architecture | [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) | Repos own separate truth surfaces; no repo may claim another repo's authority. |
+| Seven-repo architecture | [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) | Repos own separate truth surfaces; no repo may claim another repo's authority. No eighth repo may be added without explicit approval. |
 | Proof chain | Detection source -> validation -> case packet -> proof record -> public rendering | Public rendering routes reviewers; it does not create proof. |
 | Truth surfaces | [Six truth surfaces](#six-truth-surfaces) | Source, validation, runtime, signal, evidence, and public rendering stay separate. |
 | Front-door/status proof ceiling | `SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY` | Applies to command-center and ledger-status routing; HO-DET-001 proof records keep their own proof ceiling. |
@@ -283,7 +285,7 @@ flowchart LR
 
 ## Repository authority map
 
-Six repositories. Three planes. Authority flows through scoped records, not presentation.
+Seven repositories. Three planes. Authority flows through scoped records, not presentation. The current repository path remains `aevumguard` until a separate repository rename is approved.
 
 | Plane | Repository | Authority | Boundary |
 |---|---|---|---|
@@ -293,14 +295,15 @@ Six repositories. Three planes. Authority flows through scoped records, not pres
 | Internal / private runtime contract | `hawkinsoperations-platform` | Runtime contracts, interface boundaries, non-promotional guardrails. | Internal/private runtime-contract route; not a public proof route and not public proof. |
 | Authority chain | [`hawkinsoperations-proof`](https://github.com/HawkinsOperations/hawkinsoperations-proof) | Proof records, claim ceilings, evidence boundary records, cited case packets. | Proof records do not publish private evidence or raise ceilings by presentation. |
 | Rendering | [`hawkinsoperations-website`](https://hawkinsoperations.com/) | Public reviewer navigation and rendered wording. | Rendering is not proof and cannot approve a claim. |
+| Product / front door | [`aevumguard`](https://github.com/HawkinsOperations/aevumguard) | Current Hoxline compatibility repo path and product surface. Claim Firewall is its first internal Claim Authority capability. | Product framing does not create proof authority, runtime truth, signal truth, public-safe status, or approval. |
 
-Detections → validation → proof feeds the authority chain. `.github` routes reviewers. `hawkinsoperations-platform` remains an internal/private runtime-contract route. The website renders receipts; it does not author them.
+Detections → validation → proof feeds the authority chain. `.github` routes reviewers. `hawkinsoperations-platform` remains an internal/private runtime-contract route. `aevumguard` is the current Hoxline compatibility repo path. The website renders receipts; it does not author them.
 
 ---
 
-## Claim firewall
+## Hoxline Claim Authority
 
-Public wording passes through boundary review before it ships. Blocked terms stay listed because they describe what this surface does not assert.
+Claim Authority governs what can be claimed. Claim Firewall blocks unsupported claims before public wording ships. Blocked terms stay listed because they describe what this surface does not assert.
 
 Blocked unless separately promoted and approved:
 
