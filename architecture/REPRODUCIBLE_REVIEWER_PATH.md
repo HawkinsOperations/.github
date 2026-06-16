@@ -6,11 +6,11 @@ Trust class: SOURCE_EXISTS after merge
 
 ## Purpose
 
-This path gives reviewers a clone-runnable route through the six HawkinsOperations repositories without treating `.github`, CI, proof, platform, or website rendering as stronger truth than they can support.
+This path gives reviewers a clone-runnable route through the seven HawkinsOperations repositories without treating `.github`, CI, proof, platform, Hoxline product framing, or website rendering as stronger truth than they can support.
 
 Website/GitHub rendering is not proof. Public surfaces route to proof records. Required checks matter only when they actually appear, run, and pass. Codex is AI labor, not human governance.
 
-## Clone All Six Repos
+## Clone All Seven Repos
 
 From an empty organization workspace:
 
@@ -23,6 +23,7 @@ git clone https://github.com/HawkinsOperations/hawkinsoperations-validation.git
 git clone https://github.com/HawkinsOperations/hawkinsoperations-platform.git
 git clone https://github.com/HawkinsOperations/hawkinsoperations-proof.git
 git clone https://github.com/HawkinsOperations/hawkinsoperations-website.git
+git clone https://github.com/HawkinsOperations/hoxline.git
 ```
 
 Expected sibling layout:
@@ -35,6 +36,7 @@ HawkinsOperations/
   hawkinsoperations-platform/
   hawkinsoperations-proof/
   hawkinsoperations-website/
+  hoxline/
 ```
 
 ## Reviewer Commands Available Today
@@ -98,13 +100,24 @@ python -B scripts\verify-ho-det-012-result-parity.py
 python -B scripts\scan-ho-det-012-claim-boundaries.py
 ```
 
-Report-only parity command, if the reviewer has all six sibling repos cloned:
+Report-only parity command, if the reviewer has all seven sibling repos cloned:
 
 ```powershell
 python -B scripts\verify_cross_repo_claim_parity.py --repo-root .. --report-only
 ```
 
 Report-only output is not fail-closed enforcement.
+
+### Hoxline Product / Claim Authority Plane
+
+```powershell
+cd ..\hoxline
+git status -sb
+python -B -m pytest -q tests
+python -B -m hoxline gauntlet verify --input examples\gauntlet\ho-det-001-full-loop-run-v0.json
+```
+
+Hoxline by HawkinsOperations is the product/front-door repo for ProofOps control. It governs how AI-assisted security work becomes tested, reviewed, blocked, or safe to claim. Claim Firewall is the first Claim Authority enforcement capability inside Hoxline; it is not the product, platform, front-door repo, an eighth repo, proof authority, runtime proof, or signal proof.
 
 ### Platform Boundary and Visibility Plane
 

@@ -12,25 +12,29 @@ The system separates Hoxline product/front-door work, detection source, validati
 - Validation, evidence records, proof boundaries, deterministic checks, and human review authorize operational truth.
 - Green CI is evidence for the checked scope, not approval.
 - Website/GitHub rendering is not proof.
-- Hoxline is a proof-bound claim control system for AI-assisted security work.
+- Hoxline by HawkinsOperations is the current product/front-door repo.
+- Hoxline provides ProofOps control for the AI security era.
+- Hoxline governs how AI-assisted security work becomes tested, reviewed, blocked, or safe to claim.
 - Hoxline separates AI output from evidence-bound claim authority.
-- Claim Authority governs what can be claimed. Claim Firewall blocks unsupported claims.
-- Current repository path: HawkinsOperations/aevumguard. Product name: Hoxline by HawkinsOperations. Repository rename is not yet approved.
+- Doctrine: AI is not the authority. Evidence is.
+- Claim Authority governs what can be claimed. Claim Firewall is the first Claim Authority enforcement capability inside Hoxline; it is not the product, platform, front-door repo, an eighth repo, proof authority, runtime proof, or signal proof.
+- Current repository path: HawkinsOperations/hoxline.
+- AevumGuard is legacy/compatibility naming only. It is not the current product, current repo, or active front-door route.
 
 Start with the system signal, then inspect the receipts:
 
 | Current operating signal | Value | Boundary |
 |---|---:|---|
-| Lifetime Governed Cases | 6 | Current strict platform ledger count; public-safe count remains 0 and closed-case count remains 0. |
-| Windows Runtime Collector candidates | 1 | Private candidate lane only. |
-| Linux Runtime Collector candidates | 1 | Private candidate lane only. |
-| Normalized append-ready candidates | 2 | Zero duplicates; only the approved appended rows became governed cases. |
-| Controlled validation activity fires | 49 | Validation activity, not governed cases or runtime signals. |
-| Validation cases | 106 | Controlled/reviewer activity scale, not production coverage. |
-| Proof records | 8 | Proof-record routing count, not public-safe approval. |
-| Blocked claims | 31 | Claim-control count, not missing functionality. |
+| Lifetime Governed Cases | See platform ledger state manifest | Current strict platform ledger count; public-safe and closed-case counts remain authority-owned by platform/proof records. |
+| Windows Runtime Collector candidates | See platform runtime-candidate records | Private candidate lane only. |
+| Linux Runtime Collector candidates | See platform runtime-candidate records | Private candidate lane only. |
+| Normalized append-ready candidates | See platform normalizer records | Candidate status does not become governed case truth without explicit approval and verifier gates. |
+| Controlled validation activity fires | See reviewer metrics summary | Validation activity, not governed cases or runtime signals. |
+| Validation cases | See reviewer metrics summary | Controlled/reviewer activity scale, not production coverage. |
+| Proof records | See reviewer metrics summary | Proof-record routing count, not public-safe approval. |
+| Blocked claims | See reviewer metrics summary | Claim-control count, not missing functionality. |
 
-Windows and Linux private candidate lanes each produced one reviewed candidate. The normalizer produced two append-ready candidates with zero duplicates. After explicit approval and verifier gates, both rows were appended as governed Lifetime Ledger cases, moving the strict ledger count from 4 to 6.
+Private candidate lanes and normalizer outputs are governed by platform-owned records. Candidate status does not create runtime truth, signal truth, public-safe proof, or governed case truth by being summarized here.
 
 ## First receipts
 
@@ -38,7 +42,7 @@ Windows and Linux private candidate lanes each produced one reviewed candidate. 
 |---|---|---|
 | [HO-DET-001 proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md) | PowerShell EncodedCommand detection route, source, Splunk source, controlled validation, proof record, and public ceiling. | `CONTROLLED_TEST_VALIDATED`; runtime, signal, production, and public-safe claims remain blocked. |
 | [Proof Pack 001 Release](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) | Bounded reviewer ZIP, SHA256, and verifier route for HO-DET-001. | Reviewer release only; not public-safe runtime proof. |
-| [Reviewer metrics summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) | Reviewer Metrics Pipeline v1 closeout snapshot: 49 controlled validation activity fires, 106 validation cases, 8 proof records, 31 blocked claims. | Activity metrics are not governed cases, runtime signals, or public-safe proof. |
+| [Reviewer metrics summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) | Reviewer Metrics Pipeline v1 source record for controlled validation activity, validation cases, proof records, and blocked claims. | Activity metrics are not governed cases, runtime signals, or public-safe proof. |
 | [Runtime Route Proof v1 reviewer map](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/maps/RUNTIME-ROUTE-PROOF-V1-REVIEWER-MAP.md) | Private-candidate Wazuh -> Cribl -> Splunk route summary and prerelease. | `NOT_PUBLIC_SAFE`; not public runtime proof, production proof, or broad-ingestion proof. |
 
 ## Authority engines
@@ -51,7 +55,7 @@ Windows and Linux private candidate lanes each produced one reviewed candidate. 
 | Proof | Claim authority | Proof records, claim ceilings, proof packs, reviewer maps, blocked claims, and releases decide what can be claimed. |
 | Website | Rendering | Public cockpit and reviewer routes, not proof authority. |
 | `.github` | Command center | Org front door, reviewer routing, and authority boundaries. |
-| Hoxline | Product front door | Main proof-bound claim control system for AI-assisted security work. Current repo path is `aevumguard`; Claim Firewall is its first internal Claim Authority capability. |
+| Hoxline | Product front door | Hoxline by HawkinsOperations is the current product/front-door repo and ProofOps control surface. Claim Firewall is its first internal Claim Authority enforcement capability. |
 
 Platform is the mechanical control layer: contracts, factory commands, ledger mechanics, case-packet schemas, runtime candidate gates, reviewer metrics state, and verifier scripts. It does not own proof promotion or public-safe runtime truth.
 
@@ -110,9 +114,9 @@ Public claims require reviewed wording, evidence linkage, stale review, and appr
 7. If you are reviewing internal operating context, open the [private org Control Board route](https://github.com/orgs/HawkinsOperations/projects/2). Treat it as work coordination only, not proof, approval, runtime state, signal state, public-safe status, or merge authority. Project #1 is not an active reviewer route.
 8. Open the [Reproducible Reviewer Path](../architecture/REPRODUCIBLE_REVIEWER_PATH.md) only if you want clone-runnable inspection steps.
 
-Current governed ledger snapshot: the platform-owned Lifetime Case Ledger state manifest records 6 ledger events, 6 total cases, 0 public-safe cases, and 0 closed cases. Ledger status remains `NOT_PUBLIC_SAFE`; front-door/status proof ceiling remains `SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY`.
+Current governed ledger snapshot: the platform-owned Lifetime Case Ledger state manifest is authoritative for ledger events, total cases, public-safe cases, and closed cases. Ledger status remains `NOT_PUBLIC_SAFE`; front-door/status proof ceiling remains `SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY`.
 
-Current Reviewer metrics pipeline snapshot: Detection Activity / controlled validation fire count: 49; Validation Case Count: 106; Proof Record Count: 8; Blocked Claim Count: 31; Project Board reconciliation status: `REPO_BACKED_RECONCILIATION_PLAN_NO_PROJECT_MUTATION`.
+Current Reviewer metrics pipeline values live in the proof-owned reviewer metrics summary and related source records. This front door routes to those records instead of copying changing counts into public-front-door text. Project Board reconciliation status remains `REPO_BACKED_RECONCILIATION_PLAN_NO_PROJECT_MUTATION`.
 
 Reviewer metrics boundary: the current Lifetime Governed Cases number stays strict and comes from the platform-owned Lifetime Case Ledger route. Detection Activity / controlled validation fire count, Validation Case Count, Proof Record Count, and Blocked Claim Count are separate reviewer activity metrics and must not be counted as governed cases. Project Board reconciliation is repo-backed routing/status only; Project metadata is not proof authority and no GitHub Project mutation is performed by this pipeline.
 
@@ -134,7 +138,7 @@ Runtime Route Proof v1 private-candidate boundary: the proof repo routes a revie
 | What is proven and what is blocked? | [Control Status Matrix](../governance/CONTROL_STATUS_MATRIX.md) |
 | Where are the standing control ledgers? | [Standing control registers](../governance/ISSUE_FACTORY_CONTROL_RECEIPTS.md) |
 | Where are proof records? | [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof) |
-| Where is the main product/front-door repo? | [aevumguard](https://github.com/HawkinsOperations/aevumguard) |
+| Where is the main product/front-door repo? | [hoxline](https://github.com/HawkinsOperations/hoxline) |
 | Where is the Runtime Route Proof v1 private-candidate route? | [Reviewer map](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/maps/RUNTIME-ROUTE-PROOF-V1-REVIEWER-MAP.md) and [prerelease](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/runtime-route-proof-v1-private-candidate-2026-06-01) |
 | Where are validators and case packets? | [hawkinsoperations-validation](https://github.com/HawkinsOperations/hawkinsoperations-validation) |
 | Where is detection source? | [hawkinsoperations-detections](https://github.com/HawkinsOperations/hawkinsoperations-detections) |
@@ -153,7 +157,8 @@ Runtime Route Proof v1 private-candidate boundary: the proof repo routes a revie
 | `hawkinsoperations-platform` | Control mechanics, contracts, ledgers, append gates, runtime candidate lanes, and guardrail logic. | Public proof or production readiness. |
 | `hawkinsoperations-proof` | Claim authority, proof records, evidence boundaries, and claim ceilings. | Raw private evidence publication or claim expansion by presentation. |
 | `hawkinsoperations-website` | Public rendering and reviewer cockpit. | Proof authority. |
-| `aevumguard` | Current compatibility repo path for Hoxline by HawkinsOperations. Claim Firewall is the first internal Claim Authority capability inside Hoxline. | Proof authority, runtime state, signal state, public-safe approval, or an eighth-repo expansion path. |
+| `hoxline` | Current product/front-door repo for Hoxline by HawkinsOperations. Claim Firewall is the first internal Claim Authority enforcement capability inside Hoxline. | Proof authority, runtime state, signal state, public-safe approval, or an eighth-repo expansion path. |
+| `aevumguard` | Legacy/compatibility naming only where older routes require it. | Current product identity, current repo identity, proof authority, runtime state, signal state, public-safe approval, or an eighth-repo expansion path. |
 
 ### What is proven vs blocked
 
@@ -161,8 +166,8 @@ Runtime Route Proof v1 private-candidate boundary: the proof repo routes a revie
 |---|---|
 | Proven within current public ceiling | HO-DET-001 source exists and controlled-test validation is recorded for the stated fixture scope. |
 | Route-safe | GitHub and website surfaces route reviewers to source, validation, and proof records. |
-| Ledger route-safe | The platform-owned Lifetime Case Ledger state manifest routes bounded current counts only: 6 events, 6 cases, 0 public-safe cases, 0 closed cases. |
-| Reviewer metrics route-safe | The reviewer metrics pipeline routes separate bounded numbers for Lifetime Governed Cases, Detection Activity / controlled validation fire count, Validation Case Count, Proof Record Count, Blocked Claim Count, and Project Board reconciliation status. |
+| Ledger route-safe | The platform-owned Lifetime Case Ledger state manifest routes bounded current ledger status without making this front door the authority for copied counts. |
+| Reviewer metrics route-safe | The reviewer metrics pipeline routes separate bounded values for Lifetime Governed Cases, Detection Activity / controlled validation fire count, Validation Case Count, Proof Record Count, Blocked Claim Count, and Project Board reconciliation status. |
 | Runtime route private-candidate route-safe | Runtime Route Proof v1 routes one private controlled Wazuh -> Cribl -> Splunk marker summary to proof records and a prerelease; it remains `NOT_PUBLIC_SAFE` and does not promote public-safe runtime proof, production SOC operation, autonomous SOC behavior, broad ingestion, AI-decided disposition, public publication approval, or Lifetime Governed Case mutation. |
 | Blocked | Runtime-active, signal-observed, public-safe runtime proof, production-ready, autonomous SOC, AI-approved disposition, analyst-approved disposition, Cribl-routed, Wazuh-routed, AWS-live, fleet-wide, and live Splunk firing claims. |
 

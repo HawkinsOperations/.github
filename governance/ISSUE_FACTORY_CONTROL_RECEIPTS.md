@@ -156,9 +156,9 @@ Purpose: advances issue [#39](https://github.com/HawkinsOperations/.github/issue
 
 ## Reviewer Metrics Pipeline Reconciliation Receipt
 
-Purpose: gives reviewers a single repo-backed reconciliation row for the "big number without lying" metrics pipeline while preserving the strict Lifetime Case Ledger boundary.
+Purpose: gives reviewers a point-in-time repo-backed reconciliation row for the "big number without lying" metrics pipeline while preserving the strict Lifetime Case Ledger boundary. These values are a historical receipt snapshot, not current front-door authority; current values must be read from the owning platform, validation, and proof records.
 
-| Metric / status | Current bounded value | Owning source | Boundary |
+| Metric / status | Historical bounded value | Owning source | Boundary |
 | --- | --- | --- | --- |
 | Lifetime Governed Cases | 4 | `hawkinsoperations-platform` Lifetime Case Ledger state and `hawkinsoperations-proof` public ledger summary | Strict governed case count only; detection fires do not increase this number. |
 | Detection Activity / controlled validation fire count | 49 | `hawkinsoperations-validation` detection activity ledger | Controlled validation activity only; not runtime activity, signal observation, public proof, or governed case append. |
