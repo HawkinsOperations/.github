@@ -10,7 +10,7 @@
 
 `CONTROLLED_TEST_VALIDATED` · `HO-DET-001` · `NOT_PUBLIC_SAFE` · `RENDERING_NOT_PROOF` · `HUMAN_REVIEW_REQUIRED`
 
-[Start Here](START_HERE.md) · [Hoxline](https://github.com/HawkinsOperations/aevumguard) · [Public Control Board](https://github.com/orgs/HawkinsOperations/projects/3) · [proof repo](https://github.com/HawkinsOperations/hawkinsoperations-proof) · [validation repo](https://github.com/HawkinsOperations/hawkinsoperations-validation) · [detections repo](https://github.com/HawkinsOperations/hawkinsoperations-detections) · [website](https://hawkinsoperations.com/) · [HO-DET-001 proof route](https://hawkinsoperations.com/proof/ho-det-001/)
+[Start Here](START_HERE.md) · [Hoxline](https://github.com/HawkinsOperations/hoxline) · [Public Control Board](https://github.com/orgs/HawkinsOperations/projects/3) · [proof repo](https://github.com/HawkinsOperations/hawkinsoperations-proof) · [validation repo](https://github.com/HawkinsOperations/hawkinsoperations-validation) · [detections repo](https://github.com/HawkinsOperations/hawkinsoperations-detections) · [website](https://hawkinsoperations.com/) · [HO-DET-001 proof route](https://hawkinsoperations.com/proof/ho-det-001/)
 
 </div>
 
@@ -24,17 +24,19 @@ AI accelerates drafting, triage reasoning, case-packet support, documentation, a
 
 ## Product: Hoxline by HawkinsOperations
 
-Hoxline is a proof-bound claim control system for AI-assisted security work.
+Hoxline by HawkinsOperations is the current product/front-door repo for ProofOps control.
 
-- Product route: https://hawkinsoperations.com/aevumguard/
-- Current repository path: https://github.com/HawkinsOperations/aevumguard
-- Compatibility note: Product name is Hoxline by HawkinsOperations. Repository rename is not yet approved.
+- Product route: https://hawkinsoperations.com/hoxline/
+- Current repository path: https://github.com/HawkinsOperations/hoxline
+- Tagline: ProofOps control for the AI security era.
+- One-liner: Hoxline governs how AI-assisted security work becomes tested, reviewed, blocked, or safe to claim.
+- Compatibility note: AevumGuard is legacy/compatibility naming only. It is not the current product, current repo, or active front-door route.
 - Doctrine: AI is not the authority. Evidence is.
 - Proof ceiling: public routing clarity only; no proof promotion.
 
-Hoxline separates AI output from evidence-bound claim authority. Claim Authority governs what can be claimed. Claim Firewall is the first internal Claim Authority capability inside Hoxline and blocks unsupported claims by checking configured wording policy only. ProofCards export the evidence boundary behind an approved claim.
+Hoxline separates AI output from evidence-bound claim authority. Claim Authority governs what can be claimed. Claim Firewall is the first Claim Authority enforcement capability inside Hoxline and blocks unsupported claims by checking configured wording policy only. ProofCards export the evidence boundary behind an approved claim.
 
-Claim Firewall does not prove detection behavior, runtime telemetry, signal observation, production deployment, public release approval, service availability, customer rollout, AI approval, analyst approval, or final human authorization.
+Claim Firewall is not the product, platform, front-door repo, an eighth repo, proof authority, runtime proof, or signal proof. It does not prove detection behavior, runtime telemetry, signal observation, production deployment, public release approval, service availability, customer rollout, AI approval, analyst approval, or final human authorization.
 
 ## Current status sources
 
@@ -55,7 +57,7 @@ Current pipeline and ledger values live in their owning repositories and records
 | [Proof Pack 001](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) | Bounded reviewer release ZIP with SHA256 and verifier route for HO-DET-001. | Gives a reviewer one package to verify without private lab access. |
 | [Runtime Route Proof v1](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/maps/RUNTIME-ROUTE-PROOF-V1-REVIEWER-MAP.md) | Private-candidate Wazuh -> Cribl -> Splunk route summary and prerelease. | Preserves a runtime-route proof candidate without publishing raw private evidence or raising public proof status. |
 | [Reviewer metrics summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) | Reviewer Metrics Pipeline v1 closeout snapshot and source record. | Reports reviewer-scale activity without turning validation activity into governed case truth. |
-| [Seven-repo authority model](../architecture/REPO_AUTHORITY_MAP.md) | Detections own source, validation owns behavior, platform owns mechanics, proof owns claim ceilings, website renders, `.github` routes, and `aevumguard` is the current Hoxline compatibility repo path. | Makes the system reviewable without allowing one repo or page to claim another truth surface. |
+| [Seven-repo authority model](../architecture/REPO_AUTHORITY_MAP.md) | Detections own source, validation owns behavior, platform owns mechanics, proof owns claim ceilings, website renders, `.github` routes, and `hoxline` is the current product/front-door repo. | Makes the system reviewable without allowing one repo or page to claim another truth surface. |
 
 ## Authority engines
 
@@ -285,7 +287,7 @@ flowchart LR
 
 ## Repository authority map
 
-Seven repositories. Three planes. Authority flows through scoped records, not presentation. The current repository path remains `aevumguard` until a separate repository rename is approved.
+Seven repositories. Three planes. Authority flows through scoped records, not presentation. The current product/front-door repository is `hoxline`.
 
 | Plane | Repository | Authority | Boundary |
 |---|---|---|---|
@@ -295,9 +297,9 @@ Seven repositories. Three planes. Authority flows through scoped records, not pr
 | Internal / private runtime contract | `hawkinsoperations-platform` | Runtime contracts, interface boundaries, non-promotional guardrails. | Internal/private runtime-contract route; not a public proof route and not public proof. |
 | Authority chain | [`hawkinsoperations-proof`](https://github.com/HawkinsOperations/hawkinsoperations-proof) | Proof records, claim ceilings, evidence boundary records, cited case packets. | Proof records do not publish private evidence or raise ceilings by presentation. |
 | Rendering | [`hawkinsoperations-website`](https://hawkinsoperations.com/) | Public reviewer navigation and rendered wording. | Rendering is not proof and cannot approve a claim. |
-| Product / front door | [`aevumguard`](https://github.com/HawkinsOperations/aevumguard) | Current Hoxline compatibility repo path and product surface. Claim Firewall is its first internal Claim Authority capability. | Product framing does not create proof authority, runtime truth, signal truth, public-safe status, or approval. |
+| Product / front door | [`hoxline`](https://github.com/HawkinsOperations/hoxline) | Current Hoxline product/front-door repo and ProofOps control surface. Claim Firewall is its first internal Claim Authority enforcement capability. | Product framing does not create proof authority, runtime truth, signal truth, public-safe status, or approval. |
 
-Detections → validation → proof feeds the authority chain. `.github` routes reviewers. `hawkinsoperations-platform` remains an internal/private runtime-contract route. `aevumguard` is the current Hoxline compatibility repo path. The website renders receipts; it does not author them.
+Detections → validation → proof feeds the authority chain. `.github` routes reviewers. `hawkinsoperations-platform` remains an internal/private runtime-contract route. `hoxline` is the current Hoxline product/front-door repo. AevumGuard is legacy/compatibility naming only. The website renders receipts; it does not author them.
 
 ---
 

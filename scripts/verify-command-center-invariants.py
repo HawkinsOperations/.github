@@ -38,6 +38,7 @@ REQUIRED_TEXT = {
         "Validation Case Count",
         "Proof Record Count",
         "Blocked Claim Count",
+        "HawkinsOperations/hoxline",
         "Project Board reconciliation status",
         "Project #1 is not an active reviewer route",
         "SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY",
@@ -171,6 +172,10 @@ def check_required_text(errors: list[str]) -> None:
 
 def check_project_boundaries(all_text: str, errors: list[str]) -> None:
     required = [
+        "hoxline",
+        "Hoxline by HawkinsOperations",
+        "ProofOps control for the AI security era",
+        "AI is not the authority. Evidence is.",
         "Project #2",
         "canonical private HawkinsOperations Control Board",
         "Project #1 is not an active reviewer route",
