@@ -28,7 +28,7 @@ Total HawkinsOperations system repos remain seven:
 
 No eighth repo may be added without explicit approval.
 
-Hoxline by HawkinsOperations is the current product/front-door repo and ProofOps control surface. Hoxline provides ProofOps control for the AI security era and governs how AI-assisted security work becomes tested, reviewed, blocked, or safe to claim. Current repository path: HawkinsOperations/hoxline. AevumGuard is legacy/compatibility naming only. Claim Firewall is the first Claim Authority enforcement capability inside Hoxline; it is not the product, platform, front-door repo, an eighth repo, proof authority, runtime proof, or signal proof.
+Hoxline by HawkinsOperations is the current product/front-door repo and ProofOps control surface. Hoxline provides ProofOps control for the AI security era and governs how AI-assisted security work becomes tested, reviewed, blocked, or safe to claim. Current repository path: HawkinsOperations/hoxline. AevumGuard was a prior working name. Hoxline is the current product name. Claim Firewall is the first Claim Authority enforcement capability inside Hoxline; it is not the product, platform, front-door repo, an eighth repo, proof authority, runtime proof, or signal proof.
 ## Authority Summary
 
 | Repository | Authority plane | Owns | Boundary |
