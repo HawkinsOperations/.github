@@ -30,7 +30,7 @@ Hoxline by HawkinsOperations is the current product/front-door repo for ProofOps
 - Current repository path: https://github.com/HawkinsOperations/hoxline
 - Tagline: ProofOps control for the AI security era.
 - One-liner: Hoxline governs how AI-assisted security work becomes tested, reviewed, blocked, or safe to claim.
-- Compatibility note: AevumGuard is legacy/compatibility naming only. It is not the current product, current repo, or active front-door route.
+- Compatibility note: AevumGuard was a prior working name. Hoxline is the current product name.
 - Doctrine: AI is not the authority. Evidence is.
 - Proof ceiling: public routing clarity only; no proof promotion.
 
@@ -299,7 +299,7 @@ Seven repositories. Three planes. Authority flows through scoped records, not pr
 | Rendering | [`hawkinsoperations-website`](https://hawkinsoperations.com/) | Public reviewer navigation and rendered wording. | Rendering is not proof and cannot approve a claim. |
 | Product / front door | [`hoxline`](https://github.com/HawkinsOperations/hoxline) | Current Hoxline product/front-door repo and ProofOps control surface. Claim Firewall is its first internal Claim Authority enforcement capability. | Product framing does not create proof authority, runtime truth, signal truth, public-safe status, or approval. |
 
-Detections → validation → proof feeds the authority chain. `.github` routes reviewers. `hawkinsoperations-platform` remains an internal/private runtime-contract route. `hoxline` is the current Hoxline product/front-door repo. AevumGuard is legacy/compatibility naming only. The website renders receipts; it does not author them.
+Detections → validation → proof feeds the authority chain. `.github` routes reviewers. `hawkinsoperations-platform` remains an internal/private runtime-contract route. `hoxline` is the current Hoxline product/front-door repo. AevumGuard was a prior working name. Hoxline is the current product name. The website renders receipts; it does not author them.
 
 ---
 

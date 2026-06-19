@@ -19,7 +19,7 @@ The system separates Hoxline product/front-door work, detection source, validati
 - Doctrine: AI is not the authority. Evidence is.
 - Claim Authority governs what can be claimed. Claim Firewall is the first Claim Authority enforcement capability inside Hoxline; it is not the product, platform, front-door repo, an eighth repo, proof authority, runtime proof, or signal proof.
 - Current repository path: HawkinsOperations/hoxline.
-- AevumGuard is legacy/compatibility naming only. It is not the current product, current repo, or active front-door route.
+- AevumGuard was a prior working name. Hoxline is the current product name.
 
 Start with the system signal, then inspect the receipts:
 
@@ -158,7 +158,7 @@ Runtime Route Proof v1 private-candidate boundary: the proof repo routes a revie
 | `hawkinsoperations-proof` | Claim authority, proof records, evidence boundaries, and claim ceilings. | Raw private evidence publication or claim expansion by presentation. |
 | `hawkinsoperations-website` | Public rendering and reviewer cockpit. | Proof authority. |
 | `hoxline` | Current product/front-door repo for Hoxline by HawkinsOperations. Claim Firewall is the first internal Claim Authority enforcement capability inside Hoxline. | Proof authority, runtime state, signal state, public-safe approval, or an eighth-repo expansion path. |
-| `aevumguard` | Legacy/compatibility naming only where older routes require it. | Current product identity, current repo identity, proof authority, runtime state, signal state, public-safe approval, or an eighth-repo expansion path. |
+| `aevumguard` | Historical redirect/prior-name context only. AevumGuard was a prior working name. Hoxline is the current product name. | Current product identity, current repo identity, proof authority, runtime state, signal state, public-safe approval, or an eighth-repo expansion path. |
 
 ### What is proven vs blocked
 
