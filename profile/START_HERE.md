@@ -97,14 +97,13 @@ Public claims require reviewed wording, evidence linkage, stale review, and appr
 
 ### 30-second reviewer path
 
-1. Open the [organization profile](./README.md) for the strongest current receipts.
-2. Open the [HO-DET-001 proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md) and [Proof Pack 001 Release](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) to verify the flagship proof route and bounded reviewer release.
-3. Open the [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) to see which repo owns source, validation, platform, proof, website rendering, org routing, and the Hoxline product/front door.
-4. Open the [Platform ledger state manifest](https://github.com/HawkinsOperations/hawkinsoperations-platform/blob/main/contracts/lifetime-case-ledger-v1-state-manifest.json) and [Reviewer metrics summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) to verify the two separate number systems.
-5. Treat every website/GitHub page as routing unless the owning proof record supports the claim.
+1. Clone [Hoxline](https://github.com/HawkinsOperations/hoxline), then run `python -B -m hoxline demo quickstart` from the repo root.
+2. Read `.hoxline/demo-runs/<timestamp>/reviewer-pack.md`. The demo is deterministic, local, fixture-based, and not runtime proof.
+3. Open the [HO-DET-001 proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md) and [Proof Pack 001 Release](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) to verify the flagship proof route and bounded reviewer release.
+4. Open the [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) to see which repo owns source, validation, platform, proof, website rendering, org routing, and the Hoxline product/front door.
+5. Treat every website/GitHub page as routing unless the owning proof record supports the claim. The Hoxline demo keeps `NOT_PUBLIC_SAFE`, requires human review, and does not promote public proof.
 
 ### 3-minute command-center path
-
 1. Complete the 30-second reviewer path above.
 2. Open the [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) to confirm which repo owns each truth surface.
 3. Open the [Control Status Matrix](../governance/CONTROL_STATUS_MATRIX.md) to confirm the current claim ceiling and blocked claims.
