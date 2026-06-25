@@ -114,13 +114,14 @@ Report-only output is not fail-closed enforcement.
 cd ..\hoxline
 git status -sb
 python -B -m pytest -q tests
+python -B -m hoxline demo quickstart --output .hoxline\demo-runs\self-test --force
+python -B -m hoxline demo verify --input .hoxline\demo-runs\self-test\run-summary.json
 python -B -m hoxline gauntlet verify --input examples\gauntlet\ho-det-001-full-loop-run-v0.json
 ```
 
-Hoxline by HawkinsOperations is the product/front-door repo for ProofOps control. It governs how AI-assisted security work becomes tested, reviewed, blocked, or safe to claim. Claim Firewall is the first Claim Authority enforcement capability inside Hoxline; it is not the product, platform, front-door repo, an eighth repo, proof authority, runtime proof, or signal proof.
+Hoxline by HawkinsOperations is the product/front-door repo for ProofOps control. The one-command reviewer demo is deterministic, local, and fixture-based; it routes reviewers through the Hoxline loop without publishing private evidence, mutating runtime systems, or promoting public proof. Hoxline governs how AI-assisted security work becomes tested, reviewed, blocked, or safe to claim. Claim Firewall is the first Claim Authority enforcement capability inside Hoxline; it is not the product, platform, front-door repo, an eighth repo, proof authority, runtime proof, or signal proof.
 
 ### Platform Boundary and Visibility Plane
-
 ```powershell
 cd ..\hawkinsoperations-platform
 git status -sb
@@ -210,4 +211,3 @@ This verifier proves only that checked command-center route files and invariant 
 ## Claim Boundary
 
 This reviewer path supports reproducible inspection of source-controlled contracts and deterministic checks. It does not prove runtime-active public proof, signal-observed public proof, public-safe proof, production-ready status, fleet-wide coverage, complete identity coverage, live IdP proof, live SIEM proof, live Splunk/Wazuh/Cribl/Security Onion proof, autonomous SOC, AI-approved disposition, analyst-approved disposition, customer-ready product, SOCaaS availability, or public evidence linkage unless the proof index supports it.
-
