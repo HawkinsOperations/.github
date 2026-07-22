@@ -11,7 +11,17 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST_PATH = ROOT / "governance" / "COMMAND_CENTER_INVARIANTS.json"
+WORKFLOW_PATH = ROOT / ".github" / "workflows" / "command-center-invariants.yml"
 TEXT_SCOPES = ["README.md", "profile", "architecture", "governance", "wiki", ".github"]
+EXACT_REPOSITORIES = [
+    ".github",
+    "hawkinsoperations-detections",
+    "hawkinsoperations-validation",
+    "hawkinsoperations-platform",
+    "hawkinsoperations-proof",
+    "hawkinsoperations-website",
+    "hoxline",
+]
 
 REQUIRED_TEXT = {
     "README.md": [
@@ -161,6 +171,78 @@ def check_required_files(manifest: dict, errors: list[str]) -> None:
             fail(f"missing required route file: {item}", errors)
 
 
+def unsafe_workflow_findings(text: str) -> list[str]:
+    patterns = {
+        "contents write permission": r"contents:\s*write",
+        "pull-request write permission": r"pull-requests:\s*write",
+        "direct git push": r"\bgit\s+push\b",
+        "git commit mutation": r"\bgit\s+commit\b",
+        "PR create or merge mutation": r"\bgh\s+pr\s+(?:create|merge)\b",
+        "auto-merge mutation": r"\bauto-merge\b",
+        "Lifetime Case Ledger mutation": r"ho_factory[^\n]*(?:lifetime|ledger)[^\n]*(?:append|correct|mutate)",
+    }
+    return [label for label, pattern in patterns.items() if re.search(pattern, text, re.IGNORECASE)]
+
+
+def extract_workflow_repositories(text: str) -> list[str]:
+    match = re.search(r"^\s*repos=\(\s*$([\s\S]*?)^\s*\)\s*$", text, re.MULTILINE)
+    if not match:
+        return []
+    return [line.strip() for line in match.group(1).splitlines() if line.strip() and not line.lstrip().startswith("#")]
+
+
+def check_cross_repo_workflow(manifest: dict, errors: list[str]) -> None:
+    workflow = read_text(WORKFLOW_PATH, errors)
+    declared = manifest.get("cross_repo_repositories")
+    if declared != EXACT_REPOSITORIES:
+        fail("manifest cross_repo_repositories must list the exact seven repositories in canonical order", errors)
+    required_fragments = [
+        "permissions:\n  contents: read",
+        "seven-repository-convergence:",
+        "REQUESTED_REF:",
+        "git ls-remote --exit-code --heads",
+        'ref="main"',
+        "actions/setup-python@v5",
+        "pip install --disable-pip-version-check -e source-set/hoxline",
+        "source-revisions.txt",
+        "hoxline-case-growth-convergence-verify",
+        "case-growth verify",
+        "public-status:verify",
+        "Sanitize convergence diagnostics",
+        "[local-path-redacted]",
+        "actions/upload-artifact@v4",
+        "if: always()",
+        "if: always() && steps.sanitize.outcome == 'success'",
+    ]
+    for fragment in required_fragments:
+        if fragment not in workflow:
+            fail(f"cross-repo workflow missing required behavior: {fragment}", errors)
+    workflow_repositories = extract_workflow_repositories(workflow)
+    if workflow_repositories != EXACT_REPOSITORIES:
+        fail("cross-repo workflow checkout array must equal the exact ordered seven-repository set with no duplicates", errors)
+    for finding in unsafe_workflow_findings(workflow):
+        fail(f"cross-repo workflow permits unsafe behavior: {finding}", errors)
+
+
+def check_workflow_hostile_self_test(errors: list[str]) -> None:
+    hostile_cases = {
+        "contents write": "permissions:\n  contents: write",
+        "direct main push": "run: git push origin main",
+        "commit mutation": "run: git commit -m unsafe",
+        "PR merge": "run: gh pr merge 1",
+        "ledger append": "run: python ho_factory.py lifetime-ledger-append",
+    }
+    for name, hostile in hostile_cases.items():
+        if not unsafe_workflow_findings(hostile):
+            fail(f"workflow hostile self-test failed to detect {name}", errors)
+    missing_repo = "repos=(\n  .github\n  hoxline\n)"
+    duplicate_repo = "repos=(\n  .github\n  .github\n  hoxline\n)"
+    if extract_workflow_repositories(missing_repo) == EXACT_REPOSITORIES:
+        fail("workflow hostile self-test accepted a missing-repository checkout set", errors)
+    if len(set(extract_workflow_repositories(duplicate_repo))) == len(extract_workflow_repositories(duplicate_repo)):
+        fail("workflow hostile self-test did not recognize a duplicate-repository checkout set", errors)
+
+
 def check_required_text(errors: list[str]) -> None:
     for rel, needles in REQUIRED_TEXT.items():
         text = read_text(ROOT / rel, errors)
@@ -276,6 +358,9 @@ def main() -> int:
     errors: list[str] = []
     manifest = load_manifest(errors)
     check_required_files(manifest, errors)
+    check_cross_repo_workflow(manifest, errors)
+    if "--self-test" in sys.argv:
+        check_workflow_hostile_self_test(errors)
     check_required_text(errors)
 
     text_files = iter_text_files()

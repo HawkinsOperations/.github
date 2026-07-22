@@ -11,6 +11,7 @@ on:
       - ".github/pull_request_template.md"
       - ".github/workflows/command-center-invariants.yml"
       - "scripts/verify-command-center-invariants.py"
+      - "governance/COMMAND_CENTER_INVARIANTS.json"
   push:
     branches:
       - main
@@ -23,6 +24,7 @@ on:
       - ".github/pull_request_template.md"
       - ".github/workflows/command-center-invariants.yml"
       - "scripts/verify-command-center-invariants.py"
+      - "governance/COMMAND_CENTER_INVARIANTS.json"
 
 permissions:
   contents: read
@@ -35,4 +37,93 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Verify command-center invariants
-        run: python scripts/verify-command-center-invariants.py
+        run: python scripts/verify-command-center-invariants.py --self-test
+
+  seven-repository-convergence:
+    runs-on: ubuntu-latest
+    env:
+      REQUESTED_REF: ${{ github.event.pull_request.head.ref || github.ref_name }}
+    steps:
+      - name: Checkout workflow authority
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Checkout exact seven-repository source set read-only
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p source-set verification-artifacts
+          repos=(
+            .github
+            hawkinsoperations-detections
+            hawkinsoperations-validation
+            hawkinsoperations-platform
+            hawkinsoperations-proof
+            hawkinsoperations-website
+            hoxline
+          )
+          : > verification-artifacts/source-revisions.txt
+          for repo in "${repos[@]}"; do
+            url="https://github.com/HawkinsOperations/${repo}.git"
+            ref="main"
+            if git ls-remote --exit-code --heads "$url" "$REQUESTED_REF" >/dev/null 2>&1; then
+              ref="$REQUESTED_REF"
+            fi
+            git clone --quiet --branch "$ref" "$url" "source-set/$repo"
+            sha="$(git -C "source-set/$repo" rev-parse HEAD)"
+            printf '%s ref=%s sha=%s\n' "$repo" "$ref" "$sha" >> verification-artifacts/source-revisions.txt
+          done
+
+      - name: Install bounded verifier dependencies
+        run: python -m pip install --disable-pip-version-check -e source-set/hoxline
+
+      - name: Verify source and validation contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -B source-set/hawkinsoperations-detections/scripts/verify_detection_contract.py | tee verification-artifacts/detections.txt
+          python -B source-set/hawkinsoperations-detections/scripts/verify_detection_promotion_matrix.py | tee -a verification-artifacts/detections.txt
+          python -B source-set/hawkinsoperations-validation/scripts/verify_validation_registry.py | tee verification-artifacts/validation.txt
+          python -B source-set/hawkinsoperations-validation/scripts/verify_all_validation_packages.py | tee -a verification-artifacts/validation.txt
+
+      - name: Verify proof and platform convergence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -B source-set/hawkinsoperations-proof/scripts/verify_detection_proof_status_index.py | tee verification-artifacts/proof.txt
+          python -B source-set/hawkinsoperations-platform/scripts/ho_factory.py hoxline-case-growth-convergence-verify --repo-root source-set --format json | tee verification-artifacts/platform-convergence.json
+
+      - name: Verify Hoxline case growth and website projection
+        shell: bash
+        env:
+          PYTHONPATH: source-set/hoxline/src
+        run: |
+          set -euo pipefail
+          python -B -m hoxline.cli case-growth verify --repo-root source-set --snapshot source-set/hoxline/examples/case-growth/current-case-growth-index.json | tee verification-artifacts/hoxline-convergence.txt
+          npm ci --prefix source-set/hawkinsoperations-website
+          npm --prefix source-set/hawkinsoperations-website run public-status:verify | tee verification-artifacts/website.txt
+
+      - name: Sanitize convergence diagnostics
+        id: sanitize
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          find verification-artifacts -type f -exec sed -i -E 's#(/home/runner/[^ ]+|[A-Za-z]:\\[^ ]+)#[local-path-redacted]#g' {} +
+          if grep -R -E '(github[_]pat_|g[h]p_|BEGIN (RSA |OPENSSH )?PRIVATE KEY)' verification-artifacts; then
+            echo "Unsafe diagnostic marker detected; artifact upload blocked."
+            exit 1
+          fi
+
+      - name: Upload sanitized convergence diagnostics
+        if: always() && steps.sanitize.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: seven-repository-convergence-${{ github.run_id }}
+          path: verification-artifacts/
+          if-no-files-found: error
+          retention-days: 14
