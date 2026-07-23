@@ -6,50 +6,50 @@
       "repository": ".github",
       "canonical_repository": "HawkinsOperations/.github",
       "revision_source": "github_event_sha",
-      "authority_content_revision": "43fd17e7e66606fac92994cfc9eeb3871a03eff1",
+      "authority_content_revision": "6e6763a81d6af09c2e4588462b56117ce82c2f88",
       "tree_source": "github_event_tree"
     },
     {
       "repository": "hawkinsoperations-detections",
       "canonical_repository": "HawkinsOperations/hawkinsoperations-detections",
-      "revision": "16d4432eb46d457939f1cfe573c0c5d712650efb",
-      "authority_content_revision": "16d4432eb46d457939f1cfe573c0c5d712650efb",
-      "reviewed_tree_sha": "74a33886c498ed0c0c79360d0fc2485dea4b4cf7"
+      "revision": "11a481afbc739c994ce19cdb12052a307a6eec77",
+      "authority_content_revision": "c2790ab007279faff6130a60dc68818343c255ee",
+      "reviewed_tree_sha": "48e43af2aebb0d0d4ef6b321cbd116b8f7f0df04"
     },
     {
       "repository": "hawkinsoperations-validation",
       "canonical_repository": "HawkinsOperations/hawkinsoperations-validation",
-      "revision": "34bbfc4f48f75f647d5946b4cbe6835abf5e7dbc",
-      "authority_content_revision": "34bbfc4f48f75f647d5946b4cbe6835abf5e7dbc",
-      "reviewed_tree_sha": "edc1f917dfa86cdc32bc47190957786a7dc400c3"
+      "revision": "2e833f340e183e8e2357c860314509c6d1cc2dd3",
+      "authority_content_revision": "ebf52f7c6c9b78de767272cc56fccdc584f5c4e0",
+      "reviewed_tree_sha": "a6852d017cd51510ff32ce319114a4b1cd5b1a0c"
     },
     {
       "repository": "hawkinsoperations-platform",
       "canonical_repository": "HawkinsOperations/hawkinsoperations-platform",
-      "revision": "d9ffb49baeb96b9f5789a7dc9d56e028909fd89d",
+      "revision": "2192bae326e47681884fd82e9ab762f2ba04e53a",
       "authority_content_revision": "541ffcd0e94e9db94638d8ffa5934da11ae38771",
-      "reviewed_tree_sha": "e900c448b3feacc0c21abda35ae75910d3289354"
+      "reviewed_tree_sha": "aac06c90f0db6f812799b09376593e7b07f72d02"
     },
     {
       "repository": "hawkinsoperations-proof",
       "canonical_repository": "HawkinsOperations/hawkinsoperations-proof",
-      "revision": "c60882552571c1664549d3e594c6994dc27dce63",
-      "authority_content_revision": "c60882552571c1664549d3e594c6994dc27dce63",
-      "reviewed_tree_sha": "2f84647f298b36a2286aaddf4ebeedf5e0c3cc82"
+      "revision": "79d4bff2dccb24c2b29a68f4a3be7a1e916414b4",
+      "authority_content_revision": "042a918ad4a8473cd5abcfd575072fc094639682",
+      "reviewed_tree_sha": "a1d23af53a8515ab38b14f767f8de7f9984ec567"
     },
     {
       "repository": "hawkinsoperations-website",
       "canonical_repository": "HawkinsOperations/hawkinsoperations-website",
-      "revision": "0230c42fb4aa40aa3c917505457848da4f9883c2",
-      "authority_content_revision": "0230c42fb4aa40aa3c917505457848da4f9883c2",
-      "reviewed_tree_sha": "e0af2684c80bcd9f368f38eb01aa9ffcb5898f8f"
+      "revision": "048a11ea7e0404a7d426e900f2d9584b842e4bb3",
+      "authority_content_revision": "5856f8e69527b5e61c3953b88a2ad4c088268655",
+      "reviewed_tree_sha": "e904a247dc8cde8d095b68ac8f978f012a792443"
     },
     {
       "repository": "hoxline",
       "canonical_repository": "HawkinsOperations/hoxline",
-      "revision": "47c72da9f4dbbfb8f4a602136345f5428c497167",
-      "authority_content_revision": "cc0e3e11b86b8998eccaec7d7981cc4f051f156e",
-      "reviewed_tree_sha": "7e43bf40313e97172074025aa0fe667fd08b57ba"
+      "revision": "6d1581393deb8a1ffe1894b2761056d3af792746",
+      "authority_content_revision": "d2ce9d977e832e327b4bdbfef55f04a4fd7c35e7",
+      "reviewed_tree_sha": "71ce96b835278b245cd81969bb5ceb95ebeab514"
     }
   ],
   "constraints": {
