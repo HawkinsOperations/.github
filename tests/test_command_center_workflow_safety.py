@@ -28,6 +28,36 @@ class WorkflowSafetyTests(unittest.TestCase):
             f"hostile workflow was accepted: {label}",
         )
 
+    def test_tracked_vocabulary_guard_rejects_content_and_filename(self) -> None:
+        retired = "".join(("syn", "thetic"))
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            subprocess.run(
+                ["git", "init", "--quiet"],
+                cwd=root,
+                check=True,
+                capture_output=True,
+            )
+            content_path = root / "content-fixture.txt"
+            filename_path = root / f"fixture-{retired}.txt"
+            content_path.write_text(
+                f"controlled-test boundary rejects {retired}\n",
+                encoding="utf-8",
+            )
+            filename_path.write_text(
+                "controlled-test boundary\n",
+                encoding="utf-8",
+            )
+            subprocess.run(
+                ["git", "add", "--", content_path.name, filename_path.name],
+                cwd=root,
+                check=True,
+                capture_output=True,
+            )
+            findings = VERIFIER.tracked_vocabulary_findings(root)
+        self.assertTrue(any("tracked content" in item for item in findings))
+        self.assertTrue(any("tracked filename" in item for item in findings))
+
     def test_current_workflow_is_structurally_safe(self) -> None:
         self.assertEqual([], VERIFIER.unsafe_workflow_findings(self.workflow))
 

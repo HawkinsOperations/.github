@@ -297,6 +297,62 @@ def iter_text_files() -> list[Path]:
     return sorted(set(files))
 
 
+def tracked_vocabulary_findings(repo_root: Path = ROOT) -> list[str]:
+    retired = "".join(("syn", "thetic"))
+    findings: list[str] = []
+    listed = subprocess.run(
+        ["git", "-C", str(repo_root), "ls-files", "-z"],
+        capture_output=True,
+        check=False,
+    )
+    if listed.returncode != 0:
+        return ["tracked-source vocabulary check could not enumerate Git-tracked files"]
+    try:
+        tracked_paths = listed.stdout.decode("utf-8").split("\0")
+    except UnicodeDecodeError:
+        return ["tracked-source vocabulary filename inventory is not valid UTF-8"]
+    for relative in filter(None, tracked_paths):
+        if retired in relative.casefold():
+            findings.append(
+                f"retired fixture vocabulary appears in tracked filename: {relative}"
+            )
+    scanned = subprocess.run(
+        [
+            "git",
+            "-C",
+            str(repo_root),
+            "grep",
+            "-n",
+            "-I",
+            "-i",
+            "-F",
+            retired,
+            "--",
+            ".",
+        ],
+        capture_output=True,
+        check=False,
+    )
+    if scanned.returncode not in {0, 1}:
+        findings.append(
+            "tracked-source vocabulary content scan failed before producing a decision"
+        )
+        return findings
+    if scanned.returncode == 0:
+        try:
+            matches = scanned.stdout.decode("utf-8").splitlines()
+        except UnicodeDecodeError:
+            findings.append(
+                "tracked-source vocabulary content findings are not valid UTF-8"
+            )
+        else:
+            findings.extend(
+                f"retired fixture vocabulary appears in tracked content: {match}"
+                for match in matches
+            )
+    return findings
+
+
 def reject_duplicate_object_pairs(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
     result: dict[str, Any] = {}
     normalized: set[str] = set()
@@ -1611,6 +1667,7 @@ def check_identity_and_claim_context(
 
 def run_full_verification(self_test: bool) -> list[str]:
     errors: list[str] = []
+    errors.extend(tracked_vocabulary_findings())
     manifest = load_manifest(errors)
     source_manifest = load_source_manifest(errors)
     check_required_files(manifest, errors)
