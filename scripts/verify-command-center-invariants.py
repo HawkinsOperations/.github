@@ -45,6 +45,55 @@ PINNED_ACTIONS = {
 }
 EXPECTED_ARTIFACT_FILES = {"source-revisions.json", "verification-summary.json"}
 PROOF_CEILING = "CONTROLLED_REPO_CONVERGENCE_AND_LOCAL_FIXTURE_REVIEW_ONLY"
+EXPECTED_VERIFICATION_CHECKS = [
+    "command_center_invariants",
+    "command_center_hostile_workflow_tests",
+    "exact_seven_source_checkout",
+    "detection_contract",
+    "detection_promotion_matrix",
+    "detection_reverse_inventory_and_hostile_tests",
+    "validation_registry",
+    "validation_package_sweep",
+    "validation_source_and_report_parity",
+    "validation_claim_boundary",
+    "proof_status_index",
+    "proof_reverse_inventory",
+    "proof_integrity",
+    "platform_public_status_source_contract",
+    "platform_case_growth_convergence",
+    "platform_mutation_boundary",
+    "hoxline_case_growth_pair",
+    "hoxline_expanded_batch",
+    "hoxline_replay",
+    "hoxline_hostile_tests",
+    "website_source_owner_and_freshness",
+    "website_nested_claim_and_eol_tests",
+    "website_static_build",
+]
+EXPECTED_MANIFEST_ROOT_KEYS = {
+    "schema",
+    "scope",
+    "required_route_files",
+    "cross_repo_repositories",
+    "invariants",
+}
+EXPECTED_INVARIANT_KEYS = {
+    "github_repo_role",
+    "project_2_role",
+    "project_1_boundary",
+    "project_metadata_boundary",
+    "rendering_boundary",
+    "proof_authority_repo",
+    "command_center_proof_ceiling",
+    "ledger_public_safe_status",
+    "reviewer_metrics_pipeline",
+    "reviewer_metrics_counts",
+    "cross_repo_convergence",
+    "ho_det_001_public_ceiling",
+    "runtime_signal_public_promotions",
+    "standing_controls",
+    "standing_control_replacement",
+}
 
 REQUIRED_TEXT = {
     "README.md": [
@@ -253,8 +302,21 @@ def load_manifest(errors: list[str]) -> dict[str, Any]:
         return {}
     if manifest.get("schema") != "hawkinsoperations-command-center-invariants-v1":
         fail("manifest schema mismatch", errors)
-    if not isinstance(manifest.get("invariants"), dict):
+    if set(manifest) != EXPECTED_MANIFEST_ROOT_KEYS:
+        fail("manifest root shape is not closed", errors)
+    invariants = manifest.get("invariants")
+    if not isinstance(invariants, dict):
         fail("manifest invariants must be an object", errors)
+    elif set(invariants) != EXPECTED_INVARIANT_KEYS:
+        fail("manifest invariant shape is not closed", errors)
+    elif any(not isinstance(value, str) or not value.strip() for value in invariants.values()):
+        fail("manifest invariant values must be non-empty strings", errors)
+    if not isinstance(manifest.get("scope"), str) or not manifest["scope"].strip():
+        fail("manifest scope must be a non-empty string", errors)
+    if not isinstance(manifest.get("required_route_files"), list):
+        fail("manifest required_route_files must be an array", errors)
+    if manifest.get("cross_repo_repositories") != EXACT_REPOSITORIES:
+        fail("manifest cross-repository list is not canonical", errors)
     return manifest
 
 
@@ -400,6 +462,30 @@ def unsafe_workflow_findings(text: str) -> list[str]:
             findings.append("scheduled drift detection is required")
         if not isinstance(triggers.get("workflow_dispatch"), dict):
             findings.append("manual read-only dispatch is required")
+        pull_request = triggers.get("pull_request")
+        push = triggers.get("push")
+        required_paths = {
+            "README.md",
+            "profile/**",
+            "architecture/**",
+            "governance/**",
+            "wiki/**",
+            ".github/pull_request_template.md",
+            ".github/workflows/command-center-invariants.yml",
+            "scripts/verify-command-center-invariants.py",
+            "tests/**",
+        }
+        if not isinstance(pull_request, dict) or set(pull_request) != {"paths"}:
+            findings.append("pull_request trigger shape must be unrestricted except approved paths")
+        elif set(pull_request.get("paths", [])) != required_paths:
+            findings.append("pull_request paths must cover every governed verifier surface")
+        if not isinstance(push, dict) or set(push) != {"branches", "paths"}:
+            findings.append("push trigger shape must be exactly branches and paths")
+        else:
+            if push.get("branches") != ["main"]:
+                findings.append("push trigger must govern main exactly")
+            if set(push.get("paths", [])) != required_paths:
+                findings.append("push paths must cover every governed verifier surface")
 
     if workflow.get("permissions") != {"contents": "read"}:
         findings.append("root permissions must be exactly contents: read")
@@ -409,6 +495,72 @@ def unsafe_workflow_findings(text: str) -> list[str]:
         "seven-repository-convergence",
     }:
         findings.append("workflow jobs must be the exact approved pair")
+    else:
+        expected_step_names = {
+            "command-center-invariants": [
+                "Checkout command-center authority",
+                "Set up Python",
+                "Install structural verifier dependency",
+                "Verify command-center invariants",
+                "Run hostile command-center unit tests",
+                "Verify patch whitespace",
+            ],
+            "seven-repository-convergence": [
+                "Checkout workflow authority at the event revision",
+                "Set up Python",
+                "Set up Node",
+                "Install bounded verifier dependencies",
+                "Resolve governance/CONVERGENCE_SOURCE_MANIFEST.json",
+                "Checkout six immutable sibling revisions without credentials",
+                "Verify the exact clean detached source set",
+                "Detect durable sibling main-content drift",
+                "Verify detection authority and hostile paths",
+                "Verify validation authority and fail-closed parity",
+                "Verify proof authority and reverse inventory",
+                "Verify platform source contract and seven-source convergence",
+                "Install Hoxline from the checked immutable source",
+                "Verify Hoxline Case Growth pair and replay integrity",
+                "Install Website dependencies from the checked lockfile",
+                "Verify Website rendering-only status plane and static build",
+                "Write closed-schema verification summary",
+                "Validate upload artifacts",
+                "Upload sanitized convergence records",
+            ],
+        }
+        for job_name, expected_names in expected_step_names.items():
+            job = jobs.get(job_name)
+            if not isinstance(job, dict):
+                findings.append(f"{job_name} job must be an object")
+                continue
+            if "if" in job:
+                findings.append(f"{job_name} mandatory job must not be conditional")
+            steps = job.get("steps")
+            if not isinstance(steps, list):
+                findings.append(f"{job_name} steps must be an array")
+                continue
+            names = [step.get("name") if isinstance(step, dict) else None for step in steps]
+            if names != expected_names:
+                findings.append(f"{job_name} step order differs from the approved contract")
+            for step in steps:
+                if not isinstance(step, dict):
+                    findings.append(f"{job_name} contains a non-object step")
+                    continue
+                condition = step.get("if")
+                if step.get("name") == "Detect durable sibling main-content drift":
+                    if condition != "github.event_name != 'pull_request'":
+                        findings.append("durable main observation condition is not exact")
+                elif condition is not None:
+                    findings.append(f"mandatory step is conditional: {step.get('name')}")
+        convergence_steps = jobs["seven-repository-convergence"].get("steps", [])
+        if isinstance(convergence_steps, list):
+            names = [step.get("name") for step in convergence_steps if isinstance(step, dict)]
+            try:
+                validate_index = names.index("Validate upload artifacts")
+                upload_index = names.index("Upload sanitized convergence records")
+                if upload_index != validate_index + 1:
+                    findings.append("artifact validation must be immediately before upload")
+            except ValueError:
+                findings.append("artifact validation/upload steps are missing")
 
     checkout_count = 0
     source_set_checkout = False
@@ -430,6 +582,9 @@ def unsafe_workflow_findings(text: str) -> list[str]:
         if key == "run" and isinstance(value, str) and "\n" in value:
             if "set -euo pipefail" not in value:
                 findings.append("multiline shell steps must enable strict exit propagation")
+        if key == "run" and isinstance(value, str):
+            if re.search(r"(?im)^\s*(?:echo|printf)\b.*\b(?:python|git)\b", value):
+                findings.append("required command may not be replaced by inert output")
         if key == "uses" and isinstance(value, str):
             match = re.fullmatch(r"([^@]+)@([0-9a-f]{40})", value)
             if match is None:
@@ -493,8 +648,8 @@ def unsafe_workflow_findings(text: str) -> list[str]:
         "ledger mutation": r"\b(?:lifetime|ledger)[^\n]*(?:append|correct|mutate|write)\b",
         "runtime mutation": r"\b(?:runtime|endpoint|wazuh|splunk|cribl)[^\n]*(?:mutate|deploy|configure|restart|write)\b",
         "proof promotion": r"\b(?:proof|public.safe)[^\n]*(?:promote|publish|approve)\b",
-        "swallowed failure": r"(?:\|\|\s*true\b|\bset\s+\+e\b|\btrap\b[^\n]*\bexit\s+0\b)",
-        "backgrounded command": r"(?m)(?<!&)&\s*$",
+        "swallowed failure": r"(?:\|\|\s*(?:true|echo|printf)\b|\bset\s+\+e\b|\btrap\b[^\n]*\bexit\s+0\b)",
+        "backgrounded command": r"(?m)(?<!&)&(?!&)(?:\s*(?:wait\b.*)?)?\s*$",
         "unconditional success": r"(?m)^\s*(?:exit\s+0|true)\s*$",
         "mutable branch fallback": r"\b(?:main|master)\b[^\n]*(?:fallback|default)|ref\s*=\s*[\"']?(?:main|master)",
         "credential persistence": r"persist-credentials\s*:\s*(?:true|yes|on|1)\b",
@@ -544,6 +699,15 @@ def unsafe_workflow_findings(text: str) -> list[str]:
     for fragment in required_fragments:
         if fragment not in text:
             findings.append(f"workflow missing required behavior: {fragment}")
+    exact_executed_patterns = {
+        "detection contract": r"(?m)^\s*python -B source-set/hawkinsoperations-detections/scripts/verify_detection_contract\.py\s*$",
+        "detection matrix": r"(?m)^\s*python -B source-set/hawkinsoperations-detections/scripts/verify_detection_promotion_matrix\.py\s*$",
+        "sibling fetch": r'(?m)^\s*git -C "source-set/\$repo" fetch --quiet --depth=1 origin "\$revision"\s*$',
+        "sibling checkout": r'(?m)^\s*git -C "source-set/\$repo" checkout --quiet --detach "\$revision"\s*$',
+    }
+    for label, pattern in exact_executed_patterns.items():
+        if re.search(pattern, text) is None:
+            findings.append(f"workflow does not execute exact required command: {label}")
     return sorted(set(findings))
 
 
@@ -895,6 +1059,8 @@ def is_private_scalar(value: str) -> bool:
             return True
         if re.search(
             r"(?:github[_-]?pat_|ghp_|begin (?:rsa |openssh )?private key|"
+            r"\bAKIA[0-9A-Z]{16}\b|\bbearer\s+[a-z0-9._~+/=-]{12,}\b|"
+            r"\beyJ[a-z0-9_-]{8,}\.[a-z0-9_-]{8,}\.[a-z0-9_-]{8,}\b|"
             r"\b(?:10|127)\.\d{1,3}\.\d{1,3}\.\d{1,3}\b|"
             r"\b172\.(?:1[6-9]|2\d|3[0-1])\.\d{1,3}\.\d{1,3}\b|"
             r"\b192\.168\.\d{1,3}\.\d{1,3}\b|"
@@ -1006,8 +1172,8 @@ def validate_artifact_payloads(directory: Path) -> list[str]:
         if summary.get("repositories") != EXACT_REPOSITORIES:
             errors.append("verification summary repository set mismatch")
         checks = summary.get("checks")
-        if not isinstance(checks, list) or len(checks) != len(set(checks)) or len(checks) < 20:
-            errors.append("verification summary check list is missing or duplicated")
+        if checks != EXPECTED_VERIFICATION_CHECKS:
+            errors.append("verification summary check list differs from the exact approved checks")
         if summary.get("mutation_boundary") != {
             "repository_writes": False,
             "pull_request_mutation": False,
@@ -1038,31 +1204,6 @@ def write_json_atomic(path: Path, value: dict[str, Any]) -> None:
 
 
 def write_verification_summary(path: Path) -> None:
-    checks = [
-        "command_center_invariants",
-        "command_center_hostile_workflow_tests",
-        "exact_seven_source_checkout",
-        "detection_contract",
-        "detection_promotion_matrix",
-        "detection_reverse_inventory_and_hostile_tests",
-        "validation_registry",
-        "validation_package_sweep",
-        "validation_source_and_report_parity",
-        "validation_claim_boundary",
-        "proof_status_index",
-        "proof_reverse_inventory",
-        "proof_integrity",
-        "platform_public_status_source_contract",
-        "platform_case_growth_convergence",
-        "platform_mutation_boundary",
-        "hoxline_case_growth_pair",
-        "hoxline_expanded_batch",
-        "hoxline_replay",
-        "hoxline_hostile_tests",
-        "website_source_owner_and_freshness",
-        "website_nested_claim_and_eol_tests",
-        "website_static_build",
-    ]
     write_json_atomic(
         path,
         {
@@ -1070,7 +1211,7 @@ def write_verification_summary(path: Path) -> None:
             "status": "PASS",
             "repository_count": 7,
             "repositories": EXACT_REPOSITORIES,
-            "checks": checks,
+            "checks": EXPECTED_VERIFICATION_CHECKS,
             "mutation_boundary": {
                 "repository_writes": False,
                 "pull_request_mutation": False,

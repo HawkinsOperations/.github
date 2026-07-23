@@ -69,6 +69,8 @@ class WorkflowSafetyTests(unittest.TestCase):
             "set plus e": "set +e",
             "unconditional success": "exit 0",
             "backgrounded command": "python unsafe.py &",
+            "background and wait": "python unsafe.py & wait",
+            "swallowed echo": "false || echo ignored",
         }
         for label, hostile in hostile_lines.items():
             with self.subTest(label=label):
@@ -92,6 +94,61 @@ class WorkflowSafetyTests(unittest.TestCase):
             ),
             "always",
         )
+
+    def test_required_commands_cannot_be_echoed_or_conditionally_disabled(self) -> None:
+        mutations = {
+            "echo detection verifier": self.workflow.replace(
+                "python -B source-set/hawkinsoperations-detections/scripts/verify_detection_contract.py",
+                "echo python -B source-set/hawkinsoperations-detections/scripts/verify_detection_contract.py",
+                1,
+            ),
+            "echo sibling fetch": self.workflow.replace(
+                'git -C "source-set/$repo" fetch --quiet --depth=1 origin "$revision"',
+                'echo git -C "source-set/$repo" fetch --quiet --depth=1 origin "$revision"',
+                1,
+            ),
+            "conditional job": self.workflow.replace(
+                "  seven-repository-convergence:\n    runs-on:",
+                "  seven-repository-convergence:\n    if: false\n    runs-on:",
+                1,
+            ),
+            "conditional principal step": self.workflow.replace(
+                "      - name: Verify command-center invariants\n        run:",
+                "      - name: Verify command-center invariants\n        if: false\n        run:",
+                1,
+            ),
+        }
+        for label, value in mutations.items():
+            with self.subTest(label=label):
+                self.assert_rejected(value, label)
+
+    def test_trigger_neutralization_and_test_path_omission_fail(self) -> None:
+        mutations = {
+            "closed-only PR": self.workflow.replace(
+                "  pull_request:\n    paths:",
+                "  pull_request:\n    types: [closed]\n    paths:",
+                1,
+            ),
+            "ignored main": self.workflow.replace(
+                "  pull_request:\n    paths:",
+                "  pull_request:\n    branches-ignore: [main]\n    paths:",
+                1,
+            ),
+            "tests omitted": self.workflow.replace('      - "tests/**"\n', "", 1),
+        }
+        for label, value in mutations.items():
+            with self.subTest(label=label):
+                self.assert_rejected(value, label)
+
+    def test_artifact_validation_must_be_immediately_before_upload(self) -> None:
+        hostile = self.workflow.replace(
+            "      - name: Upload sanitized convergence records",
+            "      - name: Corrupt artifact after validation\n"
+            "        run: echo invalid > verification-artifacts/verification-summary.json\n\n"
+            "      - name: Upload sanitized convergence records",
+            1,
+        )
+        self.assert_rejected(hostile, "post-validation artifact mutation")
 
     def test_duplicate_yaml_key_fails_closed(self) -> None:
         hostile = self.workflow.replace(
@@ -184,6 +241,27 @@ class WorkflowSafetyTests(unittest.TestCase):
             path.write_text('{"schema":"one","SCHEMA":"two"}\n', encoding="utf-8")
             with self.assertRaises(VERIFIER.ValidationError):
                 VERIFIER.load_json_strict(path)
+
+    def test_command_center_manifest_shape_is_closed(self) -> None:
+        original = VERIFIER.load_json_strict(VERIFIER.MANIFEST_PATH)
+        for mutation in ("root", "invariant"):
+            with self.subTest(mutation=mutation):
+                candidate = json.loads(json.dumps(original))
+                if mutation == "root":
+                    candidate["extension"] = {"ai_authority": True}
+                else:
+                    candidate["invariants"]["ai_authority"] = True
+                with tempfile.TemporaryDirectory() as temp:
+                    path = Path(temp) / "manifest.json"
+                    path.write_text(json.dumps(candidate), encoding="utf-8")
+                    prior = VERIFIER.MANIFEST_PATH
+                    try:
+                        VERIFIER.MANIFEST_PATH = path
+                        errors = []
+                        VERIFIER.load_manifest(errors)
+                    finally:
+                        VERIFIER.MANIFEST_PATH = prior
+                    self.assertTrue(errors)
 
 
 class SourceSetTests(unittest.TestCase):
@@ -313,6 +391,8 @@ class ArtifactSanitizerTests(unittest.TestCase):
             "192.168.1.12",
             "private@example.com",
             "customer evidence",
+            "AKIAIOSFODNN7EXAMPLE",
+            "Bearer abcdefghijklmnopqrstuvwxyz",
         ]
         for hostile in hostile_values:
             with self.subTest(hostile=hostile), tempfile.TemporaryDirectory() as temp:
@@ -327,6 +407,16 @@ class ArtifactSanitizerTests(unittest.TestCase):
             root = Path(temp)
             self.create_valid_artifacts(root)
             (root / "raw.log").write_text("not approved\n", encoding="utf-8")
+            self.assertTrue(VERIFIER.validate_artifact_payloads(root))
+
+    def test_fabricated_check_set_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            self.create_valid_artifacts(root)
+            path = root / "verification-summary.json"
+            value = json.loads(path.read_text(encoding="utf-8"))
+            value["checks"] = [f"fabricated_check_{index}" for index in range(23)]
+            VERIFIER.write_json_atomic(path, value)
             self.assertTrue(VERIFIER.validate_artifact_payloads(root))
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
