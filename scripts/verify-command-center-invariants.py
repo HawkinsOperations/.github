@@ -359,6 +359,7 @@ def validate_source_manifest(value: dict[str, Any]) -> list[str]:
                 "repository",
                 "canonical_repository",
                 "revision_source",
+                "authority_content_revision",
                 "tree_source",
             }:
                 errors.append(".github source entry has an unsupported shape")
@@ -366,6 +367,13 @@ def validate_source_manifest(value: dict[str, Any]) -> list[str]:
                 errors.append(".github source entry must use github_event_sha")
             if entry.get("tree_source") != "github_event_tree":
                 errors.append(".github source entry must use github_event_tree")
+            if re.fullmatch(
+                r"[0-9a-f]{40}",
+                str(entry.get("authority_content_revision", "")),
+            ) is None:
+                errors.append(
+                    ".github source entry authority content revision is not immutable"
+                )
         else:
             if set(entry) != {
                 "repository",
@@ -673,7 +681,7 @@ def unsafe_workflow_findings(text: str) -> list[str]:
         "--verify-source-set",
         "--verify-remote-main-content",
         "while IFS=$'\\t' read -r repo revision",
-        'git -C "source-set/$repo" fetch --quiet --depth=1 origin "$revision"',
+        'git -C "source-set/$repo" fetch --quiet origin "$revision"',
         'git -C "source-set/$repo" checkout --quiet --detach "$revision"',
         "source-revisions.json",
         "HAWKINS_COMMAND_CENTER_IMMUTABLE_OBSERVED_SHA",
@@ -714,7 +722,7 @@ def unsafe_workflow_findings(text: str) -> list[str]:
         "detection matrix": r"(?m)^\s*python -B source-set/hawkinsoperations-detections/scripts/verify_detection_promotion_matrix\.py\s*$",
         "validation registry exact source": r'(?m)^\s*python -B source-set/hawkinsoperations-validation/scripts/verify_validation_registry\.py --detections-root source-set/hawkinsoperations-detections --detections-ref "\$\(git -C source-set/hawkinsoperations-detections rev-parse HEAD\)" --source-manifest source-set/hawkinsoperations-validation/validation/SOURCE_AUTHORITY_MANIFEST\.json\s*$',
         "validation unit import root": r'(?m)^\s*PYTHONPATH="\$GITHUB_WORKSPACE/source-set/hawkinsoperations-validation" python -B -m unittest discover -s source-set/hawkinsoperations-validation/tests\s*$',
-        "sibling fetch": r'(?m)^\s*git -C "source-set/\$repo" fetch --quiet --depth=1 origin "\$revision"\s*$',
+        "sibling fetch": r'(?m)^\s*git -C "source-set/\$repo" fetch --quiet origin "\$revision"\s*$',
         "sibling checkout": r'(?m)^\s*git -C "source-set/\$repo" checkout --quiet --detach "\$revision"\s*$',
     }
     for label, pattern in exact_executed_patterns.items():

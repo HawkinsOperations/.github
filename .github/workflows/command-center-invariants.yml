@@ -68,6 +68,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           path: source-set/.github
+          fetch-depth: 0
           persist-credentials: false
 
       - name: Set up Python
@@ -111,7 +112,7 @@ jobs:
             mkdir "source-set/$repo"
             git -C "source-set/$repo" init --quiet
             git -C "source-set/$repo" remote add origin "https://github.com/HawkinsOperations/$repo.git"
-            git -C "source-set/$repo" fetch --quiet --depth=1 origin "$revision"
+            git -C "source-set/$repo" fetch --quiet origin "$revision"
             git -C "source-set/$repo" checkout --quiet --detach "$revision"
             test "$(git -C "source-set/$repo" rev-parse HEAD)" = "$revision"
           done < verification-work/sibling-revisions.tsv

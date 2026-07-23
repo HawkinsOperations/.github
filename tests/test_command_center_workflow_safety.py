@@ -103,8 +103,8 @@ class WorkflowSafetyTests(unittest.TestCase):
                 1,
             ),
             "echo sibling fetch": self.workflow.replace(
-                'git -C "source-set/$repo" fetch --quiet --depth=1 origin "$revision"',
-                'echo git -C "source-set/$repo" fetch --quiet --depth=1 origin "$revision"',
+                'git -C "source-set/$repo" fetch --quiet origin "$revision"',
+                'echo git -C "source-set/$repo" fetch --quiet origin "$revision"',
                 1,
             ),
             "validation detached source omitted": self.workflow.replace(
@@ -182,7 +182,7 @@ class WorkflowSafetyTests(unittest.TestCase):
     def test_missing_checkout_or_unsanitized_upload_fails(self) -> None:
         self.assert_rejected(
             self.workflow.replace(
-                'git -C "source-set/$repo" fetch --quiet --depth=1 origin "$revision"',
+                'git -C "source-set/$repo" fetch --quiet origin "$revision"',
                 'printf "%s\\n" "$revision"',
                 1,
             ),
@@ -212,6 +212,9 @@ class WorkflowSafetyTests(unittest.TestCase):
         mutable = json.loads(json.dumps(self.source_manifest))
         mutable["repositories"][1]["revision"] = "main"
         attacks.append(mutable)
+        missing_self_content = json.loads(json.dumps(self.source_manifest))
+        missing_self_content["repositories"][0].pop("authority_content_revision")
+        attacks.append(missing_self_content)
         malformed_tree = json.loads(json.dumps(self.source_manifest))
         malformed_tree["repositories"][1]["reviewed_tree_sha"] = "not-a-tree"
         attacks.append(malformed_tree)

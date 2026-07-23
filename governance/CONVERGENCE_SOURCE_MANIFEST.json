@@ -6,6 +6,7 @@
       "repository": ".github",
       "canonical_repository": "HawkinsOperations/.github",
       "revision_source": "github_event_sha",
+      "authority_content_revision": "43fd17e7e66606fac92994cfc9eeb3871a03eff1",
       "tree_source": "github_event_tree"
     },
     {
@@ -47,7 +48,7 @@
       "repository": "hoxline",
       "canonical_repository": "HawkinsOperations/hoxline",
       "revision": "f6edb75fd96b4fc419a16f8357ce644c3b9f6205",
-      "authority_content_revision": "f6edb75fd96b4fc419a16f8357ce644c3b9f6205",
+      "authority_content_revision": "8a5e6bcc8b0bfff4a8661a8c663bd2832e8659dd",
       "reviewed_tree_sha": "75b07fc67c6eb01239f3f6f29acfc23dcfb5e239"
     }
   ],
