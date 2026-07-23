@@ -117,6 +117,11 @@ class WorkflowSafetyTests(unittest.TestCase):
                 "",
                 1,
             ),
+            "platform observed SHA omitted": self.workflow.replace(
+                "HAWKINS_PLATFORM_IMMUTABLE_OBSERVED_SHA",
+                "HAWKINS_PLATFORM_OBSERVATION_OMITTED",
+                1,
+            ),
             "conditional job": self.workflow.replace(
                 "  seven-repository-convergence:\n    runs-on:",
                 "  seven-repository-convergence:\n    if: false\n    runs-on:",

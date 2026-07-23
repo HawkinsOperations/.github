@@ -124,16 +124,19 @@ jobs:
             --verify-source-set source-set \
             --resolved-manifest verification-work/resolved-source-manifest.json \
             --source-revisions-output verification-artifacts/source-revisions.json
-          proof_sha="$(python - verification-work/resolved-source-manifest.json <<'PY'
+          readarray -t authority_shas < <(python - verification-work/resolved-source-manifest.json <<'PY'
           import json
           import sys
 
           value = json.load(open(sys.argv[1], encoding="utf-8"))
           by_repo = {entry["repository"]: entry["revision"] for entry in value["repositories"]}
           print(by_repo["hawkinsoperations-proof"])
+          print(by_repo["hawkinsoperations-platform"])
           PY
-          )"
-          printf 'HAWKINS_PROOF_IMMUTABLE_MANIFEST_SHA=%s\n' "$proof_sha" >> "$GITHUB_ENV"
+          )
+          test "${#authority_shas[@]}" -eq 2
+          printf 'HAWKINS_PROOF_IMMUTABLE_MANIFEST_SHA=%s\n' "${authority_shas[0]}" >> "$GITHUB_ENV"
+          printf 'HAWKINS_PLATFORM_IMMUTABLE_OBSERVED_SHA=%s\n' "${authority_shas[1]}" >> "$GITHUB_ENV"
 
       - name: Detect durable sibling main-content drift
         if: github.event_name != 'pull_request'
