@@ -236,6 +236,21 @@ class WorkflowSafetyTests(unittest.TestCase):
             with self.subTest(label=label):
                 self.assert_rejected(value, label)
 
+    def test_sibling_fetch_retry_is_bounded_and_fails_closed(self) -> None:
+        for fragment in (
+            "for attempt in 1 2 3 4 5 6; do",
+            "fetch_complete=1",
+            'if [ "$attempt" -lt 6 ]; then',
+            "sleep 5",
+            'test "$fetch_complete" -eq 1',
+        ):
+            self.assertIn(fragment, self.workflow)
+
+        self.assert_rejected(
+            self.workflow.replace('test "$fetch_complete" -eq 1', "true", 1),
+            "unconditional success",
+        )
+
     def test_exact_run_allowlist_rejects_command_laundering(self) -> None:
         command = (
             "python -B source-set/hawkinsoperations-detections/scripts/"

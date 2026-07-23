@@ -87,7 +87,7 @@ EXPECTED_RUN_SHA256_BY_STEP = {
     "Verify patch whitespace": "466c2f308b48c7661d646fdd068fbecea974c665fe65dbf8ed508f224180ce0b",
     "Install bounded verifier dependencies": "4e24c9f627196734440d7af0f88696d5c78bcabf31951f052d6f5b8c0d5913b2",
     "Resolve governance/CONVERGENCE_SOURCE_MANIFEST.json": "2cc7ec88e5f15e3ce2005c2a7d69d9612b88cd4832d3b6f7ebfc900d326530e8",
-    "Checkout six immutable sibling revisions without credentials": "49ab88b506c80d864d1616ad4ac3c7448ce7187a92ba2bb36404cf6724ada38a",
+    "Checkout six immutable sibling revisions without credentials": "457e61f1280506ee49cce8d2c796031a25b7874bb3cffeb76441f788cfdd1942",
     "Verify the exact clean detached source set": "3dbfdd7ea15772914b827f395b09fe23aa61c0d31e91703b05cc3ef8c4476e57",
     "Detect durable sibling main-content drift": "fa27754b70cd171cac072a868b3632405e5b2c5b8744e34139cf8e64dbcd7a53",
     "Verify detection authority and hostile paths": "a55bb68d511268423e7ed392184dab55f3864c8411d74ff725c54f776daa4d4d",

@@ -112,7 +112,19 @@ jobs:
             mkdir "source-set/$repo"
             git -C "source-set/$repo" init --quiet
             git -C "source-set/$repo" remote add origin "https://github.com/HawkinsOperations/$repo.git"
-            git -C "source-set/$repo" fetch --quiet origin "$revision"
+            fetch_complete=0
+            for attempt in 1 2 3 4 5 6; do
+              if
+                git -C "source-set/$repo" fetch --quiet origin "$revision"
+              then
+                fetch_complete=1
+                break
+              fi
+              if [ "$attempt" -lt 6 ]; then
+                sleep 5
+              fi
+            done
+            test "$fetch_complete" -eq 1
             git -C "source-set/$repo" checkout --quiet --detach "$revision"
             test "$(git -C "source-set/$repo" rev-parse HEAD)" = "$revision"
           done < verification-work/sibling-revisions.tsv
