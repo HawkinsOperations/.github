@@ -26,9 +26,9 @@
     {
       "repository": "hawkinsoperations-platform",
       "canonical_repository": "HawkinsOperations/hawkinsoperations-platform",
-      "revision": "651a43a4dfe0776605d5bd7b85ef4f8381c42b64",
+      "revision": "8ad2ec22595c3cccf6696a07d9708c3397d60175",
       "authority_content_revision": "651a43a4dfe0776605d5bd7b85ef4f8381c42b64",
-      "reviewed_tree_sha": "54d73b1b2e75a7d17b31b2e8e381d608fce97cfe"
+      "reviewed_tree_sha": "1a4bd83c807a93291f0f955b73452310ca677337"
     },
     {
       "repository": "hawkinsoperations-proof",
