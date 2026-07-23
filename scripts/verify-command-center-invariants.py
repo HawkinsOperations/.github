@@ -668,6 +668,7 @@ def unsafe_workflow_findings(text: str) -> list[str]:
         'git -C "source-set/$repo" fetch --quiet --depth=1 origin "$revision"',
         'git -C "source-set/$repo" checkout --quiet --detach "$revision"',
         "source-revisions.json",
+        "HAWKINS_COMMAND_CENTER_IMMUTABLE_OBSERVED_SHA",
         "HAWKINS_PROOF_IMMUTABLE_MANIFEST_SHA",
         "HAWKINS_PLATFORM_IMMUTABLE_OBSERVED_SHA",
         "verify_detection_contract.py",

@@ -130,13 +130,15 @@ jobs:
 
           value = json.load(open(sys.argv[1], encoding="utf-8"))
           by_repo = {entry["repository"]: entry["revision"] for entry in value["repositories"]}
+          print(by_repo[".github"])
           print(by_repo["hawkinsoperations-proof"])
           print(by_repo["hawkinsoperations-platform"])
           PY
           )
-          test "${#authority_shas[@]}" -eq 2
-          printf 'HAWKINS_PROOF_IMMUTABLE_MANIFEST_SHA=%s\n' "${authority_shas[0]}" >> "$GITHUB_ENV"
-          printf 'HAWKINS_PLATFORM_IMMUTABLE_OBSERVED_SHA=%s\n' "${authority_shas[1]}" >> "$GITHUB_ENV"
+          test "${#authority_shas[@]}" -eq 3
+          printf 'HAWKINS_COMMAND_CENTER_IMMUTABLE_OBSERVED_SHA=%s\n' "${authority_shas[0]}" >> "$GITHUB_ENV"
+          printf 'HAWKINS_PROOF_IMMUTABLE_MANIFEST_SHA=%s\n' "${authority_shas[1]}" >> "$GITHUB_ENV"
+          printf 'HAWKINS_PLATFORM_IMMUTABLE_OBSERVED_SHA=%s\n' "${authority_shas[2]}" >> "$GITHUB_ENV"
 
       - name: Detect durable sibling main-content drift
         if: github.event_name != 'pull_request'

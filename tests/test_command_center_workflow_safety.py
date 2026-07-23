@@ -122,6 +122,11 @@ class WorkflowSafetyTests(unittest.TestCase):
                 "HAWKINS_PLATFORM_OBSERVATION_OMITTED",
                 1,
             ),
+            "command-center observed SHA omitted": self.workflow.replace(
+                "HAWKINS_COMMAND_CENTER_IMMUTABLE_OBSERVED_SHA",
+                "HAWKINS_COMMAND_CENTER_OBSERVATION_OMITTED",
+                1,
+            ),
             "conditional job": self.workflow.replace(
                 "  seven-repository-convergence:\n    runs-on:",
                 "  seven-repository-convergence:\n    if: false\n    runs-on:",
