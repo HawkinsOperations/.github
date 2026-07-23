@@ -107,6 +107,11 @@ class WorkflowSafetyTests(unittest.TestCase):
                 'echo git -C "source-set/$repo" fetch --quiet --depth=1 origin "$revision"',
                 1,
             ),
+            "validation detached source omitted": self.workflow.replace(
+                ' --detections-root source-set/hawkinsoperations-detections --detections-ref "$(git -C source-set/hawkinsoperations-detections rev-parse HEAD)" --source-manifest source-set/hawkinsoperations-validation/validation/SOURCE_AUTHORITY_MANIFEST.json',
+                "",
+                1,
+            ),
             "conditional job": self.workflow.replace(
                 "  seven-repository-convergence:\n    runs-on:",
                 "  seven-repository-convergence:\n    if: false\n    runs-on:",

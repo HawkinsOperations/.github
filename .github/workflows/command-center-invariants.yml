@@ -154,7 +154,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python -B source-set/hawkinsoperations-validation/scripts/verify_validation_registry.py
+          python -B source-set/hawkinsoperations-validation/scripts/verify_validation_registry.py --detections-root source-set/hawkinsoperations-detections --detections-ref "$(git -C source-set/hawkinsoperations-detections rev-parse HEAD)" --source-manifest source-set/hawkinsoperations-validation/validation/SOURCE_AUTHORITY_MANIFEST.json
           python -B source-set/hawkinsoperations-validation/scripts/verify_all_validation_packages.py
           python -B source-set/hawkinsoperations-validation/scripts/verify_validation_contract.py
           python -B source-set/hawkinsoperations-validation/scripts/verify_wazuh_logtest_registry.py
