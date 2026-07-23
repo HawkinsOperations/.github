@@ -298,6 +298,16 @@ def iter_text_files() -> list[Path]:
     return sorted(set(files))
 
 
+def normalize_vocabulary_security_text(value: str) -> str:
+    """Collapse Unicode token-splitting characters for security matching only."""
+    normalized = unicodedata.normalize("NFKD", value)
+    return "".join(
+        character
+        for character in normalized
+        if not unicodedata.category(character).startswith(("C", "M"))
+    )
+
+
 def tracked_vocabulary_findings(repo_root: Path = ROOT) -> list[str]:
     retired = "".join(("syn", "thetic"))
     binary_extensions = frozenset(
@@ -321,7 +331,7 @@ def tracked_vocabulary_findings(repo_root: Path = ROOT) -> list[str]:
     except UnicodeDecodeError:
         return ["tracked-source vocabulary filename inventory is not valid UTF-8"]
     for relative in filter(None, tracked_paths):
-        if retired in unicodedata.normalize("NFKC", relative).casefold():
+        if retired in normalize_vocabulary_security_text(relative).casefold():
             findings.append(
                 f"retired fixture vocabulary appears in tracked filename: {relative}"
             )
@@ -349,7 +359,7 @@ def tracked_vocabulary_findings(repo_root: Path = ROOT) -> list[str]:
                 f"tracked non-binary content is not UTF-8: {relative}"
             )
             continue
-        if retired in unicodedata.normalize("NFKC", text).casefold():
+        if retired in normalize_vocabulary_security_text(text).casefold():
             findings.append(
                 f"retired fixture vocabulary appears in tracked content: {relative}"
             )

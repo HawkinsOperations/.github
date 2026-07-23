@@ -32,6 +32,8 @@ class WorkflowSafetyTests(unittest.TestCase):
     def test_tracked_vocabulary_guard_rejects_content_and_filename(self) -> None:
         retired = "".join(("syn", "thetic"))
         fullwidth = "".join(chr(ord(character) + 0xFEE0) for character in retired)
+        zero_width = retired[:3] + "\u200b" + retired[3:]
+        combining = retired[:3] + "\u034f" + retired[3:]
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             subprocess.run(
@@ -44,10 +46,24 @@ class WorkflowSafetyTests(unittest.TestCase):
             filename_path = root / f"fixture-{fullwidth}.txt"
             utf16_path = root / "utf16-fixture.md"
             content_path.write_text(
-                f"controlled-test boundary rejects {fullwidth}\n",
+                (
+                    f"controlled-test boundary rejects {fullwidth}\n"
+                    f"controlled-test boundary rejects {zero_width}\n"
+                    f"controlled-test boundary rejects {combining}\n"
+                ),
                 encoding="utf-8",
             )
             filename_path.write_text(
+                "controlled-test boundary\n",
+                encoding="utf-8",
+            )
+            zero_width_filename_path = root / f"fixture-{zero_width}.txt"
+            combining_filename_path = root / f"fixture-{combining}.txt"
+            zero_width_filename_path.write_text(
+                "controlled-test boundary\n",
+                encoding="utf-8",
+            )
+            combining_filename_path.write_text(
                 "controlled-test boundary\n",
                 encoding="utf-8",
             )
@@ -61,6 +77,8 @@ class WorkflowSafetyTests(unittest.TestCase):
                     "--",
                     content_path.name,
                     filename_path.name,
+                    zero_width_filename_path.name,
+                    combining_filename_path.name,
                     utf16_path.name,
                 ],
                 cwd=root,
@@ -69,8 +87,18 @@ class WorkflowSafetyTests(unittest.TestCase):
             )
             findings = VERIFIER.tracked_vocabulary_findings(root)
         self.assertTrue(any("tracked content" in item for item in findings))
-        self.assertTrue(any("tracked filename" in item for item in findings))
+        self.assertGreaterEqual(
+            sum("tracked filename" in item for item in findings),
+            3,
+        )
         self.assertTrue(any("utf16-fixture.md" in item for item in findings))
+
+    def test_vocabulary_security_view_preserves_benign_unicode_semantics(self) -> None:
+        normalized = VERIFIER.normalize_vocabulary_security_text(
+            "Café résumé – review 👩‍💻 only"
+        )
+        self.assertNotIn("synthetic", normalized.casefold())
+        self.assertIn("Cafe resume", normalized)
 
     def test_tracked_vocabulary_guard_fails_on_indexed_read_error(self) -> None:
         listed = subprocess.CompletedProcess(
