@@ -40,9 +40,9 @@
     {
       "repository": "hawkinsoperations-website",
       "canonical_repository": "HawkinsOperations/hawkinsoperations-website",
-      "revision": "50cb1a2fd39887de9e413b450a8af37090953102",
+      "revision": "cfe6c049480964c28dd733cb54ac0917302772c8",
       "authority_content_revision": "5856f8e69527b5e61c3953b88a2ad4c088268655",
-      "reviewed_tree_sha": "ae99b730d317e66ea3f62bd7d5d34d356578e499"
+      "reviewed_tree_sha": "45fe7d7bce86429261f0ae5fcfe2d7998890c6bb"
     },
     {
       "repository": "hoxline",
