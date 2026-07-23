@@ -91,7 +91,7 @@ EXPECTED_RUN_SHA256_BY_STEP = {
     "Verify the exact clean detached source set": "3dbfdd7ea15772914b827f395b09fe23aa61c0d31e91703b05cc3ef8c4476e57",
     "Detect durable sibling main-content drift": "fa27754b70cd171cac072a868b3632405e5b2c5b8744e34139cf8e64dbcd7a53",
     "Verify detection authority and hostile paths": "a55bb68d511268423e7ed392184dab55f3864c8411d74ff725c54f776daa4d4d",
-    "Verify validation authority and fail-closed parity": "accba85cf224b66e99287179a83418ae779bfc9d8630579ebd375844181411da",
+    "Verify validation authority and fail-closed parity": "fe94626b4d2064476cc9fdca3b85b4dc4604c30cca7660a911bf9bbbb1cbc3bd",
     "Verify proof authority and reverse inventory": "f07b841030269d74bd563238e59e4ff695e2d140108321f9d33ea364a0d850b8",
     "Verify platform source contract and seven-source convergence": "698d9e4b0035d4581a87c889bff1c7bb7ef53db957d75688f1364a713be76ee5",
     "Install Hoxline from the checked immutable source": "f6954cbb94cbc30f5110c536a4c73b71f985953e71e4c08385cf46b7eb8fea0c",

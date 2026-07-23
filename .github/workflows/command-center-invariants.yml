@@ -168,6 +168,7 @@ jobs:
           python -B source-set/hawkinsoperations-validation/scripts/verify_validation_contract.py
           python -B source-set/hawkinsoperations-validation/scripts/verify_wazuh_logtest_registry.py
           python -B source-set/hawkinsoperations-validation/scripts/verify_ho_lab_wazuh_001.py
+          python -B source-set/hawkinsoperations-validation/scripts/verify_cross_repo_claim_parity.py --repo-root source-set --enforce
           PYTHONPATH="$GITHUB_WORKSPACE/source-set/hawkinsoperations-validation" python -B -m unittest discover -s source-set/hawkinsoperations-validation/tests
 
       - name: Verify proof authority and reverse inventory
