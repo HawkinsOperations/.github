@@ -142,6 +142,70 @@ class WorkflowSafetyTests(unittest.TestCase):
             with self.subTest(label=label):
                 self.assert_rejected(value, label)
 
+    def test_exact_run_allowlist_rejects_command_laundering(self) -> None:
+        command = (
+            "python -B source-set/hawkinsoperations-detections/scripts/"
+            "verify_detection_contract.py"
+        )
+        mutations = {
+            "or colon": self.workflow.replace(command, f"{command} || :", 1),
+            "or exit zero": self.workflow.replace(command, f"{command} || exit 0", 1),
+            "semicolon true": self.workflow.replace(command, f"{command}; true", 1),
+            "compound swallowed exit": self.workflow.replace(
+                command,
+                f"{command} || {{ echo swallowed; exit 0; }}",
+                1,
+            ),
+            "no-op command prefix": self.workflow.replace(command, f": {command}", 1),
+            "function override": self.workflow.replace(
+                command,
+                f"python() {{ :; }}\n          {command}",
+                1,
+            ),
+            "alias override": self.workflow.replace(
+                command,
+                f"alias python=:\n          {command}",
+                1,
+            ),
+            "PATH shadow": self.workflow.replace(
+                command,
+                f"PATH=/tmp/hostile:$PATH\n          {command}",
+                1,
+            ),
+        }
+        for label, value in mutations.items():
+            with self.subTest(label=label):
+                self.assert_rejected(value, label)
+
+    def test_shell_and_job_default_overrides_fail_closed(self) -> None:
+        mutations = {
+            "shell suffix": self.workflow.replace(
+                "shell: bash", "shell: bash {0}; true", 1
+            ),
+            "shell nested exit": self.workflow.replace(
+                "shell: bash", "shell: bash -c '$0; exit 0' {0}", 1
+            ),
+            "job default shell": self.workflow.replace(
+                "  command-center-invariants:\n    runs-on: ubuntu-latest",
+                "  command-center-invariants:\n"
+                "    defaults:\n"
+                "      run:\n"
+                "        shell: bash {0}; true\n"
+                "    runs-on: ubuntu-latest",
+                1,
+            ),
+            "step working directory": self.workflow.replace(
+                "      - name: Verify command-center invariants\n        run:",
+                "      - name: Verify command-center invariants\n"
+                "        working-directory: /tmp\n"
+                "        run:",
+                1,
+            ),
+        }
+        for label, value in mutations.items():
+            with self.subTest(label=label):
+                self.assert_rejected(value, label)
+
     def test_trigger_neutralization_and_test_path_omission_fail(self) -> None:
         mutations = {
             "closed-only PR": self.workflow.replace(
@@ -305,8 +369,11 @@ class SourceSetTests(unittest.TestCase):
             self.run_git(repo, "init", "--quiet")
             self.run_git(repo, "config", "user.name", "Command Center Test")
             self.run_git(repo, "config", "user.email", "test@invalid.example")
-            (repo / "authority.txt").write_text(repository + "\n", encoding="utf-8")
-            self.run_git(repo, "add", "authority.txt")
+            authority_path = VERIFIER.CANONICAL_AUTHORITY_PATHS[repository]
+            authority_file = repo / Path(authority_path)
+            authority_file.parent.mkdir(parents=True, exist_ok=True)
+            authority_file.write_text(repository + "\n", encoding="utf-8")
+            self.run_git(repo, "add", authority_path)
             self.run_git(repo, "commit", "--quiet", "-m", "fixture")
             sha = self.run_git(repo, "rev-parse", "HEAD")
             tree = self.run_git(repo, "rev-parse", "HEAD^{tree}")
@@ -319,6 +386,7 @@ class SourceSetTests(unittest.TestCase):
                     "repository": repository,
                     "canonical_repository": f"HawkinsOperations/{repository}",
                     "revision": sha,
+                    "authority_content_revision": sha,
                     "reviewed_tree_sha": tree,
                 }
             )
@@ -376,6 +444,78 @@ class SourceSetTests(unittest.TestCase):
                 _, errors = VERIFIER.verify_source_set(root, resolved)
                 self.assertTrue(errors)
 
+    def test_authority_content_revision_is_bound_to_canonical_current_blob(self) -> None:
+        for attack in ("unreachable", "wrong-blob"):
+            with self.subTest(attack=attack), tempfile.TemporaryDirectory() as temp:
+                root = Path(temp) / "source-set"
+                root.mkdir()
+                resolved = self.create_source_set(root)
+                target = root / "hawkinsoperations-detections"
+                entry = resolved["repositories"][1]
+                if attack == "unreachable":
+                    entry["authority_content_revision"] = "f" * 40
+                else:
+                    authority_file = target / Path(
+                        VERIFIER.CANONICAL_AUTHORITY_PATHS[
+                            "hawkinsoperations-detections"
+                        ]
+                    )
+                    authority_file.write_text("contradictory authority\n", encoding="utf-8")
+                    self.run_git(target, "add", authority_file.relative_to(target).as_posix())
+                    self.run_git(target, "commit", "--quiet", "-m", "contradiction")
+                    entry["authority_content_revision"] = self.run_git(
+                        target, "rev-parse", "HEAD"
+                    )
+                    self.run_git(target, "checkout", "--quiet", "--detach", entry["revision"])
+                unsigned = {
+                    key: value
+                    for key, value in resolved.items()
+                    if key != "manifest_sha256"
+                }
+                resolved["manifest_sha256"] = VERIFIER.hashlib.sha256(
+                    json.dumps(
+                        unsigned, sort_keys=True, separators=(",", ":")
+                    ).encode("utf-8")
+                ).hexdigest()
+                _, errors = VERIFIER.verify_source_set(root, resolved)
+                self.assertTrue(errors)
+
+    def test_uploaded_authority_blob_record_is_reverified_against_source_set(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp)
+            source_root = base / "source-set"
+            source_root.mkdir()
+            resolved = self.create_source_set(source_root)
+            records, errors = VERIFIER.verify_source_set(source_root, resolved)
+            self.assertEqual([], errors)
+            artifacts = base / "artifacts"
+            artifacts.mkdir()
+            source_record = dict(resolved)
+            source_record["checked_repositories"] = records
+            VERIFIER.write_json_atomic(
+                artifacts / "source-revisions.json", source_record
+            )
+            VERIFIER.write_verification_summary(
+                artifacts / "verification-summary.json"
+            )
+            self.assertEqual(
+                [], VERIFIER.validate_artifact_payloads(artifacts, source_root)
+            )
+            path = artifacts / "source-revisions.json"
+            tampered = VERIFIER.load_json_strict(path)
+            tampered["checked_repositories"][0][
+                "authority_git_blob_sha"
+            ] = "f" * 40
+            VERIFIER.write_json_atomic(path, tampered)
+            errors = VERIFIER.validate_artifact_payloads(
+                artifacts, source_root
+            )
+            self.assertTrue(
+                any("exact current source set" in error for error in errors)
+            )
+
 
 class ArtifactSanitizerTests(unittest.TestCase):
     def create_valid_artifacts(self, root: Path) -> None:
@@ -390,6 +530,13 @@ class ArtifactSanitizerTests(unittest.TestCase):
                 "canonical_repository": entry["canonical_repository"],
                 "checked_sha": entry["revision"],
                 "checked_tree_sha": entry["reviewed_tree_sha"],
+                "authority_path": VERIFIER.CANONICAL_AUTHORITY_PATHS[
+                    entry["repository"]
+                ],
+                "authority_content_revision": entry[
+                    "authority_content_revision"
+                ],
+                "authority_git_blob_sha": "a" * 40,
                 "detached": True,
                 "clean": True,
             }

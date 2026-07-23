@@ -37,6 +37,15 @@ CANONICAL_ORIGINS = {
     repository: f"https://github.com/HawkinsOperations/{repository}.git"
     for repository in EXACT_REPOSITORIES
 }
+CANONICAL_AUTHORITY_PATHS = {
+    ".github": "governance/COMMAND_CENTER_INVARIANTS.json",
+    "hawkinsoperations-detections": "detections/DETECTION_PROMOTION_MATRIX.yml",
+    "hawkinsoperations-validation": "validation/VALIDATION_REGISTRY.yml",
+    "hawkinsoperations-platform": "contracts/public-status-source-contract-v1.json",
+    "hawkinsoperations-proof": "proof/indexes/DETECTION_PROOF_STATUS_INDEX.yml",
+    "hawkinsoperations-website": "schemas/public-status-v0.schema.json",
+    "hoxline": "src/hoxline/case_growth/collector.py",
+}
 PINNED_ACTIONS = {
     "actions/checkout": "11d5960a326750d5838078e36cf38b85af677262",
     "actions/setup-python": "a26af69be951a213d495a4c3e4e4022e16d87065",
@@ -70,6 +79,73 @@ EXPECTED_VERIFICATION_CHECKS = [
     "website_nested_claim_and_eol_tests",
     "website_static_build",
 ]
+EXPECTED_RUN_SHA256_BY_STEP = {
+    "Install structural verifier dependency": "6777f50efc1a4de7a52454974ba0da5a7adda9e7a84e251b3f3fe93912fdd695",
+    "Verify command-center invariants": "7457407dbbf6fc6c710590149da3c3a7be1358b567f31ffda84cb8fa4fcd2e46",
+    "Run hostile command-center unit tests": "16792c22d70f184d03660b7d7641f13a305e9227f1d31be6950732ca2a80a5d3",
+    "Verify patch whitespace": "466c2f308b48c7661d646fdd068fbecea974c665fe65dbf8ed508f224180ce0b",
+    "Install bounded verifier dependencies": "4e24c9f627196734440d7af0f88696d5c78bcabf31951f052d6f5b8c0d5913b2",
+    "Resolve governance/CONVERGENCE_SOURCE_MANIFEST.json": "2cc7ec88e5f15e3ce2005c2a7d69d9612b88cd4832d3b6f7ebfc900d326530e8",
+    "Checkout six immutable sibling revisions without credentials": "49ab88b506c80d864d1616ad4ac3c7448ce7187a92ba2bb36404cf6724ada38a",
+    "Verify the exact clean detached source set": "3dbfdd7ea15772914b827f395b09fe23aa61c0d31e91703b05cc3ef8c4476e57",
+    "Detect durable sibling main-content drift": "fa27754b70cd171cac072a868b3632405e5b2c5b8744e34139cf8e64dbcd7a53",
+    "Verify detection authority and hostile paths": "f65bc86480dc945e0545b9a4a319f0a8dff71bb09d3d331169fe3b2e2b1e63e7",
+    "Verify validation authority and fail-closed parity": "accba85cf224b66e99287179a83418ae779bfc9d8630579ebd375844181411da",
+    "Verify proof authority and reverse inventory": "f07b841030269d74bd563238e59e4ff695e2d140108321f9d33ea364a0d850b8",
+    "Verify platform source contract and seven-source convergence": "698d9e4b0035d4581a87c889bff1c7bb7ef53db957d75688f1364a713be76ee5",
+    "Install Hoxline from the checked immutable source": "f6954cbb94cbc30f5110c536a4c73b71f985953e71e4c08385cf46b7eb8fea0c",
+    "Verify Hoxline Case Growth pair and replay integrity": "b8950bb94cb7b0b6bbe505b3180c031aeb1dec904e78d820fc761d302798ad69",
+    "Install Website dependencies from the checked lockfile": "4be0617fbf64515a837109e98174e687edc18a027a37368223fff95cb33d8f94",
+    "Verify Website rendering-only status plane and static build": "2d4c7844b0673771d92373c4674a7828e23a2195c6d8bd29e9cd4e00e92f2493",
+    "Write closed-schema verification summary": "056a198f6f178d60e01d0a0eecda11181372ced82d68793b24fc0676a8cb15b7",
+    "Validate upload artifacts": "e0b9d66521ae1e69ce51a89d1380fcb70f6edbaa8c9a62a7a78aa1c6a4e6ac0f",
+}
+EXPECTED_ACTION_BY_STEP = {
+    "Checkout command-center authority": {
+        "uses": f"actions/checkout@{PINNED_ACTIONS['actions/checkout']}",
+        "with": {"persist-credentials": "false"},
+    },
+    "Checkout workflow authority at the event revision": {
+        "uses": f"actions/checkout@{PINNED_ACTIONS['actions/checkout']}",
+        "with": {
+            "ref": "${{ github.event.pull_request.head.sha || github.sha }}",
+            "path": "source-set/.github",
+            "fetch-depth": 0,
+            "persist-credentials": "false",
+        },
+    },
+    "Set up Python": {
+        "uses": f"actions/setup-python@{PINNED_ACTIONS['actions/setup-python']}",
+        "with": {"python-version": "3.12"},
+    },
+    "Set up Node": {
+        "uses": f"actions/setup-node@{PINNED_ACTIONS['actions/setup-node']}",
+        "with": {"node-version": "20"},
+    },
+    "Upload sanitized convergence records": {
+        "uses": f"actions/upload-artifact@{PINNED_ACTIONS['actions/upload-artifact']}",
+        "with": {
+            "name": "seven-repository-convergence-${{ github.run_id }}",
+            "path": (
+                "verification-artifacts/source-revisions.json\n"
+                "verification-artifacts/verification-summary.json\n"
+            ),
+            "if-no-files-found": "error",
+            "retention-days": 14,
+        },
+    },
+}
+EXPECTED_BASH_STEPS = {
+    "Resolve governance/CONVERGENCE_SOURCE_MANIFEST.json",
+    "Checkout six immutable sibling revisions without credentials",
+    "Verify the exact clean detached source set",
+    "Verify detection authority and hostile paths",
+    "Verify validation authority and fail-closed parity",
+    "Verify proof authority and reverse inventory",
+    "Verify platform source contract and seven-source convergence",
+    "Verify Hoxline Case Growth pair and replay integrity",
+    "Verify Website rendering-only status plane and static build",
+}
 EXPECTED_MANIFEST_ROOT_KEYS = {
     "schema",
     "scope",
@@ -548,6 +624,19 @@ def unsafe_workflow_findings(text: str) -> list[str]:
             if not isinstance(job, dict):
                 findings.append(f"{job_name} job must be an object")
                 continue
+            expected_job_keys = (
+                {"runs-on", "env", "steps"}
+                if job_name == "seven-repository-convergence"
+                else {"runs-on", "steps"}
+            )
+            if set(job) != expected_job_keys:
+                findings.append(f"{job_name} job shape is not closed")
+            if job.get("runs-on") != "ubuntu-latest":
+                findings.append(f"{job_name} runner must be ubuntu-latest")
+            if job_name == "seven-repository-convergence" and job.get("env") != {
+                "PYTHONDONTWRITEBYTECODE": "1"
+            }:
+                findings.append("seven-repository job environment is not exact")
             if "if" in job:
                 findings.append(f"{job_name} mandatory job must not be conditional")
             steps = job.get("steps")
@@ -561,12 +650,49 @@ def unsafe_workflow_findings(text: str) -> list[str]:
                 if not isinstance(step, dict):
                     findings.append(f"{job_name} contains a non-object step")
                     continue
+                name = step.get("name")
+                if not isinstance(name, str):
+                    findings.append(f"{job_name} step name must be a string")
+                    continue
+                if "run" in step:
+                    expected_keys = {"name", "run"}
+                    if name in EXPECTED_BASH_STEPS:
+                        expected_keys.add("shell")
+                    if name == "Detect durable sibling main-content drift":
+                        expected_keys.add("if")
+                    if set(step) != expected_keys:
+                        findings.append(f"run step shape is not closed: {name}")
+                    run = step.get("run")
+                    if not isinstance(run, str):
+                        findings.append(f"run step command must be a string: {name}")
+                    else:
+                        expected_digest = EXPECTED_RUN_SHA256_BY_STEP.get(name)
+                        actual_digest = hashlib.sha256(run.encode("utf-8")).hexdigest()
+                        if expected_digest is None or actual_digest != expected_digest:
+                            findings.append(
+                                f"run step differs from exact command allowlist: {name}"
+                            )
+                    if name in EXPECTED_BASH_STEPS and step.get("shell") != "bash":
+                        findings.append(f"multiline step shell must be exactly bash: {name}")
+                    elif name not in EXPECTED_BASH_STEPS and "shell" in step:
+                        findings.append(f"shell override is forbidden: {name}")
+                elif "uses" in step:
+                    if set(step) != {"name", "uses", "with"}:
+                        findings.append(f"action step shape is not closed: {name}")
+                    expected_action = EXPECTED_ACTION_BY_STEP.get(name)
+                    if expected_action is None or {
+                        "uses": step.get("uses"),
+                        "with": step.get("with"),
+                    } != expected_action:
+                        findings.append(f"action step differs from exact allowlist: {name}")
+                else:
+                    findings.append(f"step must use one exact action or run block: {name}")
                 condition = step.get("if")
-                if step.get("name") == "Detect durable sibling main-content drift":
+                if name == "Detect durable sibling main-content drift":
                     if condition != "github.event_name != 'pull_request'":
                         findings.append("durable main observation condition is not exact")
                 elif condition is not None:
-                    findings.append(f"mandatory step is conditional: {step.get('name')}")
+                    findings.append(f"mandatory step is conditional: {name}")
         convergence_steps = jobs["seven-repository-convergence"].get("steps", [])
         if isinstance(convergence_steps, list):
             names = [step.get("name") for step in convergence_steps if isinstance(step, dict)]
@@ -585,6 +711,8 @@ def unsafe_workflow_findings(text: str) -> list[str]:
         key = path[-1].casefold() if path else ""
         if key == "continue-on-error":
             findings.append("continue-on-error is forbidden")
+        if key == "defaults":
+            findings.append("workflow and job defaults are forbidden")
         if key == "permissions":
             if path != ("permissions",):
                 findings.append("job or step permission override is forbidden")
@@ -664,7 +792,22 @@ def unsafe_workflow_findings(text: str) -> list[str]:
         "ledger mutation": r"\b(?:lifetime|ledger)[^\n]*(?:append|correct|mutate|write)\b",
         "runtime mutation": r"\b(?:runtime|endpoint|wazuh|splunk|cribl)[^\n]*(?:mutate|deploy|configure|restart|write)\b",
         "proof promotion": r"\b(?:proof|public.safe)[^\n]*(?:promote|publish|approve)\b",
-        "swallowed failure": r"(?:\|\|\s*(?:true|echo|printf)\b|\bset\s+\+e\b|\btrap\b[^\n]*\bexit\s+0\b)",
+        "swallowed failure": (
+            r"(?:\|\|\s*(?::(?:\s|$)|true\b|echo\b|printf\b|exit\s+0\b|"
+            r"\{[^\n}]*\bexit\s+0\b)|;\s*(?:true\b|exit\s+0\b)|"
+            r"\bset\s+\+e\b|\btrap\b[^\n]*\bexit\s+0\b)"
+        ),
+        "no-op command prefix": r"(?m)^\s*:\s+(?:python|git|npm|npx)\b",
+        "command function override": (
+            r"(?m)^\s*(?:python|python3|git|npm|npx)\s*\(\s*\)\s*\{"
+        ),
+        "command alias override": (
+            r"(?m)^\s*alias\s+(?:python|python3|git|npm|npx)\s*="
+        ),
+        "command path shadowing": (
+            r"(?m)^\s*(?:PATH\s*=|export\s+PATH\s*=|"
+            r"(?:function\s+)?(?:python|python3|git|npm|npx)\s*=)"
+        ),
         "backgrounded command": r"(?m)(?<!&)&(?!&)(?:\s*(?:wait\b.*)?)?\s*$",
         "unconditional success": r"(?m)^\s*(?:exit\s+0|true)\s*$",
         "mutable branch fallback": r"\b(?:main|master)\b[^\n]*(?:fallback|default)|ref\s*=\s*[\"']?(?:main|master)",
@@ -856,6 +999,7 @@ def resolved_source_manifest(
                 "repository": entry["repository"],
                 "canonical_repository": entry["canonical_repository"],
                 "revision": revision,
+                "authority_content_revision": entry["authority_content_revision"],
                 "reviewed_tree_sha": reviewed_tree,
             }
         )
@@ -895,6 +1039,7 @@ def validate_resolved_manifest(value: dict[str, Any]) -> list[str]:
             "repository",
             "canonical_repository",
             "revision",
+            "authority_content_revision",
             "reviewed_tree_sha",
         }:
             errors.append("resolved source entry has unsupported shape")
@@ -905,6 +1050,10 @@ def validate_resolved_manifest(value: dict[str, Any]) -> list[str]:
             errors.append(f"resolved source owner mismatch: {repository}")
         if re.fullmatch(r"[0-9a-f]{40}", str(entry.get("revision", ""))) is None:
             errors.append(f"resolved source revision invalid: {repository}")
+        if re.fullmatch(
+            r"[0-9a-f]{40}", str(entry.get("authority_content_revision", ""))
+        ) is None:
+            errors.append(f"resolved authority content revision invalid: {repository}")
         if re.fullmatch(
             r"[0-9a-f]{40}", str(entry.get("reviewed_tree_sha", ""))
         ) is None:
@@ -973,12 +1122,40 @@ def verify_source_set(
             status = git(repo_path, "status", "--porcelain=v1", "--untracked-files=all")
             if status:
                 raise ValidationError(f"{repository}: source checkout is dirty")
+            authority_path = CANONICAL_AUTHORITY_PATHS[repository]
+            content_revision = entry["authority_content_revision"]
+            try:
+                git(repo_path, "cat-file", "-e", f"{content_revision}^{{commit}}")
+            except ValidationError as exc:
+                raise ValidationError(
+                    f"{repository}: authority content revision is not reachable"
+                ) from exc
+            try:
+                current_blob = git(repo_path, "rev-parse", f"HEAD:{authority_path}")
+                content_blob = git(
+                    repo_path,
+                    "rev-parse",
+                    f"{content_revision}:{authority_path}",
+                )
+            except ValidationError as exc:
+                raise ValidationError(
+                    f"{repository}: canonical authority path is absent at the "
+                    "current or content revision"
+                ) from exc
+            if current_blob != content_blob:
+                raise ValidationError(
+                    f"{repository}: authority content revision does not identify "
+                    f"the current blob at {authority_path}"
+                )
             records.append(
                 {
                     "repository": repository,
                     "canonical_repository": entry["canonical_repository"],
                     "checked_sha": head,
                     "checked_tree_sha": tree,
+                    "authority_path": authority_path,
+                    "authority_content_revision": content_revision,
+                    "authority_git_blob_sha": current_blob,
                     "detached": True,
                     "clean": True,
                 }
@@ -1092,7 +1269,9 @@ def is_private_scalar(value: str) -> bool:
     return False
 
 
-def validate_artifact_payloads(directory: Path) -> list[str]:
+def validate_artifact_payloads(
+    directory: Path, source_set: Path | None = None
+) -> list[str]:
     errors: list[str] = []
     if not directory.is_dir() or directory.is_symlink():
         return ["artifact path must be a real directory"]
@@ -1136,6 +1315,9 @@ def validate_artifact_payloads(directory: Path) -> list[str]:
                     "canonical_repository",
                     "checked_sha",
                     "checked_tree_sha",
+                    "authority_path",
+                    "authority_content_revision",
+                    "authority_git_blob_sha",
                     "detached",
                     "clean",
                 }:
@@ -1162,6 +1344,32 @@ def validate_artifact_payloads(directory: Path) -> list[str]:
                     errors.append(
                         f"source-revisions.json: checked tree mismatch: {repository}"
                     )
+                resolved_entries = {
+                    item["repository"]: item
+                    for item in revisions.get("repositories", [])
+                    if isinstance(item, dict)
+                }
+                resolved_entry = resolved_entries.get(str(repository), {})
+                if entry.get("authority_path") != CANONICAL_AUTHORITY_PATHS.get(
+                    str(repository)
+                ):
+                    errors.append(
+                        f"source-revisions.json: authority path mismatch: {repository}"
+                    )
+                if entry.get("authority_content_revision") != resolved_entry.get(
+                    "authority_content_revision"
+                ):
+                    errors.append(
+                        f"source-revisions.json: authority content revision mismatch: "
+                        f"{repository}"
+                    )
+                if re.fullmatch(
+                    r"[0-9a-f]{40}",
+                    str(entry.get("authority_git_blob_sha", "")),
+                ) is None:
+                    errors.append(
+                        f"source-revisions.json: authority blob is invalid: {repository}"
+                    )
                 if entry.get("detached") is not True or entry.get("clean") is not True:
                     errors.append(
                         f"source-revisions.json: checked state is not clean and detached: {repository}"
@@ -1169,6 +1377,18 @@ def validate_artifact_payloads(directory: Path) -> list[str]:
             if observed_checked != EXACT_REPOSITORIES:
                 errors.append(
                     "source-revisions.json: checked repositories differ from exact order"
+                )
+        if source_set is not None and not errors:
+            actual_records, source_errors = verify_source_set(
+                source_set, resolved_fields
+            )
+            errors.extend(
+                f"source-revisions.json: {error}" for error in source_errors
+            )
+            if not source_errors and checked != actual_records:
+                errors.append(
+                    "source-revisions.json: checked authority records differ from "
+                    "the exact current source set"
                 )
     summary = payloads.get("verification-summary.json")
     if summary is not None:
@@ -1410,6 +1630,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--source-revisions-output", type=Path)
     parser.add_argument("--write-verification-summary", type=Path)
     parser.add_argument("--validate-artifacts", type=Path)
+    parser.add_argument("--artifact-source-set", type=Path)
     return parser.parse_args()
 
 
@@ -1456,7 +1677,16 @@ def main() -> int:
     elif args.write_verification_summary is not None:
         write_verification_summary(args.write_verification_summary)
     elif args.validate_artifacts is not None:
-        errors.extend(validate_artifact_payloads(args.validate_artifacts))
+        if args.artifact_source_set is None:
+            errors.append(
+                "--validate-artifacts requires --artifact-source-set"
+            )
+        else:
+            errors.extend(
+                validate_artifact_payloads(
+                    args.validate_artifacts, args.artifact_source_set
+                )
+            )
     else:
         errors.extend(run_full_verification(args.self_test))
 
