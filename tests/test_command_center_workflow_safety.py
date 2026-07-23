@@ -6,6 +6,7 @@ import subprocess
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -30,6 +31,7 @@ class WorkflowSafetyTests(unittest.TestCase):
 
     def test_tracked_vocabulary_guard_rejects_content_and_filename(self) -> None:
         retired = "".join(("syn", "thetic"))
+        fullwidth = "".join(chr(ord(character) + 0xFEE0) for character in retired)
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             subprocess.run(
@@ -39,17 +41,28 @@ class WorkflowSafetyTests(unittest.TestCase):
                 capture_output=True,
             )
             content_path = root / "content-fixture.txt"
-            filename_path = root / f"fixture-{retired}.txt"
+            filename_path = root / f"fixture-{fullwidth}.txt"
+            utf16_path = root / "utf16-fixture.md"
             content_path.write_text(
-                f"controlled-test boundary rejects {retired}\n",
+                f"controlled-test boundary rejects {fullwidth}\n",
                 encoding="utf-8",
             )
             filename_path.write_text(
                 "controlled-test boundary\n",
                 encoding="utf-8",
             )
+            utf16_path.write_bytes(
+                f"controlled-test {retired}\n".encode("utf-16-le")
+            )
             subprocess.run(
-                ["git", "add", "--", content_path.name, filename_path.name],
+                [
+                    "git",
+                    "add",
+                    "--",
+                    content_path.name,
+                    filename_path.name,
+                    utf16_path.name,
+                ],
                 cwd=root,
                 check=True,
                 capture_output=True,
@@ -57,6 +70,28 @@ class WorkflowSafetyTests(unittest.TestCase):
             findings = VERIFIER.tracked_vocabulary_findings(root)
         self.assertTrue(any("tracked content" in item for item in findings))
         self.assertTrue(any("tracked filename" in item for item in findings))
+        self.assertTrue(any("utf16-fixture.md" in item for item in findings))
+
+    def test_tracked_vocabulary_guard_fails_on_indexed_read_error(self) -> None:
+        listed = subprocess.CompletedProcess(
+            args=["git", "ls-files"],
+            returncode=0,
+            stdout=b"fixture.md\0",
+            stderr=b"",
+        )
+        unreadable = subprocess.CompletedProcess(
+            args=["git", "show"],
+            returncode=128,
+            stdout=b"",
+            stderr=b"unreadable",
+        )
+        with mock.patch.object(
+            VERIFIER.subprocess,
+            "run",
+            side_effect=(listed, unreadable),
+        ):
+            findings = VERIFIER.tracked_vocabulary_findings(REPO_ROOT)
+        self.assertTrue(any("could not read indexed content" in item for item in findings))
 
     def test_current_workflow_is_structurally_safe(self) -> None:
         self.assertEqual([], VERIFIER.unsafe_workflow_findings(self.workflow))

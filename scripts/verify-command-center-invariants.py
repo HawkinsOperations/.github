@@ -9,6 +9,7 @@ import json
 import re
 import subprocess
 import sys
+import unicodedata
 from pathlib import Path, PurePosixPath, PureWindowsPath
 from typing import Any
 from urllib.parse import unquote
@@ -299,6 +300,14 @@ def iter_text_files() -> list[Path]:
 
 def tracked_vocabulary_findings(repo_root: Path = ROOT) -> list[str]:
     retired = "".join(("syn", "thetic"))
+    binary_extensions = frozenset(
+        {
+            ".7z", ".avif", ".avi", ".bz2", ".dll", ".dylib", ".eot", ".exe", ".gif",
+            ".gz", ".ico", ".jpeg", ".jpg", ".mov", ".mp3", ".mp4", ".pdf",
+            ".png", ".pyc", ".so", ".tar", ".tgz", ".ttf", ".wasm", ".webp",
+            ".woff", ".woff2", ".xz", ".zip",
+        }
+    )
     findings: list[str] = []
     listed = subprocess.run(
         ["git", "-C", str(repo_root), "ls-files", "-z"],
@@ -312,43 +321,37 @@ def tracked_vocabulary_findings(repo_root: Path = ROOT) -> list[str]:
     except UnicodeDecodeError:
         return ["tracked-source vocabulary filename inventory is not valid UTF-8"]
     for relative in filter(None, tracked_paths):
-        if retired in relative.casefold():
+        if retired in unicodedata.normalize("NFKC", relative).casefold():
             findings.append(
                 f"retired fixture vocabulary appears in tracked filename: {relative}"
             )
-    scanned = subprocess.run(
-        [
-            "git",
-            "-C",
-            str(repo_root),
-            "grep",
-            "-n",
-            "-I",
-            "-i",
-            "-F",
-            retired,
-            "--",
-            ".",
-        ],
-        capture_output=True,
-        check=False,
-    )
-    if scanned.returncode not in {0, 1}:
-        findings.append(
-            "tracked-source vocabulary content scan failed before producing a decision"
+        if PurePosixPath(relative).suffix.casefold() in binary_extensions:
+            continue
+        scanned = subprocess.run(
+            ["git", "-C", str(repo_root), "show", f":{relative}"],
+            capture_output=True,
+            check=False,
         )
-        return findings
-    if scanned.returncode == 0:
+        if scanned.returncode != 0:
+            findings.append(
+                f"tracked-source vocabulary check could not read indexed content: {relative}"
+            )
+            continue
+        if b"\0" in scanned.stdout:
+            findings.append(
+                f"tracked non-binary content contains NUL: {relative}"
+            )
+            continue
         try:
-            matches = scanned.stdout.decode("utf-8").splitlines()
+            text = scanned.stdout.decode("utf-8")
         except UnicodeDecodeError:
             findings.append(
-                "tracked-source vocabulary content findings are not valid UTF-8"
+                f"tracked non-binary content is not UTF-8: {relative}"
             )
-        else:
-            findings.extend(
-                f"retired fixture vocabulary appears in tracked content: {match}"
-                for match in matches
+            continue
+        if retired in unicodedata.normalize("NFKC", text).casefold():
+            findings.append(
+                f"retired fixture vocabulary appears in tracked content: {relative}"
             )
     return findings
 
