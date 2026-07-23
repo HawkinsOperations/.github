@@ -112,6 +112,11 @@ class WorkflowSafetyTests(unittest.TestCase):
                 "",
                 1,
             ),
+            "validation unit import root omitted": self.workflow.replace(
+                'PYTHONPATH="$GITHUB_WORKSPACE/source-set/hawkinsoperations-validation" ',
+                "",
+                1,
+            ),
             "conditional job": self.workflow.replace(
                 "  seven-repository-convergence:\n    runs-on:",
                 "  seven-repository-convergence:\n    if: false\n    runs-on:",

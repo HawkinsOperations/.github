@@ -703,6 +703,7 @@ def unsafe_workflow_findings(text: str) -> list[str]:
         "detection contract": r"(?m)^\s*python -B source-set/hawkinsoperations-detections/scripts/verify_detection_contract\.py\s*$",
         "detection matrix": r"(?m)^\s*python -B source-set/hawkinsoperations-detections/scripts/verify_detection_promotion_matrix\.py\s*$",
         "validation registry exact source": r'(?m)^\s*python -B source-set/hawkinsoperations-validation/scripts/verify_validation_registry\.py --detections-root source-set/hawkinsoperations-detections --detections-ref "\$\(git -C source-set/hawkinsoperations-detections rev-parse HEAD\)" --source-manifest source-set/hawkinsoperations-validation/validation/SOURCE_AUTHORITY_MANIFEST\.json\s*$',
+        "validation unit import root": r'(?m)^\s*PYTHONPATH="\$GITHUB_WORKSPACE/source-set/hawkinsoperations-validation" python -B -m unittest discover -s source-set/hawkinsoperations-validation/tests\s*$',
         "sibling fetch": r'(?m)^\s*git -C "source-set/\$repo" fetch --quiet --depth=1 origin "\$revision"\s*$',
         "sibling checkout": r'(?m)^\s*git -C "source-set/\$repo" checkout --quiet --detach "\$revision"\s*$',
     }
