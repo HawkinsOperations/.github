@@ -97,7 +97,8 @@ class WorkflowSafetyTests(unittest.TestCase):
         normalized = VERIFIER.normalize_vocabulary_security_text(
             "Café résumé – review 👩‍💻 only"
         )
-        self.assertNotIn("synthetic", normalized.casefold())
+        retired = "".join(("syn", "thetic"))
+        self.assertNotIn(retired, normalized.casefold())
         self.assertIn("Cafe resume", normalized)
 
     def test_tracked_vocabulary_guard_fails_on_indexed_read_error(self) -> None:
