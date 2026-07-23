@@ -371,11 +371,19 @@ def validate_source_manifest(value: dict[str, Any]) -> list[str]:
                 "repository",
                 "canonical_repository",
                 "revision",
+                "authority_content_revision",
                 "reviewed_tree_sha",
             }:
                 errors.append(f"source manifest entry has an unsupported shape: {repository}")
             if re.fullmatch(r"[0-9a-f]{40}", str(entry.get("revision", ""))) is None:
                 errors.append(f"source manifest revision is not immutable: {repository}")
+            if re.fullmatch(
+                r"[0-9a-f]{40}",
+                str(entry.get("authority_content_revision", "")),
+            ) is None:
+                errors.append(
+                    f"source manifest authority content revision is not immutable: {repository}"
+                )
             if re.fullmatch(
                 r"[0-9a-f]{40}", str(entry.get("reviewed_tree_sha", ""))
             ) is None:

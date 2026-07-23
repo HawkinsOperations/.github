@@ -12,37 +12,43 @@
       "repository": "hawkinsoperations-detections",
       "canonical_repository": "HawkinsOperations/hawkinsoperations-detections",
       "revision": "16d4432eb46d457939f1cfe573c0c5d712650efb",
+      "authority_content_revision": "16d4432eb46d457939f1cfe573c0c5d712650efb",
       "reviewed_tree_sha": "74a33886c498ed0c0c79360d0fc2485dea4b4cf7"
     },
     {
       "repository": "hawkinsoperations-validation",
       "canonical_repository": "HawkinsOperations/hawkinsoperations-validation",
       "revision": "34bbfc4f48f75f647d5946b4cbe6835abf5e7dbc",
+      "authority_content_revision": "34bbfc4f48f75f647d5946b4cbe6835abf5e7dbc",
       "reviewed_tree_sha": "edc1f917dfa86cdc32bc47190957786a7dc400c3"
     },
     {
       "repository": "hawkinsoperations-platform",
       "canonical_repository": "HawkinsOperations/hawkinsoperations-platform",
-      "revision": "541ffcd0e94e9db94638d8ffa5934da11ae38771",
-      "reviewed_tree_sha": "a7b45cd71f0b432fb311a9436334d284f54c9472"
+      "revision": "42c3a4b78548fc4f95fd017f633eaaf207fc7625",
+      "authority_content_revision": "541ffcd0e94e9db94638d8ffa5934da11ae38771",
+      "reviewed_tree_sha": "6dce9d6afa0a18e33d70946c317dc5a47c141c55"
     },
     {
       "repository": "hawkinsoperations-proof",
       "canonical_repository": "HawkinsOperations/hawkinsoperations-proof",
       "revision": "c60882552571c1664549d3e594c6994dc27dce63",
+      "authority_content_revision": "c60882552571c1664549d3e594c6994dc27dce63",
       "reviewed_tree_sha": "2f84647f298b36a2286aaddf4ebeedf5e0c3cc82"
     },
     {
       "repository": "hawkinsoperations-website",
       "canonical_repository": "HawkinsOperations/hawkinsoperations-website",
       "revision": "7709c7aec560ad0195ca171c093e4f8468301796",
+      "authority_content_revision": "7709c7aec560ad0195ca171c093e4f8468301796",
       "reviewed_tree_sha": "8596116f5113b9384bdc4025b936a102ec070478"
     },
     {
       "repository": "hoxline",
       "canonical_repository": "HawkinsOperations/hoxline",
-      "revision": "752fade273904e6f9280523a43aaf9dad5181220",
-      "reviewed_tree_sha": "e3d3aa8c39956996da2ffc4c4bb1cad03cf24353"
+      "revision": "105e904223140e299808564757aa7324424c0e53",
+      "authority_content_revision": "752fade273904e6f9280523a43aaf9dad5181220",
+      "reviewed_tree_sha": "900c5d1d9a8fd38a9cdc86dd64ee870361dcb5e4"
     }
   ],
   "constraints": {
