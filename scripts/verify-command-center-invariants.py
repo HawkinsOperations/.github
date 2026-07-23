@@ -89,14 +89,14 @@ EXPECTED_RUN_SHA256_BY_STEP = {
     "Checkout six immutable sibling revisions without credentials": "49ab88b506c80d864d1616ad4ac3c7448ce7187a92ba2bb36404cf6724ada38a",
     "Verify the exact clean detached source set": "3dbfdd7ea15772914b827f395b09fe23aa61c0d31e91703b05cc3ef8c4476e57",
     "Detect durable sibling main-content drift": "fa27754b70cd171cac072a868b3632405e5b2c5b8744e34139cf8e64dbcd7a53",
-    "Verify detection authority and hostile paths": "f65bc86480dc945e0545b9a4a319f0a8dff71bb09d3d331169fe3b2e2b1e63e7",
+    "Verify detection authority and hostile paths": "a55bb68d511268423e7ed392184dab55f3864c8411d74ff725c54f776daa4d4d",
     "Verify validation authority and fail-closed parity": "accba85cf224b66e99287179a83418ae779bfc9d8630579ebd375844181411da",
     "Verify proof authority and reverse inventory": "f07b841030269d74bd563238e59e4ff695e2d140108321f9d33ea364a0d850b8",
     "Verify platform source contract and seven-source convergence": "698d9e4b0035d4581a87c889bff1c7bb7ef53db957d75688f1364a713be76ee5",
     "Install Hoxline from the checked immutable source": "f6954cbb94cbc30f5110c536a4c73b71f985953e71e4c08385cf46b7eb8fea0c",
-    "Verify Hoxline Case Growth pair and replay integrity": "b8950bb94cb7b0b6bbe505b3180c031aeb1dec904e78d820fc761d302798ad69",
+    "Verify Hoxline Case Growth pair and replay integrity": "979ca538d7eb872fa2da00afbf8e73606ab874d94cc134475d12e2b86b36886b",
     "Install Website dependencies from the checked lockfile": "4be0617fbf64515a837109e98174e687edc18a027a37368223fff95cb33d8f94",
-    "Verify Website rendering-only status plane and static build": "2d4c7844b0673771d92373c4674a7828e23a2195c6d8bd29e9cd4e00e92f2493",
+    "Verify Website rendering-only status plane and static build": "4430722c68c09465e87a12d612e0d721ef0f7b9494b1e77a8b0d8ba3dc2649c8",
     "Write closed-schema verification summary": "056a198f6f178d60e01d0a0eecda11181372ced82d68793b24fc0676a8cb15b7",
     "Validate upload artifacts": "e0b9d66521ae1e69ce51a89d1380fcb70f6edbaa8c9a62a7a78aa1c6a4e6ac0f",
 }
@@ -832,6 +832,7 @@ def unsafe_workflow_findings(text: str) -> list[str]:
         "HAWKINS_PLATFORM_IMMUTABLE_OBSERVED_SHA",
         "verify_detection_contract.py",
         "verify_detection_promotion_matrix.py",
+        "--require-sibling-handoffs",
         "verify_validation_registry.py",
         "verify_all_validation_packages.py",
         "verify_validation_contract.py",
@@ -849,7 +850,9 @@ def unsafe_workflow_findings(text: str) -> list[str]:
         "public-status:owner-self-test",
         "public-status:source-checkout-test",
         "public-status:freshness-reachability-test",
+        "public-status:dirty-provenance-test",
         "public-status:nested-claim-test",
+        "public-status:strict-json-test",
         "public-status:eol-self-test",
         "git diff --check",
         "--write-verification-summary",
@@ -862,7 +865,15 @@ def unsafe_workflow_findings(text: str) -> list[str]:
             findings.append(f"workflow missing required behavior: {fragment}")
     exact_executed_patterns = {
         "detection contract": r"(?m)^\s*python -B source-set/hawkinsoperations-detections/scripts/verify_detection_contract\.py\s*$",
-        "detection matrix": r"(?m)^\s*python -B source-set/hawkinsoperations-detections/scripts/verify_detection_promotion_matrix\.py\s*$",
+        "detection matrix": (
+            r"(?m)^\s*python -B source-set/hawkinsoperations-detections/scripts/"
+            r"verify_detection_promotion_matrix\.py \\\s*$\n"
+            r"^\s*--validation-registry source-set/hawkinsoperations-validation/"
+            r"validation/VALIDATION_REGISTRY\.yml \\\s*$\n"
+            r"^\s*--proof-index source-set/hawkinsoperations-proof/proof/indexes/"
+            r"DETECTION_PROOF_STATUS_INDEX\.yml \\\s*$\n"
+            r"^\s*--require-sibling-handoffs\s*$"
+        ),
         "validation registry exact source": r'(?m)^\s*python -B source-set/hawkinsoperations-validation/scripts/verify_validation_registry\.py --detections-root source-set/hawkinsoperations-detections --detections-ref "\$\(git -C source-set/hawkinsoperations-detections rev-parse HEAD\)" --source-manifest source-set/hawkinsoperations-validation/validation/SOURCE_AUTHORITY_MANIFEST\.json\s*$',
         "validation unit import root": r'(?m)^\s*PYTHONPATH="\$GITHUB_WORKSPACE/source-set/hawkinsoperations-validation" python -B -m unittest discover -s source-set/hawkinsoperations-validation/tests\s*$',
         "sibling fetch": r'(?m)^\s*git -C "source-set/\$repo" fetch --quiet origin "\$revision"\s*$',

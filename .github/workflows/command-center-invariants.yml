@@ -153,7 +153,10 @@ jobs:
         run: |
           set -euo pipefail
           python -B source-set/hawkinsoperations-detections/scripts/verify_detection_contract.py
-          python -B source-set/hawkinsoperations-detections/scripts/verify_detection_promotion_matrix.py
+          python -B source-set/hawkinsoperations-detections/scripts/verify_detection_promotion_matrix.py \
+            --validation-registry source-set/hawkinsoperations-validation/validation/VALIDATION_REGISTRY.yml \
+            --proof-index source-set/hawkinsoperations-proof/proof/indexes/DETECTION_PROOF_STATUS_INDEX.yml \
+            --require-sibling-handoffs
           python -B -m unittest discover -s source-set/hawkinsoperations-detections/tests
 
       - name: Verify validation authority and fail-closed parity
@@ -201,6 +204,9 @@ jobs:
           python -B -m hoxline.cli case-growth verify \
             --repo-root source-set \
             --snapshot verification-work/current-case-growth-index.json
+          python -B -m hoxline.cli case-growth verify \
+            --repo-root source-set \
+            --snapshot source-set/hoxline/examples/case-growth/current-case-growth-index.json
           python -B -m hoxline review batch run \
             --index source-set/hoxline/examples/review/multi-artifact-review-index-v1.json \
             --output verification-work/batch \
@@ -222,7 +228,9 @@ jobs:
           npm --prefix source-set/hawkinsoperations-website run public-status:owner-self-test
           npm --prefix source-set/hawkinsoperations-website run public-status:source-checkout-test
           npm --prefix source-set/hawkinsoperations-website run public-status:freshness-reachability-test
+          npm --prefix source-set/hawkinsoperations-website run public-status:dirty-provenance-test
           npm --prefix source-set/hawkinsoperations-website run public-status:nested-claim-test
+          npm --prefix source-set/hawkinsoperations-website run public-status:strict-json-test
           npm --prefix source-set/hawkinsoperations-website run public-status:eol-self-test
           npm --prefix source-set/hawkinsoperations-website run check:site
           npm --prefix source-set/hawkinsoperations-website run typecheck
