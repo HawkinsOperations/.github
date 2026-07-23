@@ -12,23 +12,23 @@
     {
       "repository": "hawkinsoperations-detections",
       "canonical_repository": "HawkinsOperations/hawkinsoperations-detections",
-      "revision": "11a481afbc739c994ce19cdb12052a307a6eec77",
+      "revision": "015a9dc359b3fa4c4853cd1b18372c3e44eacec9",
       "authority_content_revision": "c2790ab007279faff6130a60dc68818343c255ee",
-      "reviewed_tree_sha": "48e43af2aebb0d0d4ef6b321cbd116b8f7f0df04"
+      "reviewed_tree_sha": "e662abc50961367e39284cdcca325f133eedff91"
     },
     {
       "repository": "hawkinsoperations-validation",
       "canonical_repository": "HawkinsOperations/hawkinsoperations-validation",
-      "revision": "46a7ed39e3c0ea74ad102a1547a8bca2d00f3b4a",
+      "revision": "03d8b909b2304a9a570129a559f9cd44e98dc2b1",
       "authority_content_revision": "ebf52f7c6c9b78de767272cc56fccdc584f5c4e0",
-      "reviewed_tree_sha": "6078cf7cfc98368c597363bbf28fc72b77f10e01"
+      "reviewed_tree_sha": "32a2ab07c979e7974baef906926e2c87215f46ce"
     },
     {
       "repository": "hawkinsoperations-platform",
       "canonical_repository": "HawkinsOperations/hawkinsoperations-platform",
-      "revision": "56fed73fe1135916f4bacd4cdbae0ff7e968f7a2",
+      "revision": "26ae0fd0112d2123f90197b9aa5078db0d35db65",
       "authority_content_revision": "651a43a4dfe0776605d5bd7b85ef4f8381c42b64",
-      "reviewed_tree_sha": "5115c2ec2b72fd9ba7a265a4b0e1b15cd89d3ec8"
+      "reviewed_tree_sha": "95bed82102d5baa1e6768daf7accea5fa5390dc7"
     },
     {
       "repository": "hawkinsoperations-proof",
@@ -47,9 +47,9 @@
     {
       "repository": "hoxline",
       "canonical_repository": "HawkinsOperations/hoxline",
-      "revision": "5204ef31849d83ad790a142b68ea84e1451087d1",
+      "revision": "b0899fe48f0c50989e60dbbfb69c6822e7e88d85",
       "authority_content_revision": "d2ce9d977e832e327b4bdbfef55f04a4fd7c35e7",
-      "reviewed_tree_sha": "64dc64b07441f7ce4369bf0f89f2db41cbfd4e98"
+      "reviewed_tree_sha": "a4980bdc9b763dcf843d75cf2ba31ad5fd2ad3fc"
     }
   ],
   "constraints": {
