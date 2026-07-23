@@ -11,7 +11,6 @@ on:
       - ".github/pull_request_template.md"
       - ".github/workflows/command-center-invariants.yml"
       - "scripts/verify-command-center-invariants.py"
-      - "governance/COMMAND_CENTER_INVARIANTS.json"
   push:
     branches:
       - main
@@ -24,7 +23,9 @@ on:
       - ".github/pull_request_template.md"
       - ".github/workflows/command-center-invariants.yml"
       - "scripts/verify-command-center-invariants.py"
-      - "governance/COMMAND_CENTER_INVARIANTS.json"
+  workflow_dispatch: {}
+  schedule:
+    - cron: "23 7 * * 1"
 
 permissions:
   contents: read
@@ -33,97 +34,210 @@ jobs:
   command-center-invariants:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout command-center authority
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+
+      - name: Install structural verifier dependency
+        run: python -m pip install --disable-pip-version-check PyYAML==6.0.2
 
       - name: Verify command-center invariants
         run: python scripts/verify-command-center-invariants.py --self-test
 
+      - name: Run hostile command-center unit tests
+        run: python -B -m unittest discover -s tests
+
+      - name: Verify patch whitespace
+        run: git diff --check
+
   seven-repository-convergence:
     runs-on: ubuntu-latest
     env:
-      REQUESTED_REF: ${{ github.event.pull_request.head.ref || github.ref_name }}
+      PYTHONDONTWRITEBYTECODE: "1"
     steps:
-      - name: Checkout workflow authority
-        uses: actions/checkout@v4
+      - name: Checkout workflow authority at the event revision
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: source-set/.github
+          persist-credentials: false
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: "3.12"
 
-      - name: Checkout exact seven-repository source set read-only
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p source-set verification-artifacts
-          repos=(
-            .github
-            hawkinsoperations-detections
-            hawkinsoperations-validation
-            hawkinsoperations-platform
-            hawkinsoperations-proof
-            hawkinsoperations-website
-            hoxline
-          )
-          : > verification-artifacts/source-revisions.txt
-          for repo in "${repos[@]}"; do
-            url="https://github.com/HawkinsOperations/${repo}.git"
-            ref="main"
-            if git ls-remote --exit-code --heads "$url" "$REQUESTED_REF" >/dev/null 2>&1; then
-              ref="$REQUESTED_REF"
-            fi
-            git clone --quiet --branch "$ref" "$url" "source-set/$repo"
-            sha="$(git -C "source-set/$repo" rev-parse HEAD)"
-            printf '%s ref=%s sha=%s\n' "$repo" "$ref" "$sha" >> verification-artifacts/source-revisions.txt
-          done
+      - name: Set up Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: "20"
 
       - name: Install bounded verifier dependencies
+        run: python -m pip install --disable-pip-version-check PyYAML==6.0.2 pytest==8.3.5
+
+      - name: Resolve governance/CONVERGENCE_SOURCE_MANIFEST.json
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p verification-work verification-artifacts
+          python -B source-set/.github/scripts/verify-command-center-invariants.py \
+            --emit-source-manifest verification-work/resolved-source-manifest.json \
+            --event-sha "${{ github.event.pull_request.head.sha || github.sha }}"
+
+      - name: Checkout six immutable sibling revisions without credentials
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - verification-work/resolved-source-manifest.json > verification-work/sibling-revisions.tsv <<'PY'
+          import json
+          import sys
+
+          value = json.load(open(sys.argv[1], encoding="utf-8"))
+          for entry in value["repositories"]:
+              if entry["repository"] != ".github":
+                  print(f'{entry["repository"]}\t{entry["revision"]}')
+          PY
+          while IFS=$'\t' read -r repo revision; do
+            test -n "$repo"
+            test -n "$revision"
+            mkdir "source-set/$repo"
+            git -C "source-set/$repo" init --quiet
+            git -C "source-set/$repo" remote add origin "https://github.com/HawkinsOperations/$repo.git"
+            git -C "source-set/$repo" fetch --quiet --depth=1 origin "$revision"
+            git -C "source-set/$repo" checkout --quiet --detach "$revision"
+            test "$(git -C "source-set/$repo" rev-parse HEAD)" = "$revision"
+          done < verification-work/sibling-revisions.tsv
+
+      - name: Verify the exact clean detached source set
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -B source-set/.github/scripts/verify-command-center-invariants.py \
+            --verify-source-set source-set \
+            --resolved-manifest verification-work/resolved-source-manifest.json \
+            --source-revisions-output verification-artifacts/source-revisions.json
+          proof_sha="$(python - verification-work/resolved-source-manifest.json <<'PY'
+          import json
+          import sys
+
+          value = json.load(open(sys.argv[1], encoding="utf-8"))
+          by_repo = {entry["repository"]: entry["revision"] for entry in value["repositories"]}
+          print(by_repo["hawkinsoperations-proof"])
+          PY
+          )"
+          printf 'HAWKINS_PROOF_IMMUTABLE_MANIFEST_SHA=%s\n' "$proof_sha" >> "$GITHUB_ENV"
+
+      - name: Detect durable sibling main-content drift
+        if: github.event_name != 'pull_request'
+        run: >-
+          python -B source-set/.github/scripts/verify-command-center-invariants.py
+          --verify-remote-main-content source-set
+          --resolved-manifest verification-work/resolved-source-manifest.json
+
+      - name: Verify detection authority and hostile paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -B source-set/hawkinsoperations-detections/scripts/verify_detection_contract.py
+          python -B source-set/hawkinsoperations-detections/scripts/verify_detection_promotion_matrix.py
+          python -B -m unittest discover -s source-set/hawkinsoperations-detections/tests
+
+      - name: Verify validation authority and fail-closed parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -B source-set/hawkinsoperations-validation/scripts/verify_validation_registry.py
+          python -B source-set/hawkinsoperations-validation/scripts/verify_all_validation_packages.py
+          python -B source-set/hawkinsoperations-validation/scripts/verify_validation_contract.py
+          python -B source-set/hawkinsoperations-validation/scripts/verify_wazuh_logtest_registry.py
+          python -B source-set/hawkinsoperations-validation/scripts/verify_ho_lab_wazuh_001.py
+          python -B -m unittest discover -s source-set/hawkinsoperations-validation/tests
+
+      - name: Verify proof authority and reverse inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -B source-set/hawkinsoperations-proof/scripts/verify_detection_proof_status_index.py
+          python -B source-set/hawkinsoperations-proof/scripts/verify_proof_integrity.py
+          python -B -m unittest discover -s source-set/hawkinsoperations-proof/tests
+
+      - name: Verify platform source contract and seven-source convergence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -B source-set/hawkinsoperations-platform/scripts/verify-public-status-source-contract.py --format json
+          python -B source-set/hawkinsoperations-platform/scripts/ho_factory.py \
+            hoxline-case-growth-convergence-verify --repo-root source-set --format json
+          python -B -m unittest discover -s source-set/hawkinsoperations-platform/tests
+
+      - name: Install Hoxline from the checked immutable source
         run: python -m pip install --disable-pip-version-check -e source-set/hoxline
 
-      - name: Verify source and validation contracts
+      - name: Verify Hoxline Case Growth pair and replay integrity
         shell: bash
         run: |
           set -euo pipefail
-          python -B source-set/hawkinsoperations-detections/scripts/verify_detection_contract.py | tee verification-artifacts/detections.txt
-          python -B source-set/hawkinsoperations-detections/scripts/verify_detection_promotion_matrix.py | tee -a verification-artifacts/detections.txt
-          python -B source-set/hawkinsoperations-validation/scripts/verify_validation_registry.py | tee verification-artifacts/validation.txt
-          python -B source-set/hawkinsoperations-validation/scripts/verify_all_validation_packages.py | tee -a verification-artifacts/validation.txt
+          python -B -m compileall -q source-set/hoxline/src source-set/hoxline/tests
+          python -B -m unittest discover -s source-set/hoxline/tests
+          python -B -m pytest -q source-set/hoxline/tests
+          python -B -m hoxline.cli case-growth index \
+            --repo-root source-set \
+            --format json \
+            --paired-output-base verification-work/current-case-growth-index
+          python -B -m hoxline.cli case-growth verify \
+            --repo-root source-set \
+            --snapshot verification-work/current-case-growth-index.json
+          python -B -m hoxline review batch run \
+            --index source-set/hoxline/examples/review/multi-artifact-review-index-v1.json \
+            --output verification-work/batch \
+            --force \
+            --format json
+          python -B -m hoxline review batch verify \
+            --run verification-work/batch/batch-machine-state.json
 
-      - name: Verify proof and platform convergence
+      - name: Install Website dependencies from the checked lockfile
+        run: npm ci --prefix source-set/hawkinsoperations-website
+
+      - name: Verify Website rendering-only status plane and static build
         shell: bash
         run: |
           set -euo pipefail
-          python -B source-set/hawkinsoperations-proof/scripts/verify_detection_proof_status_index.py | tee verification-artifacts/proof.txt
-          python -B source-set/hawkinsoperations-platform/scripts/ho_factory.py hoxline-case-growth-convergence-verify --repo-root source-set --format json | tee verification-artifacts/platform-convergence.json
+          npm --prefix source-set/hawkinsoperations-website run public-status:generate:check
+          npm --prefix source-set/hawkinsoperations-website run public-status:verify
+          npm --prefix source-set/hawkinsoperations-website run public-status:self-test
+          npm --prefix source-set/hawkinsoperations-website run public-status:owner-self-test
+          npm --prefix source-set/hawkinsoperations-website run public-status:source-checkout-test
+          npm --prefix source-set/hawkinsoperations-website run public-status:freshness-reachability-test
+          npm --prefix source-set/hawkinsoperations-website run public-status:nested-claim-test
+          npm --prefix source-set/hawkinsoperations-website run public-status:eol-self-test
+          npm --prefix source-set/hawkinsoperations-website run check:site
+          npm --prefix source-set/hawkinsoperations-website run typecheck
+          npm --prefix source-set/hawkinsoperations-website run build
 
-      - name: Verify Hoxline case growth and website projection
-        shell: bash
-        env:
-          PYTHONPATH: source-set/hoxline/src
-        run: |
-          set -euo pipefail
-          python -B -m hoxline.cli case-growth verify --repo-root source-set --snapshot source-set/hoxline/examples/case-growth/current-case-growth-index.json | tee verification-artifacts/hoxline-convergence.txt
-          npm ci --prefix source-set/hawkinsoperations-website
-          npm --prefix source-set/hawkinsoperations-website run public-status:verify | tee verification-artifacts/website.txt
+      - name: Write closed-schema verification summary
+        run: >-
+          python -B source-set/.github/scripts/verify-command-center-invariants.py
+          --write-verification-summary
+          verification-artifacts/verification-summary.json
 
-      - name: Sanitize convergence diagnostics
-        id: sanitize
-        if: always()
-        shell: bash
-        run: |
-          set -euo pipefail
-          find verification-artifacts -type f -exec sed -i -E 's#(/home/runner/[^ ]+|[A-Za-z]:\\[^ ]+)#[local-path-redacted]#g' {} +
-          if grep -R -E '(github[_]pat_|g[h]p_|BEGIN (RSA |OPENSSH )?PRIVATE KEY)' verification-artifacts; then
-            echo "Unsafe diagnostic marker detected; artifact upload blocked."
-            exit 1
-          fi
+      - name: Validate upload artifacts
+        run: >-
+          python -B source-set/.github/scripts/verify-command-center-invariants.py
+          --validate-artifacts
+          verification-artifacts
 
-      - name: Upload sanitized convergence diagnostics
-        if: always() && steps.sanitize.outcome == 'success'
-        uses: actions/upload-artifact@v4
+      - name: Upload sanitized convergence records
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: seven-repository-convergence-${{ github.run_id }}
-          path: verification-artifacts/
+          path: |
+            verification-artifacts/source-revisions.json
+            verification-artifacts/verification-summary.json
           if-no-files-found: error
           retention-days: 14

@@ -1,0 +1,57 @@
+{
+  "schema": "hawkinsoperations-convergence-source-manifest-v1",
+  "manifest_id": "HAWKINSOPERATIONS_SEVEN_SOURCE_PR_HEAD_MATRIX_V1",
+  "repositories": [
+    {
+      "repository": ".github",
+      "canonical_repository": "HawkinsOperations/.github",
+      "revision_source": "github_event_sha",
+      "tree_source": "github_event_tree"
+    },
+    {
+      "repository": "hawkinsoperations-detections",
+      "canonical_repository": "HawkinsOperations/hawkinsoperations-detections",
+      "revision": "c2790ab007279faff6130a60dc68818343c255ee",
+      "reviewed_tree_sha": "e1d7cae30165f21ebfb7ed701f8e854888bfded9"
+    },
+    {
+      "repository": "hawkinsoperations-validation",
+      "canonical_repository": "HawkinsOperations/hawkinsoperations-validation",
+      "revision": "d150cf172a4cb6065fd54c19c59beb9b581ba629",
+      "reviewed_tree_sha": "b8597f5154f021c6159210af9335ff17e1bf6a2e"
+    },
+    {
+      "repository": "hawkinsoperations-platform",
+      "canonical_repository": "HawkinsOperations/hawkinsoperations-platform",
+      "revision": "d1ea495f2b010fbaefc2dccf22986526958ba424",
+      "reviewed_tree_sha": "fc487801ba4fdae44a85ea52761fb446b69c421e"
+    },
+    {
+      "repository": "hawkinsoperations-proof",
+      "canonical_repository": "HawkinsOperations/hawkinsoperations-proof",
+      "revision": "042a918ad4a8473cd5abcfd575072fc094639682",
+      "reviewed_tree_sha": "bedaa1e461556f9c9dced6aac2854594f7baf0cd"
+    },
+    {
+      "repository": "hawkinsoperations-website",
+      "canonical_repository": "HawkinsOperations/hawkinsoperations-website",
+      "revision": "ef7ad97279c06634e153be6e8ecee1959b9f7d78",
+      "reviewed_tree_sha": "150a6af5df3c2df8cb9b7f3f08b1217a8ad7d7b8"
+    },
+    {
+      "repository": "hoxline",
+      "canonical_repository": "HawkinsOperations/hoxline",
+      "revision": "f2ebea13f5b19fcca348b5359bc9372a7b893962",
+      "reviewed_tree_sha": "b5ad30a8d7ebbc5bd796ea0bfc58f5317fea5f87"
+    }
+  ],
+  "constraints": {
+    "exact_repository_count": 7,
+    "read_only": true,
+    "default_branch_fallback": false,
+    "require_detached_exact_revision": true,
+    "record_checked_revisions": true,
+    "consumer_outputs_are_not_authority": true,
+    "proof_ceiling": "CONTROLLED_REPO_CONVERGENCE_AND_LOCAL_FIXTURE_REVIEW_ONLY"
+  }
+}
