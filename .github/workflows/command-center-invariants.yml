@@ -59,6 +59,7 @@ jobs:
         run: git diff --check
 
   seven-repository-convergence:
+    needs: command-center-invariants
     runs-on: ubuntu-latest
     env:
       PYTHONDONTWRITEBYTECODE: "1"
@@ -176,7 +177,7 @@ jobs:
         run: |
           set -euo pipefail
           python -B source-set/hawkinsoperations-validation/scripts/verify_validation_registry.py --detections-root source-set/hawkinsoperations-detections --detections-ref "$(git -C source-set/hawkinsoperations-detections rev-parse HEAD)" --source-manifest source-set/hawkinsoperations-validation/validation/SOURCE_AUTHORITY_MANIFEST.json
-          python -B source-set/hawkinsoperations-validation/scripts/verify_all_validation_packages.py
+          python -B source-set/hawkinsoperations-validation/scripts/verify_all_validation_packages.py --source-contract required
           python -B source-set/hawkinsoperations-validation/scripts/verify_validation_contract.py
           python -B source-set/hawkinsoperations-validation/scripts/verify_wazuh_logtest_registry.py
           python -B source-set/hawkinsoperations-validation/scripts/verify_ho_lab_wazuh_001.py

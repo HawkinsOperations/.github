@@ -223,8 +223,8 @@ class WorkflowSafetyTests(unittest.TestCase):
                 1,
             ),
             "conditional job": self.workflow.replace(
-                "  seven-repository-convergence:\n    runs-on:",
-                "  seven-repository-convergence:\n    if: false\n    runs-on:",
+                "  seven-repository-convergence:\n    needs: command-center-invariants\n    runs-on:",
+                "  seven-repository-convergence:\n    needs: command-center-invariants\n    if: false\n    runs-on:",
                 1,
             ),
             "conditional principal step": self.workflow.replace(
@@ -236,6 +236,22 @@ class WorkflowSafetyTests(unittest.TestCase):
         for label, value in mutations.items():
             with self.subTest(label=label):
                 self.assert_rejected(value, label)
+
+    def test_convergence_summary_cannot_outlive_owning_invariant_job(self) -> None:
+        self.assertIn(
+            "  seven-repository-convergence:\n"
+            "    needs: command-center-invariants\n"
+            "    runs-on:",
+            self.workflow,
+        )
+        self.assert_rejected(
+            self.workflow.replace(
+                "    needs: command-center-invariants\n",
+                "",
+                1,
+            ),
+            "missing owning-job dependency",
+        )
 
     def test_sibling_fetch_retry_is_bounded_and_fails_closed(self) -> None:
         for fragment in (
