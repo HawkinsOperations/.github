@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import subprocess
 import sys
@@ -38,6 +39,15 @@ CANONICAL_ORIGINS = {
     repository: f"https://github.com/HawkinsOperations/{repository}.git"
     for repository in EXACT_REPOSITORIES
 }
+def sanitized_git_environment() -> dict[str, str]:
+    environment = {
+        key: value
+        for key, value in os.environ.items()
+        if not key.casefold().startswith("git_")
+    }
+    environment["GIT_NO_REPLACE_OBJECTS"] = "1"
+    environment["GIT_TERMINAL_PROMPT"] = "0"
+    return environment
 CANONICAL_AUTHORITY_PATHS = {
     ".github": "governance/COMMAND_CENTER_INVARIANTS.json",
     "hawkinsoperations-detections": "detections/DETECTION_PROMOTION_MATRIX.yml",
@@ -323,6 +333,7 @@ def tracked_vocabulary_findings(repo_root: Path = ROOT) -> list[str]:
         ["git", "-C", str(repo_root), "ls-files", "-z"],
         capture_output=True,
         check=False,
+        env=sanitized_git_environment(),
     )
     if listed.returncode != 0:
         return ["tracked-source vocabulary check could not enumerate Git-tracked files"]
@@ -341,6 +352,7 @@ def tracked_vocabulary_findings(repo_root: Path = ROOT) -> list[str]:
             ["git", "-C", str(repo_root), "show", f":{relative}"],
             capture_output=True,
             check=False,
+            env=sanitized_git_environment(),
         )
         if scanned.returncode != 0:
             findings.append(
@@ -1055,6 +1067,7 @@ def stored_origin(repo: Path) -> str:
         check=False,
         capture_output=True,
         text=True,
+        env=sanitized_git_environment(),
     )
     values = [value.strip() for value in result.stdout.splitlines()]
     if result.returncode != 0 or len(values) != 1 or not values[0]:
@@ -1070,6 +1083,7 @@ def git(repo: Path, *args: str) -> str:
         check=False,
         capture_output=True,
         text=True,
+        env=sanitized_git_environment(),
     )
     if result.returncode:
         raise ValidationError(
@@ -1308,6 +1322,7 @@ def verify_remote_main_content(
             check=False,
             capture_output=True,
             text=True,
+            env=sanitized_git_environment(),
         )
         fields = result.stdout.strip().split()
         if result.returncode != 0 or len(fields) != 2 or fields[1] != "refs/heads/main":
@@ -1323,6 +1338,7 @@ def verify_remote_main_content(
             check=False,
             capture_output=True,
             text=True,
+            env=sanitized_git_environment(),
         )
         if fetch.returncode:
             errors.append(f"{repository}: current main content cannot be fetched")

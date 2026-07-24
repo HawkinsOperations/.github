@@ -581,6 +581,136 @@ class SourceSetTests(unittest.TestCase):
                 errors,
             )
 
+    def test_git_environment_scrub_rejects_every_ambient_git_control(self) -> None:
+        hostile = {
+            "GIT_DIR": "decoy",
+            "GIT_WORK_TREE": "decoy",
+            "GIT_COMMON_DIR": "decoy",
+            "GIT_INDEX_FILE": "decoy",
+            "GIT_OBJECT_DIRECTORY": "decoy",
+            "GIT_ALTERNATE_OBJECT_DIRECTORIES": "decoy",
+            "GIT_CONFIG": "decoy",
+            "GIT_CONFIG_GLOBAL": "decoy",
+            "GIT_CONFIG_SYSTEM": "decoy",
+            "GIT_CONFIG_NOSYSTEM": "0",
+            "GIT_CONFIG_COUNT": "1",
+            "GIT_CONFIG_KEY_0": "core.repositoryformatversion",
+            "GIT_CONFIG_VALUE_0": "1",
+            "GIT_CEILING_DIRECTORIES": "decoy",
+            "GIT_DISCOVERY_ACROSS_FILESYSTEM": "1",
+            "GIT_SHALLOW_FILE": "decoy",
+            "GIT_NAMESPACE": "decoy",
+            "GIT_REPLACE_REF_BASE": "refs/decoy",
+            "GIT_IMPLICIT_WORK_TREE": "1",
+            "GIT_NO_REPLACE_OBJECTS": "0",
+            "GIT_TERMINAL_PROMPT": "1",
+        }
+        with mock.patch.dict(os.environ, hostile, clear=False):
+            sanitized = VERIFIER.sanitized_git_environment()
+        self.assertEqual("1", sanitized["GIT_NO_REPLACE_OBJECTS"])
+        self.assertEqual("0", sanitized["GIT_TERMINAL_PROMPT"])
+        self.assertEqual(
+            {"git_no_replace_objects", "git_terminal_prompt"},
+            {
+                key.casefold()
+                for key in sanitized
+                if key.casefold().startswith("git_")
+            },
+        )
+
+    def test_git_dir_decoy_cannot_redirect_stored_origin_authority(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp)
+            root = base / "source-set"
+            root.mkdir()
+            resolved = self.create_source_set(root)
+            repository = "hawkinsoperations-detections"
+            target = root / repository
+            canonical = VERIFIER.CANONICAL_ORIGINS[repository]
+            wrong = "https://local.invalid/hawkinsoperations-detections.git"
+            self.run_git(target, "remote", "set-url", "origin", wrong)
+            decoy = base / "decoy"
+            decoy.mkdir()
+            self.run_git(decoy, "init", "--quiet")
+            self.run_git(decoy, "remote", "add", "origin", canonical)
+            raw_env = os.environ.copy()
+            raw_env["GIT_DIR"] = str(decoy / ".git")
+            interpreted = subprocess.run(
+                [
+                    "git",
+                    "-C",
+                    str(target),
+                    "config",
+                    "--local",
+                    "--get-all",
+                    "remote.origin.url",
+                ],
+                check=True,
+                capture_output=True,
+                text=True,
+                env=raw_env,
+            ).stdout.strip()
+            self.assertEqual(canonical, interpreted)
+            with mock.patch.dict(
+                os.environ, {"GIT_DIR": str(decoy / ".git")}, clear=False
+            ):
+                self.assertEqual(wrong, VERIFIER.stored_origin(target))
+                _, errors = VERIFIER.verify_source_set(root, resolved)
+            self.assertTrue(
+                any("canonical origin mismatch" in error for error in errors),
+                errors,
+            )
+
+    def test_git_index_file_cannot_hide_staged_dirty_authority(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp)
+            root = base / "source-set"
+            root.mkdir()
+            resolved = self.create_source_set(root)
+            repository = "hawkinsoperations-detections"
+            target = root / repository
+            clean_index = base / "clean.index"
+            alternate_env = os.environ.copy()
+            alternate_env["GIT_INDEX_FILE"] = str(clean_index)
+            subprocess.run(
+                ["git", "-C", str(target), "read-tree", "HEAD"],
+                check=True,
+                capture_output=True,
+                env=alternate_env,
+            )
+            authority_file = target / VERIFIER.CANONICAL_AUTHORITY_PATHS[repository]
+            original = authority_file.read_text(encoding="utf-8")
+            authority_file.write_text("staged contradiction\n", encoding="utf-8")
+            self.run_git(
+                target,
+                "add",
+                VERIFIER.CANONICAL_AUTHORITY_PATHS[repository],
+            )
+            authority_file.write_text(original, encoding="utf-8")
+            hidden = subprocess.run(
+                [
+                    "git",
+                    "-C",
+                    str(target),
+                    "status",
+                    "--porcelain=v1",
+                    "--untracked-files=all",
+                ],
+                check=True,
+                capture_output=True,
+                text=True,
+                env=alternate_env,
+            ).stdout.strip()
+            self.assertEqual("", hidden, "attack precondition: alternate index is clean")
+            with mock.patch.dict(
+                os.environ, {"GIT_INDEX_FILE": str(clean_index)}, clear=False
+            ):
+                _, errors = VERIFIER.verify_source_set(root, resolved)
+            self.assertTrue(
+                any("source checkout is dirty" in error for error in errors),
+                errors,
+            )
+
     def test_missing_empty_or_multiple_stored_origins_fail_closed(self) -> None:
         for attack in ("missing", "empty", "multiple"):
             with self.subTest(attack=attack), tempfile.TemporaryDirectory() as temp:
