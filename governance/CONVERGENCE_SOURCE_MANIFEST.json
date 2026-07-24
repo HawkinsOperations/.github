@@ -12,9 +12,9 @@
     {
       "repository": "hawkinsoperations-detections",
       "canonical_repository": "HawkinsOperations/hawkinsoperations-detections",
-      "revision": "f8bc0a0925113ca815bf5692081b5216162cc918",
+      "revision": "9e01f43fb350de3370f8c01a323dcdcdf2e33147",
       "authority_content_revision": "f8bc0a0925113ca815bf5692081b5216162cc918",
-      "reviewed_tree_sha": "91b5a9ae8cfad52da942575c592ac93e7ea59d84"
+      "reviewed_tree_sha": "4135fc6fafb3bc842096ee58fa7dd53d24172b65"
     },
     {
       "repository": "hawkinsoperations-validation",
@@ -26,9 +26,9 @@
     {
       "repository": "hawkinsoperations-platform",
       "canonical_repository": "HawkinsOperations/hawkinsoperations-platform",
-      "revision": "a667c4de8b478fe165c3ec612e642bbd5d879492",
+      "revision": "4716d7e65525425be4f70127cdc7f7d3de3a7b9e",
       "authority_content_revision": "a667c4de8b478fe165c3ec612e642bbd5d879492",
-      "reviewed_tree_sha": "85accfe41ae7f6fba3c26c9b40699e1ddd719d27"
+      "reviewed_tree_sha": "9c8e56ec5a9aa62cad4f646f520dd9129494474c"
     },
     {
       "repository": "hawkinsoperations-proof",
@@ -40,16 +40,16 @@
     {
       "repository": "hawkinsoperations-website",
       "canonical_repository": "HawkinsOperations/hawkinsoperations-website",
-      "revision": "240814a247057796f46f854ca9967c95b346559e",
+      "revision": "0e7cb554ee3fd5519142006246201e7b15f0c9b5",
       "authority_content_revision": "5856f8e69527b5e61c3953b88a2ad4c088268655",
-      "reviewed_tree_sha": "8e2ff9e1ef7869e3e144091fa82dca6293c91cef"
+      "reviewed_tree_sha": "579df6ed7e3da1eb69094c3c9df88dfa47bfbadb"
     },
     {
       "repository": "hoxline",
       "canonical_repository": "HawkinsOperations/hoxline",
-      "revision": "dd13842f4e59851f6ddaf0c45fe470570dc322ed",
+      "revision": "52867ee7e332dba3cab4d2c3e308d636ed5bb610",
       "authority_content_revision": "1cb97efc45ffe753389105645c25ed7fe57cf9e5",
-      "reviewed_tree_sha": "c1a339fc2093e14d317893f953b603e0d295555b"
+      "reviewed_tree_sha": "7fa92c0e415d5dbe74fda2f418b9d3ca43f6fa74"
     }
   ],
   "constraints": {
