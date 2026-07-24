@@ -47,9 +47,9 @@
     {
       "repository": "hoxline",
       "canonical_repository": "HawkinsOperations/hoxline",
-      "revision": "9a8ff9bfbf523ea61e7ce2c2142ec40c5a192c09",
+      "revision": "cad8114853ce3e6570149b6762fba4e8f5c396ae",
       "authority_content_revision": "b0945c4c3db7312f7d50a51d4abab9e65ac454da",
-      "reviewed_tree_sha": "c3d37f7f14f869c7a0d6e4901b76a18b3e66c9d7"
+      "reviewed_tree_sha": "05dcb1c39abd18e26a65b051a506bf8d3b13e82c"
     }
   ],
   "constraints": {
