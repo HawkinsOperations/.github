@@ -12,16 +12,16 @@
     {
       "repository": "hawkinsoperations-detections",
       "canonical_repository": "HawkinsOperations/hawkinsoperations-detections",
-      "revision": "455dc07603f1a502481351c7b57df67206085a16",
+      "revision": "e2b7532784e1d18b07f33b8536708c1492524b87",
       "authority_content_revision": "c2790ab007279faff6130a60dc68818343c255ee",
-      "reviewed_tree_sha": "3b56762368c262a43ab6dd611382ab8502f7d5cd"
+      "reviewed_tree_sha": "23cc8d9f20f7962d70fbfd06d54b5b21515912c4"
     },
     {
       "repository": "hawkinsoperations-validation",
       "canonical_repository": "HawkinsOperations/hawkinsoperations-validation",
-      "revision": "e4a9fc1e35ad7dda56a8e7e6976ee31b82afadef",
+      "revision": "41448874c4d7f470e7f81ee298b1a580b8ddc6e0",
       "authority_content_revision": "ebf52f7c6c9b78de767272cc56fccdc584f5c4e0",
-      "reviewed_tree_sha": "879a359e12f11fbb9a59a1dc0e6fe2effc6f76d1"
+      "reviewed_tree_sha": "b53e474676147d656a3470a66bf796d53e0c6df2"
     },
     {
       "repository": "hawkinsoperations-platform",
@@ -33,16 +33,16 @@
     {
       "repository": "hawkinsoperations-proof",
       "canonical_repository": "HawkinsOperations/hawkinsoperations-proof",
-      "revision": "b42ba945ae1ea540037643bb25f7165ab55dab21",
+      "revision": "67ae70d6c7bb5298c629e10cf33a25399feb972d",
       "authority_content_revision": "042a918ad4a8473cd5abcfd575072fc094639682",
-      "reviewed_tree_sha": "8039038d79d8f6f4f58235036d75cd4fcec0abf8"
+      "reviewed_tree_sha": "a5c423dad556ca61610c91331ddb78bda962fa2f"
     },
     {
       "repository": "hawkinsoperations-website",
       "canonical_repository": "HawkinsOperations/hawkinsoperations-website",
-      "revision": "6252231b789dc3dd5f12d5ef94312f251b3c43cc",
+      "revision": "c506065e3ac47941e894ea5c58de513ea9dd7bdc",
       "authority_content_revision": "5856f8e69527b5e61c3953b88a2ad4c088268655",
-      "reviewed_tree_sha": "5389a807a98b4c1a1cee7ed473b36eb6e4d2c04e"
+      "reviewed_tree_sha": "24b448612e5f92fdc612e41d10585e3ef15fa96f"
     },
     {
       "repository": "hoxline",
