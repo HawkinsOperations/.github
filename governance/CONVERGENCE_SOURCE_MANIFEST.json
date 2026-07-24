@@ -19,9 +19,9 @@
     {
       "repository": "hawkinsoperations-validation",
       "canonical_repository": "HawkinsOperations/hawkinsoperations-validation",
-      "revision": "41448874c4d7f470e7f81ee298b1a580b8ddc6e0",
+      "revision": "e047f99d7c8779cc8368fe82218d202dc40fc416",
       "authority_content_revision": "ebf52f7c6c9b78de767272cc56fccdc584f5c4e0",
-      "reviewed_tree_sha": "b53e474676147d656a3470a66bf796d53e0c6df2"
+      "reviewed_tree_sha": "7089ee6ea0519070d63632cc9bee869dca2359cc"
     },
     {
       "repository": "hawkinsoperations-platform",
