@@ -253,6 +253,30 @@ class WorkflowSafetyTests(unittest.TestCase):
             "missing owning-job dependency",
         )
 
+    def test_whitespace_check_covers_committed_event_revision(self) -> None:
+        for fragment in (
+            "fetch-depth: 0",
+            'git diff --check "${{ github.event.pull_request.base.sha }}...'
+            '${{ github.event.pull_request.head.sha }}"',
+            "git show --check --format= HEAD",
+        ):
+            self.assertIn(fragment, self.workflow)
+        self.assert_rejected(
+            self.workflow.replace(
+                "        run: |\n"
+                "          set -euo pipefail\n"
+                '          if [[ "${{ github.event_name }}" == "pull_request" ]]; then\n'
+                '            git diff --check "${{ github.event.pull_request.base.sha }}...'
+                '${{ github.event.pull_request.head.sha }}"\n'
+                "          else\n"
+                "            git show --check --format= HEAD\n"
+                "          fi\n",
+                "        run: git diff --check\n",
+                1,
+            ),
+            "working-tree-only whitespace check",
+        )
+
     def test_sibling_fetch_retry_is_bounded_and_fails_closed(self) -> None:
         for fragment in (
             "for attempt in 1 2 3 4 5 6; do",
@@ -332,19 +356,23 @@ class WorkflowSafetyTests(unittest.TestCase):
             with self.subTest(label=label):
                 self.assert_rejected(value, label)
 
-    def test_trigger_neutralization_and_test_path_omission_fail(self) -> None:
+    def test_trigger_neutralization_and_tracked_path_narrowing_fail(self) -> None:
         mutations = {
             "closed-only PR": self.workflow.replace(
-                "  pull_request:\n    paths:",
-                "  pull_request:\n    types: [closed]\n    paths:",
+                "  pull_request: {}",
+                "  pull_request:\n    types: [closed]",
                 1,
             ),
             "ignored main": self.workflow.replace(
-                "  pull_request:\n    paths:",
-                "  pull_request:\n    branches-ignore: [main]\n    paths:",
+                "  pull_request: {}",
+                "  pull_request:\n    branches-ignore: [main]",
                 1,
             ),
-            "tests omitted": self.workflow.replace('      - "tests/**"\n', "", 1),
+            "tracked vocabulary surface narrowed": self.workflow.replace(
+                "  pull_request: {}",
+                '  pull_request:\n    paths: ["governance/**"]',
+                1,
+            ),
         }
         for label, value in mutations.items():
             with self.subTest(label=label):

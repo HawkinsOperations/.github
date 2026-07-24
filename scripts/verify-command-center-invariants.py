@@ -94,7 +94,7 @@ EXPECTED_RUN_SHA256_BY_STEP = {
     "Install structural verifier dependency": "6777f50efc1a4de7a52454974ba0da5a7adda9e7a84e251b3f3fe93912fdd695",
     "Verify command-center invariants": "7457407dbbf6fc6c710590149da3c3a7be1358b567f31ffda84cb8fa4fcd2e46",
     "Run hostile command-center unit tests": "16792c22d70f184d03660b7d7641f13a305e9227f1d31be6950732ca2a80a5d3",
-    "Verify patch whitespace": "466c2f308b48c7661d646fdd068fbecea974c665fe65dbf8ed508f224180ce0b",
+    "Verify patch whitespace": "c6cab74e9117e643b9234134c46cfcf6cf1733747c76d31399834e41cee706a4",
     "Install bounded verifier dependencies": "4e24c9f627196734440d7af0f88696d5c78bcabf31951f052d6f5b8c0d5913b2",
     "Resolve governance/CONVERGENCE_SOURCE_MANIFEST.json": "2cc7ec88e5f15e3ce2005c2a7d69d9612b88cd4832d3b6f7ebfc900d326530e8",
     "Checkout six immutable sibling revisions without credentials": "457e61f1280506ee49cce8d2c796031a25b7874bb3cffeb76441f788cfdd1942",
@@ -114,7 +114,7 @@ EXPECTED_RUN_SHA256_BY_STEP = {
 EXPECTED_ACTION_BY_STEP = {
     "Checkout command-center authority": {
         "uses": f"actions/checkout@{PINNED_ACTIONS['actions/checkout']}",
-        "with": {"persist-credentials": "false"},
+        "with": {"persist-credentials": "false", "fetch-depth": 0},
     },
     "Checkout workflow authority at the event revision": {
         "uses": f"actions/checkout@{PINNED_ACTIONS['actions/checkout']}",
@@ -147,6 +147,7 @@ EXPECTED_ACTION_BY_STEP = {
     },
 }
 EXPECTED_BASH_STEPS = {
+    "Verify patch whitespace",
     "Resolve governance/CONVERGENCE_SOURCE_MANIFEST.json",
     "Checkout six immutable sibling revisions without credentials",
     "Verify the exact clean detached source set",
@@ -637,28 +638,15 @@ def unsafe_workflow_findings(text: str) -> list[str]:
             findings.append("manual read-only dispatch is required")
         pull_request = triggers.get("pull_request")
         push = triggers.get("push")
-        required_paths = {
-            "README.md",
-            "profile/**",
-            "architecture/**",
-            "governance/**",
-            "wiki/**",
-            ".github/pull_request_template.md",
-            ".github/workflows/command-center-invariants.yml",
-            "scripts/verify-command-center-invariants.py",
-            "tests/**",
-        }
-        if not isinstance(pull_request, dict) or set(pull_request) != {"paths"}:
-            findings.append("pull_request trigger shape must be unrestricted except approved paths")
-        elif set(pull_request.get("paths", [])) != required_paths:
-            findings.append("pull_request paths must cover every governed verifier surface")
-        if not isinstance(push, dict) or set(push) != {"branches", "paths"}:
-            findings.append("push trigger shape must be exactly branches and paths")
+        if pull_request != {}:
+            findings.append(
+                "pull_request trigger must be unrestricted so every tracked path is scanned"
+            )
+        if not isinstance(push, dict) or set(push) != {"branches"}:
+            findings.append("push trigger shape must contain only branches")
         else:
             if push.get("branches") != ["main"]:
                 findings.append("push trigger must govern main exactly")
-            if set(push.get("paths", [])) != required_paths:
-                findings.append("push paths must cover every governed verifier surface")
 
     if workflow.get("permissions") != {"contents": "read"}:
         findings.append("root permissions must be exactly contents: read")
