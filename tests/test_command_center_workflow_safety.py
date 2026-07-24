@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
 import subprocess
 import tempfile
 import unittest
@@ -552,6 +553,64 @@ class SourceSetTests(unittest.TestCase):
                     (root / "eighth-repository").mkdir()
                 _, errors = VERIFIER.verify_source_set(root, resolved)
                 self.assertTrue(errors)
+
+    def test_origin_rewrite_cannot_launder_wrong_stored_origin(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "source-set"
+            root.mkdir()
+            resolved = self.create_source_set(root)
+            repository = "hawkinsoperations-detections"
+            target = root / repository
+            canonical = VERIFIER.CANONICAL_ORIGINS[repository]
+            wrong = "https://local.invalid/hawkinsoperations-detections.git"
+            self.run_git(target, "remote", "set-url", "origin", wrong)
+            rewrite_env = {
+                "GIT_CONFIG_COUNT": "1",
+                "GIT_CONFIG_KEY_0": f"url.{canonical}.insteadOf",
+                "GIT_CONFIG_VALUE_0": wrong,
+            }
+            with mock.patch.dict(os.environ, rewrite_env, clear=False):
+                self.assertEqual(
+                    canonical,
+                    self.run_git(target, "remote", "get-url", "origin"),
+                    "attack precondition: interpreted Git URL must look canonical",
+                )
+                _, errors = VERIFIER.verify_source_set(root, resolved)
+            self.assertTrue(
+                any("canonical origin mismatch" in error for error in errors),
+                errors,
+            )
+
+    def test_missing_empty_or_multiple_stored_origins_fail_closed(self) -> None:
+        for attack in ("missing", "empty", "multiple"):
+            with self.subTest(attack=attack), tempfile.TemporaryDirectory() as temp:
+                root = Path(temp) / "source-set"
+                root.mkdir()
+                resolved = self.create_source_set(root)
+                target = root / "hawkinsoperations-detections"
+                self.run_git(target, "config", "--unset-all", "remote.origin.url")
+                if attack == "empty":
+                    self.run_git(target, "config", "--add", "remote.origin.url", "")
+                elif attack == "multiple":
+                    self.run_git(
+                        target,
+                        "config",
+                        "--add",
+                        "remote.origin.url",
+                        VERIFIER.CANONICAL_ORIGINS["hawkinsoperations-detections"],
+                    )
+                    self.run_git(
+                        target,
+                        "config",
+                        "--add",
+                        "remote.origin.url",
+                        "https://local.invalid/hawkinsoperations-detections.git",
+                    )
+                _, errors = VERIFIER.verify_source_set(root, resolved)
+                self.assertTrue(
+                    any("exactly one nonempty local URL" in error for error in errors),
+                    errors,
+                )
 
     def test_authority_content_revision_is_bound_to_canonical_current_blob(self) -> None:
         for attack in ("unreachable", "wrong-blob"):

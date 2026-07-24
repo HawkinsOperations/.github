@@ -1041,6 +1041,29 @@ def canonical_origin(value: str) -> str:
     return normalized
 
 
+def stored_origin(repo: Path) -> str:
+    result = subprocess.run(
+        [
+            "git",
+            "-C",
+            str(repo),
+            "config",
+            "--local",
+            "--get-all",
+            "remote.origin.url",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    values = [value.strip() for value in result.stdout.splitlines()]
+    if result.returncode != 0 or len(values) != 1 or not values[0]:
+        raise ValidationError(
+            f"{repo.name}: stored origin must contain exactly one nonempty local URL"
+        )
+    return values[0]
+
+
 def git(repo: Path, *args: str) -> str:
     result = subprocess.run(
         ["git", "-C", str(repo), *args],
@@ -1196,7 +1219,7 @@ def verify_source_set(
             branch = git(repo_path, "rev-parse", "--abbrev-ref", "HEAD")
             if branch != "HEAD":
                 raise ValidationError(f"{repository}: checkout must be detached at exact revision")
-            origin = git(repo_path, "remote", "get-url", "origin")
+            origin = stored_origin(repo_path)
             if canonical_origin(origin) != canonical_origin(CANONICAL_ORIGINS[repository]):
                 raise ValidationError(f"{repository}: canonical origin mismatch")
             status = git(repo_path, "status", "--porcelain=v1", "--untracked-files=all")
