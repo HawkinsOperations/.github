@@ -24,11 +24,11 @@ Total HawkinsOperations system repos remain seven:
 - `hawkinsoperations-platform` = contracts/mechanics
 - `hawkinsoperations-proof` = proof records/claim ceilings
 - `hawkinsoperations-website` = public rendering
-- `hoxline` = current Hoxline product/front-door repo
+- `hoxline` = current Hoxline product and ProofOps control repo
 
 No eighth repo may be added without explicit approval.
 
-Hoxline by HawkinsOperations is the current product/front-door repo and ProofOps control surface. Hoxline provides ProofOps control for the AI security era and governs how AI-assisted security work becomes tested, reviewed, blocked, or safe to claim. Current repository path: HawkinsOperations/hoxline. AevumGuard was a prior working name. Hoxline is the current product name. Claim Firewall is the first Claim Authority enforcement capability inside Hoxline; it is not the product, platform, front-door repo, an eighth repo, proof authority, runtime proof, or signal proof.
+Hoxline by HawkinsOperations is the product and ProofOps control surface. Hoxline provides ProofOps control for the AI security era and governs how AI-assisted security work becomes tested, reviewed, blocked, or safe to claim. Current repository path: HawkinsOperations/hoxline. Claim Firewall is the first Claim Authority enforcement capability inside Hoxline; it is not the product, platform, an eighth repo, proof authority, runtime proof, or signal proof.
 ## Authority Summary
 
 | Repository | Authority plane | Owns | Boundary |
@@ -39,14 +39,15 @@ Hoxline by HawkinsOperations is the current product/front-door repo and ProofOps
 | `hawkinsoperations-platform` | Contracts / orchestration / control logic | Runtime contracts, interface boundaries, and non-promotional guardrails. | Contracts do not prove public proof, production readiness, or current runtime state. |
 | `hawkinsoperations-proof` | Proof records / evidence truth | Proof records, claim ceilings, evidence boundary records, and cited case packets. | Proof records do not publish raw private evidence or raise ceilings by presentation. |
 | `hawkinsoperations-website` | Public rendering only | Public reviewer navigation and rendered wording. | Rendering is not proof and cannot approve a claim. |
-| `hoxline` | Product / front door | Hoxline product surface and Claim Authority capabilities, starting with Claim Firewall. | Product framing does not prove runtime, signal, evidence, public-safe status, production readiness, or approval. |
+| `hoxline` | Product / ProofOps control | Hoxline product surface and Claim Authority capabilities, starting with Claim Firewall. | Product framing does not prove runtime, signal, evidence, public-safe status, production readiness, or approval. |
 
 ## Command Center Operating Surfaces
 
 | Surface | Route | Owns | Does not own |
 | --- | --- | --- | --- |
 | Organization front door | [profile/README.md](../profile/README.md) | High-level reviewer orientation and demo routing. | Proof, runtime, signal, or public-safe approval. |
-| Product front door | [hoxline](https://github.com/HawkinsOperations/hoxline) | Hoxline product experience and Claim Authority capability surface. | Proof authority, runtime truth, signal truth, public-safe approval, or repo expansion approval. |
+| Website / Reviewer Guide | [hawkinsoperations.com](https://hawkinsoperations.com/) | Visual walkthrough and presentation of the complete system. | Source, validation, runtime, signal, proof, or public-safe approval. |
+| Product / ProofOps control | [hoxline](https://github.com/HawkinsOperations/hoxline) | Hoxline product experience and Claim Authority capability surface. | Proof authority, runtime truth, signal truth, public-safe approval, or repo expansion approval. |
 | Reviewer start path | [profile/START_HERE.md](../profile/START_HERE.md) | First-click review sequence and claim-boundary reminders. | Stronger claim status than proof records allow. |
 | Operating cockpit | [private org Control Board route](https://github.com/orgs/HawkinsOperations/projects/2) | Current work visibility and queue coordination for the canonical private HawkinsOperations Control Board; Project #1 is not an active reviewer route. | Source truth, validation truth, runtime truth, signal truth, proof, public-safe status, merge approval, or project metadata authority. |
 | Proof ledger route | [Lifetime Case Ledger public summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/lifetime-case-ledger-v1-public-summary.json) | Bounded count summary owned by proof records and platform manifests; this map does not copy changing counts. | Runtime activity, signal observation, public proof, public-safe runtime proof, case closure, or disposition authority. |
@@ -62,7 +63,7 @@ Hoxline by HawkinsOperations is the current product/front-door repo and ProofOps
 | `hawkinsoperations-platform` | Platform architecture, stack truth tracking, and environment boundary documentation. | Detection proof, public proof, sensitive runtime exports, private host details. | Architecture-oriented until runtime evidence is reviewed. | Platform docs prove current deployment state. |
 | `hawkinsoperations-proof` | Proof contracts, evidence indexes, public-safe records, and claim linkage structure. | Raw private evidence publication, runtime operation, source ownership for other repos. | Proof-oriented only for reviewed and scoped records. | Evidence-linked material is automatically public-safe. |
 | `hawkinsoperations-website` | Public rendering of approved content. | Source truth, runtime truth, evidence truth, claim approval. | Rendering-oriented after public claim review. | Website presentation proves a claim by itself. |
-| `hoxline` | Current Hoxline product/front-door repo and Claim Authority capability UX. | Proof authority, runtime status, signal observation, public-safe approval, or repo expansion. | Product-oriented until proof records approve stronger claims. | A product page or capability label proves a claim by itself. |
+| `hoxline` | Current Hoxline product and Claim Authority capability UX. | Proof authority, runtime status, signal observation, public-safe approval, or repo expansion. | Product-oriented until proof records approve stronger claims. | A product page or capability label proves a claim by itself. |
 
 ## Cross-Repository Rules
 

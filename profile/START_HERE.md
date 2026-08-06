@@ -1,249 +1,133 @@
 # Start Here
 
-Start here if reviewing HawkinsOperations.
+HawkinsOperations is a governed AI Security Operations and detection engineering system for turning AI-assisted security work into bounded, inspectable artifacts. AI produces labor; evidence and human review authorize claims.
 
-HawkinsOperations is a governed AI Security Operations and detection engineering system built around Hoxline, source-controlled detection work, deterministic validation, platform contracts, proof records, reviewer releases, Windows/Linux runtime candidate lanes, ledger mechanics, and human-review gates.
+## Three doors
 
-The system separates Hoxline product/front-door work, detection source, validation, platform contracts, proof records, governance routing, and public rendering so public claims cannot outrun evidence.
-
-- AI is labor; governance is authority.
-- AI can accelerate detection drafting, triage reasoning, case-packet support, documentation, and automation planning.
-- AI does not decide disposition, approve claims, promote proof, or close cases.
-- Validation, evidence records, proof boundaries, deterministic checks, and human review authorize operational truth.
-- Green CI is evidence for the checked scope, not approval.
-- Website/GitHub rendering is not proof.
-- Hoxline by HawkinsOperations is the current product/front-door repo.
-- Hoxline provides ProofOps control for the AI security era.
-- Hoxline governs how AI-assisted security work becomes tested, reviewed, blocked, or safe to claim.
-- Hoxline separates AI output from evidence-bound claim authority.
-- Doctrine: AI is not the authority. Evidence is.
-- Claim Authority governs what can be claimed. Claim Firewall is the first Claim Authority enforcement capability inside Hoxline; it is not the product, platform, front-door repo, an eighth repo, proof authority, runtime proof, or signal proof.
-- Current repository path: HawkinsOperations/hoxline.
-- AevumGuard was a prior working name. Hoxline is the current product name.
-
-Start with the system signal, then inspect the receipts:
-
-| Current operating signal | Value | Boundary |
-|---|---:|---|
-| Lifetime Governed Cases | See platform ledger state manifest | Current strict platform ledger count; public-safe and closed-case counts remain authority-owned by platform/proof records. |
-| Windows Runtime Collector candidates | See platform runtime-candidate records | Private candidate lane only. |
-| Linux Runtime Collector candidates | See platform runtime-candidate records | Private candidate lane only. |
-| Normalized append-ready candidates | See platform normalizer records | Candidate status does not become governed case truth without explicit approval and verifier gates. |
-| Controlled validation activity fires | See reviewer metrics summary | Validation activity, not governed cases or runtime signals. |
-| Validation cases | See reviewer metrics summary | Controlled/reviewer activity scale, not production coverage. |
-| Proof records | See reviewer metrics summary | Proof-record routing count, not public-safe approval. |
-| Blocked claims | See reviewer metrics summary | Claim-control count, not missing functionality. |
-
-Private candidate lanes and normalizer outputs are governed by platform-owned records. Candidate status does not create runtime truth, signal truth, public-safe proof, or governed case truth by being summarized here.
-
-## First receipts
-
-| First check | What it shows | Boundary |
+| Goal | Route | Role |
 |---|---|---|
-| [HO-DET-001 proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md) | PowerShell EncodedCommand detection route, source, Splunk source, controlled validation, proof record, and public ceiling. | `CONTROLLED_TEST_VALIDATED`; runtime, signal, production, and public-safe claims remain blocked. |
-| [Proof Pack 001 Release](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) | Bounded reviewer ZIP, SHA256, and verifier route for HO-DET-001. | Reviewer release only; not public-safe runtime proof. |
-| [Reviewer metrics summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) | Reviewer Metrics Pipeline v1 source record for controlled validation activity, validation cases, proof records, and blocked claims. | Activity metrics are not governed cases, runtime signals, or public-safe proof. |
-| [Runtime Route Proof v1 reviewer map](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/maps/RUNTIME-ROUTE-PROOF-V1-REVIEWER-MAP.md) | Private-candidate Wazuh -> Cribl -> Splunk route summary and prerelease. | `NOT_PUBLIC_SAFE`; not public runtime proof, production proof, or broad-ingestion proof. |
+| Understand or present HawkinsOperations | [Website / Reviewer Guide](https://hawkinsoperations.com/) · [presentation mode](https://hawkinsoperations.com/?present=1&scene=1) | Visual system walkthrough and presentation surface. Rendering is not proof. |
+| Explore the product | [Hoxline](https://hawkinsoperations.com/hoxline/) | ProofOps control and Claim Authority for AI-assisted security work. |
+| Verify the work | [GitHub organization](https://github.com/HawkinsOperations) | Source, validation, proof records, contracts, governance, and reviewer receipts. |
 
-## Authority engines
+## 30-second reviewer path
 
-| Engine | What it owns | Why it matters |
-|---|---|---|
-| Detections | Source truth | Detection logic and metadata stay source-controlled and reviewable. |
-| Validation | Behavior truth | Controlled cases, case-packet checks, parity checks, AI-boundary checks, and runner trust split prove behavior inside scope. |
-| Platform | Control mechanics | Contracts, schemas, factory commands, ledgers, append gates, runtime candidate lanes, and verifier guardrails make the operating model executable. |
-| Proof | Claim authority | Proof records, claim ceilings, proof packs, reviewer maps, blocked claims, and releases decide what can be claimed. |
-| Website | Rendering | Public cockpit and reviewer routes, not proof authority. |
-| `.github` | Command center | Org front door, reviewer routing, and authority boundaries. |
-| Hoxline | Product front door | Hoxline by HawkinsOperations is the current product/front-door repo and ProofOps control surface. Claim Firewall is its first internal Claim Authority enforcement capability. |
+1. Open the [Website Reviewer Guide](https://hawkinsoperations.com/) or [start presentation mode](https://hawkinsoperations.com/?present=1&scene=1) to understand the complete system.
+2. Open [Hoxline](https://hawkinsoperations.com/hoxline/) to see the product control surface.
+3. Inspect the [HO-DET-001 proof route](https://hawkinsoperations.com/proof/ho-det-001/) for one bounded example.
+4. Use the [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) to see which repository owns each truth.
 
-Platform is the mechanical control layer: contracts, factory commands, ledger mechanics, case-packet schemas, runtime candidate gates, reviewer metrics state, and verifier scripts. It does not own proof promotion or public-safe runtime truth.
+Outcome: you should be able to explain the problem, the control loop, where human authority remains mandatory, and why website rendering does not become proof.
 
-Validation is the behavior engine: controlled cases, local case pipeline, registry checks, activity ledger, parity checks, blocked-claim scans, AI authority boundaries, and runner trust separation. It does not prove live runtime, signal-observed public proof, or production deployment.
+## 3-minute command-center path
 
-Proof is the public trust anchor: proof records, claim ceilings, Proof Pack 001, Runtime Route Proof v1, reviewer maps, release routes, and proof-boundary case studies. Proof records authorize only their stated scope.
+Follow one detection across its owners:
 
-The enterprise AI failure mode is that AI-generated output becomes a public claim, analyst conclusion, operational action, security disposition, or executive truth before evidence and human review authorize it. HawkinsOperations is built to prevent that promotion path.
+1. **View source:** [HO-DET-001 detection package](https://github.com/HawkinsOperations/hawkinsoperations-detections/tree/main/detections/successor/ho-det-001).
+2. **View validation:** [controlled validation result](https://github.com/HawkinsOperations/hawkinsoperations-validation/blob/main/reports/ho-det-001/validation-result.md).
+3. **View proof:** [HO-DET-001 proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md).
+4. **View the packaged receipt:** [Proof Pack 001](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001).
+5. **Inspect claim enforcement:** [Claim Firewall](https://hawkinsoperations.com/claim-firewall/).
+6. **Confirm the ceiling:** [Control Status Matrix](../governance/CONTROL_STATUS_MATRIX.md).
 
-Current public proof is intentionally bounded. Runtime-active, signal-observed, production, SOCaaS, autonomous SOC, AI-approved disposition, analyst-approved disposition, and public-safe runtime claims remain blocked unless separately proven. Blocked claims feed Hoxline Claim Authority; they are not failed features.
+Outcome: source, validation, proof, product control, and rendering remain inspectable without being treated as interchangeable authority.
 
-HawkinsOperations separates source, validation, runtime, signal, evidence, and public-claim truth. Each truth surface has a different owner and promotion gate.
+## 10-minute reviewer path
 
-Website content and GitHub rendering are routing only. Repository source proves source existence only.
+Run one fixture-based Hoxline loop, then inspect the same authority handoffs used by the bounded HO-DET-001 example:
 
-HO-DET-001 current public repo proof level: CONTROLLED_TEST_VALIDATED.
-
-HO-DET-001 private/internal runtime material: non-public boundary context only.
-
-HO-DET-001 public-safe status: NOT_PUBLIC_SAFE.
-
-HO-DET-001 has merged source, Splunk source, and controlled-test validation artifacts. The public proof record supports controlled-test validation against controlled positive and negative process-creation fixtures.
-
-HO-DET-001 validation enforcement exists through `HawkinsOperations/hawkinsoperations-validation#10`, merge commit `8b48500d2ebbaacd93ac88e77a31dccf1d3b4e25`, only for the exact checked controlled-test validation scope and only where the workflow is required by branch protection or a ruleset.
-
-Proof-loop CI is a real control only where branch protection or a ruleset requires it, and only for the checked controlled-test validation scope. It does not prove runtime-active, signal-observed, evidence-linked public proof, public-safe, production-ready, fleet-wide, Cribl-routed, Wazuh-routed, AWS-live, private runtime host activity, autonomous SOC, or AI-approved disposition.
-
-Platform runtime contract enforcement exists for HO-DET-001 through `HawkinsOperations/hawkinsoperations-platform#5`, merge commit `b3d0ffbd66c1bd5f60f7e9ff99712cdc3e0595bd`. The verifier preserves `CONTROLLED_TEST_VALIDATED`, `NOT_PUBLIC_SAFE`, `BLOCKED`, `runtime_active=false`, `signal_observed=false`, and `ai_decided_disposition=false`.
-
-This platform contract is a non-promotional guardrail. It does not prove runtime-active status, signal-observed public proof, public-safe runtime proof, live Splunk fired, Splunk-proven Runtime Signal 001, Cribl-routed status, Wazuh-routed public proof, production-ready status, fleet-wide coverage, AWS-live status, autonomous SOC operation, AI-approved disposition, or analyst-approved disposition.
-
-HO-DET-001 has private/internal runtime boundary context through validation PR [#22](https://github.com/HawkinsOperations/hawkinsoperations-validation/pull/22), proof PR [#14](https://github.com/HawkinsOperations/hawkinsoperations-proof/pull/14), and the proof record. This is not public-safe proof and must not be represented as runtime-active deployment, signal-observed public proof, production, fleet-wide, Cribl-routed, Wazuh-routed, AWS-live, autonomous SOC, AI-approved disposition, analyst-approved disposition, or public-safe status.
-
-HOD-001 baseline artifacts do not validate HO-DET-001. They may inform review, but they do not promote the successor detection ID.
-
-Public claims require reviewed wording, evidence linkage, stale review, and approval.
-
-## Reviewer Control Panel
-
-### 30-second reviewer path
-
-1. Clone [Hoxline](https://github.com/HawkinsOperations/hoxline), then run `python -B -m hoxline demo quickstart` from the repo root.
-2. Read `.hoxline/demo-runs/<timestamp>/reviewer-pack.md`. The demo is deterministic, local, fixture-based, and not runtime proof.
-3. Open the [HO-DET-001 proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md) and [Proof Pack 001 Release](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) to verify the flagship proof route and bounded reviewer release.
-4. Open the [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) to see which repo owns source, validation, platform, proof, website rendering, org routing, and the Hoxline product/front door.
-5. Treat every website/GitHub page as routing unless the owning proof record supports the claim. The Hoxline demo keeps `NOT_PUBLIC_SAFE`, requires human review, and does not promote public proof.
-
-### 3-minute command-center path
-1. Complete the 30-second reviewer path above.
-2. Open the [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) to confirm which repo owns each truth surface.
-3. Open the [Control Status Matrix](../governance/CONTROL_STATUS_MATRIX.md) to confirm the current claim ceiling and blocked claims.
-4. Open the [Proof Pack 001 Release](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) and [HO-DET-001 proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md) for proof-owned claim boundaries.
-5. Open the [Runtime Route Proof v1 reviewer map](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/maps/RUNTIME-ROUTE-PROOF-V1-REVIEWER-MAP.md) and [private-candidate prerelease](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/runtime-route-proof-v1-private-candidate-2026-06-01) only for the private Wazuh -> Cribl -> Splunk route summary; it remains `NOT_PUBLIC_SAFE` and does not prove public-safe runtime proof, production SOC operation, autonomous SOC behavior, broad ingestion, AI-decided disposition, public publication approval, or Lifetime Governed Case mutation.
-6. Open the [Standing control registers](../governance/ISSUE_FACTORY_CONTROL_RECEIPTS.md) to inspect the maintained blocked-claims register for #10 and enforcement/control-class ledger for #8. Both remain open standing controls unless Raylee approves a replacement standing-control role.
-7. If you are reviewing internal operating context, open the [private org Control Board route](https://github.com/orgs/HawkinsOperations/projects/2). Treat it as work coordination only, not proof, approval, runtime state, signal state, public-safe status, or merge authority. Project #1 is not an active reviewer route.
-8. Open the [Reproducible Reviewer Path](../architecture/REPRODUCIBLE_REVIEWER_PATH.md) only if you want clone-runnable inspection steps.
-
-Current governed ledger snapshot: the platform-owned Lifetime Case Ledger state manifest is authoritative for ledger events, total cases, public-safe cases, and closed cases. Ledger status remains `NOT_PUBLIC_SAFE`; front-door/status proof ceiling remains `SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY`.
-
-Current Reviewer metrics pipeline values live in the proof-owned reviewer metrics summary and related source records. This front door routes to those records instead of copying changing counts into public-front-door text. Project Board reconciliation status remains `REPO_BACKED_RECONCILIATION_PLAN_NO_PROJECT_MUTATION`.
-
-Reviewer metrics boundary: the current Lifetime Governed Cases number stays strict and comes from the platform-owned Lifetime Case Ledger route. Detection Activity / controlled validation fire count, Validation Case Count, Proof Record Count, and Blocked Claim Count are separate reviewer activity metrics and must not be counted as governed cases. Project Board reconciliation is repo-backed routing/status only; Project metadata is not proof authority and no GitHub Project mutation is performed by this pipeline.
-
-Runtime Route Proof v1 private-candidate boundary: the proof repo routes a reviewer map and prerelease for one private controlled Wazuh -> Cribl -> Splunk marker summary. Claim ceiling remains `PRIVATE_RUNTIME_ROUTE_PROOF_V1_CANDIDATE_PRESERVED`; public-safe status remains `NOT_PUBLIC_SAFE`; it does not mutate the Lifetime Governed Case ledger; `AI_DECIDED_DISPOSITION=false`.
-
-### 10-minute reviewer path
-
-1. Complete the 3-minute command-center path above.
-2. Run the [Reproducible Reviewer Path](../architecture/REPRODUCIBLE_REVIEWER_PATH.md) for clone-runnable source, validation, and proof inspection.
-3. Run `python scripts/verify-command-center-invariants.py` from the `.github` repo to check command-center route and claim-boundary invariants.
-4. Treat verifier success as validation truth only for the checked invariant scope. It does not prove runtime, signal, public-safe, production, Project-board approval, or merge authority.
-
-### What to click first
-
-| Question | Click |
-|---|---|
-| What is HawkinsOperations? | [Organization profile](./README.md) |
-| Which repo owns which truth? | [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) |
-| What is proven and what is blocked? | [Control Status Matrix](../governance/CONTROL_STATUS_MATRIX.md) |
-| Where are the standing control ledgers? | [Standing control registers](../governance/ISSUE_FACTORY_CONTROL_RECEIPTS.md) |
-| Where are proof records? | [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof) |
-| Where is the main product/front-door repo? | [hoxline](https://github.com/HawkinsOperations/hoxline) |
-| Where is the Runtime Route Proof v1 private-candidate route? | [Reviewer map](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/maps/RUNTIME-ROUTE-PROOF-V1-REVIEWER-MAP.md) and [prerelease](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/runtime-route-proof-v1-private-candidate-2026-06-01) |
-| Where are validators and case packets? | [hawkinsoperations-validation](https://github.com/HawkinsOperations/hawkinsoperations-validation) |
-| Where is detection source? | [hawkinsoperations-detections](https://github.com/HawkinsOperations/hawkinsoperations-detections) |
-| Where is public rendering? | [hawkinsoperations-website](https://github.com/HawkinsOperations/hawkinsoperations-website) |
-| Where is the operating cockpit? | [private org Control Board route](https://github.com/orgs/HawkinsOperations/projects/2) |
-| Where is the current governed ledger state? | [Platform ledger state manifest](https://github.com/HawkinsOperations/hawkinsoperations-platform/blob/main/contracts/lifetime-case-ledger-v1-state-manifest.json) |
-| Where is the reviewer metrics summary? | [Reviewer metrics proof summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) |
-
-### What each repo owns
-
-| Repo | Owns | Does not own |
-|---|---|---|
-| `.github` | Command-center routing and governance shell. | Proof, runtime state, signal state, or public-safe approval. |
-| `hawkinsoperations-detections` | Detection source truth. | Validation, runtime, signal, or public proof. |
-| `hawkinsoperations-validation` | Behavior truth, fixtures, case packets, parity checks, and deterministic checks. | Runtime deployment or public-safe proof. |
-| `hawkinsoperations-platform` | Control mechanics, contracts, ledgers, append gates, runtime candidate lanes, and guardrail logic. | Public proof or production readiness. |
-| `hawkinsoperations-proof` | Claim authority, proof records, evidence boundaries, and claim ceilings. | Raw private evidence publication or claim expansion by presentation. |
-| `hawkinsoperations-website` | Public rendering and reviewer cockpit. | Proof authority. |
-| `hoxline` | Current product/front-door repo for Hoxline by HawkinsOperations. Claim Firewall is the first internal Claim Authority enforcement capability inside Hoxline. | Proof authority, runtime state, signal state, public-safe approval, or an eighth-repo expansion path. |
-| `aevumguard` | Historical redirect/prior-name context only. AevumGuard was a prior working name. Hoxline is the current product name. | Current product identity, current repo identity, proof authority, runtime state, signal state, public-safe approval, or an eighth-repo expansion path. |
-
-### What is proven vs blocked
-
-| Status | Current reviewer-safe wording |
-|---|---|
-| Proven within current public ceiling | HO-DET-001 source exists and controlled-test validation is recorded for the stated fixture scope. |
-| Route-safe | GitHub and website surfaces route reviewers to source, validation, and proof records. |
-| Ledger route-safe | The platform-owned Lifetime Case Ledger state manifest routes bounded current ledger status without making this front door the authority for copied counts. |
-| Reviewer metrics route-safe | The reviewer metrics pipeline routes separate bounded values for Lifetime Governed Cases, Detection Activity / controlled validation fire count, Validation Case Count, Proof Record Count, Blocked Claim Count, and Project Board reconciliation status. |
-| Runtime route private-candidate route-safe | Runtime Route Proof v1 routes one private controlled Wazuh -> Cribl -> Splunk marker summary to proof records and a prerelease; it remains `NOT_PUBLIC_SAFE` and does not promote public-safe runtime proof, production SOC operation, autonomous SOC behavior, broad ingestion, AI-decided disposition, public publication approval, or Lifetime Governed Case mutation. |
-| Blocked | Runtime-active, signal-observed, public-safe runtime proof, production-ready, autonomous SOC, AI-approved disposition, analyst-approved disposition, Cribl-routed, Wazuh-routed, AWS-live, fleet-wide, and live Splunk firing claims. |
-
-### What not to infer
-
-Do not infer runtime operation, signal observation, production readiness, fleet scope, public-safe approval, analyst disposition, AI disposition, or public proof from GitHub rendering, website rendering, issue status, private Control Board membership, branch names, diagrams, or docs alone.
-
-The private Control Board exists for internal governance and navigation. It is not proof and is not public.
-
-```mermaid
-flowchart LR
-    A[Detection Source] --> B[Validation]
-    B --> C[Platform / Contracts]
-    C --> D[Proof Records]
-    D --> E[Website / Org Rendering]
-    F[Blocked Claims] -. boundary .-> D
-    G[Private Control Board] -. governance navigation only .-> D
-    H[Human Review] -. approval gate .-> D
-    E -. rendering is not proof .-> F
+```powershell
+git clone https://github.com/HawkinsOperations/hoxline.git
+cd hoxline
+$env:PYTHONDONTWRITEBYTECODE = "1"
+python -B -m hoxline demo quickstart
 ```
 
-## Reviewer Links
+Then compare the generated reviewer artifacts with the [HO-DET-001 source](https://github.com/HawkinsOperations/hawkinsoperations-detections/tree/main/detections/successor/ho-det-001), [controlled validation](https://github.com/HawkinsOperations/hawkinsoperations-validation/blob/main/reports/ho-det-001/validation-result.md), and [proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md). The demo is local and fixture-based; it does not establish live runtime, signal, production, public-safe, or disposition truth.
 
-- [Organization profile](./README.md)
-- [Organization system map](../wiki/11_ORG_SYSTEM_MAP.md)
-- [Cross-repo promotion map](../governance/CROSS_REPO_PROMOTION_MAP.md)
-- [Governance summary](../governance/GOVERNANCE_SUMMARY.md)
-- [PR review authority](../governance/PR_REVIEW_AUTHORITY.md) - merge governance routing; not runtime, signal, evidence, public-safe, or production proof unless backed by rulesets or blocking CI
-- [Repository authority map](../architecture/REPO_AUTHORITY_MAP.md)
-- [Control status matrix](../governance/CONTROL_STATUS_MATRIX.md)
-- [Standing control registers](../governance/ISSUE_FACTORY_CONTROL_RECEIPTS.md) - blocked-claims register for #10 and enforcement/control-class ledger for #8; remain open standing controls unless Raylee approves a replacement standing-control role; report-only unless backed by fail-closed controls
-- [Command-center invariants](../governance/COMMAND_CENTER_INVARIANTS.json) and verifier - route and claim-boundary invariant check; validation truth only for checked scope
-- [Proof Pack 001 official GitHub Release](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) - bounded reviewer ZIP route for HO-DET-001; ZIP SHA256 `44d8a643aa2b113c9e99be0462e699d39af707a67190823cc05bb381907dc452`; public-safe runtime proof remains BLOCKED
-- [Runtime Route Proof v1 reviewer map](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/maps/RUNTIME-ROUTE-PROOF-V1-REVIEWER-MAP.md) and [private-candidate prerelease](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/runtime-route-proof-v1-private-candidate-2026-06-01) - private Wazuh -> Cribl -> Splunk route summary only; public-safe runtime proof, production SOC operation, autonomous SOC behavior, broad ingestion, AI-decided disposition, public publication approval, and Lifetime Governed Case mutation remain blocked
-- [Proof Pack 001 Discussion](https://github.com/orgs/HawkinsOperations/discussions/32) - official announcement route; rendering is not proof
-- [Private org Control Board route](https://github.com/orgs/HawkinsOperations/projects/2) - operating cockpit for current work visibility; Project #1 is not an active reviewer route; not proof authority, merge authority, or project metadata approval
-- [Platform ledger state manifest](https://github.com/HawkinsOperations/hawkinsoperations-platform/blob/main/contracts/lifetime-case-ledger-v1-state-manifest.json) - current bounded governed ledger count summary; ledger status remains `NOT_PUBLIC_SAFE`
-- [Reviewer metrics proof summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) - bounded reviewer metrics route; keeps strict governed cases separate from broader activity counts and Project Board reconciliation status
-- [HO-DET-001 proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md)
-- [HO-DET-001 runtime packet verifier PR #22](https://github.com/HawkinsOperations/hawkinsoperations-validation/pull/22)
-- [HO-DET-001 verified runtime match proof PR #14](https://github.com/HawkinsOperations/hawkinsoperations-proof/pull/14)
-- [HO-DET-001 platform runtime contract](https://github.com/HawkinsOperations/hawkinsoperations-platform/blob/main/contracts/examples/ho-det-001-runtime-contract.sample.json)
-- [hawkinsoperations.com](https://hawkinsoperations.com) - current public rendering route, not proof
-- [rayleeops.com](https://rayleeops.com) - public operating journal / external context, not HawkinsOperations proof
-- [hawkinsops.com](https://hawkinsops.com) - legacy/reference route, not current proof authority
+For the full seven-repository sweep, continue with the [extended Reproducible Reviewer Path](../architecture/REPRODUCIBLE_REVIEWER_PATH.md).
 
-## Review Boundary
+For the organization routing and claim-boundary check:
 
-Allowed current wording:
+```powershell
+$env:PYTHONDONTWRITEBYTECODE = "1"
+python -B scripts/verify-command-center-invariants.py
+```
 
-- "HO-DET-001 source exists."
-- "HO-DET-001 Splunk source exists."
-- "HO-DET-001 passed controlled-test validation against controlled positive and negative process-creation fixtures."
-- "HO-DET-001 validation enforcement exists for the exact checked controlled-test validation scope."
-- "HO-DET-001 platform runtime contract enforcement exists as a non-promotional guardrail."
-- "HO-DET-001 current public repo proof level is CONTROLLED_TEST_VALIDATED."
-- "HO-DET-001 private/internal runtime material is non-public boundary context."
-- "HO-DET-001 public-safe status is NOT_PUBLIC_SAFE."
-- "HOD-001 baseline artifacts are separate reference material."
+Expected result:
 
-Blocked current wording:
+```text
+COMMAND_CENTER_INVARIANTS=PASS
+```
 
-- "HO-DET-001 is production-ready."
-- "HO-DET-001 is fleet-wide."
-- "HO-DET-001 is enterprise deployed."
-- "HO-DET-001 is Cribl-routed."
-- "HO-DET-001 is Wazuh-routed."
-- "HO-DET-001 is public-safe."
-- "HO-DET-001 public proof is complete."
-- "Live Splunk fired as public proof."
-- "HO-DET-001 is runtime-active" unless explicitly scoped to private controlled lab evidence.
-- "HO-DET-001 has signal-observed status" unless explicitly scoped to private controlled lab signal observed.
-- "HO-DET-001 is evidence-linked public proof."
-- "HO-DET-001 has public-safe runtime proof."
-- "HO-DET-001 has signal-observed public proof."
-- "HO-DET-001 is AWS-live."
-- "HO-DET-001 operates as autonomous SOC."
-- "HO-DET-001 has AI-approved disposition."
-- "HO-DET-001 has analyst-approved disposition."
-- Any wording that exposes raw command lines, encoded payloads, LAN IPs, local artifact paths, raw CSV names, or screenshots as public evidence.
+The verifier checks only its declared routing, exposure, and claim-boundary invariants. It does not establish runtime truth, signal truth, public-safe status, proof promotion, merge authority, or human approval.
+
+## Seven-repository authority
+
+| Repository | Owns | Does not own |
+|---|---|---|
+| [HawkinsOperations/.github](https://github.com/HawkinsOperations/.github) | Organization routing and governance shell | Proof or operational truth |
+| [HawkinsOperations/hoxline](https://github.com/HawkinsOperations/hoxline) | Product and ProofOps control | Proof records or final approval |
+| [hawkinsoperations-detections](https://github.com/HawkinsOperations/hawkinsoperations-detections) | Detection source truth | Validation, runtime, signal, or proof truth |
+| [hawkinsoperations-validation](https://github.com/HawkinsOperations/hawkinsoperations-validation) | Controlled validation truth | Live runtime, signal, production, or disposition truth |
+| [hawkinsoperations-platform](https://github.com/HawkinsOperations/hawkinsoperations-platform) | Contracts and control mechanics | Proof promotion or claim authority |
+| [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof) | Evidence records and claim ceilings | Claims beyond the recorded ceiling |
+| [hawkinsoperations-website](https://github.com/HawkinsOperations/hawkinsoperations-website) | Public rendering and presentation | Source, validation, runtime, signal, or proof authority |
+
+No eighth system repository is implied. See the [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) for the detailed contract.
+
+## What AI does—and who decides
+
+| AI can accelerate | AI cannot authorize |
+|---|---|
+| Drafting, detection logic assistance, query translation, summaries, enrichment, reviewer notes, documentation, and repetitive implementation | Evidence sufficiency, detection or incident disposition, approval, merge authority, claim promotion, public-safe status, production status, or case closure |
+
+Hoxline carries this boundary through the review loop. Claim Firewall is one Hoxline enforcement capability; it checks configured wording policy and blocks unsupported claims. It is not proof authority, runtime proof, signal proof, or an eighth repository.
+
+## The current bounded example
+
+HO-DET-001 has source artifacts, platform-specific query source, controlled positive and negative fixtures, deterministic validation output, and a proof record. Its current public ceiling is `CONTROLLED_TEST_VALIDATED`.
+
+That ceiling supports only the stated controlled-test scope. Runtime-active public proof, signal-observed public proof, production readiness, customer deployment, fleet-wide coverage, SOCaaS operation, autonomous SOC behavior, AI-approved disposition, analyst-approved disposition, public-safe runtime evidence, and case closure remain unproven here.
+
+`NOT_PUBLIC_SAFE` and `SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY` are separate bounded statuses. They do not combine with `CONTROLLED_TEST_VALIDATED` to create a stronger claim.
+
+Website/GitHub rendering is not proof. Green CI is not merge authority. Human review remains mandatory.
+
+## Source-owned status routes
+
+Changing metrics stay in authority-owned records rather than this front door.
+
+| Surface | Source route | Separation rule |
+|---|---|---|
+| Reviewer metrics pipeline | [proof-owned reviewer metrics summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) | Snapshot only; it does not create current ledger truth. |
+| Lifetime Governed Cases | [platform ledger state manifest](https://github.com/HawkinsOperations/hawkinsoperations-platform/blob/main/contracts/lifetime-case-ledger-v1-state-manifest.json) | Governed ledger state remains separate from activity volume. |
+| Detection Activity / controlled validation fire count | [validation activity ledger](https://github.com/HawkinsOperations/hawkinsoperations-validation/blob/main/activity/detection-activity-ledger-v1.md) | Controlled validation activity is not runtime signal. |
+| Validation Case Count | [validation registry](https://github.com/HawkinsOperations/hawkinsoperations-validation/blob/main/validation/VALIDATION_REGISTRY.yml) | Validation volume is not production coverage. |
+| Proof Record Count | [proof status index](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/indexes/DETECTION_PROOF_STATUS_INDEX.yml) | Record count is not proof promotion. |
+| Blocked Claim Count | [proof-owned reviewer metrics summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/reviewer-metrics-pipeline-v1-summary.json) | Blocked-claim volume is not missing functionality. |
+| Project Board reconciliation status | [Public Control Board](https://github.com/orgs/HawkinsOperations/projects/3) | Project metadata remains coordination-only. |
+
+## Reviewer links
+
+| Need | Route |
+|---|---|
+| Visual presentation | [Website Reviewer Guide](https://hawkinsoperations.com/) |
+| Product control | [Hoxline repository](https://github.com/HawkinsOperations/hoxline) |
+| Proof authority | [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof) |
+| Detection source | [hawkinsoperations-detections](https://github.com/HawkinsOperations/hawkinsoperations-detections) |
+| Controlled validation | [hawkinsoperations-validation](https://github.com/HawkinsOperations/hawkinsoperations-validation) |
+| Platform contracts | [hawkinsoperations-platform](https://github.com/HawkinsOperations/hawkinsoperations-platform) |
+| Public rendering source | [hawkinsoperations-website](https://github.com/HawkinsOperations/hawkinsoperations-website) |
+| Detailed authority | [Repository Authority Map](../architecture/REPO_AUTHORITY_MAP.md) |
+| Clone-runnable checks | [Reproducible Reviewer Path](../architecture/REPRODUCIBLE_REVIEWER_PATH.md) |
+| Control wording | [Control Status Matrix](../governance/CONTROL_STATUS_MATRIX.md) |
+| Review and merge boundary | [PR Review Authority](../governance/PR_REVIEW_AUTHORITY.md) |
+
+## Coordination boundary
+
+The canonical private HawkinsOperations Control Board is Project #2. Project #1 is not an active reviewer route. Project metadata remains coordination-only. Project metadata is not proof or approval. Only an authorized human can approve a merge; runtime truth, signal truth, public-safe status, and final disposition remain separate.
+
+---
+
+**AI is labor. Governance is authority.**

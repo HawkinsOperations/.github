@@ -12,16 +12,31 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST_PATH = ROOT / "governance" / "COMMAND_CENTER_INVARIANTS.json"
 TEXT_SCOPES = ["README.md", "profile", "architecture", "governance", "wiki", ".github"]
+SYSTEM_REPOSITORIES = (
+    ".github",
+    "hoxline",
+    "hawkinsoperations-detections",
+    "hawkinsoperations-validation",
+    "hawkinsoperations-platform",
+    "hawkinsoperations-proof",
+    "hawkinsoperations-website",
+)
 
 REQUIRED_TEXT = {
     "README.md": [
         ".github is routing/governance only",
+        "Website Reviewer Guide",
+        "Seven-Repository Authority",
+        "hoxline",
         "Project #1 is not an active reviewer route",
         "SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY",
         "NOT_PUBLIC_SAFE",
         "CONTROLLED_TEST_VALIDATED",
     ],
     "profile/README.md": [
+        "Website / Reviewer Guide",
+        "Seven repositories, seven authority roles",
+        "AI produces labor. Evidence and human review authorize claims.",
         "Project #1 is not an active reviewer route",
         "project metadata is not proof",
         "SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY",
@@ -29,6 +44,9 @@ REQUIRED_TEXT = {
         "CONTROLLED_TEST_VALIDATED",
     ],
     "profile/START_HERE.md": [
+        "Three doors",
+        "Website / Reviewer Guide",
+        "Seven-repository authority",
         "30-second reviewer path",
         "3-minute command-center path",
         "10-minute reviewer path",
@@ -170,6 +188,56 @@ def check_required_text(errors: list[str]) -> None:
                 fail(f"{rel} missing required wording: {needle}", errors)
 
 
+def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
+    manifest_repositories = tuple(manifest.get("system_repositories", []))
+    if manifest_repositories != SYSTEM_REPOSITORIES:
+        fail("manifest system_repositories must list the exact seven repositories in authority order", errors)
+
+    for rel in ("README.md", "profile/README.md", "profile/START_HERE.md", "architecture/REPO_AUTHORITY_MAP.md"):
+        text = read_text(ROOT / rel, errors).lower()
+        for repository in SYSTEM_REPOSITORIES:
+            if repository.lower() not in text:
+                fail(f"{rel} missing system repository role: {repository}", errors)
+
+    profile_text = read_text(ROOT / "profile" / "README.md", errors)
+    profile = profile_text.lower()
+    if "https://hawkinsoperations.com/" not in profile:
+        fail("profile/README.md missing stable Website Reviewer Guide route", errors)
+    if "no eighth" not in profile:
+        fail("profile/README.md missing no-eighth-repository boundary", errors)
+
+    section_match = re.search(
+        r"## Seven repositories, seven authority roles\s+(.*?)(?=\n## )",
+        profile_text,
+        re.DOTALL,
+    )
+    if not section_match:
+        fail("profile/README.md missing parseable seven-repository authority table", errors)
+        return
+    repository_links = re.findall(
+        r"https://github\.com/HawkinsOperations/([A-Za-z0-9_.-]+)",
+        section_match.group(1),
+    )
+    if tuple(repository_links) != SYSTEM_REPOSITORIES:
+        fail(
+            "profile/README.md authority table must contain the exact seven repositories once in authority order",
+            errors,
+        )
+
+    required_role_language = (
+        "Organization routing and governance shell",
+        "Product and ProofOps control surface",
+        "Detection source truth",
+        "Controlled validation truth",
+        "Contracts and control mechanics",
+        "Evidence records and claim ceilings",
+        "Public rendering and presentation",
+    )
+    for role in required_role_language:
+        if role.lower() not in section_match.group(1).lower():
+            fail(f"profile/README.md authority table missing role separation: {role}", errors)
+
+
 def check_project_boundaries(all_text: str, errors: list[str]) -> None:
     required = [
         "hoxline",
@@ -277,6 +345,7 @@ def main() -> int:
     manifest = load_manifest(errors)
     check_required_files(manifest, errors)
     check_required_text(errors)
+    check_front_door_authority_model(manifest, errors)
 
     text_files = iter_text_files()
     all_text = "\n".join(path.read_text(encoding="utf-8", errors="ignore") for path in text_files)

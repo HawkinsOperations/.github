@@ -1,6 +1,15 @@
 {
   "schema": "hawkinsoperations-command-center-invariants-v1",
   "scope": "HawkinsOperations/.github reviewer routing and governance shell",
+  "system_repositories": [
+    ".github",
+    "hoxline",
+    "hawkinsoperations-detections",
+    "hawkinsoperations-validation",
+    "hawkinsoperations-platform",
+    "hawkinsoperations-proof",
+    "hawkinsoperations-website"
+  ],
   "required_route_files": [
     "README.md",
     "profile/README.md",
@@ -17,6 +26,9 @@
   ],
   "invariants": {
     "github_repo_role": ".github is reviewer routing and governance shell only",
+    "presentation_route": "hawkinsoperations.com is the Website Reviewer Guide and presentation surface",
+    "seven_repository_authority": "HawkinsOperations has exactly seven system repositories with separate authority roles",
+    "hoxline_role": "Hoxline is the product and ProofOps control surface, not proof authority",
     "project_2_role": "Project #2 is the canonical private HawkinsOperations Control Board operating cockpit",
     "project_1_boundary": "Project #1 is not an active reviewer route",
     "project_metadata_boundary": "Project metadata is coordination only, not proof, approval, merge authority, runtime truth, signal truth, or public-safe status",

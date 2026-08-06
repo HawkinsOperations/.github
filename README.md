@@ -27,27 +27,31 @@ Evidence and source flow stay separated:
 
 | Time | Start | What to confirm |
 |---:|---|---|
-| 30 sec | [profile/START_HERE.md](profile/START_HERE.md) | What HawkinsOperations is, which repo owns truth, and what remains blocked. |
-| 3 min | [profile/README.md](profile/README.md) -> [Control Status Matrix](governance/CONTROL_STATUS_MATRIX.md) | Command-center route, proof ceiling, and standing controls. |
-| 10 min | [Reproducible Reviewer Path](architecture/REPRODUCIBLE_REVIEWER_PATH.md) | Clone-runnable source, validation, proof, and rendering review without private runtime access. |
+| 30 sec | [Website Reviewer Guide](https://hawkinsoperations.com/) | What HawkinsOperations is and how the complete system works. |
+| 3 min | [profile/START_HERE.md](profile/START_HERE.md) | Website, Hoxline, source, validation, proof, and authority boundaries. |
+| 10 min | [Focused reviewer path](profile/START_HERE.md#10-minute-reviewer-path) | Run Hoxline's local fixture-based demo, then inspect the HO-DET-001 source, validation, and proof handoffs. |
+| Extended | [Reproducible Reviewer Path](architecture/REPRODUCIBLE_REVIEWER_PATH.md) | Full seven-repository source, validation, proof, control, and rendering review without private runtime access. |
 
-## README / Repo Makeover Order
+## Seven-Repository Authority
 
-This is the README/governance cleanup order, not evidence-generation order.
+Each repository owns one bounded role. The order below is an authority map, not an evidence-strength ranking.
 
 | Order | Repo | Truth surface | Boundary |
 |---:|---|---|---|
 | 1 | `.github` | Route / governance truth | Routes reviewers and explains authority boundaries; does not prove claims. |
-| 2 | `hawkinsoperations-proof` | Claim / proof truth | Owns proof records, proof ceilings, evidence-boundary records, and blocked-claim status. |
-| 3 | `hawkinsoperations-platform` | Contract / guardrail truth | Owns schemas, contracts, ledger guardrails, runtime-route guardrails, and non-promotional platform controls. |
+| 2 | `hoxline` | Product / ProofOps control | Governs the review path and Claim Authority experience; does not own proof records or final approval. |
+| 3 | `hawkinsoperations-detections` | Source truth | Owns detection source, metadata, source reviewability, and source-level eligibility routing. |
 | 4 | `hawkinsoperations-validation` | Behavior truth | Owns controlled validation checks, case packets, replay scope, and recorded validation outputs. |
-| 5 | `hawkinsoperations-detections` | Source truth | Owns detection source, metadata, source reviewability, and source-level eligibility routing. |
-| 6 | `hawkinsoperations-website` | Render truth | Renders public reviewer navigation and bounded wording; rendering is not proof. |
+| 5 | `hawkinsoperations-platform` | Contract / guardrail truth | Owns schemas, contracts, ledger guardrails, runtime-route guardrails, and non-promotional platform controls. |
+| 6 | `hawkinsoperations-proof` | Claim / proof truth | Owns proof records, proof ceilings, evidence-boundary records, and blocked-claim status. |
+| 7 | `hawkinsoperations-website` | Render truth | Renders the public Reviewer Guide and bounded reviewer navigation; rendering is not proof. |
 
 ## Command Center Routes
 
 | Need | Route | Boundary |
 |---|---|---|
+| Visual system presentation | [Website Reviewer Guide](https://hawkinsoperations.com/) | Explains and presents the system; website rendering is not proof. |
+| Product / ProofOps control | [Hoxline](https://github.com/HawkinsOperations/hoxline) | Product control surface; not proof authority or final approval. |
 | First reviewer path | [profile/START_HERE.md](profile/START_HERE.md) | Click path for review and demo; does not promote claims. |
 | Org front door | [profile/README.md](profile/README.md) | Reviewer routing only; does not create proof. |
 | Repository authority map | [architecture/REPO_AUTHORITY_MAP.md](architecture/REPO_AUTHORITY_MAP.md) | Repository ownership map; source does not prove runtime. |
@@ -90,6 +94,7 @@ This surface does not claim runtime-active public proof, signal-observed public 
 
 | Repo | Truth surface | Boundary |
 |---|---|---|
+| [hoxline](https://github.com/HawkinsOperations/hoxline) | Product / ProofOps control | Owns the product control experience; does not own proof records, runtime proof, or approval. |
 | [hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof) | Claim / proof truth | Owns proof records, claim ceilings, and blocked-claim status. |
 | [hawkinsoperations-platform](https://github.com/HawkinsOperations/hawkinsoperations-platform) | Contract / guardrail truth | Owns schemas, contracts, and non-promotional platform controls. |
 | [hawkinsoperations-validation](https://github.com/HawkinsOperations/hawkinsoperations-validation) | Behavior truth | Owns controlled validation and recorded validation outputs. |

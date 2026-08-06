@@ -67,9 +67,9 @@ These notes are recorded for Phase 1 routing. They do not promote any repository
 - Detections PR #27 carried ID-DET-002, ID-DET-003, and ID-DET-004 source.
 - Validation PR #46 carried ID-DET-002, ID-DET-003, and ID-DET-004 controlled-test validation.
 - Platform PR #29 carried ID-DET-002, ID-DET-003, and ID-DET-004 status/plan visibility.
-- Proof index and proof records for ID-DET-002, ID-DET-003, and ID-DET-004 are pending.
+- Proof records, proof cards, and proof-index entries now exist for ID-DET-002, ID-DET-003, and ID-DET-004, each bounded to its recorded controlled-test ceiling.
 - Website public routes for ID-DET-002, ID-DET-003, and ID-DET-004 are pending.
-- HO-DET-012 has source, validation, and platform progress, but still needs proof and website parity if public routing is desired.
+- HO-DET-012 has source, controlled validation, platform controls, a proof record, a proof card, and bounded website summary; runtime, signal, and public-safe promotion remain separately gated.
 - Cross-repo parity is report-only unless later promoted to fail-closed under separate approval.
 
 ## Phase 2A Validation Enforcement
