@@ -219,64 +219,60 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
             "README.md",
             "Seven-Repository Authority",
             "| Order | Repo | Truth surface | Boundary |",
-            r"^\|\s*\d+\s*\|\s*`([^`]+)`\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|$",
             (
-                (".github", "Route / governance truth", "Routes reviewers and explains authority boundaries; does not prove claims."),
-                ("hoxline", "Product / ProofOps control", "Governs the review path and Claim Authority experience; does not own proof records or final approval."),
-                ("hawkinsoperations-detections", "Source truth", "Owns detection source, metadata, source reviewability, and source-level eligibility routing."),
-                ("hawkinsoperations-validation", "Behavior truth", "Owns controlled validation checks, case packets, replay scope, and recorded validation outputs."),
-                ("hawkinsoperations-platform", "Contract / guardrail truth", "Owns schemas, contracts, ledger guardrails, runtime-route guardrails, and non-promotional platform controls."),
-                ("hawkinsoperations-proof", "Claim / proof truth", "Owns proof records, proof ceilings, evidence-boundary records, and blocked-claim status."),
-                ("hawkinsoperations-website", "Render truth", "Renders the public Reviewer Guide and bounded reviewer navigation; rendering is not proof."),
+                ("1", "`.github`", "Route / governance truth", "Routes reviewers and explains authority boundaries; does not prove claims."),
+                ("2", "`hoxline`", "Product / ProofOps control", "Governs the review path and Claim Authority experience; does not own proof records or final approval."),
+                ("3", "`hawkinsoperations-detections`", "Source truth", "Owns detection source, metadata, source reviewability, and source-level eligibility routing."),
+                ("4", "`hawkinsoperations-validation`", "Behavior truth", "Owns controlled validation checks, case packets, replay scope, and recorded validation outputs."),
+                ("5", "`hawkinsoperations-platform`", "Contract / guardrail truth", "Owns schemas, contracts, ledger guardrails, runtime-route guardrails, and non-promotional platform controls."),
+                ("6", "`hawkinsoperations-proof`", "Claim / proof truth", "Owns proof records, proof ceilings, evidence-boundary records, and blocked-claim status."),
+                ("7", "`hawkinsoperations-website`", "Render truth", "Renders the public Reviewer Guide and bounded reviewer navigation; rendering is not proof."),
             ),
         ),
         (
             "profile/README.md",
             "Seven repositories, seven authority roles",
             "| Repository | Authority role | Does not own |",
-            r"^\|\s*\[`[^`]+`\]\(https://github\.com/HawkinsOperations/([A-Za-z0-9_.-]+)\)\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|$",
             (
-                (".github", "Organization routing and governance shell", "Proof, runtime, signal, or merge authority"),
-                ("hoxline", "Product and ProofOps control surface", "Proof records, runtime proof, or final approval"),
-                ("hawkinsoperations-detections", "Detection source truth", "Validation, runtime, signal, or proof truth"),
-                ("hawkinsoperations-validation", "Controlled validation truth", "Live runtime, signal, production, or disposition truth"),
-                ("hawkinsoperations-platform", "Contracts and control mechanics", "Proof promotion or final human authority"),
-                ("hawkinsoperations-proof", "Evidence records and claim ceilings", "Broader claims than its records support"),
-                ("hawkinsoperations-website", "Public rendering and presentation", "Source, validation, runtime, signal, or proof authority"),
+                ("[`.github`](https://github.com/HawkinsOperations/.github)", "Organization routing and governance shell", "Proof, runtime, signal, or merge authority"),
+                ("[`hoxline`](https://github.com/HawkinsOperations/hoxline)", "Product and ProofOps control surface", "Proof records, runtime proof, or final approval"),
+                ("[`hawkinsoperations-detections`](https://github.com/HawkinsOperations/hawkinsoperations-detections)", "Detection source truth", "Validation, runtime, signal, or proof truth"),
+                ("[`hawkinsoperations-validation`](https://github.com/HawkinsOperations/hawkinsoperations-validation)", "Controlled validation truth", "Live runtime, signal, production, or disposition truth"),
+                ("[`hawkinsoperations-platform`](https://github.com/HawkinsOperations/hawkinsoperations-platform)", "Contracts and control mechanics", "Proof promotion or final human authority"),
+                ("[`hawkinsoperations-proof`](https://github.com/HawkinsOperations/hawkinsoperations-proof)", "Evidence records and claim ceilings", "Broader claims than its records support"),
+                ("[`hawkinsoperations-website`](https://github.com/HawkinsOperations/hawkinsoperations-website)", "Public rendering and presentation", "Source, validation, runtime, signal, or proof authority"),
             ),
         ),
         (
             "profile/START_HERE.md",
             "Seven-repository authority",
             "| Repository | Owns | Does not own |",
-            r"^\|\s*\[[^\]]+\]\(https://github\.com/HawkinsOperations/([A-Za-z0-9_.-]+)\)\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|$",
             (
-                (".github", "Organization routing and governance shell", "Proof or operational truth"),
-                ("hoxline", "Product and ProofOps control", "Proof records or final approval"),
-                ("hawkinsoperations-detections", "Detection source truth", "Validation, runtime, signal, or proof truth"),
-                ("hawkinsoperations-validation", "Controlled validation truth", "Live runtime, signal, production, or disposition truth"),
-                ("hawkinsoperations-platform", "Contracts and control mechanics", "Proof promotion or claim authority"),
-                ("hawkinsoperations-proof", "Evidence records and claim ceilings", "Claims beyond the recorded ceiling"),
-                ("hawkinsoperations-website", "Public rendering and presentation", "Source, validation, runtime, signal, or proof authority"),
+                ("[HawkinsOperations/.github](https://github.com/HawkinsOperations/.github)", "Organization routing and governance shell", "Proof or operational truth"),
+                ("[HawkinsOperations/hoxline](https://github.com/HawkinsOperations/hoxline)", "Product and ProofOps control", "Proof records or final approval"),
+                ("[hawkinsoperations-detections](https://github.com/HawkinsOperations/hawkinsoperations-detections)", "Detection source truth", "Validation, runtime, signal, or proof truth"),
+                ("[hawkinsoperations-validation](https://github.com/HawkinsOperations/hawkinsoperations-validation)", "Controlled validation truth", "Live runtime, signal, production, or disposition truth"),
+                ("[hawkinsoperations-platform](https://github.com/HawkinsOperations/hawkinsoperations-platform)", "Contracts and control mechanics", "Proof promotion or claim authority"),
+                ("[hawkinsoperations-proof](https://github.com/HawkinsOperations/hawkinsoperations-proof)", "Evidence records and claim ceilings", "Claims beyond the recorded ceiling"),
+                ("[hawkinsoperations-website](https://github.com/HawkinsOperations/hawkinsoperations-website)", "Public rendering and presentation", "Source, validation, runtime, signal, or proof authority"),
             ),
         ),
         (
             "architecture/REPO_AUTHORITY_MAP.md",
             "Authority Summary",
             "| Repository | Authority plane | Owns | Boundary |",
-            r"^\|\s*`([^`]+)`\s*\|\s*([^|]+?)\s*\|\s*[^|]+?\s*\|\s*([^|]+?)\s*\|$",
             (
-                (".github", "Reviewer routing / governance shell", "Not proof; does not prove source, runtime, signal, evidence, public-safe status, or production readiness."),
-                ("hawkinsoperations-detections", "Source truth", "Source does not prove validation, runtime, signal, or public proof."),
-                ("hawkinsoperations-validation", "Validation truth", "Validation does not prove runtime deployment, public signal, or public-safe status."),
-                ("hawkinsoperations-platform", "Contracts / orchestration / control logic", "Contracts do not prove public proof, production readiness, or current runtime state."),
-                ("hawkinsoperations-proof", "Proof records / evidence truth", "Proof records do not publish raw private evidence or raise ceilings by presentation."),
-                ("hawkinsoperations-website", "Public rendering only", "Rendering is not proof and cannot approve a claim."),
-                ("hoxline", "Product / ProofOps control", "Product framing does not prove runtime, signal, evidence, public-safe status, production readiness, or approval."),
+                ("`.github`", "Reviewer routing / governance shell", "Organization profile, reviewer routes, governance summaries, and control-panel navigation.", "Not proof; does not prove source, runtime, signal, evidence, public-safe status, or production readiness."),
+                ("`hawkinsoperations-detections`", "Source truth", "Detection source logic and source ownership trail.", "Source does not prove validation, runtime, signal, or public proof."),
+                ("`hawkinsoperations-validation`", "Validation truth", "Fixtures, validators, case packets, deterministic checks, and workflow source.", "Validation does not prove runtime deployment, public signal, or public-safe status."),
+                ("`hawkinsoperations-platform`", "Contracts / orchestration / control logic", "Runtime contracts, interface boundaries, and non-promotional guardrails.", "Contracts do not prove public proof, production readiness, or current runtime state."),
+                ("`hawkinsoperations-proof`", "Proof records / evidence truth", "Proof records, claim ceilings, evidence boundary records, and cited case packets.", "Proof records do not publish raw private evidence or raise ceilings by presentation."),
+                ("`hawkinsoperations-website`", "Public rendering only", "Public reviewer navigation and rendered wording.", "Rendering is not proof and cannot approve a claim."),
+                ("`hoxline`", "Product / ProofOps control", "Hoxline product surface and Claim Authority capabilities, starting with Claim Firewall.", "Product framing does not prove runtime, signal, evidence, public-safe status, production readiness, or approval."),
             ),
         ),
     )
-    for rel, heading, expected_header, row_pattern, expected_rows in authority_tables:
+    for rel, heading, expected_header, expected_rows in authority_tables:
         table_text = read_text(ROOT / rel, errors)
         section_match = re.search(
             rf"## {re.escape(heading)}\s+(.*?)(?=\n## |\Z)",
@@ -286,14 +282,30 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         if not section_match:
             fail(f"{rel} missing parseable authority table: {heading}", errors)
             continue
-        if expected_header not in section_match.group(1):
+        table_lines = [
+            line.strip()
+            for line in section_match.group(1).splitlines()
+            if line.strip().startswith("|")
+        ]
+        if not table_lines or table_lines[0] != expected_header:
             fail(f"{rel} authority table must preserve its exact ownership-boundary headers", errors)
+            continue
+        if len(table_lines) < 2:
+            fail(f"{rel} authority table missing separator and data rows", errors)
+            continue
+        header_cells = tuple(cell.strip() for cell in table_lines[0].strip("|").split("|"))
+        separator_cells = tuple(cell.strip() for cell in table_lines[1].strip("|").split("|"))
+        if len(separator_cells) != len(header_cells) or any(
+            not re.fullmatch(r":?-{3,}:?", cell) for cell in separator_cells
+        ):
+            fail(f"{rel} authority table has an invalid Markdown separator row", errors)
+            continue
         actual_rows = tuple(
-            (repository, role.strip(), boundary.strip())
-            for repository, role, boundary in re.findall(row_pattern, section_match.group(1), re.MULTILINE)
+            tuple(cell.strip() for cell in line.strip("|").split("|"))
+            for line in table_lines[2:]
         )
         if actual_rows != expected_rows:
-            fail(f"{rel} authority rows must bind each repository to its exact role and boundary", errors)
+            fail(f"{rel} authority table must contain only the exact seven repository ownership rows", errors)
 
 
 def check_project_boundaries(all_text: str, errors: list[str]) -> None:
