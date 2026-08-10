@@ -28,7 +28,7 @@ Docs and diagrams are routing material until backed by checks, required review, 
 The organization-level governance ladder is:
 
 ```text
-.github -> platform -> detections -> validation -> proof -> website
+.github -> hoxline -> platform -> detections -> validation -> proof -> website
 ```
 
 This ladder describes authority routing:
@@ -36,6 +36,7 @@ This ladder describes authority routing:
 | Layer | Owner repo | Owns | Does not prove |
 | --- | --- | --- | --- |
 | Organization control plane | `.github` | Reviewer routing, CI/CD contract docs, required-check matrix, promotion ladder language. | Detection correctness, validation results, runtime state, signal observation, evidence linkage, public-safe status. |
+| Product / ProofOps control plane | `hoxline` | Product control experience, bounded review routing, and Claim Authority capabilities such as Claim Firewall. | Proof records, runtime truth, signal truth, public-safe status, final approval, or merge authority. |
 | Runtime and agent boundary plane | `hawkinsoperations-platform` | Platform contracts, runtime/agent boundary schemas, status/plan visibility, private-review support lanes. | Detection source truth, validation pass/fail truth, public proof, production deployment, public-safe runtime evidence. |
 | Detection source plane | `hawkinsoperations-detections` | Detection source files, detection metadata, source status, blocked-claim source ceilings. | Controlled-test validation, runtime activity, signal observation, proof status, public-safe status. |
 | Validation behavior plane | `hawkinsoperations-validation` | Deterministic validators, fixtures, validation reports, claim-boundary scanners, report-only parity checks. | Runtime activity, signal observation, public proof, public-safe status, production coverage. |
@@ -47,7 +48,7 @@ This ladder describes authority routing:
 The detection evidence chain is:
 
 ```text
-.github policy -> detections source -> validation behavior -> platform visibility/runtime contracts -> proof ceiling -> website rendering
+.github policy -> detections source -> validation behavior -> Hoxline ProofOps control -> platform visibility/runtime contracts -> proof ceiling -> website rendering
 ```
 
 The chain separates two appearances of platform:
@@ -57,7 +58,7 @@ The chain separates two appearances of platform:
 
 `.github` is governance and control-plane routing. It can say what the organization requires, where reviewers should look, and which checks should become authoritative. It is not proof truth.
 
-Detection source can support `SOURCE_EXISTS`. Validation behavior can support controlled-test validation only when the validator, fixtures, and report exist and pass. Platform visibility can describe status and next gates without widening proof. Proof records authorize public claim ceilings. Website rendering only presents approved public state.
+Detection source can support `SOURCE_EXISTS`. Validation behavior can support controlled-test validation only when the validator, fixtures, and report exist and pass. Hoxline can carry bounded control context and route claim evaluation without owning proof or approval. Platform visibility can describe status and next gates without widening proof. Proof records authorize public claim ceilings. Website rendering only presents approved public state.
 
 ## Current-State Notes
 

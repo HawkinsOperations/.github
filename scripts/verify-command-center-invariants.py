@@ -290,6 +290,20 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
                 ("`hoxline`", "Product / ProofOps control", "Hoxline product surface and Claim Authority capabilities, starting with Claim Firewall.", "Product framing does not prove runtime, signal, evidence, public-safe status, production readiness, or approval."),
             ),
         ),
+        (
+            "governance/ORG_CI_CD_AUTHORITY_CONTRACT.md",
+            "Repository Governance Ladder",
+            "| Layer | Owner repo | Owns | Does not prove |",
+            (
+                ("Organization control plane", "`.github`", "Reviewer routing, CI/CD contract docs, required-check matrix, promotion ladder language.", "Detection correctness, validation results, runtime state, signal observation, evidence linkage, public-safe status."),
+                ("Product / ProofOps control plane", "`hoxline`", "Product control experience, bounded review routing, and Claim Authority capabilities such as Claim Firewall.", "Proof records, runtime truth, signal truth, public-safe status, final approval, or merge authority."),
+                ("Runtime and agent boundary plane", "`hawkinsoperations-platform`", "Platform contracts, runtime/agent boundary schemas, status/plan visibility, private-review support lanes.", "Detection source truth, validation pass/fail truth, public proof, production deployment, public-safe runtime evidence."),
+                ("Detection source plane", "`hawkinsoperations-detections`", "Detection source files, detection metadata, source status, blocked-claim source ceilings.", "Controlled-test validation, runtime activity, signal observation, proof status, public-safe status."),
+                ("Validation behavior plane", "`hawkinsoperations-validation`", "Deterministic validators, fixtures, validation reports, claim-boundary scanners, report-only parity checks.", "Runtime activity, signal observation, public proof, public-safe status, production coverage."),
+                ("Proof ceiling plane", "`hawkinsoperations-proof`", "Proof records, proof indexes, claim ceilings, public-proof linkage after review.", "Raw private evidence publication, runtime operation, website presentation."),
+                ("Public rendering plane", "`hawkinsoperations-website`", "Approved public rendering and reviewer routes to source, validation, and proof records.", "Proof by itself, runtime truth, signal truth, evidence truth, claim approval."),
+            ),
+        ),
     )
     for rel, heading, expected_header, expected_rows in authority_tables:
         table_text = read_text(ROOT / rel, errors)
