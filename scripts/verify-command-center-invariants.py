@@ -40,6 +40,27 @@ EXPECTED_INVARIANTS = {
     "standing_controls": ".github#8 and .github#10 remain standing controls",
     "standing_control_replacement": "Closing or replacing .github#8 or .github#10 requires explicit Raylee approval that names the replacement standing-control role",
 }
+EXPECTED_HOXLINE_PROMOTION_LAYER = '''  - layer_name: "hoxline_proofops_control"
+    ladder_position: 2
+    owner_repo: "hoxline"
+    allowed_inherited_truth:
+      - "Bounded source, validation, and proof context routed for reviewer inspection."
+      - "Claim Authority decisions within configured evidence ceilings."
+      - "Claim Firewall enforcement receipts."
+    blocked_inherited_truth:
+      - "Product control creates proof records or final approval."
+      - "Hoxline establishes runtime-active or signal-observed truth."
+      - "Claim routing grants merge, disposition, public-safe, or case-closure authority."
+    required_promotion_gates:
+      - "Owning source, validation, platform, and proof records remain separate."
+      - "Claim decisions preserve the configured proof ceiling."
+      - "Human review remains required for approval, merge, or promotion."
+    status_values:
+      - SOURCE_EXISTS
+      - CONTROLLED_TEST_VALIDATED
+      - BLOCKED
+      - HUMAN_REVIEW_REQUIRED
+    human_review_requirement: true'''
 
 REQUIRED_TEXT = {
     "README.md": [
@@ -400,6 +421,18 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
     )
     if promotion_owners != expected_promotion_owners:
         fail("promotion ladder must contain the exact seven repository owners in governed order", errors)
+    hoxline_layer = re.search(
+        r'^  - layer_name: "hoxline_proofops_control"\n.*?(?=\n  - layer_name:)',
+        promotion_text,
+        re.MULTILINE | re.DOTALL,
+    )
+    if not hoxline_layer or hoxline_layer.group(0).strip() != EXPECTED_HOXLINE_PROMOTION_LAYER.strip():
+        fail("Hoxline promotion layer must preserve its exact position, boundaries, gates, statuses, and human-review requirement", errors)
+
+    required_checks_text = read_text(ROOT / "governance" / "ORG_REQUIRED_CHECKS_MATRIX.yml", errors)
+    required_checks_repos = tuple(re.findall(r'^\s+- repo_name:\s+"([^"]+)"', required_checks_text, re.MULTILINE))
+    if len(required_checks_repos) != len(SYSTEM_REPOSITORIES) or set(required_checks_repos) != set(SYSTEM_REPOSITORIES):
+        fail("required-checks matrix must contain each of the exact seven repositories once", errors)
 
     template_text = read_text(ROOT / ".github" / "pull_request_template.md", errors)
     downstream_section = re.search(
