@@ -206,42 +206,80 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
     if "no eighth" not in profile:
         fail("profile/README.md missing no-eighth-repository boundary", errors)
 
-    section_match = re.search(
-        r"## Seven repositories, seven authority roles\s+(.*?)(?=\n## )",
-        profile_text,
-        re.DOTALL,
+    authority_tables = (
+        (
+            "README.md",
+            "Seven-Repository Authority",
+            r"^\|\s*\d+\s*\|\s*`([^`]+)`\s*\|\s*([^|]+?)\s*\|",
+            (
+                (".github", "Route / governance truth"),
+                ("hoxline", "Product / ProofOps control"),
+                ("hawkinsoperations-detections", "Source truth"),
+                ("hawkinsoperations-validation", "Behavior truth"),
+                ("hawkinsoperations-platform", "Contract / guardrail truth"),
+                ("hawkinsoperations-proof", "Claim / proof truth"),
+                ("hawkinsoperations-website", "Render truth"),
+            ),
+        ),
+        (
+            "profile/README.md",
+            "Seven repositories, seven authority roles",
+            r"^\|\s*\[`[^`]+`\]\(https://github\.com/HawkinsOperations/([A-Za-z0-9_.-]+)\)\s*\|\s*([^|]+?)\s*\|",
+            (
+                (".github", "Organization routing and governance shell"),
+                ("hoxline", "Product and ProofOps control surface"),
+                ("hawkinsoperations-detections", "Detection source truth"),
+                ("hawkinsoperations-validation", "Controlled validation truth"),
+                ("hawkinsoperations-platform", "Contracts and control mechanics"),
+                ("hawkinsoperations-proof", "Evidence records and claim ceilings"),
+                ("hawkinsoperations-website", "Public rendering and presentation"),
+            ),
+        ),
+        (
+            "profile/START_HERE.md",
+            "Seven-repository authority",
+            r"^\|\s*\[[^\]]+\]\(https://github\.com/HawkinsOperations/([A-Za-z0-9_.-]+)\)\s*\|\s*([^|]+?)\s*\|",
+            (
+                (".github", "Organization routing and governance shell"),
+                ("hoxline", "Product and ProofOps control"),
+                ("hawkinsoperations-detections", "Detection source truth"),
+                ("hawkinsoperations-validation", "Controlled validation truth"),
+                ("hawkinsoperations-platform", "Contracts and control mechanics"),
+                ("hawkinsoperations-proof", "Evidence records and claim ceilings"),
+                ("hawkinsoperations-website", "Public rendering and presentation"),
+            ),
+        ),
+        (
+            "architecture/REPO_AUTHORITY_MAP.md",
+            "Authority Summary",
+            r"^\|\s*`([^`]+)`\s*\|\s*([^|]+?)\s*\|",
+            (
+                (".github", "Reviewer routing / governance shell"),
+                ("hawkinsoperations-detections", "Source truth"),
+                ("hawkinsoperations-validation", "Validation truth"),
+                ("hawkinsoperations-platform", "Contracts / orchestration / control logic"),
+                ("hawkinsoperations-proof", "Proof records / evidence truth"),
+                ("hawkinsoperations-website", "Public rendering only"),
+                ("hoxline", "Product / ProofOps control"),
+            ),
+        ),
     )
-    if not section_match:
-        fail("profile/README.md missing parseable seven-repository authority table", errors)
-        return
-    authority_rows = re.findall(
-        r"^\|\s*\[`([^`]+)`\]\(https://github\.com/HawkinsOperations/([A-Za-z0-9_.-]+)\)\s*\|\s*([^|]+?)\s*\|",
-        section_match.group(1),
-        re.MULTILINE,
-    )
-    repository_links = tuple(repository for _label, repository, _role in authority_rows)
-    if repository_links != SYSTEM_REPOSITORIES:
-        fail(
-            "profile/README.md authority table must contain the exact seven repositories once in authority order",
-            errors,
+    for rel, heading, row_pattern, expected_rows in authority_tables:
+        table_text = read_text(ROOT / rel, errors)
+        section_match = re.search(
+            rf"## {re.escape(heading)}\s+(.*?)(?=\n## |\Z)",
+            table_text,
+            re.DOTALL,
         )
-
-    required_authority_rows = (
-        (".github", "Organization routing and governance shell"),
-        ("hoxline", "Product and ProofOps control surface"),
-        ("hawkinsoperations-detections", "Detection source truth"),
-        ("hawkinsoperations-validation", "Controlled validation truth"),
-        ("hawkinsoperations-platform", "Contracts and control mechanics"),
-        ("hawkinsoperations-proof", "Evidence records and claim ceilings"),
-        ("hawkinsoperations-website", "Public rendering and presentation"),
-    )
-    for row, (expected_repository, expected_role) in zip(authority_rows, required_authority_rows):
-        label, repository, role = row
-        if label != expected_repository or repository != expected_repository or role.strip() != expected_role:
-            fail(
-                f"profile/README.md authority row mismatch for {expected_repository}: expected role {expected_role}",
-                errors,
-            )
+        if not section_match:
+            fail(f"{rel} missing parseable authority table: {heading}", errors)
+            continue
+        actual_rows = tuple(
+            (repository, role.strip())
+            for repository, role in re.findall(row_pattern, section_match.group(1), re.MULTILINE)
+        )
+        if actual_rows != expected_rows:
+            fail(f"{rel} authority rows must bind each repository to its exact role", errors)
 
 
 def check_project_boundaries(all_text: str, errors: list[str]) -> None:
