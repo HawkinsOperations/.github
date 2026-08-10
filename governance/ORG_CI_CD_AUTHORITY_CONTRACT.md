@@ -1,12 +1,12 @@
 # Organization CI/CD Authority Contract
 
-Status: PHASE_1_DOCUMENTED_CONTRACT_ONLY
-Control type: org-level CI/CD authority routing
+Status: PHASE_2B_ORG_INVARIANT_WORKFLOW_ACTIVE
+Control type: org-level CI/CD authority routing / repo-local invariant enforcement
 Trust class: SOURCE_EXISTS after merge
 
 ## Purpose
 
-This contract documents how the HawkinsOperations organization treats `.github` as the CI/CD control-plane contract and reviewer entry point. Phase 1 is documentation only.
+This contract documents how the HawkinsOperations organization treats `.github` as the CI/CD control-plane contract and reviewer entry point. The existing repo-local `command-center-invariants` workflow now checks the declared routing and authority contract on scoped changes.
 
 This file does not create reusable workflows, change branch protection, change rulesets, prove runtime state, publish evidence, promote proof, or make anything public-safe.
 
@@ -62,7 +62,7 @@ Detection source can support `SOURCE_EXISTS`. Validation behavior can support co
 
 ## Current-State Notes
 
-These notes are recorded for Phase 1 routing. They do not promote any repository or detection beyond the proof records and checks that actually exist.
+These notes are recorded for current reviewer routing. They do not promote any repository or detection beyond the proof records and checks that actually exist.
 
 - A historical mission audit reported its then-scoped repository set as clean, synced, and carrying zero open PRs. Treat that as historical audit context, not proof of current or future state; the current HawkinsOperations authority model contains exactly seven repositories.
 - Detections PR #27 carried ID-DET-002, ID-DET-003, and ID-DET-004 source.
@@ -97,7 +97,13 @@ This is `VALIDATION_REGISTRY_ENFORCED` and `CHECK_ENFORCED_FOR_VALIDATION_REGIST
 
 The next gate is the proof status index because proof records, not validation checks, authorize public claim ceilings. The control plane should next record which validation-backed detections have proof-index support and which remain `NOT_PUBLIC_SAFE`.
 
-## Phase 1 Boundary
+## Phase 2B Organization Invariant Enforcement
+
+Phase 2B updates the existing repo-local `.github/workflows/command-center-invariants.yml` workflow only to install its pinned structural YAML dependency and run the command-center verifier on scoped organization-contract changes.
+
+This establishes a checked repository-local routing and authority contract for its declared files. It does not make the workflow reusable across repositories, change GitHub settings, make the check required by branch protection or rulesets, dispatch workflows, publish evidence, promote proof, create runtime or signal truth, authorize a merge, or replace human review.
+
+## Original Phase 1 Boundary
 
 Phase 1 may document:
 
@@ -117,6 +123,8 @@ Phase 1 may not:
 - promote proof or public-safe status
 - change website content
 - claim runtime-active, signal-observed, production-ready, or fleet-wide status
+
+Phase 2B narrowly supersedes only the original prohibition on editing `.github/workflows` for the existing repo-local `command-center-invariants` workflow described above. Every other Phase 1 exclusion remains in force unless separately approved.
 
 ## Blocked Claims
 

@@ -1,5 +1,5 @@
 schema_version: 1
-status: PHASE_1_DOCUMENTED_CONTRACT_ONLY
+status: PHASE_2B_ORG_INVARIANT_ENFORCED
 control_type: promotion_ladder_contract
 authority_statement: "Human review remains promotion authority. Green CI is not authority. Codex is AI labor, not human governance."
 global_status_values:

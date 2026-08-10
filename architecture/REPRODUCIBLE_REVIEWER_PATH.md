@@ -1,6 +1,6 @@
 # Reproducible Reviewer Path
 
-Status: PHASE_1_DOCUMENTED_CONTRACT_ONLY
+Status: PHASE_2B_REVIEWER_PATH_WITH_LOCAL_INVARIANT_CHECK
 Control type: reviewer reproduction path
 Trust class: SOURCE_EXISTS after merge
 
@@ -162,7 +162,7 @@ npm run public-status:verify
 npm run build
 ```
 
-Expected Phase 1 gap:
+Current presentation gap:
 
 - ID-DET-002, ID-DET-003, and ID-DET-004 public website routes are pending.
 - HO-DET-012 appears in current website source data with its proof record, proof card, indexed `CONTROLLED_TEST_VALIDATED` ceiling, and bounded website summary present; runtime, signal, and public-safe promotion remain separately gated.

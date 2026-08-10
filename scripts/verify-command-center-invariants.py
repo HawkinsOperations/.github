@@ -24,9 +24,10 @@ SYSTEM_REPOSITORIES = (
     "hawkinsoperations-proof",
     "hawkinsoperations-website",
 )
-# Fingerprint of the complete reviewed seven-layer mapping. Any field, list item,
-# gate, status, boundary, or order change requires an intentional verifier update.
-EXPECTED_PROMOTION_LAYERS_SHA256 = "4001c331113644ae97beb78e0fc355c84164e4e1bf5d48c7e628ec21496e2785"
+# Fingerprint of the complete reviewed promotion contract. Any layer, top-level
+# gate, blocked claim, status, or current-state change requires an intentional
+# verifier update.
+EXPECTED_PROMOTION_CONTRACT_SHA256 = "65522c07b7e2983379dcb3ea1ba5b4cd03ccb3e5116983931bb8c3e23b36c7c8"
 EXPECTED_INVARIANTS = {
     "github_repo_role": ".github is reviewer routing and governance shell only",
     "presentation_route": "hawkinsoperations.com is the Website Reviewer Guide and presentation surface",
@@ -478,15 +479,15 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
     if not isinstance(promotion_layers, list) or any(not isinstance(layer, dict) for layer in promotion_layers):
         fail("promotion ladder layers must be a YAML list of mappings", errors)
         promotion_layers = []
-    promotion_layers_payload = json.dumps(
-        promotion_layers,
+    promotion_contract_payload = json.dumps(
+        promotion_document,
         sort_keys=True,
         separators=(",", ":"),
         ensure_ascii=False,
     ).encode("utf-8")
-    promotion_layers_fingerprint = hashlib.sha256(promotion_layers_payload).hexdigest()
-    if promotion_layers_fingerprint != EXPECTED_PROMOTION_LAYERS_SHA256:
-        fail("promotion ladder complete seven-layer contract does not match the reviewed mapping", errors)
+    promotion_contract_fingerprint = hashlib.sha256(promotion_contract_payload).hexdigest()
+    if promotion_contract_fingerprint != EXPECTED_PROMOTION_CONTRACT_SHA256:
+        fail("complete promotion contract does not match the reviewed machine-readable mapping", errors)
     promotion_owners = tuple(layer.get("owner_repo") for layer in promotion_layers)
     expected_promotion_owners = (
         ".github",
