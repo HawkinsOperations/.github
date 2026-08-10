@@ -734,15 +734,15 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         r"(?:\|[^|\n]*\|)?"
     )
     direct_hoxline_proof_edge = re.compile(
-        rf"^\s*hox(?:line)?\b{mermaid_node_decoration}\s*{mermaid_link}\s*proof\b",
+        rf"^\s*hox(?:line)?\b{mermaid_node_decoration}\s*{mermaid_link}\s*(?:proof|web(?:site)?)\b",
         re.MULTILINE,
     )
     compound_hoxline_proof_edge = re.compile(
-        rf"^\s*hox(?:line)?\b{mermaid_node_decoration}\s*{mermaid_link}\s*[^\n]*&\s*(?:proof|website)\b",
+        rf"^\s*hox(?:line)?\b{mermaid_node_decoration}\s*{mermaid_link}\s*[^\n]*&\s*(?:proof|web(?:site)?)\b",
         re.MULTILINE,
     )
     if direct_hoxline_proof_edge.search(system_map_text) or compound_hoxline_proof_edge.search(system_map_text):
-        fail("wiki/11_ORG_SYSTEM_MAP.md must not bypass platform between Hoxline and proof", errors)
+        fail("wiki/11_ORG_SYSTEM_MAP.md must not bypass platform and proof between Hoxline and public output", errors)
     if re.search(r"^\| (?:Total ledger events|Total cases|Public-safe count|Closed-case count) \|", system_map_text, re.MULTILINE):
         fail("wiki/11_ORG_SYSTEM_MAP.md must route changing ledger values instead of copying counts", errors)
 
