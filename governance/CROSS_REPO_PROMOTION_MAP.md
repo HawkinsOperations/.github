@@ -23,6 +23,7 @@ Website/GitHub rendering is not proof. Public proof ceiling remains `CONTROLLED_
 | Repository | Owns | Does not own |
 |---|---|---|
 | `.github` | Reviewer routing and claim-control expectations | Runtime truth, signal truth, proof approval, production status |
+| `hoxline` | Product / ProofOps control experience and Claim Authority capabilities | Proof records, runtime truth, signal truth, final approval, merge authority |
 | `hawkinsoperations-detections` | Detection source truth | Validation result, runtime status, evidence approval, public-safe wording |
 | `hawkinsoperations-validation` | Test, fixture, verifier, and behavior truth | Production runtime, signal observation, public proof |
 | `hawkinsoperations-platform` | Runtime contracts and integration guardrails | Public-safe runtime proof, detection proof approval |
@@ -37,6 +38,7 @@ Examples:
 
 - Detection source changes can trigger validation changes when tests, fixtures, schemas, or expected behavior must change.
 - Validation outcome changes can trigger proof changes when the claim ceiling, evidence record, or allowed wording changes.
+- Hoxline control changes can trigger proof or website review when claim routing, blocked wording, or reviewer-facing ceilings would otherwise drift.
 - Platform contract changes can trigger proof changes when runtime guardrails affect claim boundaries.
 - Proof record changes can trigger website changes when public wording becomes newly allowed or newly blocked.
 - `.github` routing changes can trigger no downstream PR when they only improve navigation and do not alter source, validation, platform, proof, or public wording truth.
@@ -46,6 +48,7 @@ Examples:
 | Changed repo | Check for downstream impact | Downstream PR required when | Valid no-op when |
 |---|---|---|---|
 | `.github` | Reviewer route, claim-control expectation, public boundary wording | It changes allowed public wording, proof expectations, or repo ownership boundaries | It only improves navigation, layout, or explanation without changing truth |
+| `hoxline` | Product control flow, Claim Authority behavior, blocked wording, reviewer context | Proof records, public wording, or another owned truth surface must change to remain accurate | Product or UX changes preserve the same evidence ceilings and authority boundaries |
 | `detections` | Source logic, metadata, IDs, expected behavior | Tests, fixtures, proof records, or platform contracts must change to stay accurate | Source-only change does not affect validation, platform, proof, or website claims |
 | `validation` | Test result, verifier, fixture, schema, workflow behavior | Proof ceiling or evidence record must reflect a new validated boundary | Validation tooling changes do not alter recorded claim ceilings |
 | `platform` | Runtime contract, integration guardrail, deployment boundary | Proof records or website wording would otherwise overclaim runtime or signal status | Contract cleanup does not change public claim boundaries |

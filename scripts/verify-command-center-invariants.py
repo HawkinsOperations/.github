@@ -82,6 +82,20 @@ REQUIRED_TEXT = {
         "NOT_PUBLIC_SAFE",
         "CONTROLLED_TEST_VALIDATED",
     ],
+    "governance/PROMOTION_LADDER_CONTRACT.yml": [
+        "hoxline_proofops_control",
+        "Proof records, proof cards, and proof-index entries exist at the recorded CONTROLLED_TEST_VALIDATED ceiling.",
+        "proof_record_card_and_index_present: true",
+    ],
+    "governance/ORG_REQUIRED_CHECKS_MATRIX.yml": [
+        "Proof records, proof cards, and proof-index entries exist at CONTROLLED_TEST_VALIDATED.",
+        "Proof record, proof card, proof-index entry, and bounded website summary exist",
+    ],
+    "wiki/11_ORG_SYSTEM_MAP.md": [
+        "hoxline<br/>product / ProofOps control",
+        "platform state manifest",
+        "This routing map deliberately does not copy changing counts.",
+    ],
     "governance/ISSUE_FACTORY_CONTROL_RECEIPTS.md": [
         "#10",
         "#8",
@@ -327,6 +341,20 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
                 ("Public rendering plane", "`hawkinsoperations-website`", "Approved public rendering and reviewer routes to source, validation, and proof records.", "Proof by itself, runtime truth, signal truth, evidence truth, claim approval."),
             ),
         ),
+        (
+            "governance/CROSS_REPO_PROMOTION_MAP.md",
+            "3. Truth Surface Map",
+            "| Repository | Owns | Does not own |",
+            (
+                ("`.github`", "Reviewer routing and claim-control expectations", "Runtime truth, signal truth, proof approval, production status"),
+                ("`hoxline`", "Product / ProofOps control experience and Claim Authority capabilities", "Proof records, runtime truth, signal truth, final approval, merge authority"),
+                ("`hawkinsoperations-detections`", "Detection source truth", "Validation result, runtime status, evidence approval, public-safe wording"),
+                ("`hawkinsoperations-validation`", "Test, fixture, verifier, and behavior truth", "Production runtime, signal observation, public proof"),
+                ("`hawkinsoperations-platform`", "Runtime contracts and integration guardrails", "Public-safe runtime proof, detection proof approval"),
+                ("`hawkinsoperations-proof`", "Evidence records and claim ceilings", "Source ownership for other repos, raw private evidence publication"),
+                ("`hawkinsoperations-website`", "Public rendering only after proof allows wording", "Source truth, runtime truth, signal truth, evidence truth"),
+            ),
+        ),
     )
     for rel, heading, expected_header, expected_rows in authority_tables:
         table_text = read_text(ROOT / rel, errors)
@@ -358,6 +386,56 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         )
         if actual_rows != expected_rows:
             fail(f"{rel} authority table must contain only the exact seven repository ownership rows", errors)
+
+    promotion_text = read_text(ROOT / "governance" / "PROMOTION_LADDER_CONTRACT.yml", errors)
+    promotion_owners = tuple(re.findall(r'^\s+owner_repo:\s+"([^"]+)"', promotion_text, re.MULTILINE))
+    expected_promotion_owners = (
+        ".github",
+        "hoxline",
+        "hawkinsoperations-platform",
+        "hawkinsoperations-detections",
+        "hawkinsoperations-validation",
+        "hawkinsoperations-proof",
+        "hawkinsoperations-website",
+    )
+    if promotion_owners != expected_promotion_owners:
+        fail("promotion ladder must contain the exact seven repository owners in governed order", errors)
+
+    template_text = read_text(ROOT / ".github" / "pull_request_template.md", errors)
+    downstream_section = re.search(
+        r"- Downstream repos affected:\s+(.*?)(?=\n- Downstream action:)",
+        template_text,
+        re.DOTALL,
+    )
+    expected_downstream_repos = (
+        ".github",
+        "hoxline",
+        "hawkinsoperations-detections",
+        "hawkinsoperations-validation",
+        "hawkinsoperations-platform",
+        "hawkinsoperations-proof",
+        "hawkinsoperations-website",
+        "None",
+    )
+    actual_downstream_repos = () if not downstream_section else tuple(
+        re.findall(r"^[ \t]*- \[ \] (.+)$", downstream_section.group(1), re.MULTILINE)
+    )
+    if actual_downstream_repos != expected_downstream_repos:
+        fail("pull request template must enumerate exactly seven downstream repositories plus None", errors)
+
+    system_map_text = read_text(ROOT / "wiki" / "11_ORG_SYSTEM_MAP.md", errors)
+    required_hoxline_routes = (
+        'hox["hoxline<br/>product / ProofOps control',
+        "org --> hox",
+        "val --> hox",
+        "hox --> proof",
+        "validation --> hoxline --> proof",
+    )
+    for route in required_hoxline_routes:
+        if route not in system_map_text:
+            fail(f"wiki/11_ORG_SYSTEM_MAP.md missing Hoxline routing: {route}", errors)
+    if re.search(r"^\| (?:Total ledger events|Total cases|Public-safe count|Closed-case count) \|", system_map_text, re.MULTILINE):
+        fail("wiki/11_ORG_SYSTEM_MAP.md must route changing ledger values instead of copying counts", errors)
 
 
 def check_project_boundaries(all_text: str, errors: list[str]) -> None:

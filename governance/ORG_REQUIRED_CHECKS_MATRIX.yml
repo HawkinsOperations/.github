@@ -159,7 +159,7 @@ repos:
         verifier_command: "python scripts/verify-ho-det-001-proof-integrity.py; python scripts/verify_proof_integrity.py; python scripts/verify-proof-pack-001-release.py"
     trigger_path_filter_risk: "Observed pull_request and push triggers; proof checks prove only proof-record integrity and release-contract scope."
     report_only_versus_fail_closed_status: "Fail-closed only if required and only for exact proof integrity scope."
-    next_hardening_gate: "Add proof records/index entries for ID-DET-002/003/004 and HO-DET-012 before any website or public-proof wording claims parity."
+    next_hardening_gate: "Maintain proof-record/index integrity for ID-DET-002/003/004 and HO-DET-012; any stronger website wording still requires a separate proof-authority decision."
   - repo_name: "hawkinsoperations-website"
     truth_surface: "Public rendering of approved public state."
     required_checks_observed:
@@ -177,17 +177,17 @@ repos:
         verifier_command: "npm run check:site; npm run build"
     trigger_path_filter_risk: "Observed pull_request and push triggers with no path filter; build can fail site violations but does not prove the rendered claims are true."
     report_only_versus_fail_closed_status: "Build/check can be fail-closed for website contract scope if required; rendering remains non-proof."
-    next_hardening_gate: "Add website routes only after proof records exist for ID-DET-002/003/004 and HO-DET-012 public routing is approved."
+    next_hardening_gate: "Dedicated identity routes for ID-DET-002/003/004 remain optional presentation work; HO-DET-012 already has a bounded summary, and no route may widen the recorded proof ceiling."
 current_gap_notes:
   id_det_002_003_004:
     source: "Detections PR #27 carried source."
     validation: "Validation PR #46 carried controlled-test validation."
     platform: "Platform PR #29 carried status/plan visibility."
-    proof: "Pending proof index and proof records."
-    website: "Pending public routes."
+    proof: "Proof records, proof cards, and proof-index entries exist at CONTROLLED_TEST_VALIDATED."
+    website: "Dedicated identity-specific presentation routes remain pending; owning source, validation, and proof routes are available."
   ho_det_012:
     source_validation_platform: "Source, validation, and platform progress exist."
-    proof_website: "Proof and website parity are still needed if public routing is desired."
+    proof_website: "Proof record, proof card, proof-index entry, and bounded website summary exist; runtime, signal, and public-safe promotion remain unproven."
 blocked_claims:
   - runtime-active public proof
   - signal-observed public proof

@@ -38,6 +38,7 @@ Cross-repo work aligns by detection ID, artifact ID, proof gate, evidence refere
 - Current proof gate:
 - Downstream repos affected:
   - [ ] .github
+  - [ ] hoxline
   - [ ] hawkinsoperations-detections
   - [ ] hawkinsoperations-validation
   - [ ] hawkinsoperations-platform
