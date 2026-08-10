@@ -539,12 +539,15 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         'hox["hoxline<br/>product / ProofOps control',
         "org --> hox",
         "val --> hox",
-        "hox --> proof",
+        "hox --> plat",
+        "plat --> proof",
         "validation --> hoxline --> proof",
     )
     for route in required_hoxline_routes:
         if route not in system_map_text:
             fail(f"wiki/11_ORG_SYSTEM_MAP.md missing Hoxline routing: {route}", errors)
+    if "plat --> hox" in system_map_text:
+        fail("wiki/11_ORG_SYSTEM_MAP.md must not route platform backward through Hoxline", errors)
     if re.search(r"^\| (?:Total ledger events|Total cases|Public-safe count|Closed-case count) \|", system_map_text, re.MULTILINE):
         fail("wiki/11_ORG_SYSTEM_MAP.md must route changing ledger values instead of copying counts", errors)
 

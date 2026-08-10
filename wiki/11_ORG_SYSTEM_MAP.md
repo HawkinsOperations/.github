@@ -42,8 +42,8 @@ flowchart LR
 
     det --> val
     val --> hox
-    plat --> hox
-    hox --> proof
+    hox --> plat
+    plat --> proof
     proof --> web
 
     web -. "Warning: website does not prove runtime" .-> proof
