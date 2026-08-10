@@ -509,7 +509,7 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
             "Product / ProofOps control experience and Claim Authority capabilities.",
             ".github/workflows/ci.yml",
             "ci",
-            "hoxline-trust-boundaries",
+            "test",
         ),
         "hawkinsoperations-detections": (
             "Detection source truth.",

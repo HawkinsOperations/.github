@@ -42,14 +42,14 @@ repos:
     truth_surface: "Product / ProofOps control experience and Claim Authority capabilities."
     required_checks_observed: []
     important_non_required_checks:
-      - "ci / hoxline-trust-boundaries is observed in repository workflow source; this matrix does not assert that GitHub settings make it required."
+      - "ci / test is observed on the current hoxline main workflow source; this matrix does not assert that GitHub settings make it required."
     workflow_file:
       - ".github/workflows/ci.yml"
     job_check_context:
       - workflow_name: "ci"
-        job_id: "hoxline-trust-boundaries"
+        job_id: "test"
         job_display_name: null
-        verifier_command: "python -B -m compileall src tests; python -B -m unittest discover -s tests; python -B -m pytest; Hoxline Gauntlet and Claim Firewall checks from workflow source"
+        verifier_command: "python -m pytest; Claim Firewall pass/fail and safe-context examples; JSON finding validation; legacy-name scan"
     trigger_path_filter_risk: "Observed pull_request and push triggers with no path filter; the job verifies checked product/control contracts but does not create proof, runtime truth, signal truth, or approval."
     report_only_versus_fail_closed_status: "Repository CI source is present; fail-closed merge enforcement exists only if this job is required by separately governed GitHub settings."
     next_hardening_gate: "Keep product-control checks aligned with proof ceilings and preserve human authority; any ruleset change requires separate GitHub settings approval."
