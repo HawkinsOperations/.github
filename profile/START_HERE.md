@@ -25,12 +25,13 @@ Follow one detection across its owners:
 
 1. **View source:** [HO-DET-001 detection package](https://github.com/HawkinsOperations/hawkinsoperations-detections/tree/main/detections/successor/ho-det-001).
 2. **View validation:** [controlled validation result](https://github.com/HawkinsOperations/hawkinsoperations-validation/blob/main/reports/ho-det-001/validation-result.md).
-3. **View proof:** [HO-DET-001 proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md).
-4. **View the packaged receipt:** [Proof Pack 001](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001).
-5. **Inspect claim enforcement:** [Claim Firewall](https://hawkinsoperations.com/claim-firewall/).
-6. **Confirm the ceiling:** [Control Status Matrix](../governance/CONTROL_STATUS_MATRIX.md).
+3. **Inspect product control:** [Hoxline](https://hawkinsoperations.com/hoxline/) and its [Claim Firewall](https://hawkinsoperations.com/claim-firewall/) capability.
+4. **Inspect the platform handoff:** [bounded HO-DET-001 contract example](https://github.com/HawkinsOperations/hawkinsoperations-platform/blob/main/contracts/examples/ho-det-001-runtime-contract.sample.json).
+5. **View proof:** [HO-DET-001 proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md).
+6. **View the packaged receipt:** [Proof Pack 001](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001).
+7. **Confirm the ceiling:** [Control Status Matrix](../governance/CONTROL_STATUS_MATRIX.md).
 
-Outcome: source, validation, proof, product control, and rendering remain inspectable without being treated as interchangeable authority.
+Outcome: source, validation, product control, platform contracts, proof, and rendering remain inspectable without being treated as interchangeable authority.
 
 ## 10-minute reviewer path
 
@@ -44,7 +45,7 @@ $env:PYTHONDONTWRITEBYTECODE = "1"
 python -B -m hoxline demo quickstart
 ```
 
-Then compare the generated reviewer artifacts with the [HO-DET-001 source](https://github.com/HawkinsOperations/hawkinsoperations-detections/tree/main/detections/successor/ho-det-001), [controlled validation](https://github.com/HawkinsOperations/hawkinsoperations-validation/blob/main/reports/ho-det-001/validation-result.md), and [proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md). The demo is local and fixture-based; it does not establish live runtime, signal, production, public-safe, or disposition truth.
+Then compare the generated reviewer artifacts with the [HO-DET-001 source](https://github.com/HawkinsOperations/hawkinsoperations-detections/tree/main/detections/successor/ho-det-001), [controlled validation](https://github.com/HawkinsOperations/hawkinsoperations-validation/blob/main/reports/ho-det-001/validation-result.md), [Hoxline control surface](https://hawkinsoperations.com/hoxline/), [platform contract example](https://github.com/HawkinsOperations/hawkinsoperations-platform/blob/main/contracts/examples/ho-det-001-runtime-contract.sample.json), and [proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md). The demo is local and fixture-based; it does not establish live runtime, signal, production, public-safe, or disposition truth.
 
 For the full seven-repository sweep, continue with the [extended Reproducible Reviewer Path](../architecture/REPRODUCIBLE_REVIEWER_PATH.md).
 
@@ -89,7 +90,7 @@ Hoxline carries this boundary through the review loop. Claim Firewall is one Hox
 
 ## The current bounded example
 
-HO-DET-001 has source artifacts, platform-specific query source, controlled positive and negative fixtures, deterministic validation output, and a proof record. Its current public ceiling is `CONTROLLED_TEST_VALIDATED`.
+HO-DET-001 has source artifacts, platform-specific query source, controlled positive and negative fixtures, deterministic validation output, a Hoxline control route, a bounded platform contract example, and a proof record. Its current public ceiling is `CONTROLLED_TEST_VALIDATED`.
 
 That ceiling supports only the stated controlled-test scope. Runtime-active public proof, signal-observed public proof, production readiness, customer deployment, fleet-wide coverage, SOCaaS operation, autonomous SOC behavior, AI-approved disposition, analyst-approved disposition, public-safe runtime evidence, and case closure remain unproven here.
 

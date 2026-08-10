@@ -31,8 +31,8 @@ Hoxline doctrine: AI is not the authority. Evidence is.
 | Time | Route | Outcome |
 |---:|---|---|
 | **30 seconds** | [Open the Reviewer Guide](https://hawkinsoperations.com/) → [open Hoxline](https://hawkinsoperations.com/hoxline/) → [inspect HO-DET-001 proof](https://hawkinsoperations.com/proof/ho-det-001/) → [map repository authority](../architecture/REPO_AUTHORITY_MAP.md) | Understand the system, the product control surface, one bounded proof route, and which repository owns each truth. |
-| **3 minutes** | Follow [source](https://github.com/HawkinsOperations/hawkinsoperations-detections/tree/main/detections/successor/ho-det-001) → [controlled validation](https://github.com/HawkinsOperations/hawkinsoperations-validation/blob/main/reports/ho-det-001/validation-result.md) → [proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md) → [Claim Firewall](https://hawkinsoperations.com/claim-firewall/) | See how one detection moves through separate truth surfaces while unsupported wording stays blocked. |
-| **10 minutes** | Use the [focused runnable path](START_HERE.md#10-minute-reviewer-path) | Run Hoxline's local fixture-based demo, then inspect the HO-DET-001 source, validation, proof, and claim boundary. |
+| **3 minutes** | Follow [source](https://github.com/HawkinsOperations/hawkinsoperations-detections/tree/main/detections/successor/ho-det-001) → [controlled validation](https://github.com/HawkinsOperations/hawkinsoperations-validation/blob/main/reports/ho-det-001/validation-result.md) → [Hoxline](https://hawkinsoperations.com/hoxline/) and [Claim Firewall](https://hawkinsoperations.com/claim-firewall/) → [platform contract](https://github.com/HawkinsOperations/hawkinsoperations-platform/blob/main/contracts/examples/ho-det-001-runtime-contract.sample.json) → [proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md) | See how one detection moves through separate truth surfaces while unsupported wording stays blocked. |
+| **10 minutes** | Use the [focused runnable path](START_HERE.md#10-minute-reviewer-path) | Run Hoxline's local fixture-based demo, then inspect the HO-DET-001 source, validation, product control, platform contract, proof, and claim boundary. |
 | **Extended** | Use the [Reproducible Reviewer Path](../architecture/REPRODUCIBLE_REVIEWER_PATH.md) | Clone all seven repositories and run their public checks without private runtime access. |
 
 ## The system in one route
@@ -75,9 +75,11 @@ HO-DET-001 is a PowerShell EncodedCommand detection example. It is useful becaus
 
 1. [Detection source](https://github.com/HawkinsOperations/hawkinsoperations-detections/tree/main/detections/successor/ho-det-001) records the rule, query, metadata, and event-field expectations.
 2. [Controlled validation](https://github.com/HawkinsOperations/hawkinsoperations-validation/blob/main/reports/ho-det-001/validation-result.md) checks expected matches and known non-matches with deterministic fixtures.
-3. [Proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md) states the supported claim and the evidence ceiling.
-4. [Proof Pack 001](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) packages a bounded reviewer route with a verifier and release receipt.
-5. [Website proof route](https://hawkinsoperations.com/proof/ho-det-001/) renders the reviewed boundary and routes back to its owners.
+3. [Hoxline](https://hawkinsoperations.com/hoxline/) carries bounded control context, and [Claim Firewall](https://hawkinsoperations.com/claim-firewall/) demonstrates unsupported wording being blocked without creating proof.
+4. [Platform contract example](https://github.com/HawkinsOperations/hawkinsoperations-platform/blob/main/contracts/examples/ho-det-001-runtime-contract.sample.json) shows the non-promotional handoff shape; it is not runtime evidence.
+5. [Proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md) states the supported claim and the evidence ceiling.
+6. [Proof Pack 001](https://github.com/HawkinsOperations/hawkinsoperations-proof/releases/tag/hawkinsoperations-proof-pack-001) packages a bounded reviewer route with a verifier and release receipt.
+7. [Website proof route](https://hawkinsoperations.com/proof/ho-det-001/) renders the reviewed boundary and routes back to its owners.
 
 The current public ceiling for this example is `CONTROLLED_TEST_VALIDATED`. Controlled validation is evidence for the tested fixture scope; it is not automatic production truth.
 

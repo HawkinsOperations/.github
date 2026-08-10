@@ -354,6 +354,33 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
     )
     if actual_door_lines != expected_door_lines:
         fail("profile/README.md must preserve the exact three-door routing table", errors)
+    governed_route_markers = (
+        "https://github.com/HawkinsOperations/hawkinsoperations-detections/tree/main/detections/successor/ho-det-001",
+        "https://github.com/HawkinsOperations/hawkinsoperations-validation/blob/main/reports/ho-det-001/validation-result.md",
+        "https://hawkinsoperations.com/hoxline/",
+        "https://hawkinsoperations.com/claim-firewall/",
+        "https://github.com/HawkinsOperations/hawkinsoperations-platform/blob/main/contracts/examples/ho-det-001-runtime-contract.sample.json",
+        "https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md",
+    )
+    profile_fast_path = re.search(
+        r"^\| \*\*3 minutes\*\* \| (.+)$",
+        profile_text,
+        re.MULTILINE,
+    )
+    start_here_text = read_text(ROOT / "profile" / "START_HERE.md", errors)
+    start_here_fast_path = re.search(
+        r"## 3-minute command-center path\s+(.*?)(?=\n## |\Z)",
+        start_here_text,
+        re.DOTALL,
+    )
+    for route_name, route_section in (
+        ("profile/README.md fast reviewer path", profile_fast_path),
+        ("profile/START_HERE.md 3-minute path", start_here_fast_path),
+    ):
+        route_text = "" if route_section is None else route_section.group(1)
+        positions = tuple(route_text.find(marker) for marker in governed_route_markers)
+        if any(position < 0 for position in positions) or positions != tuple(sorted(positions)):
+            fail(f"{route_name} must preserve source -> validation -> Hoxline -> Claim Firewall -> platform -> proof order", errors)
     if "no eighth" not in profile:
         fail("profile/README.md missing no-eighth-repository boundary", errors)
 
@@ -539,48 +566,70 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
     expected_required_check_markers = {
         ".github": (
             "Organization control-plane routing and reviewer entry point.",
-            ".github/workflows/command-center-invariants.yml",
+            (".github/workflows/command-center-invariants.yml",),
             "command-center-invariants",
             "command-center-invariants",
         ),
         "hoxline": (
             "Product / ProofOps control experience and Claim Authority capabilities.",
-            ".github/workflows/ci.yml",
+            (".github/workflows/ci.yml",),
             "ci",
             "test",
         ),
         "hawkinsoperations-detections": (
             "Detection source truth.",
-            ".github/workflows/baseline-detection-contract.yml",
+            (
+                ".github/workflows/baseline-detection-contract.yml",
+                ".github/workflows/governance-gate.yml",
+            ),
             "baseline-detection-contract",
             "baseline-hero-artifact-contract",
         ),
         "hawkinsoperations-validation": (
             "Validation behavior, fixtures, reports, and claim-boundary scan truth.",
-            ".github/workflows/baseline-validation-contract.yml",
+            (
+                ".github/workflows/baseline-validation-contract.yml",
+                ".github/workflows/governance-gate.yml",
+                ".github/workflows/ho-det-012-fixture-loop.yml",
+                ".github/workflows/id-det-001-fixture-loop.yml",
+                ".github/workflows/ho-det-001-proof-loop.yml",
+                ".github/workflows/public-ho-det-001-report.yml",
+                ".github/workflows/aws-det-001-fixture-loop.yml",
+                ".github/workflows/ho-det-011-fixture-loop.yml",
+                ".github/workflows/security-onion-visibility-contract.yml",
+                ".github/workflows/cross-repo-claim-parity.yml",
+            ),
             "baseline-validation-contract",
             "baseline-hero-validation-contract",
         ),
         "hawkinsoperations-platform": (
             "Platform runtime/agent boundary contracts and status/plan visibility.",
-            ".github/workflows/local-gpu-triage-gate.yml",
+            (
+                ".github/workflows/governance-gate.yml",
+                ".github/workflows/local-gpu-triage-gate.yml",
+            ),
             "Local GPU Triage Gate",
             "local-gpu-triage-status",
         ),
         "hawkinsoperations-proof": (
             "Proof records, proof indexes, claim ceilings, and public-proof linkage.",
-            ".github/workflows/baseline-proof-integrity.yml",
+            (
+                ".github/workflows/baseline-proof-integrity.yml",
+                ".github/workflows/governance-gate.yml",
+                ".github/workflows/ho-det-001-proof-integrity.yml",
+                ".github/workflows/publish-proof-release.yml",
+            ),
             "baseline-proof-integrity",
             "baseline-hod001-proof-integrity",
         ),
         "hawkinsoperations-website": (
             "Public rendering of approved public state.",
-            ".github/workflows/governance-gate.yml",
+            (".github/workflows/governance-gate.yml",),
             "Governance Gate",
             "build",
         ),
     }
-    for repository, (truth_surface, workflow_file, workflow_name, job_id) in expected_required_check_markers.items():
+    for repository, (truth_surface, expected_workflow_files, workflow_name, job_id) in expected_required_check_markers.items():
         block = required_checks_blocks.get(repository, {})
         workflow_files = block.get("workflow_file", []) if isinstance(block, dict) else []
         job_contexts = block.get("job_check_context", []) if isinstance(block, dict) else []
@@ -594,7 +643,7 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         if (
             block.get("truth_surface") != truth_surface
             or not isinstance(workflow_files, list)
-            or workflow_file not in workflow_files
+            or tuple(workflow_files) != expected_workflow_files
             or (workflow_name, job_id) not in observed_workflow_jobs
         ):
             fail(f"required-checks matrix metadata is not bound to {repository}", errors)
@@ -657,7 +706,14 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
             fail(f"wiki/11_ORG_SYSTEM_MAP.md missing Hoxline routing: {route}", errors)
     if "plat --> hox" in system_map_text:
         fail("wiki/11_ORG_SYSTEM_MAP.md must not route platform backward through Hoxline", errors)
-    if re.search(r"\bhox(?:line)? --> proof\b", system_map_text):
+    mermaid_link = (
+        r"(?:-->|---|-\.->|-\.-|==>|===|~~~|"
+        r"--\s+[^>\n]+?\s+-->|-\.\s+[^.\n]+?\s+\.->|==\s+[^>\n]+?\s+==>)"
+    )
+    if re.search(
+        rf"\bhox(?:line)?\b\s*{mermaid_link}\s*(?:\|[^|\n]*\|\s*)?\bproof\b",
+        system_map_text,
+    ):
         fail("wiki/11_ORG_SYSTEM_MAP.md must not bypass platform between Hoxline and proof", errors)
     if re.search(r"^\| (?:Total ledger events|Total cases|Public-safe count|Closed-case count) \|", system_map_text, re.MULTILINE):
         fail("wiki/11_ORG_SYSTEM_MAP.md must route changing ledger values instead of copying counts", errors)
