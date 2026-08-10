@@ -165,7 +165,7 @@ npm run build
 Expected Phase 1 gap:
 
 - ID-DET-002, ID-DET-003, and ID-DET-004 public website routes are pending.
-- HO-DET-012 appears in current website source data, but proof and website parity remain required before any public proof or public-safe wording can be claimed.
+- HO-DET-012 appears in current website source data with its proof record, proof card, indexed `CONTROLLED_TEST_VALIDATED` ceiling, and bounded website summary present; runtime, signal, and public-safe promotion remain separately gated.
 - Inspect the [Website Reviewer Guide](https://hawkinsoperations.com/) in ordinary and presentation modes as rendering QA only; visual success does not promote source, validation, runtime, signal, or proof status.
 
 ## Private-Only Commands Excluded

@@ -503,50 +503,59 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
             "Organization control-plane routing and reviewer entry point.",
             ".github/workflows/command-center-invariants.yml",
             "command-center-invariants",
+            "command-center-invariants",
         ),
         "hoxline": (
             "Product / ProofOps control experience and Claim Authority capabilities.",
             ".github/workflows/ci.yml",
+            "ci",
             "hoxline-trust-boundaries",
         ),
         "hawkinsoperations-detections": (
             "Detection source truth.",
             ".github/workflows/baseline-detection-contract.yml",
+            "baseline-detection-contract",
             "baseline-hero-artifact-contract",
         ),
         "hawkinsoperations-validation": (
             "Validation behavior, fixtures, reports, and claim-boundary scan truth.",
             ".github/workflows/baseline-validation-contract.yml",
+            "baseline-validation-contract",
             "baseline-hero-validation-contract",
         ),
         "hawkinsoperations-platform": (
             "Platform runtime/agent boundary contracts and status/plan visibility.",
             ".github/workflows/local-gpu-triage-gate.yml",
+            "Local GPU Triage Gate",
             "local-gpu-triage-status",
         ),
         "hawkinsoperations-proof": (
             "Proof records, proof indexes, claim ceilings, and public-proof linkage.",
             ".github/workflows/baseline-proof-integrity.yml",
+            "baseline-proof-integrity",
             "baseline-hod001-proof-integrity",
         ),
         "hawkinsoperations-website": (
             "Public rendering of approved public state.",
             ".github/workflows/governance-gate.yml",
+            "Governance Gate",
             "build",
         ),
     }
-    for repository, (truth_surface, workflow_file, job_id) in expected_required_check_markers.items():
+    for repository, (truth_surface, workflow_file, workflow_name, job_id) in expected_required_check_markers.items():
         block = required_checks_blocks.get(repository, {})
         workflow_files = block.get("workflow_file", []) if isinstance(block, dict) else []
         job_contexts = block.get("job_check_context", []) if isinstance(block, dict) else []
-        observed_job_ids = {
-            context.get("job_id") for context in job_contexts if isinstance(context, dict)
+        observed_workflow_jobs = {
+            (context.get("workflow_name"), context.get("job_id"))
+            for context in job_contexts
+            if isinstance(context, dict)
         } if isinstance(job_contexts, list) else set()
         if (
             block.get("truth_surface") != truth_surface
             or not isinstance(workflow_files, list)
             or workflow_file not in workflow_files
-            or job_id not in observed_job_ids
+            or (workflow_name, job_id) not in observed_workflow_jobs
         ):
             fail(f"required-checks matrix metadata is not bound to {repository}", errors)
 
