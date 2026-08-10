@@ -486,6 +486,17 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
     )
     if promotion_owners != expected_promotion_owners:
         fail("promotion ladder must contain the exact seven repository owners in governed order", errors)
+    non_human_review_layers = [
+        layer.get("owner_repo")
+        for layer in promotion_layers
+        if layer.get("human_review_requirement") is not True
+    ]
+    if non_human_review_layers:
+        fail(
+            "every promotion layer must preserve human_review_requirement: true; "
+            f"invalid layers: {non_human_review_layers}",
+            errors,
+        )
     hoxline_layers = [layer for layer in promotion_layers if layer.get("owner_repo") == "hoxline"]
     if len(hoxline_layers) != 1 or hoxline_layers[0] != EXPECTED_HOXLINE_PROMOTION_LAYER:
         fail("Hoxline promotion layer must preserve its exact position, boundaries, gates, statuses, and human-review requirement", errors)
