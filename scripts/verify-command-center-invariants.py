@@ -185,6 +185,44 @@ BOUNDARY_WORDS = (
 )
 
 
+class UniqueKeySafeLoader(yaml.SafeLoader):
+    """Safe YAML loader that rejects ambiguous duplicate mapping keys."""
+
+
+def construct_unique_mapping(
+    loader: UniqueKeySafeLoader,
+    node: yaml.MappingNode,
+    deep: bool = False,
+) -> dict:
+    mapping: dict = {}
+    for key_node, value_node in node.value:
+        key = loader.construct_object(key_node, deep=deep)
+        try:
+            duplicate = key in mapping
+        except TypeError as exc:
+            raise yaml.constructor.ConstructorError(
+                "while constructing a mapping",
+                node.start_mark,
+                "found an unhashable mapping key",
+                key_node.start_mark,
+            ) from exc
+        if duplicate:
+            raise yaml.constructor.ConstructorError(
+                "while constructing a mapping",
+                node.start_mark,
+                f"found duplicate key ({key!r})",
+                key_node.start_mark,
+            )
+        mapping[key] = loader.construct_object(value_node, deep=deep)
+    return mapping
+
+
+UniqueKeySafeLoader.add_constructor(
+    yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
+    construct_unique_mapping,
+)
+
+
 def fail(message: str, errors: list[str]) -> None:
     errors.append(message)
 
@@ -201,7 +239,7 @@ def read_yaml_mapping(path: Path, errors: list[str]) -> dict:
     if not text:
         return {}
     try:
-        document = yaml.safe_load(text)
+        document = yaml.load(text, Loader=UniqueKeySafeLoader)
     except yaml.YAMLError as exc:
         fail(f"{path.relative_to(ROOT).as_posix()} YAML parse failed: {exc}", errors)
         return {}
@@ -541,13 +579,15 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         "val --> hox",
         "hox --> plat",
         "plat --> proof",
-        "validation --> hoxline --> proof",
+        "validation --> hoxline --> platform --> proof",
     )
     for route in required_hoxline_routes:
         if route not in system_map_text:
             fail(f"wiki/11_ORG_SYSTEM_MAP.md missing Hoxline routing: {route}", errors)
     if "plat --> hox" in system_map_text:
         fail("wiki/11_ORG_SYSTEM_MAP.md must not route platform backward through Hoxline", errors)
+    if re.search(r"\bhox(?:line)? --> proof\b", system_map_text):
+        fail("wiki/11_ORG_SYSTEM_MAP.md must not bypass platform between Hoxline and proof", errors)
     if re.search(r"^\| (?:Total ledger events|Total cases|Public-safe count|Closed-case count) \|", system_map_text, re.MULTILINE):
         fail("wiki/11_ORG_SYSTEM_MAP.md must route changing ledger values instead of copying counts", errors)
 

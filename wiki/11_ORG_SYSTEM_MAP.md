@@ -182,6 +182,7 @@ flowchart TD
     source["Detection source"]
     validation["Validation artifacts"]
     hoxline["Hoxline product / ProofOps control"]
+    platform["Platform contracts / status visibility"]
     proof["Proof record"]
     project["Private org control board operating cockpit"]
     ledger["Lifetime Case Ledger public summary"]
@@ -189,7 +190,7 @@ flowchart TD
     boundaries["Claim boundaries"]
     warning["Warning: website is last-mile rendering, not proof"]
 
-    profile --> start --> map --> authority --> source --> validation --> hoxline --> proof --> ledger --> website --> boundaries
+    profile --> start --> map --> authority --> source --> validation --> hoxline --> platform --> proof --> ledger --> website --> boundaries
     start --> project
     project -. "coordination only" .-> boundaries
     website -.-> warning
