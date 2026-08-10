@@ -1,7 +1,7 @@
 schema_version: 1
-status: PHASE_2A_VALIDATION_ENFORCEMENT_RECORDED
+status: PHASE_2B_ORG_INVARIANT_AND_VALIDATION_ENFORCEMENT_RECORDED
 control_type: org_required_checks_matrix
-phase_1_boundary:
+phase_2b_boundary:
   creates_reusable_workflows: false
   changes_github_settings: false
   changes_branch_protection: false

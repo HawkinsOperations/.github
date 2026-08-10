@@ -516,6 +516,19 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         fail("Hoxline promotion layer must preserve its exact position, boundaries, gates, statuses, and human-review requirement", errors)
 
     required_checks_document = read_yaml_mapping(ROOT / "governance" / "ORG_REQUIRED_CHECKS_MATRIX.yml", errors)
+    if required_checks_document.get("status") != "PHASE_2B_ORG_INVARIANT_AND_VALIDATION_ENFORCEMENT_RECORDED":
+        fail("required-checks matrix must preserve the current Phase 2B status", errors)
+    expected_phase_2b_boundary = {
+        "creates_reusable_workflows": False,
+        "changes_github_settings": False,
+        "changes_branch_protection": False,
+        "changes_rulesets": False,
+        "dispatches_workflows": False,
+        "promotes_proof": False,
+        "promotes_public_safe": False,
+    }
+    if required_checks_document.get("phase_2b_boundary") != expected_phase_2b_boundary:
+        fail("required-checks matrix must preserve the exact Phase 2B authority boundary", errors)
     required_checks_repos = required_checks_document.get("repos", [])
     if not isinstance(required_checks_repos, list) or any(not isinstance(repo, dict) for repo in required_checks_repos):
         fail("required-checks repos must be a YAML list of mappings", errors)
