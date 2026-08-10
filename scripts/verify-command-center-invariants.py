@@ -706,14 +706,18 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
             fail(f"wiki/11_ORG_SYSTEM_MAP.md missing Hoxline routing: {route}", errors)
     if "plat --> hox" in system_map_text:
         fail("wiki/11_ORG_SYSTEM_MAP.md must not route platform backward through Hoxline", errors)
-    mermaid_link = (
-        r"(?:-->|---|-\.->|-\.-|==>|===|~~~|"
-        r"--\s+[^>\n]+?\s+-->|-\.\s+[^.\n]+?\s+\.->|==\s+[^>\n]+?\s+==>)"
+    mermaid_node_decoration = (
+        r"(?:\s*(?:\[[^\n]*?\]|\([^\n]*?\)|\{[^\n]*?\}|@\{[^\n]*?\}|:::[A-Za-z0-9_-]+))*"
     )
-    if re.search(
-        rf"\bhox(?:line)?\b\s*{mermaid_link}\s*(?:\|[^|\n]*\|\s*)?\bproof\b",
-        system_map_text,
-    ):
+    mermaid_link = (
+        r"(?:[-.=~]{2,}\s+[^|>\n]+?\s+[-.=~]{2,}>?|[-.=~]{2,}>?)"
+        r"(?:\|[^|\n]*\|)?"
+    )
+    direct_hoxline_proof_edge = re.compile(
+        rf"^\s*hox(?:line)?\b{mermaid_node_decoration}\s*{mermaid_link}\s*proof\b",
+        re.MULTILINE,
+    )
+    if direct_hoxline_proof_edge.search(system_map_text):
         fail("wiki/11_ORG_SYSTEM_MAP.md must not bypass platform between Hoxline and proof", errors)
     if re.search(r"^\| (?:Total ledger events|Total cases|Public-safe count|Closed-case count) \|", system_map_text, re.MULTILINE):
         fail("wiki/11_ORG_SYSTEM_MAP.md must route changing ledger values instead of copying counts", errors)
