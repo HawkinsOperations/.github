@@ -63,7 +63,7 @@ Detection source can support `SOURCE_EXISTS`. Validation behavior can support co
 
 These notes are recorded for Phase 1 routing. They do not promote any repository or detection beyond the proof records and checks that actually exist.
 
-- The mission audit previously reported the six HawkinsOperations repos as clean, synced, and carrying zero open PRs. Treat that as audit context, not proof of future state.
+- A historical mission audit reported its then-scoped repository set as clean, synced, and carrying zero open PRs. Treat that as historical audit context, not proof of current or future state; the current HawkinsOperations authority model contains exactly seven repositories.
 - Detections PR #27 carried ID-DET-002, ID-DET-003, and ID-DET-004 source.
 - Validation PR #46 carried ID-DET-002, ID-DET-003, and ID-DET-004 controlled-test validation.
 - Platform PR #29 carried ID-DET-002, ID-DET-003, and ID-DET-004 status/plan visibility.
