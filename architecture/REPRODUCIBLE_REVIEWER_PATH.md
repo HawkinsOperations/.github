@@ -188,7 +188,7 @@ Private evidence can inform future review only after privacy review, stale revie
 The `.github` command-center route has a local invariant verifier for reviewer-route and claim-boundary checks:
 
 ```powershell
-cd .github
+cd ..\.github
 $env:PYTHONDONTWRITEBYTECODE = "1"
 python -B scripts\verify-command-center-invariants.py
 ```

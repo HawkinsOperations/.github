@@ -21,6 +21,25 @@ SYSTEM_REPOSITORIES = (
     "hawkinsoperations-proof",
     "hawkinsoperations-website",
 )
+EXPECTED_INVARIANTS = {
+    "github_repo_role": ".github is reviewer routing and governance shell only",
+    "presentation_route": "hawkinsoperations.com is the Website Reviewer Guide and presentation surface",
+    "seven_repository_authority": "HawkinsOperations has exactly seven system repositories with separate authority roles",
+    "hoxline_role": "Hoxline is the product and ProofOps control surface, not proof authority",
+    "project_2_role": "Project #2 is the canonical private HawkinsOperations Control Board operating cockpit",
+    "project_1_boundary": "Project #1 is not an active reviewer route",
+    "project_metadata_boundary": "Project metadata is coordination only, not proof, approval, merge authority, runtime truth, signal truth, or public-safe status",
+    "rendering_boundary": "Website and GitHub rendering are not proof",
+    "proof_authority_repo": "hawkinsoperations-proof owns proof records and claim ceilings",
+    "command_center_proof_ceiling": "SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY",
+    "ledger_public_safe_status": "NOT_PUBLIC_SAFE",
+    "reviewer_metrics_pipeline": "Reviewer metrics pipeline keeps Lifetime Governed Cases separate from detection activity, validation cases, proof records, blocked claims, and Project Board reconciliation status",
+    "reviewer_metrics_counts": "Reviewer metrics values are authority-owned snapshots in proof/platform records; front-door text must route to those records instead of copying changing counts",
+    "ho_det_001_public_ceiling": "CONTROLLED_TEST_VALIDATED",
+    "runtime_signal_public_promotions": "runtime-active, signal-observed, evidence-linked public proof, public-safe, production-ready, fleet-wide, AWS-live, Cribl-routed, Wazuh-routed, autonomous SOC, AI-approved, AI-decided, analyst-approved, and live Splunk claims remain blocked unless separately proven and approved",
+    "standing_controls": ".github#8 and .github#10 remain standing controls",
+    "standing_control_replacement": "Closing or replacing .github#8 or .github#10 requires explicit Raylee approval that names the replacement standing-control role",
+}
 
 REQUIRED_TEXT = {
     "README.md": [
@@ -160,8 +179,8 @@ def load_manifest(errors: list[str]) -> dict:
         return {}
     if manifest.get("schema") != "hawkinsoperations-command-center-invariants-v1":
         fail("manifest schema mismatch", errors)
-    if not isinstance(manifest.get("invariants"), dict):
-        fail("manifest invariants must be an object", errors)
+    if manifest.get("invariants") != EXPECTED_INVARIANTS:
+        fail("manifest invariants must match the exact reviewed authority contract", errors)
     return manifest
 
 
