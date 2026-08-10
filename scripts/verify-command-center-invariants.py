@@ -430,9 +430,49 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         fail("Hoxline promotion layer must preserve its exact position, boundaries, gates, statuses, and human-review requirement", errors)
 
     required_checks_text = read_text(ROOT / "governance" / "ORG_REQUIRED_CHECKS_MATRIX.yml", errors)
-    required_checks_repos = tuple(re.findall(r'^\s+- repo_name:\s+"([^"]+)"', required_checks_text, re.MULTILINE))
-    if len(required_checks_repos) != len(SYSTEM_REPOSITORIES) or set(required_checks_repos) != set(SYSTEM_REPOSITORIES):
+    required_checks_matches = re.findall(
+        r'^  - repo_name:\s+"([^"]+)"\n(.*?)(?=^  - repo_name:|^current_gap_notes:)',
+        required_checks_text,
+        re.MULTILINE | re.DOTALL,
+    )
+    required_checks_blocks = {repository: block for repository, block in required_checks_matches}
+    if len(required_checks_matches) != len(SYSTEM_REPOSITORIES) or set(required_checks_blocks) != set(SYSTEM_REPOSITORIES):
         fail("required-checks matrix must contain each of the exact seven repositories once", errors)
+    expected_required_check_markers = {
+        ".github": (
+            'truth_surface: "Organization control-plane routing and reviewer entry point."',
+            '.github/workflows/command-center-invariants.yml',
+        ),
+        "hoxline": (
+            'truth_surface: "Product / ProofOps control experience and Claim Authority capabilities."',
+            '.github/workflows/ci.yml',
+            'job_id: "hoxline-trust-boundaries"',
+        ),
+        "hawkinsoperations-detections": (
+            'truth_surface: "Detection source truth."',
+            '.github/workflows/baseline-detection-contract.yml',
+        ),
+        "hawkinsoperations-validation": (
+            'truth_surface: "Validation behavior, fixtures, reports, and claim-boundary scan truth."',
+            '.github/workflows/baseline-validation-contract.yml',
+        ),
+        "hawkinsoperations-platform": (
+            'truth_surface: "Platform runtime/agent boundary contracts and status/plan visibility."',
+            '.github/workflows/local-gpu-triage-gate.yml',
+        ),
+        "hawkinsoperations-proof": (
+            'truth_surface: "Proof records, proof indexes, claim ceilings, and public-proof linkage."',
+            '.github/workflows/baseline-proof-integrity.yml',
+        ),
+        "hawkinsoperations-website": (
+            'truth_surface: "Public rendering of approved public state."',
+            'job_id: "build"',
+        ),
+    }
+    for repository, markers in expected_required_check_markers.items():
+        block = required_checks_blocks.get(repository, "")
+        if any(marker not in block for marker in markers):
+            fail(f"required-checks matrix metadata is not bound to {repository}", errors)
 
     template_text = read_text(ROOT / ".github" / "pull_request_template.md", errors)
     downstream_section = re.search(
