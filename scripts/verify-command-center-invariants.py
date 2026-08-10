@@ -709,8 +709,9 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
     mermaid_node_decoration = (
         r"(?:\s*(?:\[[^\n]*?\]|\([^\n]*?\)|\{[^\n]*?\}|@\{[^\n]*?\}|:::[A-Za-z0-9_-]+))*"
     )
+    mermaid_edge_segment = r"[ox<]?[-.=~]{2,}[>ox]?"
     mermaid_link = (
-        r"(?:[-.=~]{2,}\s+[^|>\n]+?\s+[-.=~]{2,}>?|[-.=~]{2,}>?)"
+        rf"(?:{mermaid_edge_segment}\s+[^|>\n]+?\s+{mermaid_edge_segment}|{mermaid_edge_segment})"
         r"(?:\|[^|\n]*\|)?"
     )
     direct_hoxline_proof_edge = re.compile(
