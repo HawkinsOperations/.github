@@ -190,6 +190,7 @@ The `.github` command-center route has a local invariant verifier for reviewer-r
 ```powershell
 cd ..\.github
 $env:PYTHONDONTWRITEBYTECODE = "1"
+python -m pip install --disable-pip-version-check PyYAML==6.0.2
 python -B scripts\verify-command-center-invariants.py
 ```
 
