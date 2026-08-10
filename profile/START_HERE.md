@@ -34,10 +34,11 @@ Outcome: source, validation, proof, product control, and rendering remain inspec
 
 ## 10-minute reviewer path
 
-Run one fixture-based Hoxline loop, then inspect the same authority handoffs used by the bounded HO-DET-001 example:
+From an empty reviewer workspace, clone the organization route and Hoxline side by side. Then run one fixture-based Hoxline loop and inspect the same authority handoffs used by the bounded HO-DET-001 example:
 
 ```powershell
-git clone https://github.com/HawkinsOperations/hoxline.git
+git clone https://github.com/HawkinsOperations/.github.git .github
+git clone https://github.com/HawkinsOperations/hoxline.git hoxline
 cd hoxline
 $env:PYTHONDONTWRITEBYTECODE = "1"
 python -B -m hoxline demo quickstart
@@ -47,9 +48,10 @@ Then compare the generated reviewer artifacts with the [HO-DET-001 source](https
 
 For the full seven-repository sweep, continue with the [extended Reproducible Reviewer Path](../architecture/REPRODUCIBLE_REVIEWER_PATH.md).
 
-For the organization routing and claim-boundary check:
+Continue from the Hoxline repository by returning to the sibling organization repository for its routing and claim-boundary check:
 
 ```powershell
+cd ..\.github
 $env:PYTHONDONTWRITEBYTECODE = "1"
 python -B scripts/verify-command-center-invariants.py
 ```

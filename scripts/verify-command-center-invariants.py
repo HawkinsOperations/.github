@@ -214,28 +214,34 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
     if not section_match:
         fail("profile/README.md missing parseable seven-repository authority table", errors)
         return
-    repository_links = re.findall(
-        r"https://github\.com/HawkinsOperations/([A-Za-z0-9_.-]+)",
+    authority_rows = re.findall(
+        r"^\|\s*\[`([^`]+)`\]\(https://github\.com/HawkinsOperations/([A-Za-z0-9_.-]+)\)\s*\|\s*([^|]+?)\s*\|",
         section_match.group(1),
+        re.MULTILINE,
     )
-    if tuple(repository_links) != SYSTEM_REPOSITORIES:
+    repository_links = tuple(repository for _label, repository, _role in authority_rows)
+    if repository_links != SYSTEM_REPOSITORIES:
         fail(
             "profile/README.md authority table must contain the exact seven repositories once in authority order",
             errors,
         )
 
-    required_role_language = (
-        "Organization routing and governance shell",
-        "Product and ProofOps control surface",
-        "Detection source truth",
-        "Controlled validation truth",
-        "Contracts and control mechanics",
-        "Evidence records and claim ceilings",
-        "Public rendering and presentation",
+    required_authority_rows = (
+        (".github", "Organization routing and governance shell"),
+        ("hoxline", "Product and ProofOps control surface"),
+        ("hawkinsoperations-detections", "Detection source truth"),
+        ("hawkinsoperations-validation", "Controlled validation truth"),
+        ("hawkinsoperations-platform", "Contracts and control mechanics"),
+        ("hawkinsoperations-proof", "Evidence records and claim ceilings"),
+        ("hawkinsoperations-website", "Public rendering and presentation"),
     )
-    for role in required_role_language:
-        if role.lower() not in section_match.group(1).lower():
-            fail(f"profile/README.md authority table missing role separation: {role}", errors)
+    for row, (expected_repository, expected_role) in zip(authority_rows, required_authority_rows):
+        label, repository, role = row
+        if label != expected_repository or repository != expected_repository or role.strip() != expected_role:
+            fail(
+                f"profile/README.md authority row mismatch for {expected_repository}: expected role {expected_role}",
+                errors,
+            )
 
 
 def check_project_boundaries(all_text: str, errors: list[str]) -> None:
