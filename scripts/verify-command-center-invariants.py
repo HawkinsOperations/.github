@@ -8,6 +8,8 @@ import re
 import sys
 from pathlib import Path
 
+import yaml
+
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST_PATH = ROOT / "governance" / "COMMAND_CENTER_INVARIANTS.json"
@@ -40,27 +42,33 @@ EXPECTED_INVARIANTS = {
     "standing_controls": ".github#8 and .github#10 remain standing controls",
     "standing_control_replacement": "Closing or replacing .github#8 or .github#10 requires explicit Raylee approval that names the replacement standing-control role",
 }
-EXPECTED_HOXLINE_PROMOTION_LAYER = '''  - layer_name: "hoxline_proofops_control"
-    ladder_position: 2
-    owner_repo: "hoxline"
-    allowed_inherited_truth:
-      - "Bounded source, validation, and proof context routed for reviewer inspection."
-      - "Claim Authority decisions within configured evidence ceilings."
-      - "Claim Firewall enforcement receipts."
-    blocked_inherited_truth:
-      - "Product control creates proof records or final approval."
-      - "Hoxline establishes runtime-active or signal-observed truth."
-      - "Claim routing grants merge, disposition, public-safe, or case-closure authority."
-    required_promotion_gates:
-      - "Owning source, validation, platform, and proof records remain separate."
-      - "Claim decisions preserve the configured proof ceiling."
-      - "Human review remains required for approval, merge, or promotion."
-    status_values:
-      - SOURCE_EXISTS
-      - CONTROLLED_TEST_VALIDATED
-      - BLOCKED
-      - HUMAN_REVIEW_REQUIRED
-    human_review_requirement: true'''
+EXPECTED_HOXLINE_PROMOTION_LAYER = {
+    "layer_name": "hoxline_proofops_control",
+    "ladder_position": 2,
+    "owner_repo": "hoxline",
+    "allowed_inherited_truth": [
+        "Bounded source, validation, and proof context routed for reviewer inspection.",
+        "Claim Authority decisions within configured evidence ceilings.",
+        "Claim Firewall enforcement receipts.",
+    ],
+    "blocked_inherited_truth": [
+        "Product control creates proof records or final approval.",
+        "Hoxline establishes runtime-active or signal-observed truth.",
+        "Claim routing grants merge, disposition, public-safe, or case-closure authority.",
+    ],
+    "required_promotion_gates": [
+        "Owning source, validation, platform, and proof records remain separate.",
+        "Claim decisions preserve the configured proof ceiling.",
+        "Human review remains required for approval, merge, or promotion.",
+    ],
+    "status_values": [
+        "SOURCE_EXISTS",
+        "CONTROLLED_TEST_VALIDATED",
+        "BLOCKED",
+        "HUMAN_REVIEW_REQUIRED",
+    ],
+    "human_review_requirement": True,
+}
 
 REQUIRED_TEXT = {
     "README.md": [
@@ -186,6 +194,21 @@ def read_text(path: Path, errors: list[str]) -> str:
         fail(f"missing file: {path.relative_to(ROOT).as_posix()}", errors)
         return ""
     return path.read_text(encoding="utf-8")
+
+
+def read_yaml_mapping(path: Path, errors: list[str]) -> dict:
+    text = read_text(path, errors)
+    if not text:
+        return {}
+    try:
+        document = yaml.safe_load(text)
+    except yaml.YAMLError as exc:
+        fail(f"{path.relative_to(ROOT).as_posix()} YAML parse failed: {exc}", errors)
+        return {}
+    if not isinstance(document, dict):
+        fail(f"{path.relative_to(ROOT).as_posix()} must contain a YAML mapping", errors)
+        return {}
+    return document
 
 
 def extract_contiguous_table_lines(section_text: str, expected_header: str) -> tuple[str, ...]:
@@ -408,8 +431,12 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         if actual_rows != expected_rows:
             fail(f"{rel} authority table must contain only the exact seven repository ownership rows", errors)
 
-    promotion_text = read_text(ROOT / "governance" / "PROMOTION_LADDER_CONTRACT.yml", errors)
-    promotion_owners = tuple(re.findall(r'^\s+owner_repo:\s+"([^"]+)"', promotion_text, re.MULTILINE))
+    promotion_document = read_yaml_mapping(ROOT / "governance" / "PROMOTION_LADDER_CONTRACT.yml", errors)
+    promotion_layers = promotion_document.get("layers", [])
+    if not isinstance(promotion_layers, list) or any(not isinstance(layer, dict) for layer in promotion_layers):
+        fail("promotion ladder layers must be a YAML list of mappings", errors)
+        promotion_layers = []
+    promotion_owners = tuple(layer.get("owner_repo") for layer in promotion_layers)
     expected_promotion_owners = (
         ".github",
         "hoxline",
@@ -421,57 +448,68 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
     )
     if promotion_owners != expected_promotion_owners:
         fail("promotion ladder must contain the exact seven repository owners in governed order", errors)
-    hoxline_layer = re.search(
-        r'^  - layer_name: "hoxline_proofops_control"\n.*?(?=\n  - layer_name:)',
-        promotion_text,
-        re.MULTILINE | re.DOTALL,
-    )
-    if not hoxline_layer or hoxline_layer.group(0).strip() != EXPECTED_HOXLINE_PROMOTION_LAYER.strip():
+    hoxline_layers = [layer for layer in promotion_layers if layer.get("owner_repo") == "hoxline"]
+    if len(hoxline_layers) != 1 or hoxline_layers[0] != EXPECTED_HOXLINE_PROMOTION_LAYER:
         fail("Hoxline promotion layer must preserve its exact position, boundaries, gates, statuses, and human-review requirement", errors)
 
-    required_checks_text = read_text(ROOT / "governance" / "ORG_REQUIRED_CHECKS_MATRIX.yml", errors)
-    required_checks_matches = re.findall(
-        r'^  - repo_name:\s+"([^"]+)"\n(.*?)(?=^  - repo_name:|^current_gap_notes:)',
-        required_checks_text,
-        re.MULTILINE | re.DOTALL,
-    )
-    required_checks_blocks = {repository: block for repository, block in required_checks_matches}
-    if len(required_checks_matches) != len(SYSTEM_REPOSITORIES) or set(required_checks_blocks) != set(SYSTEM_REPOSITORIES):
+    required_checks_document = read_yaml_mapping(ROOT / "governance" / "ORG_REQUIRED_CHECKS_MATRIX.yml", errors)
+    required_checks_repos = required_checks_document.get("repos", [])
+    if not isinstance(required_checks_repos, list) or any(not isinstance(repo, dict) for repo in required_checks_repos):
+        fail("required-checks repos must be a YAML list of mappings", errors)
+        required_checks_repos = []
+    required_checks_blocks = {repo.get("repo_name"): repo for repo in required_checks_repos}
+    if len(required_checks_repos) != len(SYSTEM_REPOSITORIES) or set(required_checks_blocks) != set(SYSTEM_REPOSITORIES):
         fail("required-checks matrix must contain each of the exact seven repositories once", errors)
     expected_required_check_markers = {
         ".github": (
-            'truth_surface: "Organization control-plane routing and reviewer entry point."',
-            '.github/workflows/command-center-invariants.yml',
+            "Organization control-plane routing and reviewer entry point.",
+            ".github/workflows/command-center-invariants.yml",
+            "command-center-invariants",
         ),
         "hoxline": (
-            'truth_surface: "Product / ProofOps control experience and Claim Authority capabilities."',
-            '.github/workflows/ci.yml',
-            'job_id: "hoxline-trust-boundaries"',
+            "Product / ProofOps control experience and Claim Authority capabilities.",
+            ".github/workflows/ci.yml",
+            "hoxline-trust-boundaries",
         ),
         "hawkinsoperations-detections": (
-            'truth_surface: "Detection source truth."',
-            '.github/workflows/baseline-detection-contract.yml',
+            "Detection source truth.",
+            ".github/workflows/baseline-detection-contract.yml",
+            "baseline-hero-artifact-contract",
         ),
         "hawkinsoperations-validation": (
-            'truth_surface: "Validation behavior, fixtures, reports, and claim-boundary scan truth."',
-            '.github/workflows/baseline-validation-contract.yml',
+            "Validation behavior, fixtures, reports, and claim-boundary scan truth.",
+            ".github/workflows/baseline-validation-contract.yml",
+            "baseline-hero-validation-contract",
         ),
         "hawkinsoperations-platform": (
-            'truth_surface: "Platform runtime/agent boundary contracts and status/plan visibility."',
-            '.github/workflows/local-gpu-triage-gate.yml',
+            "Platform runtime/agent boundary contracts and status/plan visibility.",
+            ".github/workflows/local-gpu-triage-gate.yml",
+            "local-gpu-triage-status",
         ),
         "hawkinsoperations-proof": (
-            'truth_surface: "Proof records, proof indexes, claim ceilings, and public-proof linkage."',
-            '.github/workflows/baseline-proof-integrity.yml',
+            "Proof records, proof indexes, claim ceilings, and public-proof linkage.",
+            ".github/workflows/baseline-proof-integrity.yml",
+            "baseline-hod001-proof-integrity",
         ),
         "hawkinsoperations-website": (
-            'truth_surface: "Public rendering of approved public state."',
-            'job_id: "build"',
+            "Public rendering of approved public state.",
+            ".github/workflows/governance-gate.yml",
+            "build",
         ),
     }
-    for repository, markers in expected_required_check_markers.items():
-        block = required_checks_blocks.get(repository, "")
-        if any(marker not in block for marker in markers):
+    for repository, (truth_surface, workflow_file, job_id) in expected_required_check_markers.items():
+        block = required_checks_blocks.get(repository, {})
+        workflow_files = block.get("workflow_file", []) if isinstance(block, dict) else []
+        job_contexts = block.get("job_check_context", []) if isinstance(block, dict) else []
+        observed_job_ids = {
+            context.get("job_id") for context in job_contexts if isinstance(context, dict)
+        } if isinstance(job_contexts, list) else set()
+        if (
+            block.get("truth_surface") != truth_surface
+            or not isinstance(workflow_files, list)
+            or workflow_file not in workflow_files
+            or job_id not in observed_job_ids
+        ):
             fail(f"required-checks matrix metadata is not bound to {repository}", errors)
 
     template_text = read_text(ROOT / ".github" / "pull_request_template.md", errors)

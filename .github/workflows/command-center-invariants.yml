@@ -34,5 +34,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install structural YAML verifier dependency
+        run: python -m pip install --disable-pip-version-check PyYAML==6.0.2
+
       - name: Verify command-center invariants
         run: python scripts/verify-command-center-invariants.py
