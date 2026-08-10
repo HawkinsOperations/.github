@@ -153,6 +153,21 @@ def read_text(path: Path, errors: list[str]) -> str:
     return path.read_text(encoding="utf-8")
 
 
+def extract_contiguous_table_lines(section_text: str, expected_header: str) -> tuple[str, ...]:
+    """Return every contiguous pipe-delimited row beginning at an exact header."""
+    section_lines = [line.strip() for line in section_text.splitlines()]
+    try:
+        header_index = section_lines.index(expected_header)
+    except ValueError:
+        return ()
+    table_lines: list[str] = []
+    for line in section_lines[header_index:]:
+        if not line or "|" not in line:
+            break
+        table_lines.append(line)
+    return tuple(table_lines)
+
+
 def iter_text_files() -> list[Path]:
     files: list[Path] = []
     for scope in TEXT_SCOPES:
@@ -232,10 +247,9 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         "| Explore the product | **[Hoxline](https://hawkinsoperations.com/hoxline/)** | ProofOps control for the AI security era: how AI-assisted work becomes tested, reviewed, blocked, or safe to claim. |",
         "| Verify source and receipts | **[GitHub reviewer route](START_HERE.md)** | Source, deterministic validation, proof records, contracts, governance, and reproducible checks across seven authority repositories. GitHub rendering is not proof. |",
     )
-    actual_door_lines = () if not door_section else tuple(
-        line.strip()
-        for line in door_section.group(1).splitlines()
-        if line.strip().startswith("|")
+    actual_door_lines = () if not door_section else extract_contiguous_table_lines(
+        door_section.group(1),
+        expected_door_lines[0],
     )
     if actual_door_lines != expected_door_lines:
         fail("profile/README.md must preserve the exact three-door routing table", errors)
@@ -324,11 +338,7 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         if not section_match:
             fail(f"{rel} missing parseable authority table: {heading}", errors)
             continue
-        table_lines = [
-            line.strip()
-            for line in section_match.group(1).splitlines()
-            if line.strip().startswith("|")
-        ]
+        table_lines = extract_contiguous_table_lines(section_match.group(1), expected_header)
         if not table_lines or table_lines[0] != expected_header:
             fail(f"{rel} authority table must preserve its exact ownership-boundary headers", errors)
             continue
