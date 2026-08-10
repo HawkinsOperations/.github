@@ -567,14 +567,12 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         ".github": (
             "Organization control-plane routing and reviewer entry point.",
             (".github/workflows/command-center-invariants.yml",),
-            "command-center-invariants",
-            "command-center-invariants",
+            (("command-center-invariants", "command-center-invariants"),),
         ),
         "hoxline": (
             "Product / ProofOps control experience and Claim Authority capabilities.",
             (".github/workflows/ci.yml",),
-            "ci",
-            "test",
+            (("ci", "test"),),
         ),
         "hawkinsoperations-detections": (
             "Detection source truth.",
@@ -582,8 +580,10 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
                 ".github/workflows/baseline-detection-contract.yml",
                 ".github/workflows/governance-gate.yml",
             ),
-            "baseline-detection-contract",
-            "baseline-hero-artifact-contract",
+            (
+                ("baseline-detection-contract", "baseline-hero-artifact-contract"),
+                ("Governance Gate", "required-files"),
+            ),
         ),
         "hawkinsoperations-validation": (
             "Validation behavior, fixtures, reports, and claim-boundary scan truth.",
@@ -599,8 +599,18 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
                 ".github/workflows/security-onion-visibility-contract.yml",
                 ".github/workflows/cross-repo-claim-parity.yml",
             ),
-            "baseline-validation-contract",
-            "baseline-hero-validation-contract",
+            (
+                ("baseline-validation-contract", "baseline-hero-validation-contract"),
+                ("Governance Gate", "required-files"),
+                ("HO-DET-012 Fixture Loop", "ho-det-012-fixture-loop"),
+                ("ID-DET-001 Fixture Loop", "id-det-001-fixture-loop"),
+                ("HO-DET-001 Proof Loop", "ho-det-001-proof-loop"),
+                ("Public HO-DET-001 Controlled-Test Report", "public-ho-det-001-controlled-test-report"),
+                ("AWS-DET-001 Fixture Loop", "aws-det-001-fixture-loop"),
+                ("HO-DET-011 Fixture Loop", "ho-det-011-fixture-loop"),
+                ("security-onion-visibility-contract", "security-onion-visibility-contract"),
+                ("Cross Repo Claim Parity", "cross-repo-claim-parity"),
+            ),
         ),
         "hawkinsoperations-platform": (
             "Platform runtime/agent boundary contracts and status/plan visibility.",
@@ -608,8 +618,11 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
                 ".github/workflows/governance-gate.yml",
                 ".github/workflows/local-gpu-triage-gate.yml",
             ),
-            "Local GPU Triage Gate",
-            "local-gpu-triage-status",
+            (
+                ("Governance Gate", "required-files"),
+                ("Governance Gate", "ho-det-011-case-packet"),
+                ("Local GPU Triage Gate", "local-gpu-triage-status"),
+            ),
         ),
         "hawkinsoperations-proof": (
             "Proof records, proof indexes, claim ceilings, and public-proof linkage.",
@@ -619,17 +632,23 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
                 ".github/workflows/ho-det-001-proof-integrity.yml",
                 ".github/workflows/publish-proof-release.yml",
             ),
-            "baseline-proof-integrity",
-            "baseline-hod001-proof-integrity",
+            (
+                ("baseline-proof-integrity", "baseline-hod001-proof-integrity"),
+                ("Governance Gate", "required-files"),
+                ("ho-det-001-proof-integrity", "ho-det-001-proof-integrity"),
+                ("Proof Pack 001 Release Check", "proof-pack-001-release-check"),
+            ),
         ),
         "hawkinsoperations-website": (
             "Public rendering of approved public state.",
             (".github/workflows/governance-gate.yml",),
-            "Governance Gate",
-            "build",
+            (
+                ("Governance Gate", "required-files"),
+                ("Governance Gate", "build"),
+            ),
         ),
     }
-    for repository, (truth_surface, expected_workflow_files, workflow_name, job_id) in expected_required_check_markers.items():
+    for repository, (truth_surface, expected_workflow_files, expected_workflow_jobs) in expected_required_check_markers.items():
         block = required_checks_blocks.get(repository, {})
         workflow_files = block.get("workflow_file", []) if isinstance(block, dict) else []
         job_contexts = block.get("job_check_context", []) if isinstance(block, dict) else []
@@ -644,7 +663,7 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
             block.get("truth_surface") != truth_surface
             or not isinstance(workflow_files, list)
             or tuple(workflow_files) != expected_workflow_files
-            or (workflow_name, job_id) not in observed_workflow_jobs
+            or observed_workflow_jobs != set(expected_workflow_jobs)
         ):
             fail(f"required-checks matrix metadata is not bound to {repository}", errors)
         declared_pairs: list[tuple[str, str]] = []
@@ -718,7 +737,11 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         rf"^\s*hox(?:line)?\b{mermaid_node_decoration}\s*{mermaid_link}\s*proof\b",
         re.MULTILINE,
     )
-    if direct_hoxline_proof_edge.search(system_map_text):
+    compound_hoxline_proof_edge = re.compile(
+        rf"^\s*hox(?:line)?\b{mermaid_node_decoration}\s*{mermaid_link}\s*[^\n]*&\s*(?:proof|website)\b",
+        re.MULTILINE,
+    )
+    if direct_hoxline_proof_edge.search(system_map_text) or compound_hoxline_proof_edge.search(system_map_text):
         fail("wiki/11_ORG_SYSTEM_MAP.md must not bypass platform between Hoxline and proof", errors)
     if re.search(r"^\| (?:Total ledger events|Total cases|Public-safe count|Closed-case count) \|", system_map_text, re.MULTILINE):
         fail("wiki/11_ORG_SYSTEM_MAP.md must route changing ledger values instead of copying counts", errors)
