@@ -557,11 +557,13 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         block = required_checks_blocks.get(repository, {})
         workflow_files = block.get("workflow_file", []) if isinstance(block, dict) else []
         job_contexts = block.get("job_check_context", []) if isinstance(block, dict) else []
+        if not isinstance(job_contexts, list) or any(not isinstance(context, dict) for context in job_contexts):
+            fail(f"{repository} job_check_context must be a list of mappings", errors)
+            job_contexts = []
         observed_workflow_jobs = {
             (context.get("workflow_name"), context.get("job_id"))
             for context in job_contexts
-            if isinstance(context, dict)
-        } if isinstance(job_contexts, list) else set()
+        }
         if (
             block.get("truth_surface") != truth_surface
             or not isinstance(workflow_files, list)
@@ -569,6 +571,28 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
             or (workflow_name, job_id) not in observed_workflow_jobs
         ):
             fail(f"required-checks matrix metadata is not bound to {repository}", errors)
+        declared_pairs: list[tuple[str, str]] = []
+        for declaration_field in ("required_checks_observed", "important_non_required_checks"):
+            declarations = block.get(declaration_field, []) if isinstance(block, dict) else []
+            if not isinstance(declarations, list) or any(not isinstance(item, str) for item in declarations):
+                fail(f"{repository} {declaration_field} must be a list of workflow / job strings", errors)
+                continue
+            for declaration in declarations:
+                match = re.match(r"^(.+?) / ([A-Za-z0-9_.-]+)(?:\s|$)", declaration)
+                if not match:
+                    fail(f"{repository} {declaration_field} has an unparseable workflow / job declaration", errors)
+                    continue
+                declared_pairs.append((match.group(1), match.group(2)))
+        if len(declared_pairs) != len(set(declared_pairs)):
+            fail(f"{repository} check declarations contain duplicate workflow / job pairs", errors)
+        actual_pairs = [
+            (context.get("workflow_name"), context.get("job_id"))
+            for context in job_contexts
+        ]
+        if len(actual_pairs) != len(set(actual_pairs)):
+            fail(f"{repository} job_check_context contains duplicate workflow / job pairs", errors)
+        if set(actual_pairs) != set(declared_pairs):
+            fail(f"{repository} declared checks and structured workflow / job contexts must match exactly", errors)
 
     template_text = read_text(ROOT / ".github" / "pull_request_template.md", errors)
     downstream_section = re.search(
