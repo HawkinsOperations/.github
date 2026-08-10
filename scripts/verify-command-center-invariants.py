@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 import sys
@@ -23,6 +24,9 @@ SYSTEM_REPOSITORIES = (
     "hawkinsoperations-proof",
     "hawkinsoperations-website",
 )
+# Fingerprint of the complete reviewed seven-layer mapping. Any field, list item,
+# gate, status, boundary, or order change requires an intentional verifier update.
+EXPECTED_PROMOTION_LAYERS_SHA256 = "4001c331113644ae97beb78e0fc355c84164e4e1bf5d48c7e628ec21496e2785"
 EXPECTED_INVARIANTS = {
     "github_repo_role": ".github is reviewer routing and governance shell only",
     "presentation_route": "hawkinsoperations.com is the Website Reviewer Guide and presentation surface",
@@ -474,6 +478,15 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
     if not isinstance(promotion_layers, list) or any(not isinstance(layer, dict) for layer in promotion_layers):
         fail("promotion ladder layers must be a YAML list of mappings", errors)
         promotion_layers = []
+    promotion_layers_payload = json.dumps(
+        promotion_layers,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+    ).encode("utf-8")
+    promotion_layers_fingerprint = hashlib.sha256(promotion_layers_payload).hexdigest()
+    if promotion_layers_fingerprint != EXPECTED_PROMOTION_LAYERS_SHA256:
+        fail("promotion ladder complete seven-layer contract does not match the reviewed mapping", errors)
     promotion_owners = tuple(layer.get("owner_repo") for layer in promotion_layers)
     expected_promotion_owners = (
         ".github",
