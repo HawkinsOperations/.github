@@ -225,11 +225,20 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         profile_text,
         re.DOTALL,
     )
-    if not door_section or not re.search(
-        r"\*\*\[Website / Reviewer Guide\]\(https://hawkinsoperations\.com/\)\*\*",
-        door_section.group(1),
-    ):
-        fail("profile/README.md must bind the Website / Reviewer Guide door to the stable Website route", errors)
+    expected_door_lines = (
+        "| If you want to... | Start here | What that surface does |",
+        "|---|---|---|",
+        "| Understand or present the complete system | **[Website / Reviewer Guide](https://hawkinsoperations.com/)** · [enter presentation mode](https://hawkinsoperations.com/?present=1&scene=1) | Visual walkthrough for a podcast, brown bag, show-and-tell, technical review, or self-guided inspection. Website rendering is not proof. |",
+        "| Explore the product | **[Hoxline](https://hawkinsoperations.com/hoxline/)** | ProofOps control for the AI security era: how AI-assisted work becomes tested, reviewed, blocked, or safe to claim. |",
+        "| Verify source and receipts | **[GitHub reviewer route](START_HERE.md)** | Source, deterministic validation, proof records, contracts, governance, and reproducible checks across seven authority repositories. GitHub rendering is not proof. |",
+    )
+    actual_door_lines = () if not door_section else tuple(
+        line.strip()
+        for line in door_section.group(1).splitlines()
+        if line.strip().startswith("|")
+    )
+    if actual_door_lines != expected_door_lines:
+        fail("profile/README.md must preserve the exact three-door routing table", errors)
     if "no eighth" not in profile:
         fail("profile/README.md missing no-eighth-repository boundary", errors)
 
