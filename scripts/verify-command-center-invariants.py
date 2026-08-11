@@ -362,24 +362,6 @@ def nested_markdown_fence_opening(line: str) -> re.Match[str] | None:
     return match
 
 
-def has_unclosed_inline_code_run(line: str) -> bool:
-    active_length = 0
-    for match in re.finditer(r"`+", line):
-        backslashes = 0
-        cursor = match.start() - 1
-        while cursor >= 0 and line[cursor] == "\\":
-            backslashes += 1
-            cursor -= 1
-        if backslashes % 2:
-            continue
-        run_length = len(match.group(0))
-        if not active_length:
-            active_length = run_length
-        elif run_length == active_length:
-            active_length = 0
-    return bool(active_length)
-
-
 def is_complete_type7_html_tag(text: str) -> bool:
     """Recognize one complete CommonMark type-7 opening or closing tag."""
     tag_name = r"[A-Za-z][A-Za-z0-9-]*"
@@ -913,10 +895,6 @@ def strip_markdown_code_blocks(text: str) -> str:
             output.append("\n" if line.endswith("\n") else "")
             paragraph_open = False
             continue
-
-        if has_unclosed_inline_code_run(line):
-            output.append("\n" if line.endswith("\n") else "")
-            break
 
         delimited_html_start = parse_markdown_delimited_html_block(line)
         if delimited_html_start is not None:
