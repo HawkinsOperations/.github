@@ -284,6 +284,17 @@ AUTHORITY_COLLAPSE_PATTERNS = (
             re.IGNORECASE,
         ),
     ),
+    (
+        "non-human passive authority action",
+        re.compile(
+            r"\b(?:(?:merges?|claims?|cases?)\s+(?:are|is)\s+"
+            r"(?:approved|authorized|promoted|closed)|"
+            r"(?:detection\s+|incident\s+)?disposition\s+(?:is|are)\s+"
+            r"(?:decided|approved|authorized))\s+by\s+"
+            r"(?:the\s+)?(?:AI|hoxline|website|github(?:\s+organization)?|\.github)\b",
+            re.IGNORECASE,
+        ),
+    ),
 )
 
 REJECTED_WORDING_LABEL = r"(?:Rejected|Blocked|Forbidden) wording:"
@@ -990,7 +1001,7 @@ def valid_markdown_inline_link_target(text: str) -> bool:
             continue
         if character.isspace():
             break
-        if ord(character) < 0x20 or character in "<>":
+        if ord(character) < 0x20 or ord(character) == 0x7F or character in "<>":
             return False
         cursor += 1
     return valid_markdown_link_title(content[cursor:])
@@ -1076,9 +1087,11 @@ def strip_markdown_inline_code_spans(text: str) -> str:
             continue
 
         content_start = opening_start + len(opening_run)
+        closing_start = 0
         closing_end = 0
         for closing in re.finditer(r"`+", text[content_start:]):
             if len(closing.group(0)) == len(opening_run):
+                closing_start = content_start + closing.start()
                 closing_end = content_start + closing.end()
                 break
         if not closing_end:
@@ -1086,11 +1099,24 @@ def strip_markdown_inline_code_spans(text: str) -> str:
             cursor = content_start
             continue
 
+        left_word = opening_start > 0 and bool(re.match(r"\w", text[opening_start - 1]))
+        right_word = closing_end < len(text) and bool(re.match(r"\w", text[closing_end]))
         code_span = text[opening_start:closing_end]
-        output.append("".join(
-            character if character in "\r\n" else " "
-            for character in code_span
-        ))
+        rendered_content = re.sub(r"\r?\n", " ", text[content_start:closing_start])
+        if (
+            len(rendered_content) >= 2
+            and rendered_content.startswith(" ")
+            and rendered_content.endswith(" ")
+            and rendered_content.strip(" ")
+        ):
+            rendered_content = rendered_content[1:-1]
+        if (left_word or right_word) and not re.search(r"\s", rendered_content):
+            output.append(rendered_content)
+        else:
+            output.append("".join(
+                character if character in "\r\n" else " "
+                for character in code_span
+            ))
         cursor = closing_end
     return "".join(output)
 
