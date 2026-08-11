@@ -2000,31 +2000,68 @@ def contains_boundary_marker(text: str) -> bool:
 
 
 def claim_has_bound_qualifier(context: str, claim_start: int, claim_end: int) -> bool:
-    """Require a clause-level or collective qualifier for a blocked claim."""
-    clause_start = context.rfind(",", 0, claim_start) + 1
-    clause_end = context.find(",", claim_end)
-    if clause_end < 0:
-        clause_end = len(context)
-    if contains_boundary_marker(context[clause_start:clause_end]):
-        return True
-
+    """Require an explicit negative construction tied to a blocked claim."""
     prefix = context[:claim_start]
-    strong_prefix = re.compile(
-        r"(?<![A-Za-z])(?:does not|do not|must not|may not|cannot|without|"
-        r"neither|fails closed|blocked|forbidden|restricted|exclude(?:s|d)?|"
-        r"must avoid|not)(?![A-Za-z])",
+    governing_prefix = re.compile(
+        r"\b(?:(?:does not|do not|must not|may not|cannot)"
+        r"(?:\s+[a-z-]+ly)?\s+(?:be\s+)?|fails closed (?:to|for)\s+|"
+        r"is forbidden to\s+|is blocked from\s+)"
+        r"(?:establish|prove|support|authorize|grant|promote|claim|assert|"
+        r"mean|constitute|show|indicate|confirm|create|make|decide|control|"
+        r"own|publish|report|describe|treat|become)(?:s|ed|ing)?\b"
+        r"(?P<governed_tail>[^.!?;]{0,500})$",
         re.IGNORECASE,
     )
-    if strong_prefix.search(prefix):
+    immediate_prefix = re.compile(
+        r"(?:\b(?:is|are|was|were|be|become|becomes|remain|remains)\s+)?"
+        r"(?:not(?:\s+[a-z-]+ly)?|without|no)\s*$|"
+        r"\b(?:blocked|rejected|forbidden|unsupported|unproven|withheld|"
+        r"restricted)\s*(?:claim|wording|status|state)?\s*[:\-—]\s*$",
+        re.IGNORECASE,
+    )
+    contextual_prefix = re.compile(
+        r"\bno\s+[a-z0-9_/-]+(?:\s+[a-z0-9_/-]+){0,10}\s*$|"
+        r"\bblocked claims?\s+(?:needs?|requires?)\b[^.!?;]{0,500}$|"
+        r"\bfails closed for\b[^.!?;]{0,500}$|"
+        r"\bwithout\s+(?:becoming|creating|establishing|proving|promoting)\b"
+        r"[^.!?;]{0,300}$|"
+        r"\bneither\b[^.!?;]{0,100}\b(?:proves?|establishes?|supports?|"
+        r"authorizes?|grants?|promotes?)\b[^.!?;]{0,500}$",
+        re.IGNORECASE,
+    )
+    governing_match = governing_prefix.search(prefix)
+    unrelated_clause = re.compile(
+        r"(?:,|\b(?:and|but|or)\b)\s+"
+        r"(?:[a-z0-9_.-]+\s+){0,4}"
+        r"(?:is|are|was|were|does|do|has|have|can|may|will|must)\b",
+        re.IGNORECASE,
+    )
+    if governing_match and not unrelated_clause.search(
+        governing_match.group("governed_tail")
+    ):
+        return True
+    if immediate_prefix.search(prefix) or contextual_prefix.search(prefix):
         return True
 
     suffix = context[claim_end:]
+    direct_suffix = re.compile(
+        r"^\s+(?:status\s*(?::|remains?|is)\s*(?:not_public_safe|"
+        r"separate|blocked|unproven|withheld)\b|"
+        r"requires?\s+(?:reviewed?|review|evidence|approval|privacy|stale)\b|"
+        r"(?:remains?|is|are|was|were|must remain)\s+"
+        r"(?:not\s+)?(?:blocked|unproven|unestablished|unsupported|withheld|"
+        r"unapproved|separate|required)\b)",
+        re.IGNORECASE,
+    )
+    if direct_suffix.search(suffix):
+        return True
+
     collective_qualifier = re.compile(
         r"\b(?:claims?|statuses?|wording|evidence|proof|coverage|operation|"
-        r"behavior|disposition|closure|content|material|routes?)\b"
+        r"behavior|disposition|closure|content|material|routes?|promotion)\b"
         r"[^.!?;]{0,160}\b(?:remain|remains|requires?|are|is|must)\b"
         r"[^.!?;]{0,60}\b(?:blocked|unproven|withheld|reviewed|approved|"
-        r"required|not|unsafe|separate)\b",
+        r"required|not|unsafe|separate|gated|avoid)\b",
         re.IGNORECASE,
     )
     return bool(collective_qualifier.search(suffix))
