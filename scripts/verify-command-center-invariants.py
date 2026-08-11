@@ -443,6 +443,18 @@ def strip_markdown_code_blocks(text: str) -> str:
     ) -> tuple[str, str, str, bool]:
         cursor = 0
         contains_raw_code = bool(active_tag)
+        if active_tag in {"script", "style", "textarea"}:
+            closing = re.search(
+                rf"</{re.escape(active_tag)}[ \t]*>",
+                line,
+                re.IGNORECASE,
+            )
+            if not closing:
+                return active_tag, "", "", True
+            cursor = closing.end()
+            active_tag = ""
+            tag_buffer = ""
+            attribute_quote = ""
         while cursor < len(line):
             if not tag_buffer:
                 opening = re.search(r"<(?=[A-Za-z/!?])", line[cursor:])
