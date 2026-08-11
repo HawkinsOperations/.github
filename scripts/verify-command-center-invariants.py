@@ -1764,6 +1764,28 @@ def normalize_markdown_link_text(line: str) -> str:
     return "".join(output)
 
 
+def iter_reviewer_claim_units(lines: list[str]) -> list[tuple[int, str]]:
+    """Join soft Markdown line breaks within blank-delimited visible units."""
+    units: list[tuple[int, str]] = []
+    current: list[str] = []
+    start_line = 1
+    for line_no, line in enumerate(lines, start=1):
+        if not line.strip():
+            if current:
+                units.append((start_line, " ".join(current)))
+                current = []
+            continue
+        if not current:
+            start_line = line_no
+        visible_line = line.strip()
+        visible_line = re.sub(r"^(?:>[ \t]?)+", "", visible_line)
+        visible_line = re.sub(r"^(?:[-+*]|\d{1,9}[.)])[ \t]+", "", visible_line)
+        current.append(visible_line.strip())
+    if current:
+        units.append((start_line, " ".join(current)))
+    return units
+
+
 def check_semantic_authority_collapse(text_files: list[Path], errors: list[str]) -> None:
     """Reject unbounded authority promotion in reviewer-visible Markdown text."""
     for path in text_files:
@@ -1771,13 +1793,13 @@ def check_semantic_authority_collapse(text_files: list[Path], errors: list[str])
             continue
         rel = path.relative_to(ROOT).as_posix()
         semantic_lines = read_reviewer_semantic_text(path, errors).splitlines()
-        for line_no, line in enumerate(semantic_lines, start=1):
-            claim_line = normalize_markdown_link_text(line)
+        for line_no, claim_unit in iter_reviewer_claim_units(semantic_lines):
+            claim_line = normalize_markdown_link_text(claim_unit)
             claim_line = re.sub(r"[*_~`]+", "", claim_line)
             for label, pattern in AUTHORITY_COLLAPSE_PATTERNS:
                 if not pattern.search(claim_line):
                     continue
-                if not EXPLICIT_REJECTED_EXAMPLE_PREFIX.match(line):
+                if not EXPLICIT_REJECTED_EXAMPLE_PREFIX.match(claim_unit):
                     fail(f"{rel}:{line_no} uses unbounded authority-collapse wording: {label}", errors)
 
 
