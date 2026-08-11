@@ -292,11 +292,7 @@ def is_complete_type7_html_tag(text: str) -> bool:
     return bool(re.fullmatch(rf"(?:{opening}|{closing})[ \t]*", text))
 
 
-def parse_markdown_html_block_container(
-    line: str,
-    *,
-    allow_type7: bool = True,
-) -> tuple[int, int] | None:
+def parse_markdown_container_prefix(line: str) -> tuple[int, int, int] | None:
     content = line.rstrip("\r\n")
     cursor = 0
     quote_depth = 0
@@ -320,6 +316,36 @@ def parse_markdown_html_block_container(
             cursor += list_marker.end()
             continue
         break
+    return quote_depth, list_indent, cursor
+
+
+def parse_markdown_delimited_html_block(line: str) -> tuple[str, int, int] | None:
+    """Recognize CommonMark HTML blocks closed by a non-tag delimiter."""
+    content = line.rstrip("\r\n")
+    prefix = parse_markdown_container_prefix(line)
+    if prefix is None:
+        return None
+    quote_depth, list_indent, cursor = prefix
+    remainder = content[cursor:]
+    if remainder.startswith("<?"):
+        return "?>", quote_depth, list_indent
+    if remainder.startswith("<![CDATA["):
+        return "]]>", quote_depth, list_indent
+    if re.match(r"<![A-Z]", remainder):
+        return ">", quote_depth, list_indent
+    return None
+
+
+def parse_markdown_html_block_container(
+    line: str,
+    *,
+    allow_type7: bool = True,
+) -> tuple[int, int] | None:
+    content = line.rstrip("\r\n")
+    prefix = parse_markdown_container_prefix(line)
+    if prefix is None:
+        return None
+    quote_depth, list_indent, cursor = prefix
     remainder = content[cursor:]
     type6_opening = re.match(
         r"</?(?:address|article|aside|base|basefont|blockquote|body|caption|center|col|"
@@ -537,6 +563,7 @@ def strip_markdown_code_blocks(text: str) -> str:
     html_tag_buffer = ""
     html_attribute_quote = ""
     html_block_container: tuple[int, int] | None = None
+    html_delimited_block: tuple[str, int, int] | None = None
     paragraph_open = False
 
     def advance_html_code_state(
@@ -614,6 +641,16 @@ def strip_markdown_code_blocks(text: str) -> str:
         return active_tag, tag_buffer, attribute_quote, contains_raw_code
 
     for line in text.splitlines(keepends=True):
+        if html_delimited_block is not None:
+            terminator, quote_depth, list_indent = html_delimited_block
+            if line_belongs_to_markdown_container(line, quote_depth, list_indent):
+                output.append("\n" if line.endswith("\n") else "")
+                if terminator in line:
+                    html_delimited_block = None
+                    paragraph_open = False
+                continue
+            html_delimited_block = None
+
         if html_block_container is not None:
             quote_depth, list_indent = html_block_container
             if line_belongs_to_markdown_container(line, quote_depth, list_indent):
@@ -668,6 +705,15 @@ def strip_markdown_code_blocks(text: str) -> str:
         if has_unclosed_inline_code_run(line):
             output.append("\n" if line.endswith("\n") else "")
             break
+
+        delimited_html_start = parse_markdown_delimited_html_block(line)
+        if delimited_html_start is not None:
+            terminator, quote_depth, list_indent = delimited_html_start
+            if terminator not in line[line.find("<"):]:
+                html_delimited_block = (terminator, quote_depth, list_indent)
+            output.append("\n" if line.endswith("\n") else "")
+            paragraph_open = False
+            continue
 
         html_code_tag, html_tag_buffer, html_attribute_quote, contains_raw_code = advance_html_code_state(
             line,
