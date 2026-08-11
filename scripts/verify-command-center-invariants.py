@@ -442,11 +442,12 @@ def strip_markdown_code_blocks(text: str) -> str:
             output.append("\n" if line.endswith("\n") else "")
             continue
 
-        html_code_tag, contains_raw_code = advance_html_code_state(line, "")
-        if contains_raw_code:
+        if re.match(r"^(?: {4}|\t)", line):
             output.append("\n" if line.endswith("\n") else "")
             continue
-        if re.match(r"^(?: {4}|\t)", line):
+
+        html_code_tag, contains_raw_code = advance_html_code_state(line, "")
+        if contains_raw_code:
             output.append("\n" if line.endswith("\n") else "")
             continue
         output.append(line)
