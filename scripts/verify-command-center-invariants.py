@@ -291,7 +291,8 @@ AUTHORITY_COLLAPSE_PATTERNS = (
             r"(?:(?:can|may|will|must|could|might|should|would)\s+|"
             r"(?:is|are|was|were)(?:\s+being)?\s+|"
             r"(?:has|have|had)(?:\s+been)?\s+)?"
-            r"(?:(?:approv|authoriz)(?:e|es|ed|ing)\s+merges?|"
+            r"(?:(?:approv|authoriz)(?:e|es|ed|ing)\s+"
+            r"(?:merges?|pull\s+requests?)|"
             r"merg(?:e|es|ed|ing)\s+pull\s+requests?|"
             r"(?:decid|approv|authoriz)(?:e|es|ed|ing)\s+"
             r"(?:detection\s+|incident\s+)?disposition|"
@@ -307,7 +308,8 @@ AUTHORITY_COLLAPSE_PATTERNS = (
             r"(?:(?:is|was|were)(?:\s+being)?|(?:has|have|had)\s+been|"
             r"(?:can|may|will|must|could|might|should|would)\s+be)\s+"
             r"(?:authorized|delegated|empowered|permitted|allowed)\s+to\s+"
-            r"(?:(?:approve|authorize)\s+merges?|merge\s+pull\s+requests?|"
+            r"(?:(?:approve|authorize)\s+(?:merges?|pull\s+requests?)|"
+            r"merge\s+pull\s+requests?|"
             r"(?:decide|approve|authorize)\s+(?:detection\s+|incident\s+)?"
             r"disposition|close\s+cases?|promote\s+claims?)\b|"
             r"\b(?:merge|approval|disposition|claim\s+promotion|case\s+closure)\s+"
@@ -325,13 +327,15 @@ AUTHORITY_COLLAPSE_PATTERNS = (
             r"(?:can|may|will|must|could|might|should|would)\s+be)\s+"
             r"(?:granted|given|assigned|delegated)\s+(?:the\s+)?"
             r"(?:authority|permission|power)\s+to\s+"
-            r"(?:(?:approve|authorize)\s+merges?|merge\s+pull\s+requests?|"
+            r"(?:(?:approve|authorize)\s+(?:merges?|pull\s+requests?)|"
+            r"merge\s+pull\s+requests?|"
             r"(?:decide|approve|authorize)\s+(?:detection\s+|incident\s+)?"
             r"disposition|close\s+cases?|promote\s+claims?)\b|"
             r"\b(?:AI|hoxline|website|github(?:\s+organization)?|\.github)\s+"
             r"(?:has|holds|possesses)\s+(?:the\s+)?"
             r"(?:authority|permission|power)\s+to\s+"
-            r"(?:(?:approve|authorize)\s+merges?|merge\s+pull\s+requests?|"
+            r"(?:(?:approve|authorize)\s+(?:merges?|pull\s+requests?)|"
+            r"merge\s+pull\s+requests?|"
             r"(?:decide|approve|authorize)\s+(?:detection\s+|incident\s+)?"
             r"disposition|close\s+cases?|promote\s+claims?)\b",
             re.IGNORECASE,
@@ -340,7 +344,7 @@ AUTHORITY_COLLAPSE_PATTERNS = (
     (
         "non-human passive authority action",
         re.compile(
-            r"\b(?:(?:merges?|claims?|cases?)\s+(?:"
+            r"\b(?:(?:(?:merges?|pull\s+requests?|claims?|cases?))\s+(?:"
             r"(?:is|are|was|were)(?:\s+being)?|"
             r"(?:has|have|had)\s+been(?:\s+being)?|"
             r"(?:can|may|will|must|could|might|should|would)\s+be(?:\s+being)?)\s+"
@@ -1668,7 +1672,7 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         )
         html_heading_count = 0
         for html_heading in re.finditer(
-            r"<h2\b[^>]*>(.*?)</h2\s*>",
+            r"<h2\b(?:[^>\"']+|\"[^\"]*\"|'[^']*')*>(.*?)</h2\s*>",
             html_heading_source,
             re.IGNORECASE | re.DOTALL,
         ):
