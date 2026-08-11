@@ -779,8 +779,9 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
     )
     mermaid_node_ref = rf"[A-Za-z_][A-Za-z0-9_-]*{mermaid_node_decoration}"
     mermaid_node_group = rf"{mermaid_node_ref}(?:\s*&\s*{mermaid_node_ref})*"
+    mermaid_edge_id = r"(?:\s+[A-Za-z_][A-Za-z0-9_-]*@)?"
     mermaid_edge_statement = re.compile(
-        rf"(?=(?P<left>{mermaid_node_group})\s*{mermaid_link}\s*(?P<right>{mermaid_node_group}))"
+        rf"(?=(?P<left>{mermaid_node_group}){mermaid_edge_id}\s*{mermaid_link}\s*(?P<right>{mermaid_node_group}))"
     )
     mermaid_node_identifier = re.compile(
         rf"(?:^|&)\s*([A-Za-z_][A-Za-z0-9_-]*){mermaid_node_decoration}"
