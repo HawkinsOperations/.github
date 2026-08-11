@@ -320,7 +320,7 @@ def strip_html_comments(text: str) -> str:
                 output.append(line)
                 line_offset += len(line)
                 continue
-            if re.match(r"^(?: {4}|\t)", line):
+            if re.match(r"^(?: {4}| {0,3}\t)", line):
                 output.append(line)
                 line_offset += len(line)
                 continue
@@ -442,7 +442,7 @@ def strip_markdown_code_blocks(text: str) -> str:
             output.append("\n" if line.endswith("\n") else "")
             continue
 
-        if re.match(r"^(?: {4}|\t)", line):
+        if re.match(r"^(?: {4}| {0,3}\t)", line):
             output.append("\n" if line.endswith("\n") else "")
             continue
 
