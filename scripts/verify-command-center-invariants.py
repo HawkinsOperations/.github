@@ -1791,6 +1791,9 @@ def iter_reviewer_claim_units(lines: list[str]) -> list[tuple[int, str]]:
             quote_depth += 1
             visible_line = visible_line[quote_marker.end():]
             quote_marker = re.match(r"^ {0,3}>[ \t]?", visible_line)
+        if not visible_line.strip():
+            flush()
+            continue
         leading_spaces = len(visible_line) - len(visible_line.lstrip(" "))
         list_marker = re.match(r"^ {0,3}(?:[-+*]|\d{1,9}[.)])[ \t]+", visible_line)
         standalone_structure = (
