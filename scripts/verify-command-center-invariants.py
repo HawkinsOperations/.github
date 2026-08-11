@@ -253,11 +253,35 @@ def strip_html_comments(text: str) -> str:
     fence_length = 0
     line_offset = 0
 
+    def valid_fence_opening(line: str) -> re.Match[str] | None:
+        match = re.match(r"^[ \t]{0,3}(`{3,}|~{3,})", line)
+        if match and match.group(1).startswith("`") and "`" in line[match.end():]:
+            return None
+        return match
+
+    def interrupts_paragraph(line: str) -> bool:
+        content = line.rstrip("\r\n")
+        if not content.strip():
+            return True
+        if valid_fence_opening(content):
+            return True
+        return bool(
+            re.match(
+                r"^[ \t]{0,3}(?:#{1,6}(?:[ \t]+|$)|>|(?:[-+*]|\d{1,9}[.)])[ \t]+|"
+                r"<!--|<\?|<![A-Z]|<!\[CDATA\[)",
+                content,
+                re.IGNORECASE,
+            )
+        )
+
     def has_matching_tick_run(start: int, length: int) -> bool:
         remainder = text[start:]
-        paragraph_break = re.search(r"\r?\n[ \t]*\r?\n", remainder)
-        if paragraph_break:
-            remainder = remainder[:paragraph_break.start()]
+        offset = 0
+        for line_number, candidate_line in enumerate(remainder.splitlines(keepends=True)):
+            if line_number and interrupts_paragraph(candidate_line):
+                remainder = remainder[:offset]
+                break
+            offset += len(candidate_line)
         return any(
             len(match.group(0)) == length
             for match in re.finditer(r"`+", remainder)
@@ -274,7 +298,7 @@ def strip_html_comments(text: str) -> str:
             continue
 
         if not in_comment and inline_ticks == 0:
-            opening = re.match(r"^[ \t]{0,3}(`{3,}|~{3,})", line)
+            opening = valid_fence_opening(line)
             if opening:
                 marker_run = opening.group(1)
                 fence_marker = marker_run[0]
