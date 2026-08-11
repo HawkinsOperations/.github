@@ -28,6 +28,10 @@ SYSTEM_REPOSITORIES = (
 # gate, blocked claim, status, or current-state change requires an intentional
 # verifier update.
 EXPECTED_PROMOTION_CONTRACT_SHA256 = "65522c07b7e2983379dcb3ea1ba5b4cd03ccb3e5116983931bb8c3e23b36c7c8"
+# Fingerprint of the complete reviewed required-checks matrix. This binds each
+# workflow/job context to its verifier command, display metadata, enforcement
+# classification, and documented boundary; changes require intentional review.
+EXPECTED_REQUIRED_CHECKS_MATRIX_SHA256 = "2cefa14bcd21ec9dfa1a491c791116d7806fe67c18c0f8bce5f669e7b2eb4f44"
 EXPECTED_INVARIANTS = {
     "github_repo_role": ".github is reviewer routing and governance shell only",
     "presentation_route": "hawkinsoperations.com is the Website Reviewer Guide and presentation surface",
@@ -543,6 +547,15 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         fail("Hoxline promotion layer must preserve its exact position, boundaries, gates, statuses, and human-review requirement", errors)
 
     required_checks_document = read_yaml_mapping(ROOT / "governance" / "ORG_REQUIRED_CHECKS_MATRIX.yml", errors)
+    required_checks_payload = json.dumps(
+        required_checks_document,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+    ).encode("utf-8")
+    required_checks_fingerprint = hashlib.sha256(required_checks_payload).hexdigest()
+    if required_checks_fingerprint != EXPECTED_REQUIRED_CHECKS_MATRIX_SHA256:
+        fail("complete required-checks matrix does not match the reviewed machine-readable mapping", errors)
     if required_checks_document.get("status") != "PHASE_2B_ORG_INVARIANT_AND_VALIDATION_ENFORCEMENT_RECORDED":
         fail("required-checks matrix must preserve the current Phase 2B status", errors)
     expected_phase_2b_boundary = {
