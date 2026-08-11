@@ -290,12 +290,12 @@ REJECTED_WORDING_LABEL = r"(?:Rejected|Blocked|Forbidden) wording:"
 EXPLICIT_REJECTED_EXAMPLE_PREFIX = re.compile(
     rf"^(?:HTML_(?:BODY|INLINE)\s+)?(?:"
     rf"{REJECTED_WORDING_LABEL}|"
-    rf"\*\*{REJECTED_WORDING_LABEL}\*\*|"
+    rf"(?:\*\*{REJECTED_WORDING_LABEL}\*\*|"
     rf"__{REJECTED_WORDING_LABEL}__|"
     rf"\*{REJECTED_WORDING_LABEL}\*|"
     rf"_{REJECTED_WORDING_LABEL}_|"
     rf"~~{REJECTED_WORDING_LABEL}~~|"
-    rf"`{REJECTED_WORDING_LABEL}`"
+    rf"`{REJECTED_WORDING_LABEL}`)(?=$|[^\w])"
     rf")",
     re.IGNORECASE,
 )
