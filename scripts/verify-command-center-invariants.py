@@ -287,9 +287,13 @@ AUTHORITY_COLLAPSE_PATTERNS = (
     (
         "non-human passive authority action",
         re.compile(
-            r"\b(?:(?:merges?|claims?|cases?)\s+(?:are|is)\s+"
+            r"\b(?:(?:merges?|claims?|cases?)\s+(?:"
+            r"is|are|was|were|(?:has|have|had)\s+been|"
+            r"(?:can|may|will|must|could|might|should|would)\s+be)\s+"
             r"(?:approved|authorized|promoted|closed)|"
-            r"(?:detection\s+|incident\s+)?disposition\s+(?:is|are)\s+"
+            r"(?:detection\s+|incident\s+)?disposition\s+(?:"
+            r"is|are|was|were|(?:has|have|had)\s+been|"
+            r"(?:can|may|will|must|could|might|should|would)\s+be)\s+"
             r"(?:decided|approved|authorized))\s+by\s+"
             r"(?:the\s+)?(?:AI|hoxline|website|github(?:\s+organization)?|\.github)\b",
             re.IGNORECASE,
@@ -1099,8 +1103,18 @@ def strip_markdown_inline_code_spans(text: str) -> str:
             cursor = content_start
             continue
 
-        left_word = opening_start > 0 and bool(re.match(r"\w", text[opening_start - 1]))
-        right_word = closing_end < len(text) and bool(re.match(r"\w", text[closing_end]))
+        visible_left = "".join(
+            character
+            for character in html.unescape(text[:opening_start])
+            if unicodedata.category(character) != "Cf"
+        )
+        visible_right = "".join(
+            character
+            for character in html.unescape(text[closing_end:])
+            if unicodedata.category(character) != "Cf"
+        )
+        left_word = bool(visible_left and re.match(r"\w", visible_left[-1]))
+        right_word = bool(visible_right and re.match(r"\w", visible_right[0]))
         code_span = text[opening_start:closing_end]
         rendered_content = re.sub(r"\r?\n", " ", text[content_start:closing_start])
         if (
