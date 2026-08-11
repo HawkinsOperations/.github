@@ -414,8 +414,7 @@ def strip_markdown_code_blocks(text: str) -> str:
                 return "", contains_raw_code
             contains_raw_code = True
             cursor += opening.end()
-            if not opening.group(0).rstrip().endswith("/>"):
-                active_tag = opening.group("tag").lower()
+            active_tag = opening.group("tag").lower()
         return active_tag, contains_raw_code
 
     for line in text.splitlines(keepends=True):
