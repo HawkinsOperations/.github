@@ -676,6 +676,7 @@ def strip_markdown_code_blocks(text: str) -> str:
     fence_length = 0
     html_code_tag = ""
     html_code_depth = 0
+    html_nested_raw_tag = ""
     html_tag_buffer = ""
     html_attribute_quote = ""
     html_block_container: tuple[int, int] | None = None
@@ -686,9 +687,10 @@ def strip_markdown_code_blocks(text: str) -> str:
         line: str,
         active_tag: str,
         active_depth: int,
+        nested_raw_tag: str,
         tag_buffer: str,
         attribute_quote: str,
-    ) -> tuple[str, int, str, str, bool]:
+    ) -> tuple[str, int, str, str, str, bool]:
         cursor = 0
         contains_raw_code = bool(active_tag)
         if active_tag in {"script", "style", "textarea"}:
@@ -698,13 +700,26 @@ def strip_markdown_code_blocks(text: str) -> str:
                 re.IGNORECASE,
             )
             if not closing:
-                return active_tag, active_depth, "", "", True
+                return active_tag, active_depth, nested_raw_tag, "", "", True
             cursor = closing.end()
             active_tag = ""
             active_depth = 0
             tag_buffer = ""
             attribute_quote = ""
         while cursor < len(line):
+            if active_tag == "template" and nested_raw_tag:
+                nested_closing = re.search(
+                    rf"</{re.escape(nested_raw_tag)}[ \t]*>",
+                    line[cursor:],
+                    re.IGNORECASE,
+                )
+                if not nested_closing:
+                    return active_tag, active_depth, nested_raw_tag, "", "", True
+                cursor += nested_closing.end()
+                nested_raw_tag = ""
+                contains_raw_code = True
+                continue
+
             if not tag_buffer:
                 opening = re.search(r"<(?=[A-Za-z/!?])", line[cursor:])
                 if not opening:
@@ -739,11 +754,21 @@ def strip_markdown_code_blocks(text: str) -> str:
             token = tag_buffer
             tag_buffer = ""
             if active_tag:
+                nested_raw_opening = (
+                    active_tag == "template"
+                    and re.match(
+                        r"<(script|style|textarea)(?=[ \t>/])",
+                        token,
+                        re.IGNORECASE,
+                    )
+                )
                 nested_template = (
                     active_tag == "template"
                     and re.match(r"<template(?=[ \t>/])", token, re.IGNORECASE)
                 )
-                if nested_template:
+                if nested_raw_opening:
+                    nested_raw_tag = nested_raw_opening.group(1).lower()
+                elif nested_template:
                     active_depth = max(active_depth, 0) + 1
                 elif re.fullmatch(
                     rf"</{re.escape(active_tag)}[ \t]*>",
@@ -770,7 +795,14 @@ def strip_markdown_code_blocks(text: str) -> str:
                 contains_raw_code = True
         if active_tag and tag_buffer and not attribute_quote:
             tag_buffer = ""
-        return active_tag, active_depth, tag_buffer, attribute_quote, contains_raw_code
+        return (
+            active_tag,
+            active_depth,
+            nested_raw_tag,
+            tag_buffer,
+            attribute_quote,
+            contains_raw_code,
+        )
 
     for line in text.splitlines(keepends=True):
         if html_delimited_block is not None:
@@ -797,6 +829,7 @@ def strip_markdown_code_blocks(text: str) -> str:
             (
                 html_code_tag,
                 html_code_depth,
+                html_nested_raw_tag,
                 html_tag_buffer,
                 html_attribute_quote,
                 _,
@@ -804,6 +837,7 @@ def strip_markdown_code_blocks(text: str) -> str:
                 line,
                 html_code_tag,
                 html_code_depth,
+                html_nested_raw_tag,
                 html_tag_buffer,
                 html_attribute_quote,
             )
@@ -857,6 +891,7 @@ def strip_markdown_code_blocks(text: str) -> str:
         (
             html_code_tag,
             html_code_depth,
+            html_nested_raw_tag,
             html_tag_buffer,
             html_attribute_quote,
             contains_raw_code,
@@ -864,6 +899,7 @@ def strip_markdown_code_blocks(text: str) -> str:
             line,
             "",
             0,
+            "",
             "",
             "",
         )
