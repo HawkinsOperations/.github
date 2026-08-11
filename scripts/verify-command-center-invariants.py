@@ -599,11 +599,16 @@ def neutralize_html_promoted_markdown_structure(source: str, stripped: str) -> s
     return "".join(neutralized)
 
 
-def strip_markdown_html_tags(text: str) -> str:
+def strip_markdown_html_tags(
+    text: str,
+    *,
+    preserve_block_boundaries: bool = False,
+) -> str:
     """Remove non-rendered HTML tag syntax while preserving visible text and lines."""
     output: list[str] = []
     in_tag = False
     break_tag = False
+    block_tag = False
     attribute_quote = ""
     cursor = 0
     while cursor < len(text):
@@ -620,13 +625,27 @@ def strip_markdown_html_tags(text: str) -> str:
                 in_tag = False
                 if break_tag:
                     output.append(" ")
+                if block_tag:
+                    output.append("\n")
                 break_tag = False
+                block_tag = False
             cursor += 1
             continue
 
         if character == "<" and cursor + 1 < len(text) and re.match(r"[A-Za-z/!?]", text[cursor + 1]):
             in_tag = True
             break_tag = bool(re.match(r"<br(?=[\s/>])", text[cursor:], re.IGNORECASE))
+            block_tag = bool(
+                preserve_block_boundaries
+                and re.match(
+                    r"</?(?:address|article|aside|blockquote|body|caption|center|"
+                    r"dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|"
+                    r"footer|form|h[1-6]|header|li|main|menu|nav|ol|p|pre|section|"
+                    r"summary|table|tbody|td|tfoot|th|thead|tr|ul)(?=[\s/>])",
+                    text[cursor:],
+                    re.IGNORECASE,
+                )
+            )
             cursor += 1
             continue
         output.append(character)
@@ -2109,6 +2128,7 @@ def contains_explicit_boundary_qualifier(text: str) -> bool:
         r"(?:blocked|unproven|unsupported|forbidden|restricted|rejected|"
         r"withheld)\s+(?:claims?|wording|statuses?|promotions?|evidence)|"
         r"claim blocked|"
+        r"do[- ]not[- ]claim|"
         r"not_public_safe|"
         r"requires? evidence|required next evidence|claim ceiling|"
         r"(?:runtime|signal|proof|evidence|authority|claim|truth|publication)"
@@ -2308,9 +2328,34 @@ def check_identity_and_claim_context(text_files: list[Path], errors: list[str]) 
                                     break
                                 separator_index -= 1
                             if not structured_boundary:
-                                structured_boundary = any(
-                                    contains_strong_boundary_status(cell)
-                                    for cell in cells
+                                same_cell_boundary = any(
+                                    cell_index < len(cells)
+                                    and (
+                                        contains_strong_boundary_status(
+                                            cells[cell_index]
+                                        )
+                                        or contains_explicit_boundary_qualifier(
+                                            cells[cell_index]
+                                        )
+                                    )
+                                    for cell_index in phrase_cells
+                                )
+                                governing_status_boundary = any(
+                                    header in {
+                                        "current status",
+                                        "current state",
+                                        "claim status",
+                                        "public-safe status",
+                                    }
+                                    and header_index < len(cells)
+                                    and contains_strong_boundary_status(
+                                        cells[header_index]
+                                    )
+                                    for header_index, header in enumerate(headers)
+                                )
+                                structured_boundary = (
+                                    same_cell_boundary
+                                    or governing_status_boundary
                                 )
                         if not structured_boundary and re.match(
                             r"^ {0,3}(?:[-+*]|\d{1,9}[.)])[ \t]+", source_line
@@ -2490,7 +2535,10 @@ def check_semantic_authority_collapse(text_files: list[Path], errors: list[str])
         if path.suffix.lower() != ".md":
             continue
         rel = path.relative_to(ROOT).as_posix()
-        semantic_lines = read_reviewer_semantic_text(path, errors).splitlines()
+        semantic_lines = strip_markdown_html_tags(
+            strip_markdown_code_blocks(read_reviewer_visible_text(path, errors)),
+            preserve_block_boundaries=True,
+        ).splitlines()
         for line_no, claim_unit in iter_reviewer_claim_units(semantic_lines):
             claim_unit = strip_markdown_inline_code_spans(claim_unit)
             claim_unit = normalize_markdown_link_text(claim_unit)
