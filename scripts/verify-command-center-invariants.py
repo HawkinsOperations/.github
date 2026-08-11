@@ -1846,11 +1846,14 @@ def check_semantic_authority_collapse(text_files: list[Path], errors: list[str])
                 if unicodedata.category(character) != "Cf"
             )
             claim_line = normalize_markdown_link_text(decoded_claim)
+            prefix_line = claim_line
+            for delimiter in ("**", "__", "*", "~", "`"):
+                prefix_line = prefix_line.replace(delimiter, "")
             claim_line = re.sub(r"[*_~`]+", "", claim_line)
             for label, pattern in AUTHORITY_COLLAPSE_PATTERNS:
                 if not pattern.search(claim_line):
                     continue
-                if not EXPLICIT_REJECTED_EXAMPLE_PREFIX.match(claim_unit):
+                if not EXPLICIT_REJECTED_EXAMPLE_PREFIX.match(prefix_line):
                     fail(f"{rel}:{line_no} uses unbounded authority-collapse wording: {label}", errors)
 
 
