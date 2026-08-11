@@ -244,6 +244,41 @@ def fail(message: str, errors: list[str]) -> None:
     errors.append(message)
 
 
+def valid_markdown_fence_opening(line: str) -> re.Match[str] | None:
+    match = re.match(r"^[ \t]{0,3}(`{3,}|~{3,})", line)
+    if match and match.group(1).startswith("`") and "`" in line[match.end():]:
+        return None
+    return match
+
+
+def interrupts_markdown_paragraph(line: str) -> bool:
+    content = line.rstrip("\r\n")
+    if not content.strip():
+        return True
+    if valid_markdown_fence_opening(content):
+        return True
+    return bool(
+        re.match(
+            r"^[ \t]{0,3}(?:"
+            r"#{1,6}(?:[ \t]+|$)|"
+            r">|"
+            r"(?:[-+*]|1[.)])[ \t]+|"
+            r"(?:=+|-+)[ \t]*$|"
+            r"(?:(?:\*[ \t]*){3,}|(?:-[ \t]*){3,}|(?:_[ \t]*){3,})$|"
+            r"<!--|<\?|<![A-Z]|<!\[CDATA\[|"
+            r"</?(?:script|pre|style|textarea)(?:[ \t]+|>|$)|"
+            r"</?(?:address|article|aside|base|basefont|blockquote|body|caption|center|col|"
+            r"colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|"
+            r"form|frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|"
+            r"menu|menuitem|nav|noframes|ol|optgroup|option|p|param|search|section|summary|"
+            r"table|tbody|td|tfoot|th|thead|title|tr|track|ul)(?:[ \t]+|/?>|$)"
+            r")",
+            content,
+            re.IGNORECASE,
+        )
+    )
+
+
 def strip_html_comments(text: str) -> str:
     """Remove Markdown HTML comments while preserving reviewer-visible code."""
     output: list[str] = []
@@ -253,32 +288,11 @@ def strip_html_comments(text: str) -> str:
     fence_length = 0
     line_offset = 0
 
-    def valid_fence_opening(line: str) -> re.Match[str] | None:
-        match = re.match(r"^[ \t]{0,3}(`{3,}|~{3,})", line)
-        if match and match.group(1).startswith("`") and "`" in line[match.end():]:
-            return None
-        return match
-
-    def interrupts_paragraph(line: str) -> bool:
-        content = line.rstrip("\r\n")
-        if not content.strip():
-            return True
-        if valid_fence_opening(content):
-            return True
-        return bool(
-            re.match(
-                r"^[ \t]{0,3}(?:#{1,6}(?:[ \t]+|$)|>|(?:[-+*]|\d{1,9}[.)])[ \t]+|"
-                r"<!--|<\?|<![A-Z]|<!\[CDATA\[)",
-                content,
-                re.IGNORECASE,
-            )
-        )
-
     def has_matching_tick_run(start: int, length: int) -> bool:
         remainder = text[start:]
         offset = 0
         for line_number, candidate_line in enumerate(remainder.splitlines(keepends=True)):
-            if line_number and interrupts_paragraph(candidate_line):
+            if line_number and interrupts_markdown_paragraph(candidate_line):
                 remainder = remainder[:offset]
                 break
             offset += len(candidate_line)
@@ -298,7 +312,7 @@ def strip_html_comments(text: str) -> str:
             continue
 
         if not in_comment and inline_ticks == 0:
-            opening = valid_fence_opening(line)
+            opening = valid_markdown_fence_opening(line)
             if opening:
                 marker_run = opening.group(1)
                 fence_marker = marker_run[0]
@@ -367,6 +381,37 @@ def strip_html_comments(text: str) -> str:
     return "".join(output)
 
 
+def strip_markdown_code_blocks(text: str) -> str:
+    """Remove code blocks from Markdown used for rendered semantic scans."""
+    output: list[str] = []
+    fence_marker = ""
+    fence_length = 0
+    for line in text.splitlines(keepends=True):
+        if fence_marker:
+            closing = re.match(
+                rf"^[ \t]{{0,3}}{re.escape(fence_marker)}{{{fence_length},}}[ \t]*(?:\r?\n)?$",
+                line,
+            )
+            output.append("\n" if line.endswith("\n") else "")
+            if closing:
+                fence_marker = ""
+                fence_length = 0
+            continue
+
+        opening = valid_markdown_fence_opening(line)
+        if opening:
+            marker_run = opening.group(1)
+            fence_marker = marker_run[0]
+            fence_length = len(marker_run)
+            output.append("\n" if line.endswith("\n") else "")
+            continue
+        if re.match(r"^(?: {4}|\t)", line):
+            output.append("\n" if line.endswith("\n") else "")
+            continue
+        output.append(line)
+    return "".join(output)
+
+
 def construct_unique_json_object(pairs: list[tuple[str, object]]) -> dict:
     result: dict = {}
     for key, value in pairs:
@@ -386,6 +431,11 @@ def read_text(path: Path, errors: list[str]) -> str:
 def read_reviewer_visible_text(path: Path, errors: list[str]) -> str:
     text = read_text(path, errors)
     return strip_html_comments(text) if path.suffix.lower() == ".md" else text
+
+
+def read_reviewer_semantic_text(path: Path, errors: list[str]) -> str:
+    text = read_reviewer_visible_text(path, errors)
+    return strip_markdown_code_blocks(text) if path.suffix.lower() == ".md" else text
 
 
 def read_yaml_mapping(path: Path, errors: list[str]) -> dict:
@@ -491,12 +541,12 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         fail("manifest system_repositories must preserve the exact seven-repository inventory display order", errors)
 
     for rel in ("README.md", "profile/README.md", "profile/START_HERE.md", "architecture/REPO_AUTHORITY_MAP.md"):
-        text = read_reviewer_visible_text(ROOT / rel, errors).lower()
+        text = read_reviewer_semantic_text(ROOT / rel, errors).lower()
         for repository in SYSTEM_REPOSITORIES:
             if repository.lower() not in text:
                 fail(f"{rel} missing system repository role: {repository}", errors)
 
-    profile_text = read_reviewer_visible_text(ROOT / "profile" / "README.md", errors)
+    profile_text = read_reviewer_semantic_text(ROOT / "profile" / "README.md", errors)
     profile = profile_text.lower()
     door_section = re.search(
         r"## Choose the right door\s+(.*?)(?=\n## |\Z)",
@@ -529,7 +579,7 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         profile_text,
         re.MULTILINE,
     )
-    start_here_text = read_reviewer_visible_text(ROOT / "profile" / "START_HERE.md", errors)
+    start_here_text = read_reviewer_semantic_text(ROOT / "profile" / "START_HERE.md", errors)
     start_here_fast_path = re.search(
         r"## 3-minute command-center path\s+(.*?)(?=\n## |\Z)",
         start_here_text,
@@ -633,7 +683,7 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         ),
     )
     for rel, heading, expected_header, expected_rows in authority_tables:
-        table_text = read_reviewer_visible_text(ROOT / rel, errors)
+        table_text = read_reviewer_semantic_text(ROOT / rel, errors)
         section_match = re.search(
             rf"## {re.escape(heading)}\s+(.*?)(?=\n## |\Z)",
             table_text,
