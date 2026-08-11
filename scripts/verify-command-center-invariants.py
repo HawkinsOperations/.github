@@ -218,6 +218,16 @@ AUTHORITY_COLLAPSE_PATTERNS = (
         ),
     ),
     (
+        "Hoxline cross-plane authority",
+        re.compile(
+            r"\bhoxline\s+(?:is|owns|has|controls|approves|authorizes)\s+"
+            r"(?:the\s+)?(?:merge\s+authority|approval\s+authority|"
+            r"disposition\s+authority|case\s+closure|source\s+truth|"
+            r"validation\s+truth|runtime\s+truth|signal\s+truth)\b",
+            re.IGNORECASE,
+        ),
+    ),
+    (
         "rendering proof authority",
         re.compile(
             r"\b(?:website|github(?:\s+organization)?|\.github)\s+"
@@ -231,6 +241,17 @@ AUTHORITY_COLLAPSE_PATTERNS = (
             r"\b(?:website|github(?:\s+organization)?|\.github)\s+"
             r"(?:rendering\s+)?(?:is|owns|has|controls)\s+(?:the\s+)?"
             r"(?:proof\s+records?|claim\s+ceilings?|final\s+approval)\b",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "rendering cross-plane authority",
+        re.compile(
+            r"\b(?:website|github(?:\s+organization)?|\.github)\s+"
+            r"(?:rendering\s+)?(?:is|owns|has|controls|approves|authorizes)\s+"
+            r"(?:the\s+)?(?:merge\s+authority|approval\s+authority|"
+            r"disposition\s+authority|case\s+closure|source\s+truth|"
+            r"validation\s+truth|runtime\s+truth|signal\s+truth)\b",
             re.IGNORECASE,
         ),
     ),
@@ -253,12 +274,9 @@ AUTHORITY_COLLAPSE_PATTERNS = (
     ),
 )
 
-EXPLICIT_REJECTED_EXAMPLE_MARKERS = (
-    "rejected wording",
-    "blocked wording",
-    "forbidden wording",
-    "must not claim",
-    "rejected example",
+EXPLICIT_REJECTED_EXAMPLE_PREFIX = re.compile(
+    r"^(?:HTML_(?:BODY|INLINE)\s+)?(?:Rejected|Blocked|Forbidden) wording:",
+    re.IGNORECASE,
 )
 
 
@@ -1687,11 +1705,12 @@ def check_semantic_authority_collapse(text_files: list[Path], errors: list[str])
         rel = path.relative_to(ROOT).as_posix()
         semantic_lines = read_reviewer_semantic_text(path, errors).splitlines()
         for line_no, line in enumerate(semantic_lines, start=1):
+            claim_line = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", line)
+            claim_line = re.sub(r"[*_~`]+", "", claim_line)
             for label, pattern in AUTHORITY_COLLAPSE_PATTERNS:
-                if not pattern.search(line):
+                if not pattern.search(claim_line):
                     continue
-                same_line = line.lower()
-                if not any(marker in same_line for marker in EXPLICIT_REJECTED_EXAMPLE_MARKERS):
+                if not EXPLICIT_REJECTED_EXAMPLE_PREFIX.match(line):
                     fail(f"{rel}:{line_no} uses unbounded authority-collapse wording: {label}", errors)
 
 
