@@ -197,6 +197,7 @@ BOUNDARY_WORDS = (
     "remain",
     "requires",
     "exclude",
+    "excludes",
     "may not",
     "must avoid",
     "fails closed",
@@ -289,6 +290,7 @@ AUTHORITY_COLLAPSE_PATTERNS = (
             r"\b(?:AI|hoxline|website|github(?:\s+organization)?|\.github)\s+"
             r"(?:(?:can|may|will|must|could|might|should|would)\s+)?"
             r"(?:(?:approves?|authorizes?)\s+merges?|"
+            r"merges?\s+pull\s+requests?|"
             r"(?:decides?|approves?|authorizes?)\s+(?:detection\s+|incident\s+)?disposition|"
             r"closes?\s+cases?|promotes?\s+claims?)\b",
             re.IGNORECASE,
@@ -1178,6 +1180,66 @@ def strip_markdown_inline_code_spans(text: str) -> str:
     return "".join(output)
 
 
+def mask_blocked_claim_inline_literals(text: str) -> str:
+    """Mask standalone code spans that quote a complete blocked claim phrase."""
+    output: list[str] = []
+    cursor = 0
+    destination_ranges = markdown_link_destination_ranges(text)
+    while cursor < len(text):
+        opening = re.search(r"`+", text[cursor:])
+        if not opening:
+            output.append(text[cursor:])
+            break
+        opening_start = cursor + opening.start()
+        opening_run = opening.group(0)
+        output.append(text[cursor:opening_start])
+        if any(start <= opening_start < end for start, end in destination_ranges):
+            output.append(opening_run)
+            cursor = opening_start + len(opening_run)
+            continue
+        backslashes = 0
+        preceding = opening_start - 1
+        while preceding >= 0 and text[preceding] == "\\":
+            backslashes += 1
+            preceding -= 1
+        if backslashes % 2:
+            output.append(opening_run)
+            cursor = opening_start + len(opening_run)
+            continue
+
+        content_start = opening_start + len(opening_run)
+        closing_start = 0
+        closing_end = 0
+        for closing in re.finditer(r"`+", text[content_start:]):
+            if len(closing.group(0)) == len(opening_run):
+                closing_start = content_start + closing.start()
+                closing_end = content_start + closing.end()
+                break
+        if not closing_end:
+            output.append(opening_run)
+            cursor = content_start
+            continue
+
+        content = html.unescape(text[content_start:closing_start]).lower()
+        contains_complete_blocked_phrase = any(
+            re.search(
+                rf"(?<![A-Za-z]){re.escape(phrase.lower())}(?![A-Za-z])",
+                content,
+            )
+            for phrase in BLOCKED_CLAIMS
+        )
+        code_span = text[opening_start:closing_end]
+        if contains_complete_blocked_phrase:
+            output.append("".join(
+                character if character in "\r\n" else " "
+                for character in code_span
+            ))
+        else:
+            output.append(code_span)
+        cursor = closing_end
+    return "".join(output)
+
+
 def extract_mermaid_blocks(text: str) -> list[str]:
     """Extract Mermaid fence bodies using CommonMark marker and length rules."""
     blocks: list[str] = []
@@ -1924,6 +1986,50 @@ def check_exposure(text_files: list[Path], errors: list[str]) -> None:
                     fail(f"{rel}:{line_no} exposes a token-looking prefix", errors)
 
 
+def contains_boundary_marker(text: str) -> bool:
+    """Match boundary terms as rendered tokens, never as arbitrary substrings."""
+    for marker in BOUNDARY_WORDS:
+        token = marker.strip()
+        if not token:
+            continue
+        prefix = r"(?<![A-Za-z])" if token[0].isalpha() else ""
+        suffix = r"(?![A-Za-z])" if token[-1].isalpha() else ""
+        if re.search(rf"{prefix}{re.escape(token)}{suffix}", text, re.IGNORECASE):
+            return True
+    return False
+
+
+def claim_has_bound_qualifier(context: str, claim_start: int, claim_end: int) -> bool:
+    """Require a clause-level or collective qualifier for a blocked claim."""
+    clause_start = context.rfind(",", 0, claim_start) + 1
+    clause_end = context.find(",", claim_end)
+    if clause_end < 0:
+        clause_end = len(context)
+    if contains_boundary_marker(context[clause_start:clause_end]):
+        return True
+
+    prefix = context[:claim_start]
+    strong_prefix = re.compile(
+        r"(?<![A-Za-z])(?:does not|do not|must not|may not|cannot|without|"
+        r"neither|fails closed|blocked|forbidden|restricted|exclude(?:s|d)?|"
+        r"must avoid|not)(?![A-Za-z])",
+        re.IGNORECASE,
+    )
+    if strong_prefix.search(prefix):
+        return True
+
+    suffix = context[claim_end:]
+    collective_qualifier = re.compile(
+        r"\b(?:claims?|statuses?|wording|evidence|proof|coverage|operation|"
+        r"behavior|disposition|closure|content|material|routes?)\b"
+        r"[^.!?;]{0,160}\b(?:remain|remains|requires?|are|is|must)\b"
+        r"[^.!?;]{0,60}\b(?:blocked|unproven|withheld|reviewed|approved|"
+        r"required|not|unsafe|separate)\b",
+        re.IGNORECASE,
+    )
+    return bool(collective_qualifier.search(suffix))
+
+
 def check_identity_and_claim_context(text_files: list[Path], errors: list[str]) -> None:
     for path in text_files:
         rel = path.relative_to(ROOT).as_posix()
@@ -1943,10 +2049,27 @@ def check_identity_and_claim_context(text_files: list[Path], errors: list[str]) 
         for line_no, claim_unit in claim_units:
             if is_markdown:
                 claim_unit = normalize_markdown_link_text(claim_unit)
+                boundary_claim_unit = "".join(
+                    character
+                    for character in html.unescape(claim_unit)
+                    if unicodedata.category(character) != "Cf"
+                )
+                candidate_lower = re.sub(
+                    r"[*_~`]+", "", boundary_claim_unit
+                ).lower()
+                if not any(phrase.lower() in candidate_lower for phrase in BLOCKED_CLAIMS):
+                    continue
+                claim_unit = mask_blocked_claim_inline_literals(claim_unit)
                 claim_unit = "".join(
                     character
                     for character in html.unescape(claim_unit)
                     if unicodedata.category(character) != "Cf"
+                )
+                claim_unit = re.sub(r"[*~`]+", "", claim_unit)
+                claim_unit = re.sub(
+                    r"(?<![A-Za-z0-9])_+|_+(?![A-Za-z0-9])",
+                    "",
+                    claim_unit,
                 )
                 source_line = semantic_lines[line_no - 1] if line_no <= len(semantic_lines) else ""
                 next_line = semantic_lines[line_no] if line_no < len(semantic_lines) else ""
@@ -1992,11 +2115,15 @@ def check_identity_and_claim_context(text_files: list[Path], errors: list[str]) 
                                     )
                                     structured_boundary = any(
                                         cell_index < len(headers)
-                                        and any(marker in headers[cell_index] for marker in BOUNDARY_WORDS)
+                                        and contains_boundary_marker(headers[cell_index])
                                         for cell_index in phrase_cells
                                     )
                                     break
                                 separator_index -= 1
+                            if not structured_boundary:
+                                structured_boundary = contains_boundary_marker(
+                                    boundary_claim_unit.lower()
+                                )
                         if not structured_boundary and re.match(
                             r"^ {0,3}(?:[-+*]|\d{1,9}[.)])[ \t]+", source_line
                         ):
@@ -2013,8 +2140,8 @@ def check_identity_and_claim_context(text_files: list[Path], errors: list[str]) 
                                 if previous and not re.match(
                                     r"^(?:[-+*]|\d{1,9}[.)])[ \t]+", previous
                                 ):
-                                    structured_boundary = any(
-                                        marker in previous.lower() for marker in BOUNDARY_WORDS
+                                    structured_boundary = contains_boundary_marker(
+                                        previous.lower()
                                     )
                                     break
                                 previous_index -= 1
@@ -2027,9 +2154,12 @@ def check_identity_and_claim_context(text_files: list[Path], errors: list[str]) 
                             for marker in BOUNDARY_WORDS
                         )
                     )
-                    if not explicit_rejected and not structured_boundary and not legacy_machine_boundary and not any(
-                        marker in context for marker in BOUNDARY_WORDS
-                    ):
+                    bounded_context = claim_has_bound_qualifier(
+                        context,
+                        match.start() - sentence_start,
+                        match.end() - sentence_start,
+                    )
+                    if not explicit_rejected and not structured_boundary and not legacy_machine_boundary and not bounded_context:
                         fail(
                             f"{rel}:{line_no} uses blocked claim phrase without boundary context: {phrase}",
                             errors,
