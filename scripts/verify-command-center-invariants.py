@@ -281,7 +281,7 @@ def has_unclosed_inline_code_run(line: str) -> bool:
     return bool(active_length)
 
 
-def parse_type6_markdown_html_container(line: str) -> tuple[int, int] | None:
+def parse_markdown_html_block_container(line: str) -> tuple[int, int] | None:
     content = line.rstrip("\r\n")
     cursor = len(content) - len(content.lstrip(" "))
     if cursor > 3:
@@ -305,17 +305,23 @@ def parse_type6_markdown_html_container(line: str) -> tuple[int, int] | None:
     if extra_indent > 3:
         return None
     cursor += extra_indent
-    if not re.match(
+    remainder = content[cursor:]
+    type6_opening = re.match(
         r"</?(?:address|article|aside|base|basefont|blockquote|body|caption|center|col|"
         r"colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|"
         r"frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|"
         r"nav|noframes|ol|optgroup|option|p|param|search|section|summary|table|tbody|td|tfoot|"
         r"th|thead|title|tr|track|ul)(?:[ \t]+|/?>|$)",
-        content[cursor:],
+        remainder,
         re.IGNORECASE,
-    ):
-        return None
-    return quote_depth, list_indent
+    )
+    if type6_opening:
+        return quote_depth, list_indent
+
+    type7_opening = re.match(r"</?[A-Za-z][A-Za-z0-9-]*(?=[ \t>/])", remainder)
+    if type7_opening and remainder.rstrip().endswith(">") and not strip_markdown_html_tags(remainder).strip():
+        return quote_depth, list_indent
+    return None
 
 
 def line_belongs_to_markdown_container(line: str, quote_depth: int, list_indent: int) -> bool:
@@ -639,9 +645,9 @@ def strip_markdown_code_blocks(text: str) -> str:
             output.append("\n" if line.endswith("\n") else "")
             continue
 
-        type6_container = parse_type6_markdown_html_container(line)
-        if type6_container is not None:
-            html_block_container = type6_container
+        html_block_container_start = parse_markdown_html_block_container(line)
+        if html_block_container_start is not None:
+            html_block_container = html_block_container_start
             output.append("\n" if line.endswith("\n") else "")
             continue
 
