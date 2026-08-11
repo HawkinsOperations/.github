@@ -281,19 +281,61 @@ def has_unclosed_inline_code_run(line: str) -> bool:
     return bool(active_length)
 
 
-def starts_type6_markdown_html_block(line: str) -> bool:
-    return bool(
-        re.match(
-            r"^ {0,3}(?:(?:> ?)|(?:(?:[-+*]|\d{1,9}[.)])[ \t]+))* {0,3}"
-            r"</?(?:address|article|aside|base|basefont|blockquote|body|caption|center|"
-            r"col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|"
-            r"form|frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|"
-            r"menuitem|nav|noframes|ol|optgroup|option|p|param|search|section|summary|table|"
-            r"tbody|td|tfoot|th|thead|title|tr|track|ul)(?:[ \t]+|/?>|$)",
-            line,
-            re.IGNORECASE,
-        )
-    )
+def parse_type6_markdown_html_container(line: str) -> tuple[int, int] | None:
+    content = line.rstrip("\r\n")
+    cursor = len(content) - len(content.lstrip(" "))
+    if cursor > 3:
+        return None
+    quote_depth = 0
+    list_indent = 0
+    while cursor < len(content):
+        if content[cursor] == ">":
+            quote_depth += 1
+            cursor += 1
+            if cursor < len(content) and content[cursor] in " \t":
+                cursor += 1
+            continue
+        list_marker = re.match(r"(?:[-+*]|\d{1,9}[.)])(?P<padding>[ \t]+)", content[cursor:])
+        if list_marker:
+            list_indent += len(list_marker.group(0).expandtabs(4))
+            cursor += list_marker.end()
+            continue
+        break
+    extra_indent = len(content[cursor:]) - len(content[cursor:].lstrip(" "))
+    if extra_indent > 3:
+        return None
+    cursor += extra_indent
+    if not re.match(
+        r"</?(?:address|article|aside|base|basefont|blockquote|body|caption|center|col|"
+        r"colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|"
+        r"frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|"
+        r"nav|noframes|ol|optgroup|option|p|param|search|section|summary|table|tbody|td|tfoot|"
+        r"th|thead|title|tr|track|ul)(?:[ \t]+|/?>|$)",
+        content[cursor:],
+        re.IGNORECASE,
+    ):
+        return None
+    return quote_depth, list_indent
+
+
+def line_belongs_to_markdown_container(line: str, quote_depth: int, list_indent: int) -> bool:
+    content = line.rstrip("\r\n")
+    cursor = 0
+    for _ in range(quote_depth):
+        spaces = len(content[cursor:]) - len(content[cursor:].lstrip(" "))
+        if spaces > 3:
+            return False
+        cursor += spaces
+        if cursor >= len(content) or content[cursor] != ">":
+            return False
+        cursor += 1
+        if cursor < len(content) and content[cursor] in " \t":
+            cursor += 1
+    if list_indent:
+        whitespace = re.match(r"[ \t]*", content[cursor:]).group(0)
+        if len(whitespace.expandtabs(4)) < list_indent:
+            return False
+    return True
 
 
 def is_blank_markdown_container_line(line: str) -> bool:
@@ -474,7 +516,7 @@ def strip_markdown_code_blocks(text: str) -> str:
     html_code_tag = ""
     html_tag_buffer = ""
     html_attribute_quote = ""
-    html_block_until_blank = False
+    html_block_container: tuple[int, int] | None = None
 
     def advance_html_code_state(
         line: str,
@@ -551,11 +593,14 @@ def strip_markdown_code_blocks(text: str) -> str:
         return active_tag, tag_buffer, attribute_quote, contains_raw_code
 
     for line in text.splitlines(keepends=True):
-        if html_block_until_blank:
-            output.append("\n" if line.endswith("\n") else "")
-            if is_blank_markdown_container_line(line):
-                html_block_until_blank = False
-            continue
+        if html_block_container is not None:
+            quote_depth, list_indent = html_block_container
+            if line_belongs_to_markdown_container(line, quote_depth, list_indent):
+                output.append("\n" if line.endswith("\n") else "")
+                if is_blank_markdown_container_line(line):
+                    html_block_container = None
+                continue
+            html_block_container = None
 
         if html_code_tag or html_tag_buffer:
             html_code_tag, html_tag_buffer, html_attribute_quote, _ = advance_html_code_state(
@@ -594,8 +639,9 @@ def strip_markdown_code_blocks(text: str) -> str:
             output.append("\n" if line.endswith("\n") else "")
             continue
 
-        if starts_type6_markdown_html_block(line):
-            html_block_until_blank = True
+        type6_container = parse_type6_markdown_html_container(line)
+        if type6_container is not None:
+            html_block_container = type6_container
             output.append("\n" if line.endswith("\n") else "")
             continue
 
