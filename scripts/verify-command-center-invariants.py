@@ -327,6 +327,12 @@ AUTHORITY_COLLAPSE_PATTERNS = (
             r"(?:authority|permission|power)\s+to\s+"
             r"(?:(?:approve|authorize)\s+merges?|merge\s+pull\s+requests?|"
             r"(?:decide|approve|authorize)\s+(?:detection\s+|incident\s+)?"
+            r"disposition|close\s+cases?|promote\s+claims?)\b|"
+            r"\b(?:AI|hoxline|website|github(?:\s+organization)?|\.github)\s+"
+            r"(?:has|holds|possesses)\s+(?:the\s+)?"
+            r"(?:authority|permission|power)\s+to\s+"
+            r"(?:(?:approve|authorize)\s+merges?|merge\s+pull\s+requests?|"
+            r"(?:decide|approve|authorize)\s+(?:detection\s+|incident\s+)?"
             r"disposition|close\s+cases?|promote\s+claims?)\b",
             re.IGNORECASE,
         ),
@@ -1636,7 +1642,22 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
             table_text,
             re.DOTALL,
         )
-        if len(section_matches) != 1:
+        html_heading_source = strip_markdown_inline_code_spans(
+            strip_markdown_code_blocks(
+                read_reviewer_visible_text(ROOT / rel, errors)
+            )
+        )
+        html_heading_count = 0
+        for html_heading in re.finditer(
+            r"<h2\b[^>]*>(.*?)</h2\s*>",
+            html_heading_source,
+            re.IGNORECASE | re.DOTALL,
+        ):
+            rendered_heading = re.sub(r"<[^>]+>", "", html_heading.group(1))
+            rendered_heading = " ".join(html.unescape(rendered_heading).split())
+            if rendered_heading.casefold() == heading.casefold():
+                html_heading_count += 1
+        if len(section_matches) + html_heading_count != 1:
             fail(
                 f"{rel} must contain exactly one parseable authority table: {heading}",
                 errors,
