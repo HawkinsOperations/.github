@@ -312,15 +312,15 @@ def strip_html_comments(text: str) -> str:
             continue
 
         if not in_comment and inline_ticks == 0:
+            if re.match(r"^(?: {4}| {0,3}\t)", line):
+                output.append(line)
+                line_offset += len(line)
+                continue
             opening = valid_markdown_fence_opening(line)
             if opening:
                 marker_run = opening.group(1)
                 fence_marker = marker_run[0]
                 fence_length = len(marker_run)
-                output.append(line)
-                line_offset += len(line)
-                continue
-            if re.match(r"^(?: {4}| {0,3}\t)", line):
                 output.append(line)
                 line_offset += len(line)
                 continue
@@ -434,15 +434,15 @@ def strip_markdown_code_blocks(text: str) -> str:
                 fence_length = 0
             continue
 
+        if re.match(r"^(?: {4}| {0,3}\t)", line):
+            output.append("\n" if line.endswith("\n") else "")
+            continue
+
         opening = valid_markdown_fence_opening(line)
         if opening:
             marker_run = opening.group(1)
             fence_marker = marker_run[0]
             fence_length = len(marker_run)
-            output.append("\n" if line.endswith("\n") else "")
-            continue
-
-        if re.match(r"^(?: {4}| {0,3}\t)", line):
             output.append("\n" if line.endswith("\n") else "")
             continue
 
