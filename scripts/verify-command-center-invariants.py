@@ -263,6 +263,38 @@ def nested_markdown_fence_opening(line: str) -> re.Match[str] | None:
     return match
 
 
+def has_unclosed_inline_code_run(line: str) -> bool:
+    active_length = 0
+    for match in re.finditer(r"`+", line):
+        backslashes = 0
+        cursor = match.start() - 1
+        while cursor >= 0 and line[cursor] == "\\":
+            backslashes += 1
+            cursor -= 1
+        if backslashes % 2:
+            continue
+        run_length = len(match.group(0))
+        if not active_length:
+            active_length = run_length
+        elif run_length == active_length:
+            active_length = 0
+    return bool(active_length)
+
+
+def starts_type6_markdown_html_block(line: str) -> bool:
+    return bool(
+        re.match(
+            r"^ {0,3}</?(?:address|article|aside|base|basefont|blockquote|body|caption|center|"
+            r"col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|"
+            r"form|frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|"
+            r"menuitem|nav|noframes|ol|optgroup|option|p|param|search|section|summary|table|"
+            r"tbody|td|tfoot|th|thead|title|tr|track|ul)(?:[ \t]+|/?>|$)",
+            line,
+            re.IGNORECASE,
+        )
+    )
+
+
 def interrupts_markdown_paragraph(line: str) -> bool:
     content = line.rstrip("\r\n")
     if not content.strip():
@@ -401,6 +433,7 @@ def strip_markdown_code_blocks(text: str) -> str:
     html_code_tag = ""
     html_tag_buffer = ""
     html_attribute_quote = ""
+    html_block_until_blank = False
 
     def advance_html_code_state(
         line: str,
@@ -429,6 +462,15 @@ def strip_markdown_code_blocks(text: str) -> str:
             if character in {'"', "'"}:
                 attribute_quote = character
                 continue
+            if not active_tag:
+                pending_opening = re.match(
+                    r"<(pre|script|style|textarea)(?=[ \t>/])",
+                    tag_buffer,
+                    re.IGNORECASE,
+                )
+                if pending_opening:
+                    active_tag = pending_opening.group(1).lower()
+                    contains_raw_code = True
             if character != ">":
                 continue
 
@@ -451,9 +493,17 @@ def strip_markdown_code_blocks(text: str) -> str:
             if opening_tag:
                 active_tag = opening_tag.group(1).lower()
                 contains_raw_code = True
+        if active_tag and tag_buffer and not attribute_quote:
+            tag_buffer = ""
         return active_tag, tag_buffer, attribute_quote, contains_raw_code
 
     for line in text.splitlines(keepends=True):
+        if html_block_until_blank:
+            output.append("\n" if line.endswith("\n") else "")
+            if not line.strip():
+                html_block_until_blank = False
+            continue
+
         if html_code_tag or html_tag_buffer:
             html_code_tag, html_tag_buffer, html_attribute_quote, _ = advance_html_code_state(
                 line,
@@ -491,13 +541,22 @@ def strip_markdown_code_blocks(text: str) -> str:
             output.append("\n" if line.endswith("\n") else "")
             continue
 
+        if starts_type6_markdown_html_block(line):
+            html_block_until_blank = True
+            output.append("\n" if line.endswith("\n") else "")
+            continue
+
+        if has_unclosed_inline_code_run(line):
+            output.append("\n" if line.endswith("\n") else "")
+            break
+
         html_code_tag, html_tag_buffer, html_attribute_quote, contains_raw_code = advance_html_code_state(
             line,
             "",
             "",
             "",
         )
-        if contains_raw_code:
+        if contains_raw_code or html_tag_buffer:
             output.append("\n" if line.endswith("\n") else "")
             continue
         output.append(line)
