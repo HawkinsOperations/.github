@@ -943,10 +943,60 @@ def strip_markdown_code_blocks(text: str) -> str:
     return "".join(output)
 
 
+def markdown_link_destination_ranges(text: str) -> list[tuple[int, int]]:
+    """Locate hidden inline/reference link destinations without parsing labels."""
+    ranges: list[tuple[int, int]] = []
+    cursor = 0
+    while cursor < len(text):
+        label_start = text.find("[", cursor)
+        if label_start < 0:
+            break
+        label_end = label_start + 1
+        bracket_depth = 1
+        while label_end < len(text) and bracket_depth:
+            if text[label_end] == "\\":
+                label_end += 2
+                continue
+            if text[label_end] == "[":
+                bracket_depth += 1
+            elif text[label_end] == "]":
+                bracket_depth -= 1
+            label_end += 1
+        if bracket_depth:
+            cursor = label_start + 1
+            continue
+
+        if label_end < len(text) and text[label_end] == "(":
+            destination_end = label_end + 1
+            parenthesis_depth = 1
+            while destination_end < len(text) and parenthesis_depth:
+                if text[destination_end] == "\\":
+                    destination_end += 2
+                    continue
+                if text[destination_end] == "(":
+                    parenthesis_depth += 1
+                elif text[destination_end] == ")":
+                    parenthesis_depth -= 1
+                destination_end += 1
+            if parenthesis_depth == 0:
+                ranges.append((label_end, destination_end))
+                cursor = destination_end
+                continue
+        elif label_end < len(text) and text[label_end] == "[":
+            reference_end = text.find("]", label_end + 1)
+            if reference_end >= 0:
+                ranges.append((label_end, reference_end + 1))
+                cursor = reference_end + 1
+                continue
+        cursor = label_end
+    return ranges
+
+
 def strip_markdown_inline_code_spans(text: str) -> str:
     """Remove matched code spans while preserving unmatched delimiters as text."""
     output: list[str] = []
     cursor = 0
+    destination_ranges = markdown_link_destination_ranges(text)
     while cursor < len(text):
         opening = re.search(r"`+", text[cursor:])
         if not opening:
@@ -956,6 +1006,10 @@ def strip_markdown_inline_code_spans(text: str) -> str:
         opening_start = cursor + opening.start()
         opening_run = opening.group(0)
         output.append(text[cursor:opening_start])
+        if any(start <= opening_start < end for start, end in destination_ranges):
+            output.append(opening_run)
+            cursor = opening_start + len(opening_run)
+            continue
         backslash_count = 0
         preceding_index = opening_start - 1
         while preceding_index >= 0 and text[preceding_index] == "\\":
@@ -1869,8 +1923,8 @@ def check_semantic_authority_collapse(text_files: list[Path], errors: list[str])
         rel = path.relative_to(ROOT).as_posix()
         semantic_lines = read_reviewer_semantic_text(path, errors).splitlines()
         for line_no, claim_unit in iter_reviewer_claim_units(semantic_lines):
-            claim_unit = normalize_markdown_link_text(claim_unit)
             claim_unit = strip_markdown_inline_code_spans(claim_unit)
+            claim_unit = normalize_markdown_link_text(claim_unit)
             decoded_claim = html.unescape(claim_unit)
             decoded_claim = "".join(
                 character
