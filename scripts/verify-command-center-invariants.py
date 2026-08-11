@@ -272,6 +272,16 @@ AUTHORITY_COLLAPSE_PATTERNS = (
             re.IGNORECASE,
         ),
     ),
+    (
+        "non-human direct authority action",
+        re.compile(
+            r"\b(?:hoxline|website|github(?:\s+organization)?|\.github)\s+"
+            r"(?:(?:approves?|authorizes?)\s+merges?|"
+            r"(?:decides?|approves?|authorizes?)\s+(?:detection\s+|incident\s+)?disposition|"
+            r"closes?\s+cases?|promotes?\s+claims?)\b",
+            re.IGNORECASE,
+        ),
+    ),
 )
 
 EXPLICIT_REJECTED_EXAMPLE_PREFIX = re.compile(
@@ -1697,6 +1707,63 @@ def check_identity_and_claim_context(text_files: list[Path], errors: list[str]) 
                     fail(f"{rel}:{line_no} uses blocked claim phrase without boundary context: {phrase}", errors)
 
 
+def normalize_markdown_link_text(line: str) -> str:
+    """Reduce inline and reference links to their reviewer-visible label text."""
+    output: list[str] = []
+    cursor = 0
+    while cursor < len(line):
+        if line[cursor] != "[":
+            output.append(line[cursor])
+            cursor += 1
+            continue
+
+        label_start = cursor + 1
+        label_end = label_start
+        bracket_depth = 1
+        while label_end < len(line) and bracket_depth:
+            if line[label_end] == "\\":
+                label_end += 2
+                continue
+            if line[label_end] == "[":
+                bracket_depth += 1
+            elif line[label_end] == "]":
+                bracket_depth -= 1
+            label_end += 1
+        if bracket_depth:
+            output.append(line[cursor])
+            cursor += 1
+            continue
+
+        label = line[label_start:label_end - 1]
+        after_label = label_end
+        if after_label < len(line) and line[after_label] == "(":
+            destination_end = after_label + 1
+            parenthesis_depth = 1
+            while destination_end < len(line) and parenthesis_depth:
+                if line[destination_end] == "\\":
+                    destination_end += 2
+                    continue
+                if line[destination_end] == "(":
+                    parenthesis_depth += 1
+                elif line[destination_end] == ")":
+                    parenthesis_depth -= 1
+                destination_end += 1
+            if parenthesis_depth == 0:
+                output.append(label)
+                cursor = destination_end
+                continue
+        elif after_label < len(line) and line[after_label] == "[":
+            reference_end = line.find("]", after_label + 1)
+            if reference_end >= 0:
+                output.append(label)
+                cursor = reference_end + 1
+                continue
+
+        output.append(label)
+        cursor = after_label
+    return "".join(output)
+
+
 def check_semantic_authority_collapse(text_files: list[Path], errors: list[str]) -> None:
     """Reject unbounded authority promotion in reviewer-visible Markdown text."""
     for path in text_files:
@@ -1705,8 +1772,7 @@ def check_semantic_authority_collapse(text_files: list[Path], errors: list[str])
         rel = path.relative_to(ROOT).as_posix()
         semantic_lines = read_reviewer_semantic_text(path, errors).splitlines()
         for line_no, line in enumerate(semantic_lines, start=1):
-            claim_line = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", line)
-            claim_line = re.sub(r"\[([^\]]+)\](?:\[[^\]]*\])?", r"\1", claim_line)
+            claim_line = normalize_markdown_link_text(line)
             claim_line = re.sub(r"[*_~`]+", "", claim_line)
             for label, pattern in AUTHORITY_COLLAPSE_PATTERNS:
                 if not pattern.search(claim_line):
