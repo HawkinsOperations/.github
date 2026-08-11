@@ -281,14 +281,33 @@ def has_unclosed_inline_code_run(line: str) -> bool:
     return bool(active_length)
 
 
-def parse_markdown_html_block_container(line: str) -> tuple[int, int] | None:
+def is_complete_type7_html_tag(text: str) -> bool:
+    """Recognize one complete CommonMark type-7 opening or closing tag."""
+    tag_name = r"[A-Za-z][A-Za-z0-9-]*"
+    attribute_name = r"[A-Za-z_:][A-Za-z0-9_.:-]*"
+    attribute_value = r'(?:[^ \t\r\n"\'=<>`]+|\'[^\']*\'|"[^"]*")'
+    attribute = rf"[ \t]+{attribute_name}(?:[ \t]*=[ \t]*{attribute_value})?"
+    opening = rf"<{tag_name}(?:{attribute})*[ \t]*/?>"
+    closing = rf"</{tag_name}[ \t]*>"
+    return bool(re.fullmatch(rf"(?:{opening}|{closing})[ \t]*", text))
+
+
+def parse_markdown_html_block_container(
+    line: str,
+    *,
+    allow_type7: bool = True,
+) -> tuple[int, int] | None:
     content = line.rstrip("\r\n")
-    cursor = len(content) - len(content.lstrip(" "))
-    if cursor > 3:
-        return None
+    cursor = 0
     quote_depth = 0
     list_indent = 0
     while cursor < len(content):
+        marker_indent = len(content[cursor:]) - len(content[cursor:].lstrip(" "))
+        if marker_indent > 3:
+            return None
+        cursor += marker_indent
+        if cursor >= len(content):
+            return None
         if content[cursor] == ">":
             quote_depth += 1
             cursor += 1
@@ -297,14 +316,10 @@ def parse_markdown_html_block_container(line: str) -> tuple[int, int] | None:
             continue
         list_marker = re.match(r"(?:[-+*]|\d{1,9}[.)])(?P<padding>[ \t]+)", content[cursor:])
         if list_marker:
-            list_indent += len(list_marker.group(0).expandtabs(4))
+            list_indent += marker_indent + len(list_marker.group(0).expandtabs(4))
             cursor += list_marker.end()
             continue
         break
-    extra_indent = len(content[cursor:]) - len(content[cursor:].lstrip(" "))
-    if extra_indent > 3:
-        return None
-    cursor += extra_indent
     remainder = content[cursor:]
     type6_opening = re.match(
         r"</?(?:address|article|aside|base|basefont|blockquote|body|caption|center|col|"
@@ -318,8 +333,7 @@ def parse_markdown_html_block_container(line: str) -> tuple[int, int] | None:
     if type6_opening:
         return quote_depth, list_indent
 
-    type7_opening = re.match(r"</?[A-Za-z][A-Za-z0-9-]*(?=[ \t>/])", remainder)
-    if type7_opening and remainder.rstrip().endswith(">") and not strip_markdown_html_tags(remainder).strip():
+    if allow_type7 and is_complete_type7_html_tag(remainder):
         return quote_depth, list_indent
     return None
 
@@ -523,6 +537,7 @@ def strip_markdown_code_blocks(text: str) -> str:
     html_tag_buffer = ""
     html_attribute_quote = ""
     html_block_container: tuple[int, int] | None = None
+    paragraph_open = False
 
     def advance_html_code_state(
         line: str,
@@ -605,6 +620,7 @@ def strip_markdown_code_blocks(text: str) -> str:
                 output.append("\n" if line.endswith("\n") else "")
                 if is_blank_markdown_container_line(line):
                     html_block_container = None
+                    paragraph_open = False
                 continue
             html_block_container = None
 
@@ -616,6 +632,7 @@ def strip_markdown_code_blocks(text: str) -> str:
                 html_attribute_quote,
             )
             output.append("\n" if line.endswith("\n") else "")
+            paragraph_open = False
             continue
 
         if fence_marker:
@@ -627,10 +644,12 @@ def strip_markdown_code_blocks(text: str) -> str:
             if closing:
                 fence_marker = ""
                 fence_length = 0
+                paragraph_open = False
             continue
 
         if re.match(r"^(?: {4}| {0,3}\t)", line):
             output.append("\n" if line.endswith("\n") else "")
+            paragraph_open = False
             continue
 
         if nested_markdown_fence_opening(line):
@@ -643,12 +662,17 @@ def strip_markdown_code_blocks(text: str) -> str:
             fence_marker = marker_run[0]
             fence_length = len(marker_run)
             output.append("\n" if line.endswith("\n") else "")
+            paragraph_open = False
             continue
 
-        html_block_container_start = parse_markdown_html_block_container(line)
+        html_block_container_start = parse_markdown_html_block_container(
+            line,
+            allow_type7=not paragraph_open,
+        )
         if html_block_container_start is not None:
             html_block_container = html_block_container_start
             output.append("\n" if line.endswith("\n") else "")
+            paragraph_open = False
             continue
 
         if has_unclosed_inline_code_run(line):
@@ -663,8 +687,13 @@ def strip_markdown_code_blocks(text: str) -> str:
         )
         if contains_raw_code or html_tag_buffer:
             output.append("\n" if line.endswith("\n") else "")
+            paragraph_open = False
             continue
         output.append(line)
+        if not line.strip():
+            paragraph_open = False
+        elif not paragraph_open:
+            paragraph_open = not interrupts_markdown_paragraph(line)
     return "".join(output)
 
 
