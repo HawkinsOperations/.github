@@ -943,6 +943,59 @@ def strip_markdown_code_blocks(text: str) -> str:
     return "".join(output)
 
 
+def valid_markdown_link_title(text: str) -> bool:
+    """Recognize the optional quoted or parenthesized CommonMark link title."""
+    title = text.strip()
+    if not title:
+        return True
+    closing_delimiter = {'"': '"', "'": "'", "(": ")"}.get(title[0])
+    if not closing_delimiter or len(title) < 2 or title[-1] != closing_delimiter:
+        return False
+    cursor = 1
+    while cursor < len(title) - 1:
+        if title[cursor] == "\\":
+            cursor += 2
+            continue
+        if title[cursor] == closing_delimiter:
+            return False
+        cursor += 1
+    return True
+
+
+def valid_markdown_inline_link_target(text: str) -> bool:
+    """Validate a balanced parenthesized destination and optional title."""
+    if len(text) < 2 or text[0] != "(" or text[-1] != ")":
+        return False
+    content = text[1:-1].strip()
+    if not content:
+        return True
+    if content.startswith("<"):
+        cursor = 1
+        while cursor < len(content):
+            if content[cursor] == "\\":
+                cursor += 2
+                continue
+            if content[cursor] in "\r\n<":
+                return False
+            if content[cursor] == ">":
+                return valid_markdown_link_title(content[cursor + 1:])
+            cursor += 1
+        return False
+
+    cursor = 0
+    while cursor < len(content):
+        character = content[cursor]
+        if character == "\\":
+            cursor += 2
+            continue
+        if character.isspace():
+            break
+        if ord(character) < 0x20 or character in "<>":
+            return False
+        cursor += 1
+    return valid_markdown_link_title(content[cursor:])
+
+
 def markdown_link_destination_ranges(text: str) -> list[tuple[int, int]]:
     """Locate hidden inline/reference link destinations without parsing labels."""
     ranges: list[tuple[int, int]] = []
@@ -978,7 +1031,9 @@ def markdown_link_destination_ranges(text: str) -> list[tuple[int, int]]:
                 elif text[destination_end] == ")":
                     parenthesis_depth -= 1
                 destination_end += 1
-            if parenthesis_depth == 0:
+            if parenthesis_depth == 0 and valid_markdown_inline_link_target(
+                text[label_end:destination_end]
+            ):
                 ranges.append((label_end, destination_end))
                 cursor = destination_end
                 continue
@@ -1834,7 +1889,9 @@ def normalize_markdown_link_text(line: str) -> str:
                 elif line[destination_end] == ")":
                     parenthesis_depth -= 1
                 destination_end += 1
-            if parenthesis_depth == 0:
+            if parenthesis_depth == 0 and valid_markdown_inline_link_target(
+                line[after_label:destination_end]
+            ):
                 output.append(label)
                 cursor = destination_end
                 continue
