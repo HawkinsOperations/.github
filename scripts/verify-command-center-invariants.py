@@ -245,7 +245,7 @@ def fail(message: str, errors: list[str]) -> None:
 
 
 def valid_markdown_fence_opening(line: str) -> re.Match[str] | None:
-    match = re.match(r"^[ \t]{0,3}(`{3,}|~{3,})", line)
+    match = re.match(r"^ {0,3}(`{3,}|~{3,})", line)
     if match and match.group(1).startswith("`") and "`" in line[match.end():]:
         return None
     return match
@@ -259,7 +259,7 @@ def interrupts_markdown_paragraph(line: str) -> bool:
         return True
     return bool(
         re.match(
-            r"^[ \t]{0,3}(?:"
+            r"^ {0,3}(?:"
             r"#{1,6}(?:[ \t]+|$)|"
             r">|"
             r"(?:[-+*]|0{0,8}1[.)])[ \t]+|"
@@ -304,7 +304,7 @@ def strip_html_comments(text: str) -> str:
     for line in text.splitlines(keepends=True):
         if fence_marker:
             output.append(line)
-            closing = re.match(rf"^[ \t]{{0,3}}{re.escape(fence_marker)}{{{fence_length},}}[ \t]*(?:\r?\n)?$", line)
+            closing = re.match(rf"^ {{0,3}}{re.escape(fence_marker)}{{{fence_length},}}[ \t]*(?:\r?\n)?$", line)
             if closing:
                 fence_marker = ""
                 fence_length = 0
@@ -425,7 +425,7 @@ def strip_markdown_code_blocks(text: str) -> str:
 
         if fence_marker:
             closing = re.match(
-                rf"^[ \t]{{0,3}}{re.escape(fence_marker)}{{{fence_length},}}[ \t]*(?:\r?\n)?$",
+                rf"^ {{0,3}}{re.escape(fence_marker)}{{{fence_length},}}[ \t]*(?:\r?\n)?$",
                 line,
             )
             output.append("\n" if line.endswith("\n") else "")
@@ -996,8 +996,8 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
 
     system_map_text = read_reviewer_visible_text(ROOT / "wiki" / "11_ORG_SYSTEM_MAP.md", errors)
     mermaid_fence = re.compile(
-        r"^[ \t]{0,3}(?P<marker>`|~)(?P=marker){2,}[ \t]*mermaid[^\r\n]*\r?\n"
-        r"(?P<body>.*?)(?=^[ \t]{0,3}(?P=marker){3,}[ \t]*$|\Z)",
+        r"^ {0,3}(?P<marker>`|~)(?P=marker){2,}[ \t]*mermaid[^\r\n]*\r?\n"
+        r"(?P<body>.*?)(?=^ {0,3}(?P=marker){3,}[ \t]*$|\Z)",
         re.DOTALL | re.IGNORECASE | re.MULTILINE,
     )
     mermaid_blocks = [match.group("body") for match in mermaid_fence.finditer(system_map_text)]
