@@ -580,7 +580,7 @@ def strip_markdown_code_blocks(text: str) -> str:
                 continue
             if not active_tag:
                 pending_opening = re.match(
-                    r"<(pre|script|style|textarea)(?=[ \t>/])",
+                    r"<(pre|script|style|textarea|template)(?=[ \t>/])",
                     tag_buffer,
                     re.IGNORECASE,
                 )
@@ -602,7 +602,7 @@ def strip_markdown_code_blocks(text: str) -> str:
                 contains_raw_code = True
                 continue
             opening_tag = re.match(
-                r"<(pre|script|style|textarea)(?=[ \t>/])",
+                r"<(pre|script|style|textarea|template)(?=[ \t>/])",
                 token,
                 re.IGNORECASE,
             )
@@ -665,16 +665,6 @@ def strip_markdown_code_blocks(text: str) -> str:
             paragraph_open = False
             continue
 
-        html_block_container_start = parse_markdown_html_block_container(
-            line,
-            allow_type7=not paragraph_open,
-        )
-        if html_block_container_start is not None:
-            html_block_container = html_block_container_start
-            output.append("\n" if line.endswith("\n") else "")
-            paragraph_open = False
-            continue
-
         if has_unclosed_inline_code_run(line):
             output.append("\n" if line.endswith("\n") else "")
             break
@@ -689,6 +679,17 @@ def strip_markdown_code_blocks(text: str) -> str:
             output.append("\n" if line.endswith("\n") else "")
             paragraph_open = False
             continue
+
+        html_block_container_start = parse_markdown_html_block_container(
+            line,
+            allow_type7=not paragraph_open,
+        )
+        if html_block_container_start is not None:
+            html_block_container = html_block_container_start
+            output.append("\n" if line.endswith("\n") else "")
+            paragraph_open = False
+            continue
+
         output.append(line)
         if not line.strip():
             paragraph_open = False
