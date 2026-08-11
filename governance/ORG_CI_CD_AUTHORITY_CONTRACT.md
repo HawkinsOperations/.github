@@ -1,12 +1,12 @@
 # Organization CI/CD Authority Contract
 
-Status: PHASE_1_DOCUMENTED_CONTRACT_ONLY
-Control type: org-level CI/CD authority routing
+Status: PHASE_2B_ORG_INVARIANT_WORKFLOW_ACTIVE
+Control type: org-level CI/CD authority routing / repo-local invariant enforcement
 Trust class: SOURCE_EXISTS after merge
 
 ## Purpose
 
-This contract documents how the HawkinsOperations organization treats `.github` as the CI/CD control-plane contract and reviewer entry point. Phase 1 is documentation only.
+This contract documents how the HawkinsOperations organization treats `.github` as the CI/CD control-plane contract and reviewer entry point. The existing repo-local `command-center-invariants` workflow now checks the declared routing and authority contract on scoped changes.
 
 This file does not create reusable workflows, change branch protection, change rulesets, prove runtime state, publish evidence, promote proof, or make anything public-safe.
 
@@ -28,7 +28,7 @@ Docs and diagrams are routing material until backed by checks, required review, 
 The organization-level governance ladder is:
 
 ```text
-.github -> platform -> detections -> validation -> proof -> website
+.github -> hoxline -> platform -> detections -> validation -> proof -> website
 ```
 
 This ladder describes authority routing:
@@ -36,6 +36,7 @@ This ladder describes authority routing:
 | Layer | Owner repo | Owns | Does not prove |
 | --- | --- | --- | --- |
 | Organization control plane | `.github` | Reviewer routing, CI/CD contract docs, required-check matrix, promotion ladder language. | Detection correctness, validation results, runtime state, signal observation, evidence linkage, public-safe status. |
+| Product / ProofOps control plane | `hoxline` | Product control experience, bounded review routing, and Claim Authority capabilities such as Claim Firewall. | Proof records, runtime truth, signal truth, public-safe status, final approval, or merge authority. |
 | Runtime and agent boundary plane | `hawkinsoperations-platform` | Platform contracts, runtime/agent boundary schemas, status/plan visibility, private-review support lanes. | Detection source truth, validation pass/fail truth, public proof, production deployment, public-safe runtime evidence. |
 | Detection source plane | `hawkinsoperations-detections` | Detection source files, detection metadata, source status, blocked-claim source ceilings. | Controlled-test validation, runtime activity, signal observation, proof status, public-safe status. |
 | Validation behavior plane | `hawkinsoperations-validation` | Deterministic validators, fixtures, validation reports, claim-boundary scanners, report-only parity checks. | Runtime activity, signal observation, public proof, public-safe status, production coverage. |
@@ -47,7 +48,7 @@ This ladder describes authority routing:
 The detection evidence chain is:
 
 ```text
-.github policy -> detections source -> validation behavior -> platform visibility/runtime contracts -> proof ceiling -> website rendering
+.github policy -> detections source -> validation behavior -> Hoxline ProofOps control -> platform visibility/runtime contracts -> proof ceiling -> website rendering
 ```
 
 The chain separates two appearances of platform:
@@ -57,19 +58,19 @@ The chain separates two appearances of platform:
 
 `.github` is governance and control-plane routing. It can say what the organization requires, where reviewers should look, and which checks should become authoritative. It is not proof truth.
 
-Detection source can support `SOURCE_EXISTS`. Validation behavior can support controlled-test validation only when the validator, fixtures, and report exist and pass. Platform visibility can describe status and next gates without widening proof. Proof records authorize public claim ceilings. Website rendering only presents approved public state.
+Detection source can support `SOURCE_EXISTS`. Validation behavior can support controlled-test validation only when the validator, fixtures, and report exist and pass. Hoxline can carry bounded control context and route claim evaluation without owning proof or approval. Platform visibility can describe status and next gates without widening proof. Proof records authorize public claim ceilings. Website rendering only presents approved public state.
 
 ## Current-State Notes
 
-These notes are recorded for Phase 1 routing. They do not promote any repository or detection beyond the proof records and checks that actually exist.
+These notes are recorded for current reviewer routing. They do not promote any repository or detection beyond the proof records and checks that actually exist.
 
-- The mission audit previously reported the six HawkinsOperations repos as clean, synced, and carrying zero open PRs. Treat that as audit context, not proof of future state.
+- A historical mission audit reported its then-scoped repository set as clean, synced, and carrying zero open PRs. Treat that as historical audit context, not proof of current or future state; the current HawkinsOperations authority model contains exactly seven repositories.
 - Detections PR #27 carried ID-DET-002, ID-DET-003, and ID-DET-004 source.
 - Validation PR #46 carried ID-DET-002, ID-DET-003, and ID-DET-004 controlled-test validation.
 - Platform PR #29 carried ID-DET-002, ID-DET-003, and ID-DET-004 status/plan visibility.
-- Proof index and proof records for ID-DET-002, ID-DET-003, and ID-DET-004 are pending.
+- Proof records, proof cards, and proof-index entries now exist for ID-DET-002, ID-DET-003, and ID-DET-004, each bounded to its recorded controlled-test ceiling.
 - Website public routes for ID-DET-002, ID-DET-003, and ID-DET-004 are pending.
-- HO-DET-012 has source, validation, and platform progress, but still needs proof and website parity if public routing is desired.
+- HO-DET-012 has source, controlled validation, platform controls, a proof record, a proof card, and bounded website summary; runtime, signal, and public-safe promotion remain separately gated.
 - Cross-repo parity is report-only unless later promoted to fail-closed under separate approval.
 
 ## Phase 2A Validation Enforcement
@@ -96,7 +97,13 @@ This is `VALIDATION_REGISTRY_ENFORCED` and `CHECK_ENFORCED_FOR_VALIDATION_REGIST
 
 The next gate is the proof status index because proof records, not validation checks, authorize public claim ceilings. The control plane should next record which validation-backed detections have proof-index support and which remain `NOT_PUBLIC_SAFE`.
 
-## Phase 1 Boundary
+## Phase 2B Organization Invariant Enforcement
+
+Phase 2B updates the existing repo-local `.github/workflows/command-center-invariants.yml` workflow only to install its pinned structural YAML dependency and run the command-center verifier on scoped organization-contract changes.
+
+This establishes a checked repository-local routing and authority contract for its declared files. It does not make the workflow reusable across repositories, change GitHub settings, make the check required by branch protection or rulesets, dispatch workflows, publish evidence, promote proof, create runtime or signal truth, authorize a merge, or replace human review.
+
+## Original Phase 1 Boundary
 
 Phase 1 may document:
 
@@ -116,6 +123,8 @@ Phase 1 may not:
 - promote proof or public-safe status
 - change website content
 - claim runtime-active, signal-observed, production-ready, or fleet-wide status
+
+Phase 2B narrowly supersedes only the original prohibition on editing `.github/workflows` for the existing repo-local `command-center-invariants` workflow described above. Every other Phase 1 exclusion remains in force unless separately approved.
 
 ## Blocked Claims
 

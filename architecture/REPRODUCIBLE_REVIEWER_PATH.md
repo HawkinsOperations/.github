@@ -1,6 +1,6 @@
 # Reproducible Reviewer Path
 
-Status: PHASE_1_DOCUMENTED_CONTRACT_ONLY
+Status: PHASE_2B_REVIEWER_PATH_WITH_LOCAL_INVARIANT_CHECK
 Control type: reviewer reproduction path
 Trust class: SOURCE_EXISTS after merge
 
@@ -67,7 +67,7 @@ Read:
 ```powershell
 cd ..\hawkinsoperations-detections
 git status -sb
-python .\scripts\verify_detection_contract.py
+python -B .\scripts\verify_detection_contract.py
 ```
 
 Review current detection source and boundaries in:
@@ -119,7 +119,7 @@ python -B -m hoxline demo verify --input .hoxline\demo-runs\self-test\run-summar
 python -B -m hoxline gauntlet verify --input examples\gauntlet\ho-det-001-full-loop-run-v0.json
 ```
 
-Hoxline by HawkinsOperations is the product/front-door repo for ProofOps control. The one-command reviewer demo is deterministic, local, and fixture-based; it routes reviewers through the Hoxline loop without publishing private evidence, mutating runtime systems, or promoting public proof. Hoxline governs how AI-assisted security work becomes tested, reviewed, blocked, or safe to claim. Claim Firewall is the first Claim Authority enforcement capability inside Hoxline; it is not the product, platform, front-door repo, an eighth repo, proof authority, runtime proof, or signal proof.
+Hoxline by HawkinsOperations is the product and ProofOps control surface. The one-command reviewer demo is deterministic, local, and fixture-based; it routes reviewers through the Hoxline loop without publishing private evidence, mutating runtime systems, or promoting public proof. Hoxline governs how AI-assisted security work becomes tested, reviewed, blocked, or safe to claim. Claim Firewall is the first Claim Authority enforcement capability inside Hoxline; it is not the product, platform, front-door repo, an eighth repo, proof authority, runtime proof, or signal proof.
 
 ### Platform Boundary and Visibility Plane
 ```powershell
@@ -142,28 +142,31 @@ Platform output is status/plan visibility unless the relevant proof record and p
 ```powershell
 cd ..\hawkinsoperations-proof
 git status -sb
-python scripts\verify_proof_integrity.py
+python -B scripts\verify_proof_integrity.py
 ```
 
-Expected Phase 1 gap:
+Current proof route:
 
-- ID-DET-002, ID-DET-003, and ID-DET-004 proof index entries and proof records are pending.
-- HO-DET-012 proof parity is pending if public routing is desired.
+- ID-DET-002, ID-DET-003, and ID-DET-004 have proof records and entries in `proof/indexes/DETECTION_PROOF_STATUS_INDEX.yml`, each bounded to its recorded controlled-test scope.
+- HO-DET-012 has a proof record, proof card, and indexed `CONTROLLED_TEST_VALIDATED` ceiling; runtime, signal, and public-safe promotion remain separate.
 
 ### Website Rendering Plane
 
 ```powershell
 cd ..\hawkinsoperations-website
 git status -sb
-npm install
+npm ci
+npm run typecheck
 npm run check:site
+npm run public-status:verify
 npm run build
 ```
 
-Expected Phase 1 gap:
+Current presentation gap:
 
 - ID-DET-002, ID-DET-003, and ID-DET-004 public website routes are pending.
-- HO-DET-012 appears in current website source data, but proof and website parity remain required before any public proof or public-safe wording can be claimed.
+- HO-DET-012 appears in current website source data with its proof record, proof card, indexed `CONTROLLED_TEST_VALIDATED` ceiling, and bounded website summary present; runtime, signal, and public-safe promotion remain separately gated.
+- Inspect the [Website Reviewer Guide](https://hawkinsoperations.com/) in ordinary and presentation modes as rendering QA only; visual success does not promote source, validation, runtime, signal, or proof status.
 
 ## Private-Only Commands Excluded
 
@@ -185,8 +188,10 @@ Private evidence can inform future review only after privacy review, stale revie
 The `.github` command-center route has a local invariant verifier for reviewer-route and claim-boundary checks:
 
 ```powershell
-cd .github
-python scripts\verify-command-center-invariants.py
+cd ..\.github
+$env:PYTHONDONTWRITEBYTECODE = "1"
+python -m pip install --disable-pip-version-check PyYAML==6.0.2
+python -B scripts\verify-command-center-invariants.py
 ```
 
 Expected output fields:
@@ -202,10 +207,10 @@ This verifier proves only that checked command-center route files and invariant 
 
 | Item | Current routed state | Remaining gap |
 | --- | --- | --- |
-| ID-DET-002 | Source, controlled-test validation, and platform status/plan visibility are documented as carried by PRs #27, #46, and #29. | Proof record/index and website route are pending. |
-| ID-DET-003 | Source, controlled-test validation, and platform status/plan visibility are documented as carried by PRs #27, #46, and #29. | Proof record/index and website route are pending. |
-| ID-DET-004 | Source, controlled-test validation, and platform status/plan visibility are documented as carried by PRs #27, #46, and #29. | Proof record/index and website route are pending. |
-| HO-DET-012 | Source, validation, and platform progress exist. | Proof and website parity are still required if public routing is desired. |
+| ID-DET-002 | Source, controlled-test validation, platform visibility, proof record, proof card, and proof-index entry exist in their owning repositories. | Dedicated website presentation routes are not established; current public rendering data requires a separate freshness review. |
+| ID-DET-003 | Source, controlled-test validation, platform visibility, proof record, proof card, and proof-index entry exist in their owning repositories. | Dedicated website presentation routes are not established; current public rendering data requires a separate freshness review. |
+| ID-DET-004 | Source, controlled-test validation, platform visibility, proof record, proof card, and proof-index entry exist in their owning repositories. | Dedicated website presentation routes are not established; current public rendering data requires a separate freshness review. |
+| HO-DET-012 | Source, controlled validation, platform controls, proof record, proof card, and bounded website summary exist. | Runtime, signal, and public-safe promotion remain separately gated. |
 | Cross-repo parity | Report-only scanner exists in validation. | Fail-closed promotion requires separate approval. |
 
 ## Claim Boundary

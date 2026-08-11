@@ -24,6 +24,7 @@ HawkinsOperations separates source, validation, runtime, signal, evidence, publi
 ```mermaid
 flowchart LR
     org[".github<br/>org framing<br/>sanitized governance summaries<br/>reviewer routing"]
+    hox["hoxline<br/>product / ProofOps control<br/>Claim Authority capabilities<br/>not proof authority"]
     det["hawkinsoperations-detections<br/>detection source only"]
     val["hawkinsoperations-validation<br/>tests / schemas / validation checks only"]
     plat["hawkinsoperations-platform<br/>platform architecture<br/>stack truth tracking<br/>runtime boundary docs"]
@@ -32,6 +33,7 @@ flowchart LR
     project["Private org control board<br/>operating cockpit<br/>work coordination only"]
 
     org --> det
+    org --> hox
     org --> val
     org --> plat
     org --> proof
@@ -39,7 +41,8 @@ flowchart LR
     org --> project
 
     det --> val
-    val --> proof
+    val --> hox
+    hox --> plat
     plat --> proof
     proof --> web
 
@@ -178,6 +181,8 @@ flowchart TD
     authority["Repo Authority Map"]
     source["Detection source"]
     validation["Validation artifacts"]
+    hoxline["Hoxline product / ProofOps control"]
+    platform["Platform contracts / status visibility"]
     proof["Proof record"]
     project["Private org control board operating cockpit"]
     ledger["Lifetime Case Ledger public summary"]
@@ -185,7 +190,7 @@ flowchart TD
     boundaries["Claim boundaries"]
     warning["Warning: website is last-mile rendering, not proof"]
 
-    profile --> start --> map --> authority --> source --> validation --> proof --> ledger --> website --> boundaries
+    profile --> start --> map --> authority --> source --> validation --> hoxline --> platform --> proof --> ledger --> website --> boundaries
     start --> project
     project -. "coordination only" .-> boundaries
     website -.-> warning
@@ -205,20 +210,14 @@ flowchart TD
 
 ## Current Ledger Status
 
-The proof-owned Lifetime Case Ledger public summary is a bounded count route, not runtime truth, signal truth, or public proof.
+Current ledger values are owned by the [platform state manifest](https://github.com/HawkinsOperations/hawkinsoperations-platform/blob/main/contracts/lifetime-case-ledger-v1-state-manifest.json). The [proof-owned public summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/lifetime-case-ledger-v1-public-summary.json) is a bounded historical snapshot and may lag the platform-owned state. This routing map deliberately does not copy changing counts.
 
-| Field | Current source-controlled value |
-| --- | --- |
-| Summary route | `hawkinsoperations-proof/proof/records/lifetime-case-ledger-v1-public-summary.json` |
-| Total ledger events | 4 |
-| Total cases | 4 |
-| Public-safe count | 0 |
-| Closed-case count | 0 |
-| Appended detections | `HO-DET-001`, `HO-DET-011`, `HO-DET-012` |
-| Public-safe boundary | `NOT_PUBLIC_SAFE` |
-| Proof ceiling | `SCHEMA_CONTRACT_VERIFIER_EXISTS_ONLY` |
+| Surface | Reviewer route | Boundary |
+| --- | --- | --- |
+| Current source-controlled ledger state | [Platform state manifest](https://github.com/HawkinsOperations/hawkinsoperations-platform/blob/main/contracts/lifetime-case-ledger-v1-state-manifest.json) | Platform source state only; not runtime truth, signal truth, public proof, or case closure authority. |
+| Bounded public snapshot | [Proof-owned public summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/lifetime-case-ledger-v1-public-summary.json) | Historical bounded summary; it does not override a newer platform manifest or promote proof. |
 
-The ledger summary does not prove live runtime activity, signal observation, production deployment, SOCaaS availability, public-safe runtime proof, public proof, autonomous SOC authority, AI-approved final disposition, analyst-approved final disposition, or case closure authority.
+Neither route proves live runtime activity, signal observation, production deployment, SOCaaS availability, public-safe runtime proof, public proof, autonomous SOC authority, AI-approved final disposition, analyst-approved final disposition, or case closure authority.
 
 ## Current Org State Summary
 
@@ -231,7 +230,7 @@ The `Claim blocked` column is blocked wording from `governance/CONTROL_STATUS_MA
 | Repo authority map | Soft enforcement | The map defines repository ownership boundaries. | Blocked wording: the map proves a repo complied. |
 | Website | Rendering only | Website content is rendering only. | Blocked wording: website presentation proves source, runtime, signal, or evidence truth. |
 | Project operating cockpit | COORDINATION_ONLY | The canonical private HawkinsOperations Control Board routes current work visibility and review context through private Project #2; Project #1 is not an active reviewer route. | Blocked wording: project board state proves source, runtime, signal, evidence, public proof, public-safe status, merge authority, or approval. |
-| Lifetime Case Ledger public summary | BOUNDED_COUNT_ROUTE | The proof-owned summary records 4 ledger events, 4 cases, 0 public-safe cases, and 0 closed cases. | Blocked wording: ledger counts prove runtime, signal, public proof, public-safe status, case closure, or disposition authority. |
+| Lifetime Case Ledger routes | SOURCE_ROUTED_NO_COPIED_COUNTS | The platform manifest owns current source-controlled state; the proof summary remains a bounded historical snapshot. | Blocked wording: copied or historical counts prove current runtime, signal, public proof, public-safe status, case closure, or disposition authority. |
 | HO-DET-001 source | SATISFIED | HO-DET-001 source exists. | Blocked wording: HO-DET-001 is production-ready, fleet-wide, public-safe, or deployed. |
 | HO-DET-001 Splunk source | SATISFIED | HO-DET-001 Splunk source exists. | Blocked wording: Live Splunk fired as public proof. |
 | HO-DET-001 controlled-test validation | SATISFIED | HO-DET-001 passed controlled-test validation against controlled positive and negative process-creation fixtures. | Blocked wording: HO-DET-001 is production-ready, fleet-wide, public-safe, or catches attacks in production. |
@@ -251,5 +250,6 @@ The `Claim blocked` column is blocked wording from `governance/CONTROL_STATUS_MA
 - [Control status matrix](../governance/CONTROL_STATUS_MATRIX.md)
 - [Repository authority map](../architecture/REPO_AUTHORITY_MAP.md)
 - [Project operating cockpit](https://github.com/orgs/HawkinsOperations/projects/2)
-- [Lifetime Case Ledger public summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/lifetime-case-ledger-v1-public-summary.json)
+- [Lifetime Case Ledger platform state manifest](https://github.com/HawkinsOperations/hawkinsoperations-platform/blob/main/contracts/lifetime-case-ledger-v1-state-manifest.json)
+- [Lifetime Case Ledger bounded public summary](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/lifetime-case-ledger-v1-public-summary.json)
 - [HO-DET-001 proof record](https://github.com/HawkinsOperations/hawkinsoperations-proof/blob/main/proof/records/HO-DET-001.md)

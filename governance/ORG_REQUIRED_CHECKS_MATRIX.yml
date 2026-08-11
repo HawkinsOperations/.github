@@ -1,7 +1,7 @@
 schema_version: 1
-status: PHASE_2A_VALIDATION_ENFORCEMENT_RECORDED
+status: PHASE_2B_ORG_INVARIANT_AND_VALIDATION_ENFORCEMENT_RECORDED
 control_type: org_required_checks_matrix
-phase_1_boundary:
+phase_2b_boundary:
   creates_reusable_workflows: false
   changes_github_settings: false
   changes_branch_protection: false
@@ -27,7 +27,7 @@ repos:
     truth_surface: "Organization control-plane routing and reviewer entry point."
     required_checks_observed: []
     important_non_required_checks:
-      - "command-center-invariants workflow exists as a repo-local verifier route, but it is not proven required by branch protection or ruleset in this file."
+      - "command-center-invariants / command-center-invariants exists as a repo-local verifier route, but it is not proven required by branch protection or ruleset in this file."
     workflow_file:
       - ".github/workflows/command-center-invariants.yml"
     job_check_context:
@@ -38,6 +38,21 @@ repos:
     trigger_path_filter_risk: "Path-filtered to command-center route, governance, architecture, wiki, PR-template, workflow, manifest, and verifier changes. It does not run for unrelated assets."
     report_only_versus_fail_closed_status: "workflow-control only unless the check is required by branch protection or ruleset and fails closed on violation."
     next_hardening_gate: "Make command-center-invariants required only after separate GitHub settings/ruleset approval."
+  - repo_name: "hoxline"
+    truth_surface: "Product / ProofOps control experience and Claim Authority capabilities."
+    required_checks_observed: []
+    important_non_required_checks:
+      - "ci / test is observed on the current hoxline main workflow source; this matrix does not assert that GitHub settings make it required."
+    workflow_file:
+      - ".github/workflows/ci.yml"
+    job_check_context:
+      - workflow_name: "ci"
+        job_id: "test"
+        job_display_name: null
+        verifier_command: "python -m pytest; Claim Firewall pass/fail and safe-context examples; JSON finding validation; legacy-name scan"
+    trigger_path_filter_risk: "Observed pull_request and push triggers with no path filter; the job verifies checked product/control contracts but does not create proof, runtime truth, signal truth, or approval."
+    report_only_versus_fail_closed_status: "Repository CI source is present; fail-closed merge enforcement exists only if this job is required by separately governed GitHub settings."
+    next_hardening_gate: "Keep product-control checks aligned with proof ceilings and preserve human authority; any ruleset change requires separate GitHub settings approval."
   - repo_name: "hawkinsoperations-detections"
     truth_surface: "Detection source truth."
     required_checks_observed:
@@ -107,6 +122,21 @@ repos:
       - workflow_name: "HO-DET-001 Proof Loop"
         job_id: "ho-det-001-proof-loop"
         verifier_command: "python scripts/validate-ho-det-001.py plus proof-loop boundary and parity commands"
+      - workflow_name: "Governance Gate"
+        job_id: "required-files"
+        verifier_command: "repository required-file checks"
+      - workflow_name: "Public HO-DET-001 Controlled-Test Report"
+        job_id: "public-ho-det-001-controlled-test-report"
+        verifier_command: "python scripts/validate-ho-det-001.py; python scripts/verify-ho-det-001-result-parity.py; python scripts/scan-ho-det-001-claim-boundaries.py"
+      - workflow_name: "AWS-DET-001 Fixture Loop"
+        job_id: "aws-det-001-fixture-loop"
+        verifier_command: "python scripts/validate-aws-det-001.py; python scripts/verify-aws-det-001-result-parity.py; python scripts/scan-aws-det-001-claim-boundaries.py; python scripts/verify-proof-record-parity.py"
+      - workflow_name: "HO-DET-011 Fixture Loop"
+        job_id: "ho-det-011-fixture-loop"
+        verifier_command: "python scripts/validate-ho-det-011.py; python scripts/verify-ho-det-011-result-parity.py; python scripts/scan-ho-det-011-claim-boundaries.py"
+      - workflow_name: "security-onion-visibility-contract"
+        job_id: "security-onion-visibility-contract"
+        verifier_command: "python3 ./scripts/verify-security-onion-visibility-rollup.py; python3 ./scripts/verify-security-onion-cross-source-corroboration.py"
     trigger_path_filter_risk: "Phase 2A removed fragile pull_request and push path filters from the baseline validation contract workflow so baseline-hero-validation-contract appears on every validation PR and main push. Several fixture loops may still use path filters, so they remain package/lane scoped."
     report_only_versus_fail_closed_status: "baseline-hero-validation-contract is a real control for the validation registry/package scope when required and passing. Cross-repo parity remains report-only."
     next_hardening_gate: "proof status index"
@@ -157,9 +187,12 @@ repos:
       - workflow_name: "Proof Pack 001 Release Check"
         job_id: "proof-pack-001-release-check"
         verifier_command: "python scripts/verify-ho-det-001-proof-integrity.py; python scripts/verify_proof_integrity.py; python scripts/verify-proof-pack-001-release.py"
+      - workflow_name: "Governance Gate"
+        job_id: "required-files"
+        verifier_command: "repository required-file checks"
     trigger_path_filter_risk: "Observed pull_request and push triggers; proof checks prove only proof-record integrity and release-contract scope."
     report_only_versus_fail_closed_status: "Fail-closed only if required and only for exact proof integrity scope."
-    next_hardening_gate: "Add proof records/index entries for ID-DET-002/003/004 and HO-DET-012 before any website or public-proof wording claims parity."
+    next_hardening_gate: "Maintain proof-record/index integrity for ID-DET-002/003/004 and HO-DET-012; any stronger website wording still requires a separate proof-authority decision."
   - repo_name: "hawkinsoperations-website"
     truth_surface: "Public rendering of approved public state."
     required_checks_observed:
@@ -177,17 +210,17 @@ repos:
         verifier_command: "npm run check:site; npm run build"
     trigger_path_filter_risk: "Observed pull_request and push triggers with no path filter; build can fail site violations but does not prove the rendered claims are true."
     report_only_versus_fail_closed_status: "Build/check can be fail-closed for website contract scope if required; rendering remains non-proof."
-    next_hardening_gate: "Add website routes only after proof records exist for ID-DET-002/003/004 and HO-DET-012 public routing is approved."
+    next_hardening_gate: "Dedicated identity routes for ID-DET-002/003/004 remain optional presentation work; HO-DET-012 already has a bounded summary, and no route may widen the recorded proof ceiling."
 current_gap_notes:
   id_det_002_003_004:
     source: "Detections PR #27 carried source."
     validation: "Validation PR #46 carried controlled-test validation."
     platform: "Platform PR #29 carried status/plan visibility."
-    proof: "Pending proof index and proof records."
-    website: "Pending public routes."
+    proof: "Proof records, proof cards, and proof-index entries exist at CONTROLLED_TEST_VALIDATED."
+    website: "Dedicated identity-specific presentation routes remain pending; owning source, validation, and proof routes are available."
   ho_det_012:
     source_validation_platform: "Source, validation, and platform progress exist."
-    proof_website: "Proof and website parity are still needed if public routing is desired."
+    proof_website: "Proof record, proof card, proof-index entry, and bounded website summary exist; runtime, signal, and public-safe promotion remain unproven."
 blocked_claims:
   - runtime-active public proof
   - signal-observed public proof
