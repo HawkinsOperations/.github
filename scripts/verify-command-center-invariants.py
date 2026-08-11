@@ -8,6 +8,7 @@ import html
 import json
 import re
 import sys
+import unicodedata
 from pathlib import Path
 
 import yaml
@@ -1838,7 +1839,13 @@ def check_semantic_authority_collapse(text_files: list[Path], errors: list[str])
         rel = path.relative_to(ROOT).as_posix()
         semantic_lines = read_reviewer_semantic_text(path, errors).splitlines()
         for line_no, claim_unit in iter_reviewer_claim_units(semantic_lines):
-            claim_line = normalize_markdown_link_text(html.unescape(claim_unit))
+            decoded_claim = html.unescape(claim_unit)
+            decoded_claim = "".join(
+                character
+                for character in decoded_claim
+                if unicodedata.category(character) != "Cf"
+            )
+            claim_line = normalize_markdown_link_text(decoded_claim)
             claim_line = re.sub(r"[*_~`]+", "", claim_line)
             for label, pattern in AUTHORITY_COLLAPSE_PATTERNS:
                 if not pattern.search(claim_line):
