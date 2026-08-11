@@ -386,7 +386,14 @@ def strip_markdown_code_blocks(text: str) -> str:
     output: list[str] = []
     fence_marker = ""
     fence_length = 0
+    html_code_tag = ""
     for line in text.splitlines(keepends=True):
+        if html_code_tag:
+            output.append("\n" if line.endswith("\n") else "")
+            if re.search(rf"</{re.escape(html_code_tag)}[ \t]*>", line, re.IGNORECASE):
+                html_code_tag = ""
+            continue
+
         if fence_marker:
             closing = re.match(
                 rf"^[ \t]{{0,3}}{re.escape(fence_marker)}{{{fence_length},}}[ \t]*(?:\r?\n)?$",
@@ -404,6 +411,18 @@ def strip_markdown_code_blocks(text: str) -> str:
             fence_marker = marker_run[0]
             fence_length = len(marker_run)
             output.append("\n" if line.endswith("\n") else "")
+            continue
+
+        html_code_opening = re.match(
+            r"^[ \t]{0,3}<(?P<tag>pre|script|style|textarea)(?:[ \t]+|>|$)",
+            line,
+            re.IGNORECASE,
+        )
+        if html_code_opening:
+            html_code_tag = html_code_opening.group("tag").lower()
+            output.append("\n" if line.endswith("\n") else "")
+            if re.search(rf"</{re.escape(html_code_tag)}[ \t]*>", line, re.IGNORECASE):
+                html_code_tag = ""
             continue
         if re.match(r"^(?: {4}|\t)", line):
             output.append("\n" if line.endswith("\n") else "")
