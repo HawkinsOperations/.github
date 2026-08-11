@@ -177,6 +177,7 @@ BOUNDARY_WORDS = (
     "blocked public",
     "blocked_inherited_truth",
     "not ",
+    "not-",
     "does not",
     "does_not",
     "do not",
@@ -193,6 +194,14 @@ BOUNDARY_WORDS = (
     "false",
     "claim firewall",
     "remains",
+    "remain",
+    "requires",
+    "exclude",
+    "may not",
+    "must avoid",
+    "fails closed",
+    "gate",
+    "neither",
     "no ",
     "without",
     "non-public",
@@ -288,12 +297,14 @@ AUTHORITY_COLLAPSE_PATTERNS = (
         "non-human passive authority action",
         re.compile(
             r"\b(?:(?:merges?|claims?|cases?)\s+(?:"
-            r"is|are|was|were|(?:has|have|had)\s+been|"
-            r"(?:can|may|will|must|could|might|should|would)\s+be)\s+"
+            r"(?:is|are|was|were)(?:\s+being)?|"
+            r"(?:has|have|had)\s+been(?:\s+being)?|"
+            r"(?:can|may|will|must|could|might|should|would)\s+be(?:\s+being)?)\s+"
             r"(?:approved|authorized|promoted|closed)|"
             r"(?:detection\s+|incident\s+)?disposition\s+(?:"
-            r"is|are|was|were|(?:has|have|had)\s+been|"
-            r"(?:can|may|will|must|could|might|should|would)\s+be)\s+"
+            r"(?:is|are|was|were)(?:\s+being)?|"
+            r"(?:has|have|had)\s+been(?:\s+being)?|"
+            r"(?:can|may|will|must|could|might|should|would)\s+be(?:\s+being)?)\s+"
             r"(?:decided|approved|authorized))\s+by\s+"
             r"(?:the\s+)?(?:AI|hoxline|website|github(?:\s+organization)?|\.github)\b",
             re.IGNORECASE,
@@ -548,6 +559,7 @@ def strip_markdown_html_tags(text: str) -> str:
     """Remove non-rendered HTML tag syntax while preserving visible text and lines."""
     output: list[str] = []
     in_tag = False
+    break_tag = False
     attribute_quote = ""
     cursor = 0
     while cursor < len(text):
@@ -562,11 +574,15 @@ def strip_markdown_html_tags(text: str) -> str:
                 attribute_quote = character
             elif character == ">":
                 in_tag = False
+                if break_tag:
+                    output.append(" ")
+                break_tag = False
             cursor += 1
             continue
 
         if character == "<" and cursor + 1 < len(text) and re.match(r"[A-Za-z/!?]", text[cursor + 1]):
             in_tag = True
+            break_tag = bool(re.match(r"<br(?=[\s/>])", text[cursor:], re.IGNORECASE))
             cursor += 1
             continue
         output.append(character)
@@ -1062,6 +1078,36 @@ def markdown_link_destination_ranges(text: str) -> list[tuple[int, int]]:
     return ranges
 
 
+def reviewer_visible_edge_character(text: str, *, from_end: bool) -> str:
+    """Return the nearest rendered character across links, emphasis, and Cf text."""
+    visible = normalize_markdown_link_text(text)
+    visible = "".join(
+        character
+        for character in html.unescape(visible)
+        if unicodedata.category(character) != "Cf"
+    )
+    delimiters = ("**", "__", "~~", "*", "_", "~")
+    changed = True
+    while visible and changed:
+        changed = False
+        for delimiter in delimiters:
+            if from_end:
+                paired = visible.endswith(delimiter) and delimiter in visible[:-len(delimiter)]
+                if paired:
+                    visible = visible[:-len(delimiter)]
+                    changed = True
+                    break
+            else:
+                paired = visible.startswith(delimiter) and delimiter in visible[len(delimiter):]
+                if paired:
+                    visible = visible[len(delimiter):]
+                    changed = True
+                    break
+    if not visible:
+        return ""
+    return visible[-1] if from_end else visible[0]
+
+
 def strip_markdown_inline_code_spans(text: str) -> str:
     """Remove matched code spans while preserving unmatched delimiters as text."""
     output: list[str] = []
@@ -1103,18 +1149,14 @@ def strip_markdown_inline_code_spans(text: str) -> str:
             cursor = content_start
             continue
 
-        visible_left = "".join(
-            character
-            for character in html.unescape(text[:opening_start])
-            if unicodedata.category(character) != "Cf"
+        visible_left = reviewer_visible_edge_character(
+            text[:opening_start], from_end=True
         )
-        visible_right = "".join(
-            character
-            for character in html.unescape(text[closing_end:])
-            if unicodedata.category(character) != "Cf"
+        visible_right = reviewer_visible_edge_character(
+            text[closing_end:], from_end=False
         )
-        left_word = bool(visible_left and re.match(r"\w", visible_left[-1]))
-        right_word = bool(visible_right and re.match(r"\w", visible_right[0]))
+        left_word = bool(visible_left and re.match(r"\w", visible_left))
+        right_word = bool(visible_right and re.match(r"\w", visible_right))
         code_span = text[opening_start:closing_end]
         rendered_content = re.sub(r"\r?\n", " ", text[content_start:closing_start])
         if (
@@ -1877,15 +1919,108 @@ def check_identity_and_claim_context(text_files: list[Path], errors: list[str]) 
             lowered = line.lower()
             if "hawkinsops" in lowered and not any(marker in lowered for marker in ("legacy", "reference", "v1", "prior", "not current")):
                 fail(f"{rel}:{line_no} uses HawkinsOps outside legacy/reference context", errors)
+
+        is_markdown = path.suffix.lower() == ".md"
+        if is_markdown:
+            semantic_lines = read_reviewer_semantic_text(path, errors).splitlines()
+            claim_units = iter_reviewer_claim_units(semantic_lines)
+        else:
+            claim_units = list(enumerate(lines, start=1))
+
+        for line_no, claim_unit in claim_units:
+            if is_markdown:
+                claim_unit = normalize_markdown_link_text(claim_unit)
+                claim_unit = "".join(
+                    character
+                    for character in html.unescape(claim_unit)
+                    if unicodedata.category(character) != "Cf"
+                )
+                source_line = semantic_lines[line_no - 1] if line_no <= len(semantic_lines) else ""
+                next_line = semantic_lines[line_no] if line_no < len(semantic_lines) else ""
+                if "|" in source_line and re.match(
+                    r"^\s*\|?\s*:?-{3,}", next_line
+                ):
+                    continue
+            lowered = claim_unit.lower()
             for phrase in BLOCKED_CLAIMS:
                 phrase_pattern = re.compile(rf"(?<![A-Za-z]){re.escape(phrase.lower())}(?![A-Za-z])")
-                if not phrase_pattern.search(lowered):
-                    continue
-                context_start = max(0, line_no - 15)
-                context_end = min(len(lines), line_no + 5)
-                context = "\n".join(lines[context_start:context_end]).lower()
-                if not any(marker in context for marker in BOUNDARY_WORDS):
-                    fail(f"{rel}:{line_no} uses blocked claim phrase without boundary context: {phrase}", errors)
+                for match in phrase_pattern.finditer(lowered):
+                    sentence_boundaries = [
+                        punctuation.end()
+                        for punctuation in re.finditer(r"[.!?;](?=\s|$)", lowered)
+                    ]
+                    sentence_start = max(
+                        (boundary for boundary in sentence_boundaries if boundary <= match.start()),
+                        default=0,
+                    )
+                    sentence_end = min(
+                        (boundary for boundary in sentence_boundaries if boundary >= match.end()),
+                        default=len(lowered),
+                    )
+                    context = lowered[sentence_start:sentence_end]
+                    explicit_rejected = EXPLICIT_REJECTED_EXAMPLE_PREFIX.match(
+                        claim_unit[sentence_start:sentence_end].lstrip()
+                    )
+                    structured_boundary = False
+                    if is_markdown:
+                        source_line = semantic_lines[line_no - 1] if line_no <= len(semantic_lines) else ""
+                        if "|" in source_line:
+                            cells = [cell.strip().lower() for cell in source_line.strip().strip("|").split("|")]
+                            phrase_cells = [index for index, cell in enumerate(cells) if phrase.lower() in cell]
+                            separator_index = line_no - 2
+                            while separator_index >= 0 and semantic_lines[separator_index].strip():
+                                separator = semantic_lines[separator_index]
+                                if re.match(r"^\s*\|?\s*:?-{3,}", separator):
+                                    header_index = separator_index - 1
+                                    headers = (
+                                        [cell.strip().lower() for cell in semantic_lines[header_index].strip().strip("|").split("|")]
+                                        if header_index >= 0
+                                        else []
+                                    )
+                                    structured_boundary = any(
+                                        cell_index < len(headers)
+                                        and any(marker in headers[cell_index] for marker in BOUNDARY_WORDS)
+                                        for cell_index in phrase_cells
+                                    )
+                                    break
+                                separator_index -= 1
+                        if not structured_boundary and re.match(
+                            r"^ {0,3}(?:[-+*]|\d{1,9}[.)])[ \t]+", source_line
+                        ):
+                            previous_index = line_no - 2
+                            blank_lines = 0
+                            while previous_index >= 0:
+                                previous = semantic_lines[previous_index].strip()
+                                if not previous:
+                                    blank_lines += 1
+                                    if blank_lines > 1:
+                                        break
+                                    previous_index -= 1
+                                    continue
+                                if previous and not re.match(
+                                    r"^(?:[-+*]|\d{1,9}[.)])[ \t]+", previous
+                                ):
+                                    structured_boundary = any(
+                                        marker in previous.lower() for marker in BOUNDARY_WORDS
+                                    )
+                                    break
+                                previous_index -= 1
+                    legacy_machine_boundary = (
+                        not is_markdown
+                        and any(
+                            marker in "\n".join(
+                                lines[max(0, line_no - 15):min(len(lines), line_no + 5)]
+                            ).lower()
+                            for marker in BOUNDARY_WORDS
+                        )
+                    )
+                    if not explicit_rejected and not structured_boundary and not legacy_machine_boundary and not any(
+                        marker in context for marker in BOUNDARY_WORDS
+                    ):
+                        fail(
+                            f"{rel}:{line_no} uses blocked claim phrase without boundary context: {phrase}",
+                            errors,
+                        )
 
 
 def normalize_markdown_link_text(line: str) -> str:
