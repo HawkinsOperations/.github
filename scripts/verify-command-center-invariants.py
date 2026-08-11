@@ -266,9 +266,9 @@ AUTHORITY_COLLAPSE_PATTERNS = (
     (
         "AI decision authority",
         re.compile(
-            r"\bAI\s+(?:approves?|authorizes?|controls?|owns|has|decides?)\s+"
+            r"\bAI\s+(?:(?:approves?|authorizes?|controls?|owns|has|decides?)\s+"
             r"(?:the\s+)?(?:merges?|approval|disposition|claim\s+promotion|"
-            r"proof\s+authority|case\s+closure)\b",
+            r"proof\s+authority|case\s+closure)|merges?\s+pull\s+requests?)\b",
             re.IGNORECASE,
         ),
     ),
@@ -1765,24 +1765,65 @@ def normalize_markdown_link_text(line: str) -> str:
 
 
 def iter_reviewer_claim_units(lines: list[str]) -> list[tuple[int, str]]:
-    """Join soft Markdown line breaks within blank-delimited visible units."""
+    """Join soft wraps while preserving visible Markdown block boundaries."""
     units: list[tuple[int, str]] = []
     current: list[str] = []
     start_line = 1
+    current_quote_depth = 0
+    current_list_indent: int | None = None
+
+    def flush() -> None:
+        nonlocal current, current_list_indent
+        if current:
+            units.append((start_line, " ".join(current)))
+            current = []
+            current_list_indent = None
+
     for line_no, line in enumerate(lines, start=1):
         if not line.strip():
-            if current:
-                units.append((start_line, " ".join(current)))
-                current = []
+            flush()
             continue
+
+        visible_line = line.rstrip("\r\n")
+        quote_depth = 0
+        quote_marker = re.match(r"^ {0,3}>[ \t]?", visible_line)
+        while quote_marker:
+            quote_depth += 1
+            visible_line = visible_line[quote_marker.end():]
+            quote_marker = re.match(r"^ {0,3}>[ \t]?", visible_line)
+        leading_spaces = len(visible_line) - len(visible_line.lstrip(" "))
+        list_marker = re.match(r"^ {0,3}(?:[-+*]|\d{1,9}[.)])[ \t]+", visible_line)
+        standalone_structure = bool(
+            re.match(
+                r"^ {0,3}(?:#{1,6}(?:[ \t]+|$)|\|.*\|[ \t]*$|(?:=+|-+)[ \t]*$)",
+                visible_line,
+            )
+        )
+
+        starts_new_block = bool(
+            current
+            and (
+                quote_depth != current_quote_depth
+                or list_marker
+                or standalone_structure
+                or (
+                    current_list_indent is not None
+                    and leading_spaces < current_list_indent
+                )
+            )
+        )
+        if starts_new_block:
+            flush()
         if not current:
             start_line = line_no
-        visible_line = line.strip()
-        visible_line = re.sub(r"^(?:>[ \t]?)+", "", visible_line)
-        visible_line = re.sub(r"^(?:[-+*]|\d{1,9}[.)])[ \t]+", "", visible_line)
+            current_quote_depth = quote_depth
+        if list_marker:
+            current_list_indent = len(list_marker.group(0).expandtabs(4))
+            visible_line = visible_line[list_marker.end():]
         current.append(visible_line.strip())
-    if current:
-        units.append((start_line, " ".join(current)))
+        if standalone_structure:
+            flush()
+    flush()
     return units
 
 
