@@ -35,6 +35,9 @@ EXPECTED_REQUIRED_CHECKS_MATRIX_SHA256 = "2cefa14bcd21ec9dfa1a491c791116d7806fe6
 # Fingerprint of the complete reviewed invariant manifest, including the exact
 # required route list and seven-repository authority order.
 EXPECTED_MANIFEST_SHA256 = "9bf2fc9dd8d8d64a25422e8784019a0827d89ac00348c73289df5d83153df122"
+# Fingerprint of every reviewed Mermaid block in the organization system map.
+# Any topology, alias, or edge change requires an intentional verifier update.
+EXPECTED_SYSTEM_MAP_MERMAID_SHA256 = "5e0e2ce49506de2a02d3bb981be1823ae33194908c5d234e286c92f0a201edd8"
 EXPECTED_INVARIANTS = {
     "github_repo_role": ".github is reviewer routing and governance shell only",
     "presentation_route": "hawkinsoperations.com is the Website Reviewer Guide and presentation surface",
@@ -239,6 +242,15 @@ def fail(message: str, errors: list[str]) -> None:
     errors.append(message)
 
 
+def construct_unique_json_object(pairs: list[tuple[str, object]]) -> dict:
+    result: dict = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"duplicate JSON key: {key!r}")
+        result[key] = value
+    return result
+
+
 def read_text(path: Path, errors: list[str]) -> str:
     if not path.exists():
         fail(f"missing file: {path.relative_to(ROOT).as_posix()}", errors)
@@ -296,8 +308,8 @@ def load_manifest(errors: list[str]) -> dict:
     if not text:
         return {}
     try:
-        manifest = json.loads(text)
-    except json.JSONDecodeError as exc:
+        manifest = json.loads(text, object_pairs_hook=construct_unique_json_object)
+    except ValueError as exc:
         fail(f"manifest JSON parse failed: {exc}", errors)
         return {}
     manifest_payload = json.dumps(
@@ -754,6 +766,13 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         fail("pull request template must enumerate exactly seven downstream repositories plus None", errors)
 
     system_map_text = read_text(ROOT / "wiki" / "11_ORG_SYSTEM_MAP.md", errors)
+    mermaid_blocks = re.findall(r"```mermaid\s*(.*?)```", system_map_text, re.DOTALL)
+    normalized_mermaid = "\n\n--- mermaid block ---\n\n".join(
+        "\n".join(line.rstrip() for line in block.strip().splitlines())
+        for block in mermaid_blocks
+    ).encode("utf-8")
+    if hashlib.sha256(normalized_mermaid).hexdigest() != EXPECTED_SYSTEM_MAP_MERMAID_SHA256:
+        fail("organization system-map Mermaid topology does not match the complete reviewed graph", errors)
     required_hoxline_routes = (
         'hox["hoxline<br/>product / ProofOps control',
         "org --> hox",
