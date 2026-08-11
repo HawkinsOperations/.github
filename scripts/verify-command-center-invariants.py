@@ -254,9 +254,13 @@ def strip_html_comments(text: str) -> str:
     line_offset = 0
 
     def has_matching_tick_run(start: int, length: int) -> bool:
+        remainder = text[start:]
+        paragraph_break = re.search(r"\r?\n[ \t]*\r?\n", remainder)
+        if paragraph_break:
+            remainder = remainder[:paragraph_break.start()]
         return any(
             len(match.group(0)) == length
-            for match in re.finditer(r"`+", text[start:])
+            for match in re.finditer(r"`+", remainder)
         )
 
     for line in text.splitlines(keepends=True):
