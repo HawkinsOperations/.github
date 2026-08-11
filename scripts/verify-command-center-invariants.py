@@ -1464,6 +1464,7 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         event_config = triggers.get(event, {})
         paths = event_config.get("paths", []) if isinstance(event_config, dict) else []
         actual_paths = {str(path) for path in paths} if isinstance(paths, list) else set()
+        negated_paths = sorted(path for path in actual_paths if path.startswith("!"))
         missing_paths = sorted(required_trigger_paths - actual_paths)
         if missing_paths:
             fail(
@@ -1471,10 +1472,20 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
                 f"{', '.join(missing_paths)}",
                 errors,
             )
+        if negated_paths:
+            fail(
+                f"command-center invariant workflow {event} trigger must not use "
+                f"negative path patterns: {', '.join(negated_paths)}",
+                errors,
+            )
     push_config = triggers.get("push", {})
     push_branches = push_config.get("branches", []) if isinstance(push_config, dict) else []
     if not isinstance(push_branches, list) or "main" not in push_branches:
         fail("command-center invariant workflow push trigger must include main", errors)
+    if isinstance(push_branches, list) and any(
+        str(branch).startswith("!") for branch in push_branches
+    ):
+        fail("command-center invariant workflow push branches must not use negative patterns", errors)
 
     for rel in ("README.md", "profile/README.md", "profile/START_HERE.md", "architecture/REPO_AUTHORITY_MAP.md"):
         text = read_reviewer_semantic_text(ROOT / rel, errors).lower()
@@ -2079,7 +2090,8 @@ def contains_explicit_boundary_qualifier(text: str) -> bool:
         r"claim blocked|"
         r"not_public_safe|"
         r"requires? evidence|required next evidence|claim ceiling|"
-        r"boundar(?:y|ies)|exclude(?:s|d)?|exclusions?)\b|"
+        r"(?:runtime|signal|proof|evidence|authority|claim|truth|publication)"
+        r"[ -]boundar(?:y|ies)|exclude(?:s|d)?|exclusions?)\b|"
         r"\bmay not\s*:\s*$",
         text,
         re.IGNORECASE,
@@ -2092,8 +2104,11 @@ def contains_strong_boundary_status(text: str) -> bool:
     return bool(re.search(
         r"^(?:blocked|unproven|unsupported|forbidden|rejected|withheld|"
         r"not_public_safe|blocked claims register)$|"
-        r"\buntil\b[^|.!?;]{0,180}\b(?:reviewed|approved?|proven)\b|"
-        r"\bonly for reviewed\b|\bafter public claim review\b",
+        r"\bnot\b[^|,.!?;]{0,160}\bpublic-safe\b|"
+        r"\buntil\s+(?:proof|evidence|claim|wording|privacy|public)\b"
+        r"[^|.!?;]{0,160}\b(?:reviewed|approved?|proven)\b|"
+        r"\bonly for reviewed\b[^|.!?;]{0,80}\b(?:records?|claims?|"
+        r"evidence|proof)\b|\bafter public claim review\b",
         normalized,
         re.IGNORECASE,
     ))
