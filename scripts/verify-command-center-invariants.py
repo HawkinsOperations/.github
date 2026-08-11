@@ -296,6 +296,16 @@ def starts_type6_markdown_html_block(line: str) -> bool:
     )
 
 
+def is_blank_markdown_container_line(line: str) -> bool:
+    content = line.rstrip("\r\n")
+    while True:
+        marker = re.match(r"^ {0,3}>[ \t]?", content)
+        if not marker:
+            break
+        content = content[marker.end():]
+    return not content.strip()
+
+
 def strip_markdown_html_tags(text: str) -> str:
     """Remove non-rendered HTML tag syntax while preserving visible text and lines."""
     output: list[str] = []
@@ -543,7 +553,7 @@ def strip_markdown_code_blocks(text: str) -> str:
     for line in text.splitlines(keepends=True):
         if html_block_until_blank:
             output.append("\n" if line.endswith("\n") else "")
-            if not line.strip():
+            if is_blank_markdown_container_line(line):
                 html_block_until_blank = False
             continue
 
