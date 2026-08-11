@@ -201,6 +201,32 @@ BOUNDARY_WORDS = (
     "pending",
 )
 
+AUTHORITY_COLLAPSE_PATTERNS = (
+    (
+        "Hoxline proof authority",
+        re.compile(
+            r"\bhoxline\s+(?:is|owns|has)\s+(?:the\s+)?proof\s+authority\b",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "rendering proof authority",
+        re.compile(
+            r"\b(?:website|github(?:\s+organization)?|\.github)\s+"
+            r"(?:rendering\s+)?(?:is|owns|has)\s+(?:the\s+)?proof\s+authority\b",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "AI approval authority",
+        re.compile(
+            r"\bAI\s+(?:is|owns|has)\s+(?:the\s+)?"
+            r"(?:approval|merge|disposition|proof)\s+authority\b",
+            re.IGNORECASE,
+        ),
+    ),
+)
+
 
 class UniqueKeySafeLoader(yaml.SafeLoader):
     """Safe YAML loader that rejects ambiguous duplicate mapping keys."""
@@ -392,6 +418,15 @@ def is_blank_markdown_container_line(line: str) -> bool:
             break
         content = content[marker.end():]
     return not content.strip()
+
+
+def preserve_html_body_as_text(line: str) -> str:
+    """Keep renderer-visible HTML body text without treating it as Markdown structure."""
+    content = line.rstrip("\r\n")
+    ending = line[len(content):]
+    if not content:
+        return ending
+    return f"HTML_BODY {content}{ending}"
 
 
 def strip_markdown_html_tags(text: str) -> str:
@@ -644,7 +679,7 @@ def strip_markdown_code_blocks(text: str) -> str:
         if html_delimited_block is not None:
             terminator, quote_depth, list_indent = html_delimited_block
             if line_belongs_to_markdown_container(line, quote_depth, list_indent):
-                output.append("\n" if line.endswith("\n") else "")
+                output.append(preserve_html_body_as_text(line))
                 if terminator in line:
                     html_delimited_block = None
                     paragraph_open = False
@@ -654,7 +689,7 @@ def strip_markdown_code_blocks(text: str) -> str:
         if html_block_container is not None:
             quote_depth, list_indent = html_block_container
             if line_belongs_to_markdown_container(line, quote_depth, list_indent):
-                output.append("\n" if line.endswith("\n") else "")
+                output.append(preserve_html_body_as_text(line))
                 if is_blank_markdown_container_line(line):
                     html_block_container = None
                     paragraph_open = False
@@ -668,7 +703,7 @@ def strip_markdown_code_blocks(text: str) -> str:
                 html_tag_buffer,
                 html_attribute_quote,
             )
-            output.append("\n" if line.endswith("\n") else "")
+            output.append(preserve_html_body_as_text(line))
             paragraph_open = False
             continue
 
@@ -711,7 +746,7 @@ def strip_markdown_code_blocks(text: str) -> str:
             terminator, quote_depth, list_indent = delimited_html_start
             if terminator not in line[line.find("<"):]:
                 html_delimited_block = (terminator, quote_depth, list_indent)
-            output.append("\n" if line.endswith("\n") else "")
+            output.append(preserve_html_body_as_text(line))
             paragraph_open = False
             continue
 
@@ -722,7 +757,7 @@ def strip_markdown_code_blocks(text: str) -> str:
             "",
         )
         if contains_raw_code or html_tag_buffer:
-            output.append("\n" if line.endswith("\n") else "")
+            output.append(preserve_html_body_as_text(line))
             paragraph_open = False
             continue
 
@@ -732,15 +767,15 @@ def strip_markdown_code_blocks(text: str) -> str:
         )
         if html_block_container_start is not None:
             html_block_container = html_block_container_start
-            output.append("\n" if line.endswith("\n") else "")
+            output.append(preserve_html_body_as_text(line))
             paragraph_open = False
             continue
 
         output.append(line)
-        if not line.strip():
+        if not line.strip() or interrupts_markdown_paragraph(line):
             paragraph_open = False
-        elif not paragraph_open:
-            paragraph_open = not interrupts_markdown_paragraph(line)
+        else:
+            paragraph_open = True
     return "".join(output)
 
 
@@ -1497,6 +1532,24 @@ def check_identity_and_claim_context(text_files: list[Path], errors: list[str]) 
                     fail(f"{rel}:{line_no} uses blocked claim phrase without boundary context: {phrase}", errors)
 
 
+def check_semantic_authority_collapse(text_files: list[Path], errors: list[str]) -> None:
+    """Reject unbounded authority promotion in reviewer-visible Markdown text."""
+    for path in text_files:
+        if path.suffix.lower() != ".md":
+            continue
+        rel = path.relative_to(ROOT).as_posix()
+        semantic_lines = read_reviewer_semantic_text(path, errors).splitlines()
+        for line_no, line in enumerate(semantic_lines, start=1):
+            for label, pattern in AUTHORITY_COLLAPSE_PATTERNS:
+                if not pattern.search(line):
+                    continue
+                context_start = max(0, line_no - 15)
+                context_end = min(len(semantic_lines), line_no + 5)
+                context = "\n".join(semantic_lines[context_start:context_end]).lower()
+                if not any(marker in context for marker in BOUNDARY_WORDS):
+                    fail(f"{rel}:{line_no} uses unbounded authority-collapse wording: {label}", errors)
+
+
 def main() -> int:
     errors: list[str] = []
     manifest = load_manifest(errors)
@@ -1515,6 +1568,7 @@ def main() -> int:
     check_standing_controls(all_text, errors)
     check_exposure(text_files, errors)
     check_identity_and_claim_context(text_files, errors)
+    check_semantic_authority_collapse(text_files, errors)
 
     if errors:
         print("COMMAND_CENTER_INVARIANTS=FAIL")
