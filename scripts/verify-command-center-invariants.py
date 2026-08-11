@@ -766,7 +766,12 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         fail("pull request template must enumerate exactly seven downstream repositories plus None", errors)
 
     system_map_text = read_text(ROOT / "wiki" / "11_ORG_SYSTEM_MAP.md", errors)
-    mermaid_blocks = re.findall(r"```mermaid\s*(.*?)```", system_map_text, re.DOTALL)
+    mermaid_fence = re.compile(
+        r"^[ \t]{0,3}(?P<marker>`|~)(?P=marker){2,}[ \t]*mermaid[^\r\n]*\r?\n"
+        r"(?P<body>.*?)(?=^[ \t]{0,3}(?P=marker){3,}[ \t]*$)",
+        re.DOTALL | re.IGNORECASE | re.MULTILINE,
+    )
+    mermaid_blocks = [match.group("body") for match in mermaid_fence.finditer(system_map_text)]
     normalized_mermaid = "\n\n--- mermaid block ---\n\n".join(
         "\n".join(line.rstrip() for line in block.strip().splitlines())
         for block in mermaid_blocks
