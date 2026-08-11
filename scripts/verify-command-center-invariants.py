@@ -1793,11 +1793,10 @@ def iter_reviewer_claim_units(lines: list[str]) -> list[tuple[int, str]]:
             quote_marker = re.match(r"^ {0,3}>[ \t]?", visible_line)
         leading_spaces = len(visible_line) - len(visible_line.lstrip(" "))
         list_marker = re.match(r"^ {0,3}(?:[-+*]|\d{1,9}[.)])[ \t]+", visible_line)
-        standalone_structure = bool(
-            re.match(
-                r"^ {0,3}(?:#{1,6}(?:[ \t]+|$)|\|.*\|[ \t]*$|(?:=+|-+)[ \t]*$)",
-                visible_line,
-            )
+        standalone_structure = (
+            (not list_marker and interrupts_markdown_paragraph(visible_line))
+            or visible_line.startswith(("HTML_BODY ", "HTML_INLINE "))
+            or bool(re.match(r"^ {0,3}\|.*\|[ \t]*$", visible_line))
         )
 
         starts_new_block = bool(
