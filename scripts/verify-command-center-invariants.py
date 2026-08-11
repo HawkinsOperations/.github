@@ -286,7 +286,8 @@ AUTHORITY_COLLAPSE_PATTERNS = (
     (
         "non-human direct authority action",
         re.compile(
-            r"\b(?:hoxline|website|github(?:\s+organization)?|\.github)\s+"
+            r"\b(?:AI|hoxline|website|github(?:\s+organization)?|\.github)\s+"
+            r"(?:(?:can|may|will|must|could|might|should|would)\s+)?"
             r"(?:(?:approves?|authorizes?)\s+merges?|"
             r"(?:decides?|approves?|authorizes?)\s+(?:detection\s+|incident\s+)?disposition|"
             r"closes?\s+cases?|promotes?\s+claims?)\b",
@@ -1347,6 +1348,15 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
     if manifest_repositories != SYSTEM_REPOSITORIES:
         fail("manifest system_repositories must preserve the exact seven-repository inventory display order", errors)
 
+    workflow_text = read_text(
+        ROOT / ".github" / "workflows" / "command-center-invariants.yml", errors
+    )
+    if workflow_text.count('- ".github/**"') != 2:
+        fail(
+            "command-center invariant workflow must trigger on every scanned .github path for pull requests and main pushes",
+            errors,
+        )
+
     for rel in ("README.md", "profile/README.md", "profile/START_HERE.md", "architecture/REPO_AUTHORITY_MAP.md"):
         text = read_reviewer_semantic_text(ROOT / rel, errors).lower()
         for repository in SYSTEM_REPOSITORIES:
@@ -1491,15 +1501,18 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
     )
     for rel, heading, expected_header, expected_rows in authority_tables:
         table_text = read_reviewer_semantic_text(ROOT / rel, errors)
-        section_match = re.search(
+        section_matches = re.findall(
             rf"## {re.escape(heading)}\s+(.*?)(?=\n## |\Z)",
             table_text,
             re.DOTALL,
         )
-        if not section_match:
-            fail(f"{rel} missing parseable authority table: {heading}", errors)
+        if len(section_matches) != 1:
+            fail(
+                f"{rel} must contain exactly one parseable authority table: {heading}",
+                errors,
+            )
             continue
-        table_lines = extract_contiguous_table_lines(section_match.group(1), expected_header)
+        table_lines = extract_contiguous_table_lines(section_matches[0], expected_header)
         if not table_lines or table_lines[0] != expected_header:
             fail(f"{rel} authority table must preserve its exact ownership-boundary headers", errors)
             continue

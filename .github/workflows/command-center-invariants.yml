@@ -8,8 +8,7 @@ on:
       - "architecture/**"
       - "governance/**"
       - "wiki/**"
-      - ".github/pull_request_template.md"
-      - ".github/workflows/command-center-invariants.yml"
+      - ".github/**"
       - "scripts/verify-command-center-invariants.py"
   push:
     branches:
@@ -20,8 +19,7 @@ on:
       - "architecture/**"
       - "governance/**"
       - "wiki/**"
-      - ".github/pull_request_template.md"
-      - ".github/workflows/command-center-invariants.yml"
+      - ".github/**"
       - "scripts/verify-command-center-invariants.py"
 
 permissions:
