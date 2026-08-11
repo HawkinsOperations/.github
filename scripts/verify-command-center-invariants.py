@@ -387,11 +387,41 @@ def strip_markdown_code_blocks(text: str) -> str:
     fence_marker = ""
     fence_length = 0
     html_code_tag = ""
+
+    def advance_html_code_state(line: str, active_tag: str) -> tuple[str, bool]:
+        cursor = 0
+        contains_raw_code = bool(active_tag)
+        while cursor < len(line):
+            if active_tag:
+                closing = re.search(
+                    rf"</{re.escape(active_tag)}[ \t]*>",
+                    line[cursor:],
+                    re.IGNORECASE,
+                )
+                if not closing:
+                    return active_tag, True
+                contains_raw_code = True
+                cursor += closing.end()
+                active_tag = ""
+                continue
+
+            opening = re.search(
+                r"<(?P<tag>pre|script|style|textarea)(?=[ \t>]|$)[^>]*(?:>|$)",
+                line[cursor:],
+                re.IGNORECASE,
+            )
+            if not opening:
+                return "", contains_raw_code
+            contains_raw_code = True
+            cursor += opening.end()
+            if not opening.group(0).rstrip().endswith("/>"):
+                active_tag = opening.group("tag").lower()
+        return active_tag, contains_raw_code
+
     for line in text.splitlines(keepends=True):
         if html_code_tag:
+            html_code_tag, _ = advance_html_code_state(line, html_code_tag)
             output.append("\n" if line.endswith("\n") else "")
-            if re.search(rf"</{re.escape(html_code_tag)}[ \t]*>", line, re.IGNORECASE):
-                html_code_tag = ""
             continue
 
         if fence_marker:
@@ -413,16 +443,9 @@ def strip_markdown_code_blocks(text: str) -> str:
             output.append("\n" if line.endswith("\n") else "")
             continue
 
-        html_code_opening = re.search(
-            r"<(?P<tag>pre|script|style|textarea)(?:[ \t]+|>|$)",
-            line,
-            re.IGNORECASE,
-        )
-        if html_code_opening:
-            html_code_tag = html_code_opening.group("tag").lower()
+        html_code_tag, contains_raw_code = advance_html_code_state(line, "")
+        if contains_raw_code:
             output.append("\n" if line.endswith("\n") else "")
-            if re.search(rf"</{re.escape(html_code_tag)}[ \t]*>", line, re.IGNORECASE):
-                html_code_tag = ""
             continue
         if re.match(r"^(?: {4}|\t)", line):
             output.append("\n" if line.endswith("\n") else "")
