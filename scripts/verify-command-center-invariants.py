@@ -963,7 +963,10 @@ def main() -> int:
     check_front_door_authority_model(manifest, errors)
 
     text_files = iter_text_files()
-    all_text = "\n".join(path.read_text(encoding="utf-8", errors="ignore") for path in text_files)
+    all_text = "\n".join(
+        strip_html_comments(path.read_text(encoding="utf-8", errors="ignore"))
+        for path in text_files
+    )
     check_project_boundaries(all_text, errors)
     check_ceiling_boundaries(all_text, errors)
     check_standing_controls(all_text, errors)
