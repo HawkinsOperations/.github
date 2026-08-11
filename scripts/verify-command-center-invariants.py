@@ -288,11 +288,15 @@ AUTHORITY_COLLAPSE_PATTERNS = (
         "non-human direct authority action",
         re.compile(
             r"\b(?:AI|hoxline|website|github(?:\s+organization)?|\.github)\s+"
-            r"(?:(?:can|may|will|must|could|might|should|would)\s+)?"
-            r"(?:(?:approves?|authorizes?)\s+merges?|"
-            r"merges?\s+pull\s+requests?|"
-            r"(?:decides?|approves?|authorizes?)\s+(?:detection\s+|incident\s+)?disposition|"
-            r"closes?\s+cases?|promotes?\s+claims?)\b",
+            r"(?:(?:can|may|will|must|could|might|should|would)\s+|"
+            r"(?:is|are|was|were)(?:\s+being)?\s+|"
+            r"(?:has|have|had)(?:\s+been)?\s+)?"
+            r"(?:(?:approv|authoriz)(?:e|es|ed|ing)\s+merges?|"
+            r"merg(?:e|es|ed|ing)\s+pull\s+requests?|"
+            r"(?:decid|approv|authoriz)(?:e|es|ed|ing)\s+"
+            r"(?:detection\s+|incident\s+)?disposition|"
+            r"clos(?:e|es|ed|ing)\s+cases?|"
+            r"promot(?:e|es|ed|ing)\s+claims?)\b",
             re.IGNORECASE,
         ),
     ),
@@ -308,8 +312,22 @@ AUTHORITY_COLLAPSE_PATTERNS = (
             r"disposition|close\s+cases?|promote\s+claims?)\b|"
             r"\b(?:merge|approval|disposition|claim\s+promotion|case\s+closure)\s+"
             r"authority\s+(?:(?:is|was|were)|(?:has|have|had)\s+been)\s+"
-            r"(?:delegated|granted|assigned)\s+to\s+(?:the\s+)?"
+            r"(?:delegated|granted|assigned|given)\s+to\s+(?:the\s+)?"
             r"(?:AI|hoxline|website|github(?:\s+organization)?|\.github)\b",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "non-human granted authority action",
+        re.compile(
+            r"\b(?:AI|hoxline|website|github(?:\s+organization)?|\.github)\s+"
+            r"(?:(?:is|was|were)(?:\s+being)?|(?:has|have|had)\s+been|"
+            r"(?:can|may|will|must|could|might|should|would)\s+be)\s+"
+            r"(?:granted|given|assigned)\s+(?:the\s+)?"
+            r"(?:authority|permission|power)\s+to\s+"
+            r"(?:(?:approve|authorize)\s+merges?|merge\s+pull\s+requests?|"
+            r"(?:decide|approve|authorize)\s+(?:detection\s+|incident\s+)?"
+            r"disposition|close\s+cases?|promote\s+claims?)\b",
             re.IGNORECASE,
         ),
     ),
@@ -2034,14 +2052,29 @@ def unescape_markdown_punctuation(text: str) -> str:
 def contains_explicit_boundary_qualifier(text: str) -> bool:
     """Recognize reviewer-visible wording that explicitly bounds a claim."""
     return bool(re.search(
-        r"\b(?:does not|do not|must not|may not|cannot|not established|"
+        r"\b(?:(?:does not|do not|must not|may not|cannot)\s+(?:be\s+)?"
+        r"(?:establish|prove|support|authorize|grant|promote|claim|assert|"
+        r"mean|constitute|show|indicate|confirm|publish|report|describe|"
+        r"treat|own)(?:s|ed|ing)?|not established|"
         r"not proven|not proof|not authority|not public-safe|"
         r"not\b[^|.!?;]{0,180}\bpublic-safe|blocked|"
         r"unproven|unsupported|"
         r"forbidden|restricted|rejected|withheld|not_public_safe|"
         r"requires? evidence|required next evidence|claim ceiling|"
-        r"(?:proof|evidence|authority|claim) boundar(?:y|ies)|"
-        r"exclude(?:s|d)?|exclusions?)\b",
+        r"boundar(?:y|ies)|exclude(?:s|d)?|exclusions?)\b|"
+        r"\bmay not\s*:\s*$",
+        text,
+        re.IGNORECASE,
+    ))
+
+
+def contains_strong_boundary_status(text: str) -> bool:
+    """Recognize an explicit blocked status anywhere in one structured row."""
+    return bool(re.search(
+        r"\b(?:blocked|unproven|unsupported|forbidden|rejected|withheld|"
+        r"not_public_safe)\b|"
+        r"\buntil\b[^|.!?;]{0,180}\b(?:reviewed|approved?|proven)\b|"
+        r"\bonly for reviewed\b|\bafter public claim review\b",
         text,
         re.IGNORECASE,
     ))
@@ -2080,7 +2113,7 @@ def claim_has_bound_qualifier(context: str, claim_start: int, claim_end: int) ->
     governing_match = governing_prefix.search(prefix)
     unrelated_clause = re.compile(
         r"(?:,|\b(?:and|but|or|while|whereas|although|though|yet)\b)\s+"
-        r"[^.!?;]{0,220}?\b"
+        r"[^.!?;]{0,500}?\b"
         r"(?:is|are|was|were|does|do|has|have|can|may|will|must)\b",
         re.IGNORECASE,
     )
@@ -2213,7 +2246,7 @@ def check_identity_and_claim_context(text_files: list[Path], errors: list[str]) 
                                     break
                                 separator_index -= 1
                             if not structured_boundary:
-                                structured_boundary = contains_explicit_boundary_qualifier(
+                                structured_boundary = contains_strong_boundary_status(
                                     boundary_claim_unit.lower()
                                 )
                         if not structured_boundary and re.match(
