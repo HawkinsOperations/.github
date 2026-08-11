@@ -773,9 +773,12 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
     mermaid_edge_segment = r"[ox<]?[-.=~]{2,}[>ox]?"
     mermaid_label_start = r"[-.=~]{2,}"
     mermaid_label_end = r"[-.=~]{2,}[>ox]?"
+    mermaid_quoted_label = r'"(?:\\.|[^"\\])*"'
+    mermaid_inline_label = rf"(?:{mermaid_quoted_label}|[^|>\n]+?)"
+    mermaid_pipe_label = rf"(?:{mermaid_quoted_label}|[^|\n]*)"
     mermaid_link = (
-        rf"(?:{mermaid_label_start}\s+[^|>\n]+?\s+{mermaid_label_end}|{mermaid_edge_segment})"
-        r"(?:\|[^|\n]*\|)?"
+        rf"(?:{mermaid_label_start}\s+{mermaid_inline_label}\s+{mermaid_label_end}|{mermaid_edge_segment})"
+        rf"(?:\|{mermaid_pipe_label}\|)?"
     )
     mermaid_node_ref = rf"[A-Za-z_][A-Za-z0-9_-]*{mermaid_node_decoration}"
     mermaid_node_group = rf"{mermaid_node_ref}(?:\s*&\s*{mermaid_node_ref})*"
