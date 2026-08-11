@@ -1410,14 +1410,20 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
     if manifest_repositories != SYSTEM_REPOSITORIES:
         fail("manifest system_repositories must preserve the exact seven-repository inventory display order", errors)
 
-    workflow_text = read_text(
-        ROOT / ".github" / "workflows" / "command-center-invariants.yml", errors
-    )
-    if workflow_text.count('- ".github/**"') != 2:
-        fail(
-            "command-center invariant workflow must trigger on every scanned .github path for pull requests and main pushes",
-            errors,
-        )
+    workflow_path = ROOT / ".github" / "workflows" / "command-center-invariants.yml"
+    workflow = read_yaml_mapping(workflow_path, errors)
+    triggers = workflow.get("on", workflow.get(True, {}))
+    if not isinstance(triggers, dict):
+        fail("command-center invariant workflow must define structured event triggers", errors)
+        triggers = {}
+    for event in ("pull_request", "push"):
+        event_config = triggers.get(event, {})
+        paths = event_config.get("paths", []) if isinstance(event_config, dict) else []
+        if not isinstance(paths, list) or ".github/**" not in paths:
+            fail(
+                f"command-center invariant workflow {event} trigger must include .github/**",
+                errors,
+            )
 
     for rel in ("README.md", "profile/README.md", "profile/START_HERE.md", "architecture/REPO_AUTHORITY_MAP.md"):
         text = read_reviewer_semantic_text(ROOT / rel, errors).lower()
@@ -1999,6 +2005,22 @@ def contains_boundary_marker(text: str) -> bool:
     return False
 
 
+def contains_explicit_boundary_qualifier(text: str) -> bool:
+    """Recognize reviewer-visible wording that explicitly bounds a claim."""
+    return bool(re.search(
+        r"\b(?:does not|do not|must not|may not|cannot|not established|"
+        r"not proven|not proof|not authority|not public-safe|"
+        r"not\b[^|.!?;]{0,180}\bpublic-safe|blocked|"
+        r"unproven|unsupported|"
+        r"forbidden|restricted|rejected|withheld|not_public_safe|"
+        r"requires? evidence|required next evidence|claim ceiling|"
+        r"(?:proof|evidence|authority|claim) boundar(?:y|ies)|"
+        r"exclude(?:s|d)?|exclusions?)\b",
+        text,
+        re.IGNORECASE,
+    ))
+
+
 def claim_has_bound_qualifier(context: str, claim_start: int, claim_end: int) -> bool:
     """Require an explicit negative construction tied to a blocked claim."""
     prefix = context[:claim_start]
@@ -2152,13 +2174,15 @@ def check_identity_and_claim_context(text_files: list[Path], errors: list[str]) 
                                     )
                                     structured_boundary = any(
                                         cell_index < len(headers)
-                                        and contains_boundary_marker(headers[cell_index])
+                                        and contains_explicit_boundary_qualifier(
+                                            headers[cell_index]
+                                        )
                                         for cell_index in phrase_cells
                                     )
                                     break
                                 separator_index -= 1
                             if not structured_boundary:
-                                structured_boundary = contains_boundary_marker(
+                                structured_boundary = contains_explicit_boundary_qualifier(
                                     boundary_claim_unit.lower()
                                 )
                         if not structured_boundary and re.match(
@@ -2177,7 +2201,7 @@ def check_identity_and_claim_context(text_files: list[Path], errors: list[str]) 
                                 if previous and not re.match(
                                     r"^(?:[-+*]|\d{1,9}[.)])[ \t]+", previous
                                 ):
-                                    structured_boundary = contains_boundary_marker(
+                                    structured_boundary = contains_explicit_boundary_qualifier(
                                         previous.lower()
                                     )
                                     break
