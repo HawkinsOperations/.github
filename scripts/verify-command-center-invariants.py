@@ -284,7 +284,8 @@ def has_unclosed_inline_code_run(line: str) -> bool:
 def starts_type6_markdown_html_block(line: str) -> bool:
     return bool(
         re.match(
-            r"^ {0,3}</?(?:address|article|aside|base|basefont|blockquote|body|caption|center|"
+            r"^ {0,3}(?:(?:> ?)|(?:(?:[-+*]|\d{1,9}[.)])[ \t]+))* {0,3}"
+            r"</?(?:address|article|aside|base|basefont|blockquote|body|caption|center|"
             r"col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|"
             r"form|frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|"
             r"menuitem|nav|noframes|ol|optgroup|option|p|param|search|section|summary|table|"
@@ -293,6 +294,36 @@ def starts_type6_markdown_html_block(line: str) -> bool:
             re.IGNORECASE,
         )
     )
+
+
+def strip_markdown_html_tags(text: str) -> str:
+    """Remove non-rendered HTML tag syntax while preserving visible text and lines."""
+    output: list[str] = []
+    in_tag = False
+    attribute_quote = ""
+    cursor = 0
+    while cursor < len(text):
+        character = text[cursor]
+        if in_tag:
+            if character in "\r\n":
+                output.append(character)
+            if attribute_quote:
+                if character == attribute_quote:
+                    attribute_quote = ""
+            elif character in {'"', "'"}:
+                attribute_quote = character
+            elif character == ">":
+                in_tag = False
+            cursor += 1
+            continue
+
+        if character == "<" and cursor + 1 < len(text) and re.match(r"[A-Za-z/!?]", text[cursor + 1]):
+            in_tag = True
+            cursor += 1
+            continue
+        output.append(character)
+        cursor += 1
+    return "".join(output)
 
 
 def interrupts_markdown_paragraph(line: str) -> bool:
@@ -638,7 +669,9 @@ def read_reviewer_visible_text(path: Path, errors: list[str]) -> str:
 
 def read_reviewer_semantic_text(path: Path, errors: list[str]) -> str:
     text = read_reviewer_visible_text(path, errors)
-    return strip_markdown_code_blocks(text) if path.suffix.lower() == ".md" else text
+    if path.suffix.lower() != ".md":
+        return text
+    return strip_markdown_html_tags(strip_markdown_code_blocks(text))
 
 
 def read_yaml_mapping(path: Path, errors: list[str]) -> dict:
