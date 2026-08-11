@@ -2350,6 +2350,8 @@ def check_identity_and_claim_context(text_files: list[Path], errors: list[str]) 
                                         "current state",
                                         "claim status",
                                         "public-safe status",
+                                        "boundary",
+                                        "claim boundary",
                                     }
                                     and header_index < len(cells)
                                     and contains_strong_boundary_status(
