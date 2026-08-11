@@ -262,7 +262,7 @@ def interrupts_markdown_paragraph(line: str) -> bool:
             r"^[ \t]{0,3}(?:"
             r"#{1,6}(?:[ \t]+|$)|"
             r">|"
-            r"(?:[-+*]|1[.)])[ \t]+|"
+            r"(?:[-+*]|0{0,8}1[.)])[ \t]+|"
             r"(?:=+|-+)[ \t]*$|"
             r"(?:(?:\*[ \t]*){3,}|(?:-[ \t]*){3,}|(?:_[ \t]*){3,})$|"
             r"<!--|<\?|<![A-Z]|<!\[CDATA\[|"
@@ -413,8 +413,8 @@ def strip_markdown_code_blocks(text: str) -> str:
             output.append("\n" if line.endswith("\n") else "")
             continue
 
-        html_code_opening = re.match(
-            r"^[ \t]{0,3}<(?P<tag>pre|script|style|textarea)(?:[ \t]+|>|$)",
+        html_code_opening = re.search(
+            r"<(?P<tag>pre|script|style|textarea)(?:[ \t]+|>|$)",
             line,
             re.IGNORECASE,
         )
