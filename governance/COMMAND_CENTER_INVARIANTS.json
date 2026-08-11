@@ -1,6 +1,7 @@
 {
   "schema": "hawkinsoperations-command-center-invariants-v1",
   "scope": "HawkinsOperations/.github reviewer routing and governance shell",
+  "system_repository_order_semantics": "Stable front-door inventory display order; promotion flow is separately governed by PROMOTION_LADDER_CONTRACT.yml.",
   "system_repositories": [
     ".github",
     "hoxline",

@@ -15,6 +15,8 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST_PATH = ROOT / "governance" / "COMMAND_CENTER_INVARIANTS.json"
 TEXT_SCOPES = ["README.md", "profile", "architecture", "governance", "wiki", ".github"]
+# Stable public inventory order. This is not the promotion-ladder sequence,
+# which is separately governed and verified from PROMOTION_LADDER_CONTRACT.yml.
 SYSTEM_REPOSITORIES = (
     ".github",
     "hoxline",
@@ -34,7 +36,7 @@ EXPECTED_PROMOTION_CONTRACT_SHA256 = "65522c07b7e2983379dcb3ea1ba5b4cd03ccb3e511
 EXPECTED_REQUIRED_CHECKS_MATRIX_SHA256 = "2cefa14bcd21ec9dfa1a491c791116d7806fe67c18c0f8bce5f669e7b2eb4f44"
 # Fingerprint of the complete reviewed invariant manifest, including the exact
 # required route list and seven-repository authority order.
-EXPECTED_MANIFEST_SHA256 = "9bf2fc9dd8d8d64a25422e8784019a0827d89ac00348c73289df5d83153df122"
+EXPECTED_MANIFEST_SHA256 = "943483cc693072d519d5b397b89479f0efa4f0c027273f3a53f557d59af20cd3"
 # Fingerprint of every reviewed Mermaid block in the organization system map.
 # Any topology, alias, or edge change requires an intentional verifier update.
 EXPECTED_SYSTEM_MAP_MERMAID_SHA256 = "5e0e2ce49506de2a02d3bb981be1823ae33194908c5d234e286c92f0a201edd8"
@@ -242,6 +244,11 @@ def fail(message: str, errors: list[str]) -> None:
     errors.append(message)
 
 
+def strip_html_comments(text: str) -> str:
+    """Return reviewer-visible Markdown by removing non-rendered HTML comments."""
+    return re.sub(r"<!--.*?-->", "", text, flags=re.DOTALL)
+
+
 def construct_unique_json_object(pairs: list[tuple[str, object]]) -> dict:
     result: dict = {}
     for key, value in pairs:
@@ -322,6 +329,11 @@ def load_manifest(errors: list[str]) -> dict:
         fail("complete invariant manifest does not match the reviewed machine-readable mapping", errors)
     if manifest.get("schema") != "hawkinsoperations-command-center-invariants-v1":
         fail("manifest schema mismatch", errors)
+    if manifest.get("system_repository_order_semantics") != (
+        "Stable front-door inventory display order; promotion flow is separately governed "
+        "by PROMOTION_LADDER_CONTRACT.yml."
+    ):
+        fail("manifest must distinguish inventory display order from promotion-ladder sequence", errors)
     if manifest.get("invariants") != EXPECTED_INVARIANTS:
         fail("manifest invariants must match the exact reviewed authority contract", errors)
     return manifest
@@ -343,7 +355,7 @@ def check_required_files(manifest: dict, errors: list[str]) -> None:
 
 def check_required_text(errors: list[str]) -> None:
     for rel, needles in REQUIRED_TEXT.items():
-        text = read_text(ROOT / rel, errors)
+        text = strip_html_comments(read_text(ROOT / rel, errors))
         lowered = text.lower()
         for needle in needles:
             if needle.lower() not in lowered:
@@ -353,15 +365,15 @@ def check_required_text(errors: list[str]) -> None:
 def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
     manifest_repositories = tuple(manifest.get("system_repositories", []))
     if manifest_repositories != SYSTEM_REPOSITORIES:
-        fail("manifest system_repositories must list the exact seven repositories in authority order", errors)
+        fail("manifest system_repositories must preserve the exact seven-repository inventory display order", errors)
 
     for rel in ("README.md", "profile/README.md", "profile/START_HERE.md", "architecture/REPO_AUTHORITY_MAP.md"):
-        text = read_text(ROOT / rel, errors).lower()
+        text = strip_html_comments(read_text(ROOT / rel, errors)).lower()
         for repository in SYSTEM_REPOSITORIES:
             if repository.lower() not in text:
                 fail(f"{rel} missing system repository role: {repository}", errors)
 
-    profile_text = read_text(ROOT / "profile" / "README.md", errors)
+    profile_text = strip_html_comments(read_text(ROOT / "profile" / "README.md", errors))
     profile = profile_text.lower()
     door_section = re.search(
         r"## Choose the right door\s+(.*?)(?=\n## |\Z)",
@@ -394,7 +406,7 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         profile_text,
         re.MULTILINE,
     )
-    start_here_text = read_text(ROOT / "profile" / "START_HERE.md", errors)
+    start_here_text = strip_html_comments(read_text(ROOT / "profile" / "START_HERE.md", errors))
     start_here_fast_path = re.search(
         r"## 3-minute command-center path\s+(.*?)(?=\n## |\Z)",
         start_here_text,
@@ -498,7 +510,7 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         ),
     )
     for rel, heading, expected_header, expected_rows in authority_tables:
-        table_text = read_text(ROOT / rel, errors)
+        table_text = strip_html_comments(read_text(ROOT / rel, errors))
         section_match = re.search(
             rf"## {re.escape(heading)}\s+(.*?)(?=\n## |\Z)",
             table_text,
@@ -765,7 +777,7 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
     if actual_downstream_repos != expected_downstream_repos:
         fail("pull request template must enumerate exactly seven downstream repositories plus None", errors)
 
-    system_map_text = read_text(ROOT / "wiki" / "11_ORG_SYSTEM_MAP.md", errors)
+    system_map_text = strip_html_comments(read_text(ROOT / "wiki" / "11_ORG_SYSTEM_MAP.md", errors))
     mermaid_fence = re.compile(
         r"^[ \t]{0,3}(?P<marker>`|~)(?P=marker){2,}[ \t]*mermaid[^\r\n]*\r?\n"
         r"(?P<body>.*?)(?=^[ \t]{0,3}(?P=marker){3,}[ \t]*$|\Z)",
