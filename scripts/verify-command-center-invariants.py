@@ -246,7 +246,7 @@ def fail(message: str, errors: list[str]) -> None:
 
 def strip_html_comments(text: str) -> str:
     """Return reviewer-visible Markdown by removing non-rendered HTML comments."""
-    return re.sub(r"<!--.*?-->", "", text, flags=re.DOTALL)
+    return re.sub(r"<!--.*?(?:-->|\Z)", "", text, flags=re.DOTALL)
 
 
 def construct_unique_json_object(pairs: list[tuple[str, object]]) -> dict:
@@ -755,7 +755,9 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         if set(actual_pairs) != set(declared_pairs):
             fail(f"{repository} declared checks and structured workflow / job contexts must match exactly", errors)
 
-    template_text = read_text(ROOT / ".github" / "pull_request_template.md", errors)
+    template_text = strip_html_comments(
+        read_text(ROOT / ".github" / "pull_request_template.md", errors)
+    )
     downstream_section = re.search(
         r"- Downstream repos affected:\s+(.*?)(?=\n- Downstream action:)",
         template_text,
