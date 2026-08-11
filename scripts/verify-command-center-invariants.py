@@ -1451,14 +1451,30 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
     if not isinstance(triggers, dict):
         fail("command-center invariant workflow must define structured event triggers", errors)
         triggers = {}
+    required_trigger_paths = {
+        "README.md",
+        "profile/**",
+        "architecture/**",
+        "governance/**",
+        "wiki/**",
+        ".github/**",
+        "scripts/verify-command-center-invariants.py",
+    }
     for event in ("pull_request", "push"):
         event_config = triggers.get(event, {})
         paths = event_config.get("paths", []) if isinstance(event_config, dict) else []
-        if not isinstance(paths, list) or ".github/**" not in paths:
+        actual_paths = {str(path) for path in paths} if isinstance(paths, list) else set()
+        missing_paths = sorted(required_trigger_paths - actual_paths)
+        if missing_paths:
             fail(
-                f"command-center invariant workflow {event} trigger must include .github/**",
+                f"command-center invariant workflow {event} trigger is missing scanned paths: "
+                f"{', '.join(missing_paths)}",
                 errors,
             )
+    push_config = triggers.get("push", {})
+    push_branches = push_config.get("branches", []) if isinstance(push_config, dict) else []
+    if not isinstance(push_branches, list) or "main" not in push_branches:
+        fail("command-center invariant workflow push trigger must include main", errors)
 
     for rel in ("README.md", "profile/README.md", "profile/START_HERE.md", "architecture/REPO_AUTHORITY_MAP.md"):
         text = read_reviewer_semantic_text(ROOT / rel, errors).lower()
@@ -2408,7 +2424,13 @@ def iter_reviewer_claim_units(lines: list[str]) -> list[tuple[int, str]]:
         if list_marker:
             current_list_indent = len(list_marker.group(0).expandtabs(4))
             visible_line = visible_line[list_marker.end():]
-        current.append(visible_line.strip())
+        visible_fragment = visible_line.strip()
+        trailing_backslashes = len(visible_fragment) - len(
+            visible_fragment.rstrip("\\")
+        )
+        if trailing_backslashes % 2:
+            visible_fragment = visible_fragment[:-1].rstrip()
+        current.append(visible_fragment)
         if standalone_structure:
             flush()
     flush()
