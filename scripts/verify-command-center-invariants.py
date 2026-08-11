@@ -297,6 +297,23 @@ AUTHORITY_COLLAPSE_PATTERNS = (
         ),
     ),
     (
+        "non-human delegated authority action",
+        re.compile(
+            r"\b(?:AI|hoxline|website|github(?:\s+organization)?|\.github)\s+"
+            r"(?:(?:is|was|were)(?:\s+being)?|(?:has|have|had)\s+been|"
+            r"(?:can|may|will|must|could|might|should|would)\s+be)\s+"
+            r"(?:authorized|delegated|empowered|permitted|allowed)\s+to\s+"
+            r"(?:(?:approve|authorize)\s+merges?|merge\s+pull\s+requests?|"
+            r"(?:decide|approve|authorize)\s+(?:detection\s+|incident\s+)?"
+            r"disposition|close\s+cases?|promote\s+claims?)\b|"
+            r"\b(?:merge|approval|disposition|claim\s+promotion|case\s+closure)\s+"
+            r"authority\s+(?:(?:is|was|were)|(?:has|have|had)\s+been)\s+"
+            r"(?:delegated|granted|assigned)\s+to\s+(?:the\s+)?"
+            r"(?:AI|hoxline|website|github(?:\s+organization)?|\.github)\b",
+            re.IGNORECASE,
+        ),
+    ),
+    (
         "non-human passive authority action",
         re.compile(
             r"\b(?:(?:merges?|claims?|cases?)\s+(?:"
@@ -2005,6 +2022,15 @@ def contains_boundary_marker(text: str) -> bool:
     return False
 
 
+def unescape_markdown_punctuation(text: str) -> str:
+    """Decode CommonMark backslash escapes for ASCII punctuation."""
+    return re.sub(
+        r"""\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])""",
+        r"\1",
+        text,
+    )
+
+
 def contains_explicit_boundary_qualifier(text: str) -> bool:
     """Recognize reviewer-visible wording that explicitly bounds a claim."""
     return bool(re.search(
@@ -2053,8 +2079,8 @@ def claim_has_bound_qualifier(context: str, claim_start: int, claim_end: int) ->
     )
     governing_match = governing_prefix.search(prefix)
     unrelated_clause = re.compile(
-        r"(?:,|\b(?:and|but|or)\b)\s+"
-        r"(?:[a-z0-9_.-]+\s+){0,4}"
+        r"(?:,|\b(?:and|but|or|while|whereas|although|though|yet)\b)\s+"
+        r"[^.!?;]{0,220}?\b"
         r"(?:is|are|was|were|does|do|has|have|can|may|will|must)\b",
         re.IGNORECASE,
     )
@@ -2108,13 +2134,16 @@ def check_identity_and_claim_context(text_files: list[Path], errors: list[str]) 
         for line_no, claim_unit in claim_units:
             if is_markdown:
                 claim_unit = normalize_markdown_link_text(claim_unit)
-                boundary_claim_unit = "".join(
+                candidate_claim_unit = "".join(
                     character
                     for character in html.unescape(claim_unit)
                     if unicodedata.category(character) != "Cf"
                 )
+                candidate_claim_unit = unescape_markdown_punctuation(
+                    candidate_claim_unit
+                )
                 candidate_lower = re.sub(
-                    r"[*_~`]+", "", boundary_claim_unit
+                    r"[*_~`]+", "", candidate_claim_unit
                 ).lower()
                 if not any(phrase.lower() in candidate_lower for phrase in BLOCKED_CLAIMS):
                     continue
@@ -2124,12 +2153,14 @@ def check_identity_and_claim_context(text_files: list[Path], errors: list[str]) 
                     for character in html.unescape(claim_unit)
                     if unicodedata.category(character) != "Cf"
                 )
+                claim_unit = unescape_markdown_punctuation(claim_unit)
                 claim_unit = re.sub(r"[*~`]+", "", claim_unit)
                 claim_unit = re.sub(
                     r"(?<![A-Za-z0-9])_+|_+(?![A-Za-z0-9])",
                     "",
                     claim_unit,
                 )
+                boundary_claim_unit = claim_unit
                 source_line = semantic_lines[line_no - 1] if line_no <= len(semantic_lines) else ""
                 next_line = semantic_lines[line_no] if line_no < len(semantic_lines) else ""
                 if "|" in source_line and re.match(
