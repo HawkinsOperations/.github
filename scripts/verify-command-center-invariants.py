@@ -1706,6 +1706,7 @@ def check_semantic_authority_collapse(text_files: list[Path], errors: list[str])
         semantic_lines = read_reviewer_semantic_text(path, errors).splitlines()
         for line_no, line in enumerate(semantic_lines, start=1):
             claim_line = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", line)
+            claim_line = re.sub(r"\[([^\]]+)\](?:\[[^\]]*\])?", r"\1", claim_line)
             claim_line = re.sub(r"[*_~`]+", "", claim_line)
             for label, pattern in AUTHORITY_COLLAPSE_PATTERNS:
                 if not pattern.search(claim_line):
