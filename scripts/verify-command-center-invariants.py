@@ -943,6 +943,59 @@ def strip_markdown_code_blocks(text: str) -> str:
     return "".join(output)
 
 
+def strip_markdown_inline_code_spans(text: str) -> str:
+    """Remove matched code spans while preserving unmatched delimiters as text."""
+    output: list[str] = []
+    cursor = 0
+    while cursor < len(text):
+        opening = re.search(r"`+", text[cursor:])
+        if not opening:
+            output.append(text[cursor:])
+            break
+
+        opening_start = cursor + opening.start()
+        opening_run = opening.group(0)
+        output.append(text[cursor:opening_start])
+        backslash_count = 0
+        preceding_index = opening_start - 1
+        while preceding_index >= 0 and text[preceding_index] == "\\":
+            backslash_count += 1
+            preceding_index -= 1
+        if backslash_count % 2:
+            output.append(opening_run)
+            cursor = opening_start + len(opening_run)
+            continue
+
+        content_start = opening_start + len(opening_run)
+        search_end = len(text)
+        offset = 0
+        for line_number, candidate_line in enumerate(
+            text[content_start:].splitlines(keepends=True)
+        ):
+            if line_number and interrupts_markdown_paragraph(candidate_line):
+                search_end = content_start + offset
+                break
+            offset += len(candidate_line)
+
+        closing_end = 0
+        for closing in re.finditer(r"`+", text[content_start:search_end]):
+            if len(closing.group(0)) == len(opening_run):
+                closing_end = content_start + closing.end()
+                break
+        if not closing_end:
+            output.append(opening_run)
+            cursor = content_start
+            continue
+
+        code_span = text[opening_start:closing_end]
+        output.append("".join(
+            character if character in "\r\n" else " "
+            for character in code_span
+        ))
+        cursor = closing_end
+    return "".join(output)
+
+
 def extract_mermaid_blocks(text: str) -> list[str]:
     """Extract Mermaid fence bodies using CommonMark marker and length rules."""
     blocks: list[str] = []
@@ -1824,7 +1877,8 @@ def check_semantic_authority_collapse(text_files: list[Path], errors: list[str])
         if path.suffix.lower() != ".md":
             continue
         rel = path.relative_to(ROOT).as_posix()
-        semantic_lines = read_reviewer_semantic_text(path, errors).splitlines()
+        semantic_text = read_reviewer_semantic_text(path, errors)
+        semantic_lines = strip_markdown_inline_code_spans(semantic_text).splitlines()
         for line_no, claim_unit in iter_reviewer_claim_units(semantic_lines):
             decoded_claim = html.unescape(claim_unit)
             decoded_claim = "".join(
