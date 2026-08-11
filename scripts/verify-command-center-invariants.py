@@ -210,10 +210,27 @@ AUTHORITY_COLLAPSE_PATTERNS = (
         ),
     ),
     (
+        "Hoxline proof-record ownership",
+        re.compile(
+            r"\bhoxline\s+(?:is|owns|has|controls)\s+(?:the\s+)?"
+            r"(?:proof\s+records?|claim\s+ceilings?|final\s+approval)\b",
+            re.IGNORECASE,
+        ),
+    ),
+    (
         "rendering proof authority",
         re.compile(
             r"\b(?:website|github(?:\s+organization)?|\.github)\s+"
             r"(?:rendering\s+)?(?:is|owns|has)\s+(?:the\s+)?proof\s+authority\b",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "rendering proof-record ownership",
+        re.compile(
+            r"\b(?:website|github(?:\s+organization)?|\.github)\s+"
+            r"(?:rendering\s+)?(?:is|owns|has|controls)\s+(?:the\s+)?"
+            r"(?:proof\s+records?|claim\s+ceilings?|final\s+approval)\b",
             re.IGNORECASE,
         ),
     ),
@@ -225,6 +242,23 @@ AUTHORITY_COLLAPSE_PATTERNS = (
             re.IGNORECASE,
         ),
     ),
+    (
+        "AI decision authority",
+        re.compile(
+            r"\bAI\s+(?:approves?|authorizes?|controls?|owns|has|decides?)\s+"
+            r"(?:the\s+)?(?:merges?|approval|disposition|claim\s+promotion|"
+            r"proof\s+authority|case\s+closure)\b",
+            re.IGNORECASE,
+        ),
+    ),
+)
+
+EXPLICIT_REJECTED_EXAMPLE_MARKERS = (
+    "rejected wording",
+    "blocked wording",
+    "forbidden wording",
+    "must not claim",
+    "rejected example",
 )
 
 
@@ -429,6 +463,51 @@ def preserve_html_body_as_text(line: str) -> str:
     return f"HTML_BODY {content}{ending}"
 
 
+def neutralize_html_promoted_markdown_structure(source: str, stripped: str) -> str:
+    """Prevent inline HTML text from becoming Markdown structure after tag removal."""
+    source_lines = source.splitlines(keepends=True)
+    stripped_lines = stripped.splitlines(keepends=True)
+    if len(source_lines) != len(stripped_lines):
+        return stripped
+
+    html_line_flags: list[bool] = []
+    in_tag = False
+    attribute_quote = ""
+    for line in source_lines:
+        line_has_html_syntax = in_tag
+        cursor = 0
+        while cursor < len(line):
+            character = line[cursor]
+            if in_tag:
+                line_has_html_syntax = True
+                if attribute_quote:
+                    if character == attribute_quote:
+                        attribute_quote = ""
+                elif character in {'"', "'"}:
+                    attribute_quote = character
+                elif character == ">":
+                    in_tag = False
+            elif character == "<" and cursor + 1 < len(line) and re.match(
+                r"[A-Za-z/!?]", line[cursor + 1]
+            ):
+                in_tag = True
+                line_has_html_syntax = True
+            cursor += 1
+        html_line_flags.append(line_has_html_syntax)
+
+    markdown_structure = re.compile(
+        r"^[ \t]*(?:#{1,6}(?:[ \t]+|$)|\|.*\|[ \t]*$|"
+        r"(?:[-+*]|\d{1,9}[.)])[ \t]+|(?:=+|-+)[ \t]*$)"
+    )
+    neutralized: list[str] = []
+    for line, had_html_syntax in zip(stripped_lines, html_line_flags):
+        if had_html_syntax and markdown_structure.match(line.rstrip("\r\n")):
+            neutralized.append(f"HTML_INLINE {line}")
+        else:
+            neutralized.append(line)
+    return "".join(neutralized)
+
+
 def strip_markdown_html_tags(text: str) -> str:
     """Remove non-rendered HTML tag syntax while preserving visible text and lines."""
     output: list[str] = []
@@ -456,7 +535,8 @@ def strip_markdown_html_tags(text: str) -> str:
             continue
         output.append(character)
         cursor += 1
-    return "".join(output)
+    stripped = "".join(output)
+    return neutralize_html_promoted_markdown_structure(text, stripped)
 
 
 def interrupts_markdown_paragraph(line: str) -> bool:
@@ -1574,10 +1654,8 @@ def check_semantic_authority_collapse(text_files: list[Path], errors: list[str])
             for label, pattern in AUTHORITY_COLLAPSE_PATTERNS:
                 if not pattern.search(line):
                     continue
-                context_start = max(0, line_no - 15)
-                context_end = min(len(semantic_lines), line_no + 5)
-                context = "\n".join(semantic_lines[context_start:context_end]).lower()
-                if not any(marker in context for marker in BOUNDARY_WORDS):
+                same_line = line.lower()
+                if not any(marker in same_line for marker in EXPLICIT_REJECTED_EXAMPLE_MARKERS):
                     fail(f"{rel}:{line_no} uses unbounded authority-collapse wording: {label}", errors)
 
 
