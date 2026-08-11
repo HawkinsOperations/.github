@@ -245,8 +245,74 @@ def fail(message: str, errors: list[str]) -> None:
 
 
 def strip_html_comments(text: str) -> str:
-    """Return reviewer-visible Markdown by removing non-rendered HTML comments."""
-    return re.sub(r"<!--.*?(?:-->|\Z)", "", text, flags=re.DOTALL)
+    """Remove Markdown HTML comments while preserving reviewer-visible code."""
+    output: list[str] = []
+    in_comment = False
+    inline_ticks = 0
+    fence_marker = ""
+    fence_length = 0
+
+    for line in text.splitlines(keepends=True):
+        if fence_marker:
+            output.append(line)
+            closing = re.match(rf"^[ \t]{{0,3}}{re.escape(fence_marker)}{{{fence_length},}}[ \t]*(?:\r?\n)?$", line)
+            if closing:
+                fence_marker = ""
+                fence_length = 0
+            continue
+
+        if not in_comment and inline_ticks == 0:
+            opening = re.match(r"^[ \t]{0,3}(`{3,}|~{3,})", line)
+            if opening:
+                marker_run = opening.group(1)
+                fence_marker = marker_run[0]
+                fence_length = len(marker_run)
+                output.append(line)
+                continue
+            if re.match(r"^(?: {4}|\t)", line):
+                output.append(line)
+                continue
+
+        index = 0
+        while index < len(line):
+            if in_comment:
+                closing_index = line.find("-->", index)
+                if closing_index < 0:
+                    index = len(line)
+                    continue
+                in_comment = False
+                index = closing_index + 3
+                continue
+
+            if inline_ticks:
+                tick_match = re.search(r"`+", line[index:])
+                if not tick_match:
+                    output.append(line[index:])
+                    index = len(line)
+                    continue
+                tick_start = index + tick_match.start()
+                tick_run = tick_match.group(0)
+                output.append(line[index:tick_start + len(tick_run)])
+                index = tick_start + len(tick_run)
+                if len(tick_run) == inline_ticks:
+                    inline_ticks = 0
+                continue
+
+            if line.startswith("<!--", index):
+                in_comment = True
+                index += 4
+                continue
+            if line[index] == "`":
+                tick_match = re.match(r"`+", line[index:])
+                tick_run = tick_match.group(0) if tick_match else "`"
+                inline_ticks = len(tick_run)
+                output.append(tick_run)
+                index += len(tick_run)
+                continue
+            output.append(line[index])
+            index += 1
+
+    return "".join(output)
 
 
 def construct_unique_json_object(pairs: list[tuple[str, object]]) -> dict:
@@ -263,6 +329,11 @@ def read_text(path: Path, errors: list[str]) -> str:
         fail(f"missing file: {path.relative_to(ROOT).as_posix()}", errors)
         return ""
     return path.read_text(encoding="utf-8")
+
+
+def read_reviewer_visible_text(path: Path, errors: list[str]) -> str:
+    text = read_text(path, errors)
+    return strip_html_comments(text) if path.suffix.lower() == ".md" else text
 
 
 def read_yaml_mapping(path: Path, errors: list[str]) -> dict:
@@ -355,7 +426,7 @@ def check_required_files(manifest: dict, errors: list[str]) -> None:
 
 def check_required_text(errors: list[str]) -> None:
     for rel, needles in REQUIRED_TEXT.items():
-        text = strip_html_comments(read_text(ROOT / rel, errors))
+        text = read_reviewer_visible_text(ROOT / rel, errors)
         lowered = text.lower()
         for needle in needles:
             if needle.lower() not in lowered:
@@ -368,12 +439,12 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         fail("manifest system_repositories must preserve the exact seven-repository inventory display order", errors)
 
     for rel in ("README.md", "profile/README.md", "profile/START_HERE.md", "architecture/REPO_AUTHORITY_MAP.md"):
-        text = strip_html_comments(read_text(ROOT / rel, errors)).lower()
+        text = read_reviewer_visible_text(ROOT / rel, errors).lower()
         for repository in SYSTEM_REPOSITORIES:
             if repository.lower() not in text:
                 fail(f"{rel} missing system repository role: {repository}", errors)
 
-    profile_text = strip_html_comments(read_text(ROOT / "profile" / "README.md", errors))
+    profile_text = read_reviewer_visible_text(ROOT / "profile" / "README.md", errors)
     profile = profile_text.lower()
     door_section = re.search(
         r"## Choose the right door\s+(.*?)(?=\n## |\Z)",
@@ -406,7 +477,7 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         profile_text,
         re.MULTILINE,
     )
-    start_here_text = strip_html_comments(read_text(ROOT / "profile" / "START_HERE.md", errors))
+    start_here_text = read_reviewer_visible_text(ROOT / "profile" / "START_HERE.md", errors)
     start_here_fast_path = re.search(
         r"## 3-minute command-center path\s+(.*?)(?=\n## |\Z)",
         start_here_text,
@@ -510,7 +581,7 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         ),
     )
     for rel, heading, expected_header, expected_rows in authority_tables:
-        table_text = strip_html_comments(read_text(ROOT / rel, errors))
+        table_text = read_reviewer_visible_text(ROOT / rel, errors)
         section_match = re.search(
             rf"## {re.escape(heading)}\s+(.*?)(?=\n## |\Z)",
             table_text,
@@ -755,8 +826,8 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         if set(actual_pairs) != set(declared_pairs):
             fail(f"{repository} declared checks and structured workflow / job contexts must match exactly", errors)
 
-    template_text = strip_html_comments(
-        read_text(ROOT / ".github" / "pull_request_template.md", errors)
+    template_text = read_reviewer_visible_text(
+        ROOT / ".github" / "pull_request_template.md", errors
     )
     downstream_section = re.search(
         r"- Downstream repos affected:\s+(.*?)(?=\n- Downstream action:)",
@@ -779,7 +850,7 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
     if actual_downstream_repos != expected_downstream_repos:
         fail("pull request template must enumerate exactly seven downstream repositories plus None", errors)
 
-    system_map_text = strip_html_comments(read_text(ROOT / "wiki" / "11_ORG_SYSTEM_MAP.md", errors))
+    system_map_text = read_reviewer_visible_text(ROOT / "wiki" / "11_ORG_SYSTEM_MAP.md", errors)
     mermaid_fence = re.compile(
         r"^[ \t]{0,3}(?P<marker>`|~)(?P=marker){2,}[ \t]*mermaid[^\r\n]*\r?\n"
         r"(?P<body>.*?)(?=^[ \t]{0,3}(?P=marker){3,}[ \t]*$|\Z)",
@@ -964,8 +1035,9 @@ def main() -> int:
 
     text_files = iter_text_files()
     all_text = "\n".join(
-        strip_html_comments(path.read_text(encoding="utf-8", errors="ignore"))
+        strip_html_comments(text) if path.suffix.lower() == ".md" else text
         for path in text_files
+        for text in (path.read_text(encoding="utf-8", errors="ignore"),)
     )
     check_project_boundaries(all_text, errors)
     check_ceiling_boundaries(all_text, errors)
