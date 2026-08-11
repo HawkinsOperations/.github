@@ -323,7 +323,7 @@ AUTHORITY_COLLAPSE_PATTERNS = (
             r"\b(?:AI|hoxline|website|github(?:\s+organization)?|\.github)\s+"
             r"(?:(?:is|was|were)(?:\s+being)?|(?:has|have|had)\s+been|"
             r"(?:can|may|will|must|could|might|should|would)\s+be)\s+"
-            r"(?:granted|given|assigned)\s+(?:the\s+)?"
+            r"(?:granted|given|assigned|delegated)\s+(?:the\s+)?"
             r"(?:authority|permission|power)\s+to\s+"
             r"(?:(?:approve|authorize)\s+merges?|merge\s+pull\s+requests?|"
             r"(?:decide|approve|authorize)\s+(?:detection\s+|incident\s+)?"
@@ -2073,9 +2073,11 @@ def contains_explicit_boundary_qualifier(text: str) -> bool:
         r"mean|constitute|show|indicate|confirm|publish|report|describe|"
         r"treat|own)(?:s|ed|ing)?|not established|"
         r"not proven|not proof|not authority|not public-safe|"
-        r"not\b[^|.!?;]{0,180}\bpublic-safe|blocked|"
-        r"unproven|unsupported|"
-        r"forbidden|restricted|rejected|withheld|not_public_safe|"
+        r"not\b[^|.!?;]{0,180}\bpublic-safe|"
+        r"(?:blocked|unproven|unsupported|forbidden|restricted|rejected|"
+        r"withheld)\s+(?:claims?|wording|statuses?|promotions?|evidence)|"
+        r"claim blocked|"
+        r"not_public_safe|"
         r"requires? evidence|required next evidence|claim ceiling|"
         r"boundar(?:y|ies)|exclude(?:s|d)?|exclusions?)\b|"
         r"\bmay not\s*:\s*$",
@@ -2085,13 +2087,14 @@ def contains_explicit_boundary_qualifier(text: str) -> bool:
 
 
 def contains_strong_boundary_status(text: str) -> bool:
-    """Recognize an explicit blocked status anywhere in one structured row."""
+    """Recognize an explicit blocked status within one structured cell."""
+    normalized = text.strip().strip('"\'`').strip()
     return bool(re.search(
-        r"\b(?:blocked|unproven|unsupported|forbidden|rejected|withheld|"
-        r"not_public_safe)\b|"
+        r"^(?:blocked|unproven|unsupported|forbidden|rejected|withheld|"
+        r"not_public_safe|blocked claims register)$|"
         r"\buntil\b[^|.!?;]{0,180}\b(?:reviewed|approved?|proven)\b|"
         r"\bonly for reviewed\b|\bafter public claim review\b",
-        text,
+        normalized,
         re.IGNORECASE,
     ))
 
@@ -2117,16 +2120,21 @@ def claim_has_bound_qualifier(context: str, claim_start: int, claim_end: int) ->
         re.IGNORECASE,
     )
     contextual_prefix = re.compile(
-        r"\bno\s+[a-z0-9_/-]+(?:\s+[a-z0-9_/-]+){0,10}\s*$|"
+        r"\bno\s+(?:runtime|signal|proof|evidence|production|customer|fleet|"
+        r"claim|approval|disposition)(?:[/\s-]+(?:runtime|signal|proof|"
+        r"evidence|production|customer|fleet|claim|approval|disposition))*"
+        r"[/\s-]*$|"
         r"\bblocked claims?\s+(?:needs?|requires?)\b[^.!?;]{0,500}$|"
         r"\bfails closed for\b[^.!?;]{0,500}$|"
-        r"\bwithout\s+(?:becoming|creating|establishing|proving|promoting)\b"
-        r"[^.!?;]{0,300}$|"
+        r"\bwithout\s+(?:becoming|creating|establishing|proving|promoting)\s+"
+        r"(?:(?:proof|evidence|runtime|signal|approval|authority|status|"
+        r"claims?|truth)\s+(?:or|and)\s+)*$|"
         r"\bneither\b[^.!?;]{0,100}\b(?:proves?|establishes?|supports?|"
         r"authorizes?|grants?|promotes?)\b[^.!?;]{0,500}$",
         re.IGNORECASE,
     )
     governing_match = governing_prefix.search(prefix)
+    contextual_match = contextual_prefix.search(prefix)
     unrelated_clause = re.compile(
         r"(?:,|\b(?:and|but|or|while|whereas|although|though|yet)\b)\s+"
         r"[^.!?;]{0,500}?\b"
@@ -2137,7 +2145,9 @@ def claim_has_bound_qualifier(context: str, claim_start: int, claim_end: int) ->
         governing_match.group("governed_tail")
     ):
         return True
-    if immediate_prefix.search(prefix) or contextual_prefix.search(prefix):
+    if immediate_prefix.search(prefix):
+        return True
+    if contextual_match and not unrelated_clause.search(contextual_match.group(0)):
         return True
 
     suffix = context[claim_end:]
@@ -2262,8 +2272,9 @@ def check_identity_and_claim_context(text_files: list[Path], errors: list[str]) 
                                     break
                                 separator_index -= 1
                             if not structured_boundary:
-                                structured_boundary = contains_strong_boundary_status(
-                                    boundary_claim_unit.lower()
+                                structured_boundary = any(
+                                    contains_strong_boundary_status(cell)
+                                    for cell in cells
                                 )
                         if not structured_boundary and re.match(
                             r"^ {0,3}(?:[-+*]|\d{1,9}[.)])[ \t]+", source_line
