@@ -32,6 +32,9 @@ EXPECTED_PROMOTION_CONTRACT_SHA256 = "65522c07b7e2983379dcb3ea1ba5b4cd03ccb3e511
 # workflow/job context to its verifier command, display metadata, enforcement
 # classification, and documented boundary; changes require intentional review.
 EXPECTED_REQUIRED_CHECKS_MATRIX_SHA256 = "2cefa14bcd21ec9dfa1a491c791116d7806fe67c18c0f8bce5f669e7b2eb4f44"
+# Fingerprint of the complete reviewed invariant manifest, including the exact
+# required route list and seven-repository authority order.
+EXPECTED_MANIFEST_SHA256 = "9bf2fc9dd8d8d64a25422e8784019a0827d89ac00348c73289df5d83153df122"
 EXPECTED_INVARIANTS = {
     "github_repo_role": ".github is reviewer routing and governance shell only",
     "presentation_route": "hawkinsoperations.com is the Website Reviewer Guide and presentation surface",
@@ -297,6 +300,14 @@ def load_manifest(errors: list[str]) -> dict:
     except json.JSONDecodeError as exc:
         fail(f"manifest JSON parse failed: {exc}", errors)
         return {}
+    manifest_payload = json.dumps(
+        manifest,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+    ).encode("utf-8")
+    if hashlib.sha256(manifest_payload).hexdigest() != EXPECTED_MANIFEST_SHA256:
+        fail("complete invariant manifest does not match the reviewed machine-readable mapping", errors)
     if manifest.get("schema") != "hawkinsoperations-command-center-invariants-v1":
         fail("manifest schema mismatch", errors)
     if manifest.get("invariants") != EXPECTED_INVARIANTS:
@@ -760,20 +771,42 @@ def check_front_door_authority_model(manifest: dict, errors: list[str]) -> None:
         r"(?:\s*(?:\[[^\n]*?\]|\([^\n]*?\)|\{[^\n]*?\}|@\{[^\n]*?\}|:::[A-Za-z0-9_-]+))*"
     )
     mermaid_edge_segment = r"[ox<]?[-.=~]{2,}[>ox]?"
+    mermaid_label_start = r"[-.=~]{2,}"
+    mermaid_label_end = r"[-.=~]{2,}[>ox]?"
     mermaid_link = (
-        rf"(?:{mermaid_edge_segment}\s+[^|>\n]+?\s+{mermaid_edge_segment}|{mermaid_edge_segment})"
+        rf"(?:{mermaid_label_start}\s+[^|>\n]+?\s+{mermaid_label_end}|{mermaid_edge_segment})"
         r"(?:\|[^|\n]*\|)?"
     )
-    direct_hoxline_proof_edge = re.compile(
-        rf"^\s*hox(?:line)?\b{mermaid_node_decoration}\s*{mermaid_link}\s*(?:proof|web(?:site)?)\b",
-        re.MULTILINE,
+    mermaid_node_ref = rf"[A-Za-z_][A-Za-z0-9_-]*{mermaid_node_decoration}"
+    mermaid_node_group = rf"{mermaid_node_ref}(?:\s*&\s*{mermaid_node_ref})*"
+    mermaid_edge_statement = re.compile(
+        rf"(?=(?P<left>{mermaid_node_group})\s*{mermaid_link}\s*(?P<right>{mermaid_node_group}))"
     )
-    compound_hoxline_proof_edge = re.compile(
-        rf"^\s*hox(?:line)?\b{mermaid_node_decoration}\s*{mermaid_link}\s*[^\n]*&\s*(?:proof|web(?:site)?)\b",
-        re.MULTILINE,
+    mermaid_node_identifier = re.compile(
+        rf"(?:^|&)\s*([A-Za-z_][A-Za-z0-9_-]*){mermaid_node_decoration}"
     )
-    if direct_hoxline_proof_edge.search(system_map_text) or compound_hoxline_proof_edge.search(system_map_text):
-        fail("wiki/11_ORG_SYSTEM_MAP.md must not bypass platform and proof between Hoxline and public output", errors)
+    forbidden_hoxline_peers = {"proof", "web", "website"}
+    for line in system_map_text.splitlines():
+        for edge in mermaid_edge_statement.finditer(line):
+            left_ids = {
+                match.group(1).lower()
+                for match in mermaid_node_identifier.finditer(edge.group("left"))
+            }
+            right_ids = {
+                match.group(1).lower()
+                for match in mermaid_node_identifier.finditer(edge.group("right"))
+            }
+            left_has_hoxline = bool(left_ids & {"hox", "hoxline"})
+            right_has_hoxline = bool(right_ids & {"hox", "hoxline"})
+            if (
+                (left_has_hoxline and right_ids & forbidden_hoxline_peers)
+                or (right_has_hoxline and left_ids & forbidden_hoxline_peers)
+            ):
+                fail(
+                    "wiki/11_ORG_SYSTEM_MAP.md must not bypass platform and proof between Hoxline and public output",
+                    errors,
+                )
+                break
     if re.search(r"^\| (?:Total ledger events|Total cases|Public-safe count|Closed-case count) \|", system_map_text, re.MULTILINE):
         fail("wiki/11_ORG_SYSTEM_MAP.md must route changing ledger values instead of copying counts", errors)
 
