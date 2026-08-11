@@ -251,6 +251,13 @@ def strip_html_comments(text: str) -> str:
     inline_ticks = 0
     fence_marker = ""
     fence_length = 0
+    line_offset = 0
+
+    def has_matching_tick_run(start: int, length: int) -> bool:
+        return any(
+            len(match.group(0)) == length
+            for match in re.finditer(r"`+", text[start:])
+        )
 
     for line in text.splitlines(keepends=True):
         if fence_marker:
@@ -259,6 +266,7 @@ def strip_html_comments(text: str) -> str:
             if closing:
                 fence_marker = ""
                 fence_length = 0
+            line_offset += len(line)
             continue
 
         if not in_comment and inline_ticks == 0:
@@ -268,9 +276,11 @@ def strip_html_comments(text: str) -> str:
                 fence_marker = marker_run[0]
                 fence_length = len(marker_run)
                 output.append(line)
+                line_offset += len(line)
                 continue
             if re.match(r"^(?: {4}|\t)", line):
                 output.append(line)
+                line_offset += len(line)
                 continue
 
         index = 0
@@ -305,12 +315,26 @@ def strip_html_comments(text: str) -> str:
             if line[index] == "`":
                 tick_match = re.match(r"`+", line[index:])
                 tick_run = tick_match.group(0) if tick_match else "`"
+                global_index = line_offset + index
+                backslash_count = 0
+                preceding_index = global_index - 1
+                while preceding_index >= 0 and text[preceding_index] == "\\":
+                    backslash_count += 1
+                    preceding_index -= 1
+                if backslash_count % 2 or not has_matching_tick_run(
+                    global_index + len(tick_run), len(tick_run)
+                ):
+                    output.append(tick_run)
+                    index += len(tick_run)
+                    continue
                 inline_ticks = len(tick_run)
                 output.append(tick_run)
                 index += len(tick_run)
                 continue
             output.append(line[index])
             index += 1
+
+        line_offset += len(line)
 
     return "".join(output)
 
