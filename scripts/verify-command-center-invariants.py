@@ -595,6 +595,7 @@ def strip_markdown_code_blocks(text: str) -> str:
     fence_marker = ""
     fence_length = 0
     html_code_tag = ""
+    html_code_depth = 0
     html_tag_buffer = ""
     html_attribute_quote = ""
     html_block_container: tuple[int, int] | None = None
@@ -604,9 +605,10 @@ def strip_markdown_code_blocks(text: str) -> str:
     def advance_html_code_state(
         line: str,
         active_tag: str,
+        active_depth: int,
         tag_buffer: str,
         attribute_quote: str,
-    ) -> tuple[str, str, str, bool]:
+    ) -> tuple[str, int, str, str, bool]:
         cursor = 0
         contains_raw_code = bool(active_tag)
         if active_tag in {"script", "style", "textarea"}:
@@ -616,9 +618,10 @@ def strip_markdown_code_blocks(text: str) -> str:
                 re.IGNORECASE,
             )
             if not closing:
-                return active_tag, "", "", True
+                return active_tag, active_depth, "", "", True
             cursor = closing.end()
             active_tag = ""
+            active_depth = 0
             tag_buffer = ""
             attribute_quote = ""
         while cursor < len(line):
@@ -648,6 +651,7 @@ def strip_markdown_code_blocks(text: str) -> str:
                 )
                 if pending_opening:
                     active_tag = pending_opening.group(1).lower()
+                    active_depth = 0
                     contains_raw_code = True
             if character != ">":
                 continue
@@ -655,12 +659,24 @@ def strip_markdown_code_blocks(text: str) -> str:
             token = tag_buffer
             tag_buffer = ""
             if active_tag:
-                if re.fullmatch(
+                nested_template = (
+                    active_tag == "template"
+                    and re.match(r"<template(?=[ \t>/])", token, re.IGNORECASE)
+                )
+                if nested_template:
+                    active_depth = max(active_depth, 0) + 1
+                elif re.fullmatch(
                     rf"</{re.escape(active_tag)}[ \t]*>",
                     token,
                     re.IGNORECASE,
                 ):
-                    active_tag = ""
+                    if active_tag == "template" and active_depth > 1:
+                        active_depth -= 1
+                    else:
+                        active_tag = ""
+                        active_depth = 0
+                elif active_depth == 0:
+                    active_depth = 1
                 contains_raw_code = True
                 continue
             opening_tag = re.match(
@@ -670,10 +686,11 @@ def strip_markdown_code_blocks(text: str) -> str:
             )
             if opening_tag:
                 active_tag = opening_tag.group(1).lower()
+                active_depth = 1
                 contains_raw_code = True
         if active_tag and tag_buffer and not attribute_quote:
             tag_buffer = ""
-        return active_tag, tag_buffer, attribute_quote, contains_raw_code
+        return active_tag, active_depth, tag_buffer, attribute_quote, contains_raw_code
 
     for line in text.splitlines(keepends=True):
         if html_delimited_block is not None:
@@ -697,9 +714,16 @@ def strip_markdown_code_blocks(text: str) -> str:
             html_block_container = None
 
         if html_code_tag or html_tag_buffer:
-            html_code_tag, html_tag_buffer, html_attribute_quote, _ = advance_html_code_state(
+            (
+                html_code_tag,
+                html_code_depth,
+                html_tag_buffer,
+                html_attribute_quote,
+                _,
+            ) = advance_html_code_state(
                 line,
                 html_code_tag,
+                html_code_depth,
                 html_tag_buffer,
                 html_attribute_quote,
             )
@@ -750,9 +774,16 @@ def strip_markdown_code_blocks(text: str) -> str:
             paragraph_open = False
             continue
 
-        html_code_tag, html_tag_buffer, html_attribute_quote, contains_raw_code = advance_html_code_state(
+        (
+            html_code_tag,
+            html_code_depth,
+            html_tag_buffer,
+            html_attribute_quote,
+            contains_raw_code,
+        ) = advance_html_code_state(
             line,
             "",
+            0,
             "",
             "",
         )
