@@ -967,18 +967,8 @@ def strip_markdown_inline_code_spans(text: str) -> str:
             continue
 
         content_start = opening_start + len(opening_run)
-        search_end = len(text)
-        offset = 0
-        for line_number, candidate_line in enumerate(
-            text[content_start:].splitlines(keepends=True)
-        ):
-            if line_number and interrupts_markdown_paragraph(candidate_line):
-                search_end = content_start + offset
-                break
-            offset += len(candidate_line)
-
         closing_end = 0
-        for closing in re.finditer(r"`+", text[content_start:search_end]):
+        for closing in re.finditer(r"`+", text[content_start:]):
             if len(closing.group(0)) == len(opening_run):
                 closing_end = content_start + closing.end()
                 break
@@ -1877,9 +1867,10 @@ def check_semantic_authority_collapse(text_files: list[Path], errors: list[str])
         if path.suffix.lower() != ".md":
             continue
         rel = path.relative_to(ROOT).as_posix()
-        semantic_text = read_reviewer_semantic_text(path, errors)
-        semantic_lines = strip_markdown_inline_code_spans(semantic_text).splitlines()
+        semantic_lines = read_reviewer_semantic_text(path, errors).splitlines()
         for line_no, claim_unit in iter_reviewer_claim_units(semantic_lines):
+            claim_unit = normalize_markdown_link_text(claim_unit)
+            claim_unit = strip_markdown_inline_code_spans(claim_unit)
             decoded_claim = html.unescape(claim_unit)
             decoded_claim = "".join(
                 character
