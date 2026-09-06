@@ -196,6 +196,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          quality_args=(--repo-root source-set
+            --detections-ref "$(git -C source-set/hawkinsoperations-detections rev-parse HEAD)"
+            --validation-ref "$(git -C source-set/hawkinsoperations-validation rev-parse HEAD)"
+            --platform-ref "$(git -C source-set/hawkinsoperations-platform rev-parse HEAD)")
+          python -B -m hoxline.cli detection-quality "${quality_args[@]}" --format json > verification-work/detection-quality.json
+          python -B -m hoxline.cli detection-quality "${quality_args[@]}" --verify verification-work/detection-quality.json --format markdown >> "$GITHUB_STEP_SUMMARY"
           python -B -m compileall -q source-set/hoxline/src source-set/hoxline/tests
           python -B -m unittest discover -s source-set/hoxline/tests
           python -B -m pytest -q source-set/hoxline/tests

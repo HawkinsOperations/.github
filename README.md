@@ -25,6 +25,15 @@ Evidence and source flow stay separated:
 
 ## Fast Reviewer Path
 
+The seven-repository convergence workflow also runs Hoxline's
+`detection-quality` command through the platform handoff, then verifies the saved
+report by reexecuting validation-owned source predicates and mutations. Exact
+source revisions come from `governance/CONVERGENCE_SOURCE_MANIFEST.json`.
+The job summary contains the measured reviewer table; validation CI retains the
+owner report for both Ubuntu and Windows. See the validation and Hoxline READMEs
+at those selected revisions for local commands and supported predicate scope.
+This is controlled fixture review, with no runtime, closure, or public-proof promotion.
+
 | Time | Start | What to confirm |
 |---:|---|---|
 | 30 sec | [profile/START_HERE.md](profile/START_HERE.md) | What HawkinsOperations is, which repo owns truth, and what remains blocked. |
