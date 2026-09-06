@@ -13,7 +13,19 @@
     "governance/PR_REVIEW_AUTHORITY.md",
     "governance/CROSS_REPO_PROMOTION_MAP.md",
     "wiki/11_ORG_SYSTEM_MAP.md",
-    ".github/pull_request_template.md"
+    ".github/pull_request_template.md",
+    ".github/workflows/command-center-invariants.yml",
+    "scripts/verify-command-center-invariants.py",
+    "governance/CONVERGENCE_SOURCE_MANIFEST.json"
+  ],
+  "cross_repo_repositories": [
+    ".github",
+    "hawkinsoperations-detections",
+    "hawkinsoperations-validation",
+    "hawkinsoperations-platform",
+    "hawkinsoperations-proof",
+    "hawkinsoperations-website",
+    "hoxline"
   ],
   "invariants": {
     "github_repo_role": ".github is reviewer routing and governance shell only",
@@ -26,6 +38,7 @@
     "ledger_public_safe_status": "NOT_PUBLIC_SAFE",
     "reviewer_metrics_pipeline": "Reviewer metrics pipeline keeps Lifetime Governed Cases separate from detection activity, validation cases, proof records, blocked claims, and Project Board reconciliation status",
     "reviewer_metrics_counts": "Reviewer metrics values are authority-owned snapshots in proof/platform records; front-door text must route to those records instead of copying changing counts",
+    "cross_repo_convergence": "Read-only verification checks exactly seven repositories at an explicit immutable PR-head matrix, records and verifies every checked revision, fails closed on drift, and does not write main, merge, mutate the Lifetime Case Ledger, or promote proof/public status",
     "ho_det_001_public_ceiling": "CONTROLLED_TEST_VALIDATED",
     "runtime_signal_public_promotions": "runtime-active, signal-observed, evidence-linked public proof, public-safe, production-ready, fleet-wide, AWS-live, Cribl-routed, Wazuh-routed, autonomous SOC, AI-approved, AI-decided, analyst-approved, and live Splunk claims remain blocked unless separately proven and approved",
     "standing_controls": ".github#8 and .github#10 remain standing controls",

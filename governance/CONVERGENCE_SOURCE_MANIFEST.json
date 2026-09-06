@@ -1,0 +1,64 @@
+{
+  "schema": "hawkinsoperations-convergence-source-manifest-v1",
+  "manifest_id": "HAWKINSOPERATIONS_SEVEN_SOURCE_PR_HEAD_MATRIX_V1",
+  "repositories": [
+    {
+      "repository": ".github",
+      "canonical_repository": "HawkinsOperations/.github",
+      "revision_source": "github_event_sha",
+      "authority_content_revision": "6e6763a81d6af09c2e4588462b56117ce82c2f88",
+      "tree_source": "github_event_tree"
+    },
+    {
+      "repository": "hawkinsoperations-detections",
+      "canonical_repository": "HawkinsOperations/hawkinsoperations-detections",
+      "revision": "56cad4f726c0d3988c9464693ce7c127c8f63cad",
+      "authority_content_revision": "f8bc0a0925113ca815bf5692081b5216162cc918",
+      "reviewed_tree_sha": "429361f066f1bd4cdbb168ba709cec42d9f93510"
+    },
+    {
+      "repository": "hawkinsoperations-validation",
+      "canonical_repository": "HawkinsOperations/hawkinsoperations-validation",
+      "revision": "c8f3f08995d78fa103115610e5c6a2b85ee61701",
+      "authority_content_revision": "ebf52f7c6c9b78de767272cc56fccdc584f5c4e0",
+      "reviewed_tree_sha": "61c9489df9dd6503b02eb796cb30df93486823be"
+    },
+    {
+      "repository": "hawkinsoperations-platform",
+      "canonical_repository": "HawkinsOperations/hawkinsoperations-platform",
+      "revision": "0826b9916f926c204d44875f3ecd1c964a159125",
+      "authority_content_revision": "13fd8d88b179572bc53759f371d9b968ba3c94d4",
+      "reviewed_tree_sha": "b25ab96d1655b768a58f81ad4bb642104ec94496"
+    },
+    {
+      "repository": "hawkinsoperations-proof",
+      "canonical_repository": "HawkinsOperations/hawkinsoperations-proof",
+      "revision": "77b7874dd753369792330508fa3438cf397cd050",
+      "authority_content_revision": "042a918ad4a8473cd5abcfd575072fc094639682",
+      "reviewed_tree_sha": "68fc8c604ffebb392e2fa6b205a920e9560b424b"
+    },
+    {
+      "repository": "hawkinsoperations-website",
+      "canonical_repository": "HawkinsOperations/hawkinsoperations-website",
+      "revision": "a5330385c479cad29a7f892b5388c7426452faaa",
+      "authority_content_revision": "5856f8e69527b5e61c3953b88a2ad4c088268655",
+      "reviewed_tree_sha": "a16399a812564180939c38357bca1c09cc2f2a21"
+    },
+    {
+      "repository": "hoxline",
+      "canonical_repository": "HawkinsOperations/hoxline",
+      "revision": "be2cd4f08aa5fe04fff89435de47e20abef9f96e",
+      "authority_content_revision": "1cb97efc45ffe753389105645c25ed7fe57cf9e5",
+      "reviewed_tree_sha": "77646e5ddd2a6f1729907578b650a2c78d12adff"
+    }
+  ],
+  "constraints": {
+    "exact_repository_count": 7,
+    "read_only": true,
+    "default_branch_fallback": false,
+    "require_detached_exact_revision": true,
+    "record_checked_revisions": true,
+    "consumer_outputs_are_not_authority": true,
+    "proof_ceiling": "CONTROLLED_REPO_CONVERGENCE_AND_LOCAL_FIXTURE_REVIEW_ONLY"
+  }
+}
