@@ -19,16 +19,16 @@
     {
       "repository": "hawkinsoperations-validation",
       "canonical_repository": "HawkinsOperations/hawkinsoperations-validation",
-      "revision": "58255039aca0f07e2b98dd362627c342df7ca5c2",
+      "revision": "e76726eb041e137092d52f5bdd8f5797e78cd8f4",
       "authority_content_revision": "ebf52f7c6c9b78de767272cc56fccdc584f5c4e0",
-      "reviewed_tree_sha": "3379e098a991c7d14396f21f0625e2242362779c"
+      "reviewed_tree_sha": "f7dd9aa6db3b5e7753bf7722a3364c91e01c7856"
     },
     {
       "repository": "hawkinsoperations-platform",
       "canonical_repository": "HawkinsOperations/hawkinsoperations-platform",
-      "revision": "6aa04e3875cc1d69104b4dbd0a0c99c8f00c879c",
+      "revision": "1dd906f6ff262ac9e749d28dc5361f47e44661de",
       "authority_content_revision": "13fd8d88b179572bc53759f371d9b968ba3c94d4",
-      "reviewed_tree_sha": "5457d3d535b4dd1b0f22786c4315a67c2b6c525d"
+      "reviewed_tree_sha": "084e51ec9455fa109af50c2a506836493c5a9e82"
     },
     {
       "repository": "hawkinsoperations-proof",
